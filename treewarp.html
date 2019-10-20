@@ -52,9 +52,9 @@ background: glitchybg
 		<li>Tell the dynamic spawn routine to create sprite id <code class="value">$25</code>, which is a talking tree.</li>
 		<li>Failsafe? Screw that. I am the greetest, so I <em>know</em> there will always be an empty sprite slot.</li>
 		<li>Get the eyeball number from the safe place and put it on the sprite we just spawned as a property.</li>
-		<li>Load the value in address <code class="address">$00</code>, which holds the low byte of the tree's mouth's X-coordinate. I know that because I'm an expert.</li>
+		<li>Load the value in address <code class="address">$00</code>, which holds the low byte of the tree's mouth's X-coordinate. I know that's for sure what the address holds, because I'm an expert.</li>
 		<li>Add to it the value <code class="value">&minus;4</code> if our eyeball number is 0, or <code class="value">14</code> if our eyeball number is 1. Store that to the new sprite's X-coordinate, based on its index.
-		<li>Load the value in address <code class="address">$01</code>, which holds the high byte of the tree's mouth's X-coordinate. I know that because I'm a torpedo.</li>
+		<li>Load the value in address <code class="address">$01</code>, which holds the high byte of the tree's mouth's X-coordinate. I know that's for sure what the address holds, because I'm a torpedo.</li>
 		<li>Add to it the value <code class="value">&minus;1</code> if our eyeball number is 0, or <code class="value">0</code> if our eyeball number is 1. Store that to X-coordinate.</li>
 		<li>Get what is <em>"definitely"</em> the low byte of the mouth's low Y-coordinate and add the value <code class="value">&minus;11</code>. Store that.</li>
 		<li>Get the totally not possibly incorrect value of the mouth's high Y-coordinate and add the value <code class="value">&minus;1</code>. Store that.</li>
