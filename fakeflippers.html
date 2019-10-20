@@ -1,9 +1,10 @@
 ---
 layout: default
 title: Fake Flippers Explication
+background: glitchybg
 ---
 
-<div class="glitchexp">
+<div class="contentstuff glitchexp">
 	<h1>Fake flippers</h1>
 	<p>Fake flippers is a popular glitch that allows Link to swim in deep water without having the flippers.</p>
 	<p>The most well-known method is lining up with a scren transition, jumping into the water, and then triggering the transition before splashing out. The common explanation for this is as follows: <q class="wrong">When Link hits the water, the game takes 1 frame to know if you have the flippers, which lets you trigger the transition. After the transition, flippers aren't checked for, because you're alreading swimming.</q></p>
@@ -24,7 +25,7 @@ title: Fake Flippers Explication
 	<p>So what would happen if you prevented the splash from spawning? Well, as you'd expect, if the thing that runs the code isn't there, the code won't be run. Preventing the splash from spawning is not difficult, 
 
 	<h2>Fairy revival, et. al</h2>
-	<p>If you don't like long-winded explanations, then, first off, you disappoint me. This one is short. When you are revived by a fairy, the first thing that gets checked after fully healing is whether you are over deep water. If you are, the game assumes you were already swimming and puts you back to swimming. That's it. No flippers check, no bunny check. If you were over deep water, you <em>must<em> have been swimming. It's a bad assumption, and it doesn't seem to be fixed in later releases either.</p>
+	<p>If you don't like long-winded explanations, then, first off, you disappoint me. This one is short. When you are revived by a fairy, the first thing that gets checked after fully healing is whether you are over deep water. If you are, the game assumes you were already swimming and puts you back to swimming. That's it. No flippers check, no bunny check. If you were over deep water, you <em>must</em> have been swimming. It's a bad assumption, and it doesn't seem to be fixed in later releases either.</p>
 
 	<h2>Why does Swamp suck?<h2>
 	<p>Rooms like the Swamp Palace lobby use layers to split collision between swimming and walking the same way other rooms split collision for different heights. The layer swap happens when you hit the jump trigger, and only if you have the flippers. These rooms are also what we call "Weak EG", so regular exploration glitch triggers won't affect your layer. If you enter the room already on the lower layer, collision is, in most places, unnavigable.</p>
