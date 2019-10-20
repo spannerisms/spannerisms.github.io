@@ -69,8 +69,11 @@ nav ul {
 	padding: 0;
 }
 
+nav > div > ul > li:hover {
+	background: #AAAADD;
+}
+
 nav > div > ul > li > ul > li {
-	padding: 3px 0;
 	border-top: 1px solid;
 	border-radius: 0 10px 10px;
 }
@@ -81,6 +84,10 @@ nav a {
 	font-size: 13pt;
 	color: #222266;
 	padding: 3px 10px;
+}
+
+nav > div > ul > li > ul > li > a {
+	display: block;
 }
 
 nav > div > ul > li > a:not(:only-child) {
@@ -96,6 +103,7 @@ nav > div > ul > li > ul > li:last-child > a {
 }
 
 nav > div.Home a,
+nav > div > ul > li,
 nav > div > ul > li > a:only-child {
 	border-radius: 10px;
 }

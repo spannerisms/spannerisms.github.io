@@ -20,10 +20,10 @@ background: glitchybg
 	</dl>
 	<p>When a sprite is spawned, no matter what method, it undergoes certain preparations to set its coordinates, AI pointers, etc., along with a routine that each sprite has specifically designated to it. Sprite prep happens exactly once.</p>
 
-	<h2>Dinomaniac spawning<h2>
+	<h2>Dinomaniac spawning</h2>
 	<p>As mentioned before, there are only 16 slots for active sprite to be in. To make sure there's room, <code class="routine">Sprite_SpawnDynamically</code> starts an index register at 15 and uses it to count down through all the sprite slots by looking for a sprite that is totally inactive and dead. If it finds an empty slot, it jumps ahead to set its properties and run its prep routine. Actually, it branches ahead, but if I said "branches", anyone who doesn't understand assembly terminology might get confused. Or maybe not, I'm sure the context makes it obvious.</p>
 	<p>Ahem&hellip;</p>
-	<p>If there was no room, then our index register hits -1, which for an 8-bit two's-complement is <code class="value">$FF</value>, equivalent to an unsigned value of <code class="value">255</code>. If we go negative, the search loop is broken and the CPU returns to wherever the routine was called from. And that's all it does when there's no room. Handling the case of "there's no room, buster" is left to the whatever wanted the sprite to spawn in the first place.</p>
+	<p>If there was no room, then our index register hits -1, which for an 8-bit two's-complement is <code class="value">$FF</code>, equivalent to an unsigned value of <code class="value">255</code>. If we go negative, the search loop is broken and the CPU returns to wherever the routine was called from. And that's all it does when there's no room. Handling the case of "there's no room, buster" is left to the whatever wanted the sprite to spawn in the first place.</p>
 	<p>And handle that they do. For the most part. Almost every call to this routine is followed by the instruction <code class="opcode">BMI</code>, which means, in some sense "go here if the last number we saw was negative, otherwise just ignore me". A couple are followed by the opposite, <code class="opcode">BPL</code>, which means to follow where it's pointing when the number is <em>not</em> negative. It's the Master Sword, okay. The Master Sword, scourge of evil, was programmed by a got dang intern. But at least that intern had the sense to include the failsafe used everywhere else.</p>
 	
 	<h2>Arbor Day 2019</h2>
