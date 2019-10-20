@@ -9,7 +9,7 @@ background: glitchybg
 	<p>Tree warp, or Dynamic Sprite Spawn Underflow (DSSU) for the glitch in general, is a strong contender for the coolest glitch. I've explained it before using the Agahnim 2 stal, but for this explanation, I'll be focusing on tree warp.</p>
 
 	<h2>Sprite spawning</h2>
-	<p>There's a lot to discuss with how sprites spawn, but let's focus on the basics for this. The basics are all we really need. There are 3 ways to spawn sprites:</p>
+	<p>There's a lot to discuss with how sprites spawn, but let's focus on the basics for this. The basics are all we really need. There are <span class="evil">3</span> ways to spawn sprites:</p>
 	<dl class="proseList">
 		<dt>Static spawning </dt>
 		<dd>is how sprites are spawned in the underworld. Every room has a list of up to 16 sprites, and they are all loaded into the active sprites array when the room is loaded.</dd>
@@ -27,7 +27,7 @@ background: glitchybg
 	<p>And handle that they do. For the most part. Almost every call to this routine is followed by the instruction <code class="opcode">BMI</code>, which means, in some sense "go here if the last number we saw was negative, otherwise just ignore me". A couple are followed by the opposite, <code class="opcode">BPL</code>, which means to follow where it's pointing when the number is <em>not</em> negative. It's the Master Sword, okay. The Master Sword, scourge of evil, was programmed by a got dang intern. But at least that intern had the sense to include the failsafe used everywhere else.</p>
 	
 	<h2>Arbor Day 2019</h2>
-	<p>The same can't be said for whatever intern coded the talking tree sprite. These guys break so many rules. Let's go in an order that will let me get back on topic when I'm done ranting. First of all, these guys use <em class="wtf">3</em> sprite slots. 1 for the mouth, 2 for the eyes. Secondly, they have the persistence bit set. You see, on the overworld, when most sprites go off screen, they have the decency to deactive themselves and return to the buffer. This allows other sprites to spawn in their place. Not talking trees. Once those 3 sprites are in their slots, they grasp onto them until you transition. If you visit both trees in the Village of Outcasts, you now have tree rudely hogging 40% of your sprites.</p>
+	<p>The same can't be said for whatever intern coded the talking tree sprite. These guys break so many rules. Let's go in an order that will let me get back on topic when I'm done ranting. First of all, these guys use <span class="evil">3</span> sprite slots. 1 for the mouth, 2 for the eyes. Secondly, they have the persistence bit set. You see, on the overworld, when most sprites go off screen, they have the decency to deactive themselves and return to the buffer. This allows other sprites to spawn in their place. Not talking trees. Once those 3 sprites are in their slots, they grasp onto them until you transition. If you visit both trees in the Village of Outcasts, you now have tree rudely hogging 40% of your sprites.</p>
 	<p>And finally (for the sake of time), trees spawn their eyeballs recklessly. Only the mouth is a semi-static spawn. When it's spawned into the main list, its prep routine performs 2 calls of <code class="routine">Sprite_SpawnDynamically</code>, one for each eye. What it doesn't do is check for success. Talking trees are of a small handful of sprites that assume that there will always be a free sprite slot. Of that group, it's probably also the most careless to have made that assumption. Tree warp specifically happens when there is exactly 1 free sprite slot; i.e. the mouth is the 16th sprite, with nowhere for the eyeballs to go.</p>
 
 	<h2>The Underflow</h2>
@@ -61,7 +61,7 @@ background: glitchybg
 		<li>Set a property to <code class="value">1</code> on the sprite to indicate that it is ocular, rather than oral.</li>
 		<li>Get the mouth sprite index from the safe place.</li>
 		<li>Exit routine.</li>
-	<ol>
+	</ol>
 	<p>I kept the rest of the steps brief, because I feel like you already had the idea. I kept going, because it felt wrong to not describe the whole routine.</p>
 	<p>But, buddy, you're wrong. That failsafe is important. You're not loading an X-coordinate, nor are you putting it anywhere near where an X-coordinate can be. But if it's not an X-coordinate, what is it? Well, it's a little complicated, but bear with me.</p>
 	<p>Tracing backwards, the last time that addresses <code class="address">$00</code> and friends were modified was when we were running the sprite prep routine for the tree's mouth. It took the sprite ID and then called <code class="routine">UseImplicitRegIndexedLocalJumpTable</code>. That's a long name, and a fairly intricate routine if you're not familiar with assembly, but it basically is a way for the CPU to take a value and then pick a routine from a table based on that value. It does so by taking the 24-bit address of the routine and putting it in memory at <code class="address">$00</code>, <code class="address">$01</code>, and <code class="address">$03</code> and jumping from there.</p>
@@ -78,8 +78,8 @@ background: glitchybg
 
 	<h2>When things go terribly wrong</h2>
 	<p>Tree warp works when only 1 sprite slot is free before spawning the mouth. When 2 slots are free, things go really really wrong and the game crashes.</p>
-	<p>This crash is purely bad luck with ROM data. If 2 slots are free, that means the mouth takes one and eyeball 0 takes the other. So eyeball 0 spawns successfully, in the correct slot, and due to the prep that happens in <code class="routine">Sprite_SpawnDynamically</code>, we now have a new value in <code class="address">$01</code>: <span class="evil">3</code>.
-	<p>When it comes to sprite IDs, <span class="evil">3</code> is particularly evil. There is no sprite with that ID, so there's a pointer to <code class="address">$0000</code>. That's the same <code class="address">$00</code> we were storing scratch data in, but now we are executing it as code. And because it's consistent from the previous routines, I can tell you exactly what the CPU is doing:<p>
+	<p>This crash is purely bad luck with ROM data. If 2 slots are free, that means the mouth takes one and eyeball 0 takes the other. So eyeball 0 spawns successfully, in the correct slot, and due to the prep that happens in <code class="routine">Sprite_SpawnDynamically</code>, we now have a new value in <code class="address">$01</code>: <span class="evil">3</span>.
+	<p>When it comes to sprite IDs, <span class="evil">3</span> is particularly evil. There is no sprite with that ID, so there's a pointer to <code class="address">$0000</code>. That's the same <code class="address">$00</code> we were storing scratch data in, but now we are executing it as code. And because it's consistent from the previous routines, I can tell you exactly what the CPU is doing:<p>
 	<code class="snesasm"><!-- Why can't there be a goddamn hilite for 65816-->
 		PLA       ; $68
 		ORA $50,S ; $03 $50

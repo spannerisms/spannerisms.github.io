@@ -153,6 +153,18 @@ code {
 	font-weight: bold;
 }
 
+code.snesasm {
+	white-space: pre;
+	font-size: 90%;
+}
+
+code.opcode {
+	color: #0000CC;
+}
+
+code.address {
+	color: #C93858;
+}
 code.number,
 code.value {
 	color: #444499;
@@ -167,9 +179,26 @@ q.wrong {
 	color: #8a2d2d;
 }
 
+.wtf {
+	display: inline-block;
+	color: red;
+	transform: skewX(-20deg) rotate(-2deg);
+}
+
+.wtf:hover {
+	transform: none;
+}
+
 strong.wrong {
 	text-decoration: underline;
 	color: red;
+}
+
+span.evil {
+	font-family: comic sans ms;
+	color: red;
+	font-weight: bold;
+	text-shadow: 1px 1px 3px #FF9999;
 }
 
 /* Backgrounds */
