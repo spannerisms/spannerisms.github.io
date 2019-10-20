@@ -2,7 +2,10 @@
 	font-family: "Segoe UI", tahoma, arial, sans-serif;
 	font-size: 11pt;
 }
-html,
+html {
+	background: #F9E3F9;
+}
+
 body {
 	margin: 0;
 	height: 100%;
@@ -111,7 +114,8 @@ div.Links {
 div.content {
 	margin-top: 30px;
 	padding: 30px 10%;
-	background: #f9e3f9;
+	background: #F9E3F9;
+	height: 100%;
 }
 
 div.content > div {
