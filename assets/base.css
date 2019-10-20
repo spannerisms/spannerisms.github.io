@@ -162,5 +162,5 @@ strong.wrong {
 
 /* Backgrounds */
 div.content.glitchybg {
-	background-image: url('resources/vramcorruption.png');
+	background-image: url('bg/vramcorruption.png');
 }
