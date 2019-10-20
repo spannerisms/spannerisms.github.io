@@ -1,17 +1,30 @@
 <!doctype html>
-<html lang="{{ site.lang | default: "en-US" }}">
+<html lang="en-US">
 	<head>
 		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-	{% seo %}
-		<link rel="stylesheet" href="/assets/css/style.css">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" href="/assets/base.css">
 	</head>
 
-	<body>
-		<header>
-			<div class="Home">A</div>
-			<div class="Links">B</div>
+	<body id="page-top">
+		<nav class="navbar sitenav">
+			<div class="Home"><a href="https://spannerisms.github.io">Home</a></div>
+			<div class="Links">
+				<ul>
+					<li><a href="">A</a></li>
+					<li><a href="">B</a></li>
+					<li><a href="">C</a>
+						<ul>
+							<li><a href="">C1</a></li>
+							<li><a href="">C2</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
 		</header>
+
+	<div class="content">
+		{{ content }}
+	</div>
 	</body>
 </html>

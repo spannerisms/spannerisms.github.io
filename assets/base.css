@@ -1,0 +1,92 @@
+
+body {
+	margin: 0; 
+}
+
+nav.sitenav {
+	background: #CCCCFF;
+	height: 30px;
+	padding: 10px 40px 10px 100px;
+	font-family: tahoma, geneva, sans-serif;
+	font-weight: bold;
+}
+
+nav > div {
+	display: inline-block;
+}
+
+nav > div > ul {
+    list-style: none;
+    padding: 0;
+    display: inline-block;
+    margin: 0
+}
+
+nav > div > ul > li {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+}
+
+nav > div > ul > li > ul {
+    display: none;
+    position: absolute;
+    background: #CCCCFF;
+    list-style: none;
+    border-radius: 10px;
+    margin-top: 3px;
+}
+
+nav > div > ul > li:hover > ul {
+	display: block;
+}
+
+nav > a {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+nav ul {
+    padding: 0;
+}
+
+nav > div > ul > li > ul > li {
+	padding: 3px 0;
+	border-top: 1px solid;
+	border-radius: 0 10px 10px;
+}
+
+nav a:visited,
+nav a {
+    text-decoration: none;
+    font-size: 120%;
+    color: #222266;
+    padding: 3px 10px;
+}
+
+nav > div > ul > li > a:not(:only-child) {
+	border-radius: 10px 10px 0 0 ;
+}
+
+nav > div > ul > li > ul > li:not(:last-child) > a {
+	border-radius: 0 10px;
+}
+
+nav > div > ul > li > ul > li:last-child > a {
+	border-radius: 0 10px 10px;
+}
+
+nav > div.Home a,
+nav > div > ul > li > a:only-child {
+    border-radius: 10px;
+}
+
+nav a:hover {
+    color: white;
+    background: #5555FF;
+}
+
+div.Links {
+	float: right;
+}
