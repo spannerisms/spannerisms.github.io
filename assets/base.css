@@ -16,25 +16,25 @@ nav > div {
 }
 
 nav > div > ul {
-    list-style: none;
-    padding: 0;
-    display: inline-block;
-    margin: 0
+	list-style: none;
+	padding: 0;
+	display: inline-block;
+	margin: 0
 }
 
 nav > div > ul > li {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0;
 }
 
 nav > div > ul > li > ul {
-    display: none;
-    position: absolute;
-    background: #CCCCFF;
-    list-style: none;
-    border-radius: 10px;
-    margin-top: 3px;
+	display: none;
+	position: absolute;
+	background: #CCCCFF;
+	list-style: none;
+	border-radius: 10px;
+	margin-top: 3px;
 }
 
 nav > div > ul > li:hover > ul {
@@ -42,13 +42,13 @@ nav > div > ul > li:hover > ul {
 }
 
 nav > a {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 nav ul {
-    padding: 0;
+	padding: 0;
 }
 
 nav > div > ul > li > ul > li {
@@ -57,14 +57,16 @@ nav > div > ul > li > ul > li {
 	border-radius: 0 10px 10px;
 }
 
+nav span,
 nav a:visited,
 nav a {
-    text-decoration: none;
-    font-size: 120%;
-    color: #222266;
-    padding: 3px 10px;
+	text-decoration: none;
+	font-size: 120%;
+	color: #222266;
+	padding: 3px 10px;
 }
 
+nav > div > ul > li > span:not(:only-child),
 nav > div > ul > li > a:not(:only-child) {
 	border-radius: 10px 10px 0 0 ;
 }
@@ -79,12 +81,13 @@ nav > div > ul > li > ul > li:last-child > a {
 
 nav > div.Home a,
 nav > div > ul > li > a:only-child {
-    border-radius: 10px;
+	border-radius: 10px;
 }
 
+nav span:hover,
 nav a:hover {
-    color: white;
-    background: #5555FF;
+	color: white;
+	background: #5555FF;
 }
 
 div.Links {
