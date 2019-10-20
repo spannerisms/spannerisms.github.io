@@ -165,18 +165,19 @@ code.opcode {
 code.address {
 	color: #C93858;
 }
+
 code.number,
 code.value {
 	color: #444499;
 }
 
 code.routine {
-	color: #8a24e8
+	color: #6E1BBB;
 }
 
 q.wrong {
 	font-style: italic;
-	color: #8a2d2d;
+	color: #8A2D2D;
 }
 
 .wtf {
