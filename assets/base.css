@@ -1,10 +1,11 @@
 * {
-	font-family: tahoma, geneva, sans-serif;
+	font-family: "Segoe UI", tahoma, arial, sans-serif;
 	font-size: 11pt;
 }
-
+html,
 body {
-	margin: 0; 
+	margin: 0;
+	height: 100%;
 }
 
 nav.sitenav {
@@ -19,6 +20,7 @@ nav.sitenav {
 	position: fixed;
 	box-shadow: 0 0 20px;
 	z-index: 9999999;
+	font-family: tahoma, geneva, sans-serif;
 }
 
 :target{
@@ -114,7 +116,7 @@ div.content {
 
 div.content > div {
 	background: #FFFFFF;
-	padding: 30px 15%;
+	padding: 30px 10%;
 	box-shadow: 3px 3px 4px #000;
 	border-radius: 20px;
 }
@@ -133,7 +135,7 @@ div.content h2 {
 	left: -20px;
 	border-bottom: 1px solid;
 	padding-left: 10px;
-	width: 80%
+	width: 80%;
 }
 
 code {
@@ -161,6 +163,11 @@ strong.wrong {
 }
 
 /* Backgrounds */
+div.content {
+	background-attachment: fixed;
+}
+
 div.content.glitchybg {
 	background-image: url('bg/vramcorruption.png');
+	background-blend-mode: screen;
 }
