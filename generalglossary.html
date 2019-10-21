@@ -1,0 +1,97 @@
+---
+layout: default
+title: General Glossary
+---
+<div class="contentstuff glossarypage">
+	<h1>General Glossary</h1>
+	<p>If you're on this page, I probably used a term you don't understand. This glossary will attempt to explain general terms in an easy-to-understand vocabulary.</p>
+
+	<h2>#</h2>
+	<dl>
+		<dt><dfn id="HEX">$</dfn></dt>
+		<dt>0x</dt>
+		<dd>If you see a number prefixed with one of these symbols, that means the number is hexadecimal rather than decimal.</dd>
+		<dt><dfn id="24bitIndirect"><code class="address">[$xx]</code></dfn></dt>
+		<dd>This is an addressing mnemonic in 65c816 assembly that means the values at addresses <code class="address">$xx</code>, <code class="address">$xx+1</code>, and <code class="address">$xx+2</code> form a pointer to a different 24-bit address. This is <a href="#Indirect">indirect addressing</a>. It's a lot easier to type, read, and understand than explicitly mentioning all 3 bytes.</dd>
+		<dt><dfn id="16bitIndirect"><code class="address">($xx)</code></dfn></dt>
+		<dd>This is an addressing mnemonic in 65c816 assembly that means the values at addresses <code class="address">$xx</code> and <code class="address">$xx+1</code> form a pointer to a local 16-bit address. This is <a href="#Indirect">indirect addressing</a>. It's a lot easier to type, read, and understand than explicitly mentioning both bytes.</dd>
+		<dt><dfn id="ByteCount"><code class="address">$xx</code><code class="addrsize">[y]</code></dfn></dt>
+		<dd><p>Memory is not always independent; some addresses operate together to form arrays of data, 16- or 24-bit pointers, or some other related collection. When I use brackets after an address <code class="address">$xx</code>, the value in brackets <code class="addrsize">[y]</code> is the size of the block of data in bytes. For example, <code class="address">$0780</code><code class="addrsize">[2]</code> would mean two bytes at the consecutive addresses <code class="address">$0780</code> and <code class="address">$0781</code>. If brackets are omitted, then assume only 1 byte is being addresses, unless context implies otherwise.</p>
+			<p>When addressing large portions of memory, <code class="addrsize">[y]</code> may be in <a href="#HEX">hexadecimal</a>, but I will use decimal numbers when values are smaller.</p>
+		</dd>
+	</dl>
+
+	<h2>B</h2>
+	<dl>
+		<dt><dfn id="Bank">Bank</dfn></dt>
+		<dd><p>A bank is a big section of code or data, and it can be either RAM or ROM. There are 256 addressable banks of 65536 bytes each on the Super Nintedo, but with some caveats. If you'd like to know more about those caveats, see <a class="youtube" href="https://www.youtube.com/watch?v=-U76YvWdnZM">this video</a> by Dotsarecool.</p>
+			<p>If you see me use an address like this <code class="address">$07:8000</code>, then that first byte (<code class="address">$07</code>) is the bank.</p>
+		</dd>
+		<dt><dfn id="Buffer">Buffer</dfn></dt>
+		<dd>Sometimes you want to set up data to work with later. To do that, you can place it in a buffer, which is just a place in memory that you know will be stable until you're using that data.</dd>
+	</dl>
+
+	<h2>C</h2>
+	<dl>
+		<dt><dfn id="CPU">CPU</dfn></dt>
+		<dd><p>I don't need to, nor will I, explain what a CPU is, but I will explain what the Super Nintendo's CPU is.</p>
+			<p>The SNES uses the Ricoh 5A22, a 16-bit chip based on the Wester Design Center's 65c816. It has the same instruction set and address space as the 65c816, but it also includes proprietary functions as the 60hz interrupt for V-blank/NMI and <a href="DMA">direct memory access</a>.</p>
+		</dd>
+	</dl>
+
+	<h2>D</h2>
+	<dl>
+		<dt><dfn id="DMA">DMA</dfn></dt>
+		<dt><dfn id="Direct_Memory_Access">Direct Memory Access</dfn></dt>
+		<dd>This is just a really fast way to move data from 1 location in memory to another. If you'd like to know more, I recommend watching <a class="youtube" href="https://www.youtube.com/watch?v=K7gWmdgXPgk">this video</a> by Dotsarecool.</dd>
+	</dl>
+
+	<h2>I</h2>
+	<dl>
+		<dt><dfn id="Interrupt">Interrupt</dfn></dt>
+		<dd>An interrupt is exactly what it sounds like. Something tells the CPU to stop what it's doing and work on something else. That something else is determined by a <a href="#Vector">vector</a> specific to that interrupt. Many crashes are actually the CPU being given an interrupt it doesn't actually attempt to handle, which results in garbage code being run.</dd>
+	</dl>
+
+	<h2>M</h2>
+	<dl>
+		<dt><dfn id="Masking">Masking</dfn></dt>
+		<dd>Masking is just another way of saying "logically AND with a value". It's a <em>mask</em> because it exposes relevant active bits and hides everything else.</dd>
+		<dt><dfn id="Mirror">Mirror</dfn></dt>
+		<dd>Being able to access certain types of memory in more than one place is useful. A mirror is just one of those duplicate places that makes working with that memory doable.</dd>
+	</dl>
+
+	<h2>N</h2>
+	<dl>
+		<dt><dfn id="NMI">NMI</dfn></dt>
+		<dd>NMI stands for <b>N</b>on-<b>M</b>askable <b>I</b>nterrupt. That means that when the interrupt happens, you cannot ignore it. On the Super Nintendo, NMI is handled by the hardware and is intended for the V-blank routine. It's fired roughly 60 times every second, being directly what is responsible for the console's frame rate. While the NMI on the SNES cannot be ignored, it can be halted by telling the CPU to not make the request.</dd>
+	</dl>
+
+	<h2>R</h2>
+	<dl>
+		<dt><dfn id="Register">Register</dfn></dt>
+		<dd>Registers are really just extra special places in memory that we use a lot. Because we use them a lot, they're easy to access. The Super Nintendo CPU has a few that are worth explaining. If there's a register it has that I haven't mentioned here, I probably haven't used it in a post. Yet.
+			<dl class="subdef">
+				<dt><dfn id="Accumulator">Accumulator</dfn> </dt>
+				<dd>The <code class="register">A</code> register (sometimes <code class="register">C</code> when it's in 16-bit mode) is just the general use register that holds data we are actively working with. If I say something is loaded or stored without qualification, it probably was with the accumulator. The accumulator is the most manipulable register, and the only one that arithmetic or bitwise operations can be performed on. So if I say some number was added to another, it was done with the accumulator.</dd>
+				<dt><dfn id="Index_register">Index register</dfn> </dt>
+				<dd>The <code class="register">X</code> and <code class="register">Y</code> registers are each an index register. They're used to find offsets into lists or to help control loops. They can and are used for general loading and storing like the accumulator, but they are not as manipulable as it. The only mathematical operations you can perform on the index registers are incrementation and decrementation.</dd>
+				<dt><dfn id="Stack_pointer">Stack pointer</dfn> </dt>
+				<dd>While the <a href="#Stack">stack</a> itself is just a place in RAM, the stack pointer (<code class="register">S</code>) is a special register that says where the next empty slot is.</dd>
+			</dl>
+		</dd>
+	</dl>
+
+	<h2>S</h2>
+	<dl>
+		<dt><dfn id="Scratch">Scratch</dfn></dt>
+		<dd>Scrach space, scratch memory, or whatever I end up calling it just means memory that is used for temporary calculation or storage. The memory is extremely volatile over the course of a frame. I'll try to only explicitly give the address of scratch space if it will be relevant to some part of the explanation. Otherwise, just consider it something that doesn't matter in end.</dd>
+		<dt><dfn id="Stack">Stack</dfn></dt>
+		<dd>When you want to work with a lot of data at once, or remember your place while you perform a side task, you need a way to remember what you were using or doing. That's where the stack comes in. It's a special place in memory that has special operations specific to it which allow you to store and recall data, pointers, or registers. If you'd like a more in-depth explanation of the stack, see <a class="youtube" href="https://www.youtube.com/watch?v=IWQ74f2ot7E">this video</a> by Dotsarecool.</dd>
+	</dl>
+
+	<h2>V</h2>
+	<dl>
+		<dt><dfn id="Vector">Vector</dfn></dt>
+		<dd>When an <a href="#Interrupt">interrupt</a> it occurs, it has to know where to go. A small portion of ROM contains pointers for each vector, and that's where the CPU will look when it's told to take a break from its normal operation.</dd>
+	</dl>
+</div>

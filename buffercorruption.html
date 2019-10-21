@@ -1,0 +1,59 @@
+---
+layout: default
+title: Buffer Corruption Explication
+background: glitchybg
+---
+<div class="contentstuff glitchexp">
+	<h1>Buffer Corruption</h1>
+	<p>This is not a glitch you perform yourself directly, but rather a consequence of a handful of door glitches, including spin-YBAs, spin-mirror door, and, most famously, somaria glitches. This deserves its own page, not only because it's not specific to any one piece of tech, but also because it is an absolute deadrock of a thing to understand. If you have any trouble following the explanation, you're not alone. This is really hard to understand, and I myself am going to have a difficult time parsing my notes (which are literally just a commented trace log). Don't even get me started on trying to put this into layman's terms.</p>
+
+	<h2>Star tiles</h2>
+	<p>As you might know, star tiles are those goldenrod hexagrams found in certain dungeons such as the Tower of Hera. When you step on one, it makes some holes in the room disappear and/or creates new holes in the floor. Before getting into the nitty-gritty of how it breaks, let's first examine what happens when it's working as God intended:</p>
+	<ol>
+		<li>The room's overlay tags are checked and an overlay ID is stored to memory for later based on tag.</li>
+		<li>The tiles under Link are checked for any active star tiles. There are 2 types of star tiles, each controller a different overlay change.</li>
+		<li>When Link is indeed on a star tile, the game loads the room's <span class="dfnwrap" id="04BA"><dfn>active overlay</dfn> (address <dfn><code class="address">$04BA</code></dfn></span> is compared to the overlay associated with the star tile under Link. If they're the same, the routine exits.</li>
+		<li>If the overlays are different, the active overlay is updated to the new value and the routine continues.</li>
+		<li>The game clears address <span class="dfnwrap" id="BA"><dfn><code class="address">$BA</code></dfn> and <dfn><code class="address">$BB</code></dfn>. Let's call these addresses the <dfn>buffer index</dfn>.</li>
+		<li>The star jingle is put into a buffer for sound effects.</li>
+		<li>The game's submodule is switched to <code class="value">$03</code>.</li>
+		<li>The status of star tiles is swapped and their graphics updated.</li>
+	</ol>
+
+	<p>That's what happens on the frame that you touch the star tile. It's not until the next frame, when we execute underworld submodule <code class="value">$03</code> that the overlay changes are applied to the collision and tile maps. The most important take away is the zeroing of the <a class="term" href="#BA">buffer index</a>. When overlay corruption happens, none of the star tile code is executed; it's going straight to submodule <code class="value">$03</code></p>
+
+	<h2>Overlay submodule</h2>
+	<p>This is the point in this post where I must warn you that complexity ramps up, and not even to its max. Just hold my hand, and we can power through this together.</p>
+	<p>The first thing this submodule does is call the routine <code class="routine">Dungeon_ApplyOverlay</code>. I love it when routines have good names like that. Unfortunately, the name is the only thing about this routine that's easy to understand. We'll have to go through this submodule working correctly if we really want to understand why it breaks in door glitches.</p>
+
+	<h3>Usage: Apply overlay directly to layer</h3>
+	<p><code class="routine">Dungeon_ApplyOverlay</code> starts by getting into 16-bit mode and checking the <a class="term" href="#BA">buffer index</a>. As far as I can tell, there are only 2 intended ways to enter this overlay submodule: star tiles, and trap chests (like the compass chest in Skull Woods). In both of these cases, our <a class="term" href="#BA">buffer index</a> will be 0 from the previous frame's routines. Accordingly, that is the first path we'll follow.</p>
+	<p>When address <a class="term" href="#BA"><code class="address">$BA</code></a> is <code class="value">0</code>, the room's <a class="term" href="#04BA">active overlay</a> is loaded and multiplied by 3 to index a table of available overlays. The 24-bit pointer loaded from that is then put in <span class="dfnwrap" id="B7">addresses <dfn><code class="address">$B7</code>, <code class="address">$B8</code>, and <code class="address">$B9</code>. I'll refer to these addresses collectively as <dfn><code class="address">[$B7]</code></dfn> or the <dfn>buffer pointer</dfn></span>.</p>
+	<p>Once the <a class="term" href="#B7" title="Did you seriously forget this already? It's right there in the previous paragraph!">buffer pointer</a> is set, a loop is started. Hold onto your pantsu, because this loop is pretty tricky.</p>
+	<ol>
+		<li>Clear the addresses <code class="address">$B2[2]</code> and <code class="address">$B4[2]</code>. These will hold values for width and height, respectively.</li>
+		<li>Load the <a class="term" href="#BA">buffer index</a> into the <code class="register">Y</code> index register. At this point, <code class="register">Y</code> should always be a multiple of 3.</li>
+		<li>Read <code class="register">Y</code> bytes into the data table <a class="term" href="#B7">pointed to</a> by <code class="address">[$B7]</code>. In this step, we are reading the first value of the set, which contains the overlay object's ID.</li>
+		<li>If the object ID is <code class="value">$FFFF</code>, then it marks the end of the loop. The routine exits and continues to the <a href="#DMA">next step</a>.</li>
+		<li>For any other value, the object ID, height, and width are manipulated to make changes to the tile map by modifying a buffer at <code class="address">$7E:2000[$2000]</code>. Over the course of these changes, the <a class="term" href="#BA">buffer index</a> settles at a value that is 3 higher than it was in the previous iteration of the loop.</li>
+		<li>The loop repeats until the value <code class="value">$FFFF</code> is read.</li>
+	</ol>
+	<p>To be honest, this object parsing routine is really confusing, and I didn't really bother figuring it out. Thankfully, it doesn't actually seem relevant to the glitch, so I'll skip it.</p>
+	<p>Now that the confusing stuff is out of the way, let's get onto even more confusing stuff.</p>
+
+	<h3 id="DMA">D! M! A! D! M! A!</h3>
+	<p>Putting data into the tilemap is not enough. Well, it is. But we put it into a buffer. Now we need to tell the CPU how to use this buffer to update VRAM. Not only is this routine complicated, but most of it needs to be at least partially understood to fully understand the consequences of overlay corruption. But, reminder that we are currently assuming this is an intended execution of the submodule, through normal gameplay events.</p>
+	<p>We clear the <a class="term" href="#BA">buffer index</a>, as we're about to start another loop:</p>
+	<ol id="bigmfloop">
+		<li>Load the <a class="term" href="#BA">buffer index</a> into the <code class="register">Y</code> index register. At this point, <code class="register">Y</code> should always be a multiple of 3. Sound familiar?</li>
+		<li>Read <code class="register">Y</code> bytes into the data table <a class="term" href="#B7">pointed to</a> by <code class="address">[$B7]</code>. In this step, we are reading the first value of the set, which contains the overlay object's ID. I feel like I'm repeating myelf.</li>
+		<li>If the object ID is <code class="value">$FFFF</code>, then it marks the end of the loop. The routine exits and continues to the <a href="#FinallyDone">next step</a>. Is there an echo on this server?</li>
+		<li>Holy crap, we're doing the same things again! Masking the object with <code class="value">$FC</code>, manipulating width and height. Why wasn't this done with everything else in the previous routine???</li>
+		<li>Oh hey, something new, the DMA. This is actually another routine with its own little loop. Like the tile map changes, this is not necessary to understand in great detail. What you should know is that when the previous tile map routine ends up working correctly, this one does too. The loop is actually setting up a bunch of mini DMAs in <span class="dfnwrap" id="1100">what I'll refer to as <dfn><em>the</em> DMA buffer</dfn>, which starts at address <dfn><code class="address">$1100</code></dfn>.</li>
+		<li>After that loop is done, we enter <em>another</em> loop that uses the current tile map to create changes in the collision map. Amazingly, it is not haphazard about this. It parses the data read from the tile map to determine if it can be considered a pit tile or not. From the looks of it, if a tile's not a pit, its collision is left alone.</li>
+		<li>This <a href="#bigmfloop">big loop</a> is performed how ever many times is needed to create a collection of transfers for the entire overlay. The pits in hera were over 5500 operations. <span class="disgusting">Disgusting!</span></li>
+	</ol>
+	<p>When that huge mess is over, we store <code class="value">$FFFF</code> to the end of the <a class="term" href="#1100">DMA buffer</a>, signalling the end of data. And before exiting the routine and fixing the submodule back to normal dungeon mode, the address <code class="address">$18</code> is set to 1, indicating a DMA is to take place during the next v-blank period.</p>
+
+	<h3 id="FinallyDone">We're done!!! &hellip;with the previous part&hellip;</h3>
+</div>
