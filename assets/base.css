@@ -263,9 +263,9 @@ span.evil {
 	display: none;
 }
 
-#bigloop":target { 
+#bigloop:target { 
 	display: block;
-	border: 1px solid blue;
+	font-weight: bold;
 }
 
 span.disgusting {
