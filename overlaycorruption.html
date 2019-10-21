@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Buffer Corruption Explication
+title: Overlay Corruption Explication
 background: glitchybg
 ---
 <div class="contentstuff glitchexp">
-	<h1>Buffer Corruption</h1>
+	<h1>Overlay Corruption</h1>
 	<p>This is not a glitch you perform yourself directly, but rather a consequence of a handful of door glitches, including spin-YBAs, spin-mirror door, and, most famously, somaria glitches. This deserves its own page, not only because it's not specific to any one piece of tech, but also because it is an absolute deadrock of a thing to understand. If you have any trouble following the explanation, you're not alone. This is really hard to understand, and I myself am going to have a difficult time parsing my notes (which are literally just a commented trace log). Don't even get me started on trying to put this into layman's terms.</p>
 
 	<h2>Star tiles</h2>
@@ -28,14 +28,14 @@ background: glitchybg
 
 	<h3>Usage: Apply overlay directly to layer</h3>
 	<p><code class="routine">Dungeon_ApplyOverlay</code> starts by getting into 16-bit mode and checking the <a class="term" href="#BA">buffer index</a>. As far as I can tell, there are only 2 intended ways to enter this overlay submodule: star tiles, and trap chests (like the compass chest in Skull Woods). In both of these cases, our <a class="term" href="#BA">buffer index</a> will be 0 from the previous frame's routines. Accordingly, that is the first path we'll follow.</p>
-	<p>When address <a class="term" href="#BA"><code class="address">$BA</code></a> is <code class="value">0</code>, the room's <a class="term" href="#04BA">active overlay</a> is loaded and multiplied by 3 to index a table of available overlays. The 24-bit pointer loaded from that is then put in <span class="dfnwrap" id="B7">addresses <dfn><code class="address">$B7</code>, <code class="address">$B8</code>, and <code class="address">$B9</code>. I'll refer to these addresses collectively as <dfn><code class="address">[$B7]</code></dfn> or the <dfn>buffer pointer</dfn></span>.</p>
+	<p>When address <a class="term" href="#BA"><code class="address">$BA</code></a> is <code class="value">0</code>, the room's <a class="term" href="#04BA">active overlay</a> is loaded and multiplied by 3 to index a table of available overlays. The 24-bit pointer loaded from that is then put in <span class="dfnwrap" id="B7">addresses <dfn><code class="address">$B7</code>, <code class="address">$B8</code>, and <code class="address">$B9</code></dfn>. I'll refer to these addresses collectively as <dfn><code class="address">[$B7]</code></dfn> or the <dfn>buffer pointer</dfn></span>.</p>
 	<p>Once the <a class="term" href="#B7" title="Did you seriously forget this already? It's right there in the previous paragraph!">buffer pointer</a> is set, a loop is started. Hold onto your pantsu, because this loop is pretty tricky.</p>
 	<ol>
-		<li>Clear the addresses <code class="address">$B2[2]</code> and <code class="address">$B4[2]</code>. These will hold values for width and height, respectively.</li>
+		<li>Clear the addresses <code class="address">$B2</code><code class="addrsize">[2]</code> and <code class="address">$B4</code><code class="addrsize">[2]</code>. These will hold values for width and height, respectively.</li>
 		<li>Load the <a class="term" href="#BA">buffer index</a> into the <code class="register">Y</code> index register. At this point, <code class="register">Y</code> should always be a multiple of 3.</li>
 		<li>Read <code class="register">Y</code> bytes into the data table <a class="term" href="#B7">pointed to</a> by <code class="address">[$B7]</code>. In this step, we are reading the first value of the set, which contains the overlay object's ID.</li>
 		<li>If the object ID is <code class="value">$FFFF</code>, then it marks the end of the loop. The routine exits and continues to the <a href="#DMA">next step</a>.</li>
-		<li>For any other value, the object ID, height, and width are manipulated to make changes to the tile map by modifying a buffer at <code class="address">$7E:2000[$2000]</code>. Over the course of these changes, the <a class="term" href="#BA">buffer index</a> settles at a value that is 3 higher than it was in the previous iteration of the loop.</li>
+		<li>For any other value, the object ID, height, and width are manipulated to make changes to the tile map by modifying a buffer at <code class="address">$7E:2000</code><code class="addrsize">[$2000]</code>. Over the course of these changes, the <a class="term" href="#BA">buffer index</a> settles at a value that is 3 higher than it was in the previous iteration of the loop.</li>
 		<li>The loop repeats until the value <code class="value">$FFFF</code> is read.</li>
 	</ol>
 	<p>To be honest, this object parsing routine is really confusing, and I didn't really bother figuring it out. Thankfully, it doesn't actually seem relevant to the glitch, so I'll skip it.</p>

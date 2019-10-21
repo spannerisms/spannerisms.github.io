@@ -9,6 +9,13 @@ body {
 	height: 100%;
 }
 
+a {
+	text-decoration: none;
+}
+
+dfn {
+	font-style: normal;
+}
 nav.sitenav {
 	display: block;
 	background: #CCCCFF;
@@ -25,8 +32,8 @@ nav.sitenav {
 }
 
 :target{
-	padding-top: 30px;
-	margin-top: -30px;
+	padding-top: 40px;
+	margin-top: -40px;
 }
 
 nav > div {
@@ -217,6 +224,11 @@ dl.proseList dd {
 	display: contents;
 }
 
+/* Linking to previous terms */
+span.dfnwrap:target > dfn {
+	background: #FFFF8B;
+	border: 2px solid #CCCC80
+}
 /* Backgrounds */
 div.content {
 	background-attachment: fixed;
