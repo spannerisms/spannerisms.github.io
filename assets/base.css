@@ -259,6 +259,15 @@ span.evil {
 	background: #fff;
 }
 
+#bigloop { 
+	display: none;
+}
+
+#bigloop":target { 
+	display: block;
+	border: 1px solid blue;
+}
+
 span.disgusting {
 	color: green;
 	font-weight: bold;

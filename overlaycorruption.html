@@ -6,6 +6,7 @@ background: glitchybg
 <div class="contentstuff glitchexp">
 	<h1>Overlay Corruption</h1>
 	<p>This is not a glitch you perform yourself directly, but rather a consequence of a handful of door glitches, including spin-YBAs, spin-mirror door, and, most famously, somaria glitches. This deserves its own page, not only because it's not specific to any one piece of tech, but also because it is an absolute deadrock of a thing to understand. If you have any trouble following the explanation, you're not alone. This is really hard to understand, and I myself am going to have a difficult time parsing my notes (which are literally just a commented trace log). Don't even get me started on trying to put this into layman's terms.</p>
+	<p>Hold onto your pantsu; this will not be light reading. But do read it all anyway.</p>
 
 	<h2>Star tiles</h2>
 	<p>As you might know, star tiles are those goldenrod hexagrams found in certain dungeons such as the Tower of Hera. When you step on one, it makes some holes in the room disappear and/or creates new holes in the floor. Before getting into the nitty-gritty of how it breaks, let's first examine what happens when it's working as God intended:</p>
@@ -29,7 +30,7 @@ background: glitchybg
 	<h3>Usage: Apply overlay directly to layer</h3>
 	<p><code class="routine">Dungeon_ApplyOverlay</code> starts by getting into 16-bit mode and checking the <a class="term" href="#BA">buffer index</a>. As far as I can tell, there are only 2 intended ways to enter this overlay submodule: star tiles, and trap chests (like the compass chest in Skull Woods). In both of these cases, our <a class="term" href="#BA">buffer index</a> will be 0 from the previous frame's routines. Accordingly, that is the first path we'll follow.</p>
 	<p>When address <a class="term" href="#BA"><code class="address">$BA</code></a> is <code class="value">0</code>, the room's <a class="term" href="#04BA">active overlay</a> is loaded and multiplied by 3 to index a table of available overlays. The 24-bit pointer loaded from that is then put in <span class="dfnwrap" id="B7">addresses <dfn><code class="address">$B7</code>, <code class="address">$B8</code>, and <code class="address">$B9</code></dfn>. I'll refer to these addresses collectively as <dfn><code class="address">[$B7]</code></dfn> or the <dfn>buffer pointer</dfn></span>.</p>
-	<p>Once the <a class="term" href="#B7" title="Did you seriously forget this already? It's right there in the previous paragraph!">buffer pointer</a> is set, a loop is started. Hold onto your pantsu, because this loop is pretty tricky.</p>
+	<p>Once the <a class="term" href="#B7" title="Did you seriously forget this already? It's right there in the previous paragraph!">buffer pointer</a> is set, a loop is started with the routine <code class="routine">Dungeon_DrawOverlay.</code>.</p>
 	<ol>
 		<li>Clear the addresses <code class="address">$B2</code><code class="addrsize">[2]</code> and <code class="address">$B4</code><code class="addrsize">[2]</code>. These will hold values for width and height, respectively.</li>
 		<li>Load the <a class="term" href="#BA">buffer index</a> into the <code class="register">Y</code> index register. At this point, <code class="register">Y</code> should always be a multiple of 3.</li>
@@ -44,16 +45,44 @@ background: glitchybg
 	<h3 id="DMA">D! M! A! D! M! A!</h3>
 	<p>Putting data into the tilemap is not enough. Well, it is. But we put it into a buffer. Now we need to tell the CPU how to use this buffer to update VRAM. Not only is this routine complicated, but most of it needs to be at least partially understood to fully understand the consequences of overlay corruption. But, reminder that we are currently assuming this is an intended execution of the submodule, through normal gameplay events.</p>
 	<p>We clear the <a class="term" href="#BA">buffer index</a>, as we're about to start another loop:</p>
+
+	<p id="bigloop">Hey. 'Sup?</p>
 	<ol id="bigmfloop">
 		<li>Load the <a class="term" href="#BA">buffer index</a> into the <code class="register">Y</code> index register. At this point, <code class="register">Y</code> should always be a multiple of 3. Sound familiar?</li>
 		<li>Read <code class="register">Y</code> bytes into the data table <a class="term" href="#B7">pointed to</a> by <code class="address">[$B7]</code>. In this step, we are reading the first value of the set, which contains the overlay object's ID. I feel like I'm repeating myelf.</li>
-		<li>If the object ID is <code class="value">$FFFF</code>, then it marks the end of the loop. The routine exits and continues to the <a href="#FinallyDone">next step</a>. Is there an echo on this server?</li>
+		<li>If the object ID is <code class="value">$FFFF</code>, then it marks the end of the loop. The routine exits and continues to the <a href="#fruit">next step</a>. Is there an echo on this server?</li>
 		<li>Holy crap, we're doing the same things again! Masking the object with <code class="value">$FC</code>, manipulating width and height. Why wasn't this done with everything else in the previous routine???</li>
 		<li>Oh hey, something new, the DMA. This is actually another routine with its own little loop. Like the tile map changes, this is not necessary to understand in great detail. What you should know is that when the previous tile map routine ends up working correctly, this one does too. The loop is actually setting up a bunch of mini DMAs in <span class="dfnwrap" id="1100">what I'll refer to as <dfn><em>the</em> DMA buffer</dfn>, which starts at address <dfn><code class="address">$1100</code></dfn>.</li>
-		<li>After that loop is done, we enter <em>another</em> loop that uses the current tile map to create changes in the collision map. Amazingly, it is not haphazard about this. It parses the data read from the tile map to determine if it can be considered a pit tile or not. From the looks of it, if a tile's not a pit, its collision is left alone.</li>
-		<li>This <a href="#bigmfloop">big loop</a> is performed how ever many times is needed to create a collection of transfers for the entire overlay. The pits in hera were over 5500 operations. <span class="disgusting">Disgusting!</span></li>
+		<li>After that loop is done, we enter <em>another</em> loop that uses the current tile map to create changes in the collision map. Amazingly, it is not haphazard about this. It parses the data read from the tile map to determine if it can be considered a pit tile or not. <!--From the looks of it, if a tile's not a pit, its collision is left alone.--></li>
+		<li>This <a href="#bigmfloop">big loop</a> is performed how ever many times is needed to create a collection of transfers for the entire overlay. The pits in the beetle room supertile ran over 5500 instructions. <span class="disgusting">Disgusting!</span></li>
 	</ol>
 	<p>When that huge mess is over, we store <code class="value">$FFFF</code> to the end of the <a class="term" href="#1100">DMA buffer</a>, signalling the end of data. And before exiting the routine and fixing the submodule back to normal dungeon mode, the address <code class="address">$18</code> is set to 1, indicating a DMA is to take place during the next v-blank period.</p>
 
-	<h2 id="FinallyDone">We're done!!! &hellip;with the previous part&hellip;</h2>
+	<h3 id="fruit">Seeing the fruits of our labor</h3>
+	<p>Oddly, the explanation of overlays has a learning curve from start to finish. What I'm trying to say is: we're about to explain the hardest part, and you have to understand pretty much all of it. Fret not, the routine is fairly short.</p>
+	<ol>
+		<li>Set the source bank for DMA channel 1 to <code class="address">$00</code>.</li>
+		<li>Set DMA channel to write to VRAM, 2 bytes at a time.</li>
+		<li>Set the <code class="register">X</code> register to 0.</li>
+		<li>Read the first 2 bytes of <a class="term" href="#1100">the DMA buffer</a>. This is the location in VRAM where our first set of data will be written.</li>
+	</ol>
+	<p>I need to cut off the explanation right here just to delimit this code from the code that follows. The rest of this forms a loop, with the first item in the list being the start of the loop. It's important to understand that our first iteration loads the first VRAM address before entering the loop. OK. Let's continue.</p>
+	<ol>
+		<li>Store the accumulator to the VRAM address register.</li>
+		<li>Give the current value of <code class="register">X</code> to the accumulator and add <code class="value">$1104</code>. This is calculating the pointer in the buffer where the data to transfer starts. Set this location as the source address for DMA channel 1.</li>
+		<li>Load the 4th byte from this segment of the buffer. This is the number of bytes we are writing to VRAM, so tell that to DMA channel 1.</li>
+		<li>Use the size of the transfer and add <code class="value">4</code> to help calculate the first byte of the next segment. Store the value in scratch space.</li>
+		<li>Load the 3rd byte of the segment data and use it to set the VRAM port control register. This basically tells the PPU how exactly we want it to behave when we read or write data.</li>
+		<li>Activate DMA channel 1.</li>
+		<li>Use the current value of <code class="register">X</code> and the value we stored in scratch space earlier to calculate the location of the <em>next</em> segment of data. Give that new value to <code class="register">X</code>.</li>
+		<li>Check the first 2 bytes of the new segment. If they are <code class="value">$FFFF</code>, then stop transferring data. Otherwise, that value is our next VRAM address, and we restart the loop.</li>
+	</ol>
+	<p>Did you notice <em>when</em> we have the chance to break out of the loop? It's only at the end. We will always do at least 1 full iteration before stopping, even if that first value is <code class="value">$FFFF</code>. Keep this in mind for later.</p>
+	<p>See? Not so bad. Now that we understand how the routine functions when it works as intended, we can start investigating what happens when it's breaking.</p>
+
+	<h2>We're done!!! &hellip;with the previous part&hellip;</h2>
+	<p>Let's backtrack to <code class="routine">Dungeon_ApplyOverlay</code>. I said there were two paths it could follow. One seems to always happen when reached via intended methods. The other one can only happen if we force it.</p>
+	<p>This branch&mdash;&hellip;Wait! Don't leave. This is really quick, I promise.</p>
+	<p>This branch assumes that because our index is not 0, then we're probably in the middle of some transfer that should be continued. It leaves both the index and address <code class="address">[$B7]</code> alone, then continues as normal starting <a href="#bigloop">at this part of the code</a>. All this really does is skip the pointer reading and overlay drawing. That's not the issue. Continuing as normal is the issue.</p>
+
 </div>
