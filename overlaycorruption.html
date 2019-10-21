@@ -12,7 +12,7 @@ background: glitchybg
 	<ol>
 		<li>The room's overlay tags are checked and an overlay ID is stored to memory for later based on tag.</li>
 		<li>The tiles under Link are checked for any active star tiles. There are 2 types of star tiles, each controller a different overlay change.</li>
-		<li>When Link is indeed on a star tile, the game loads the room's <span class="dfnwrap" id="04BA"><dfn>active overlay</dfn> (address <dfn><code class="address">$04BA</code></dfn></span> is compared to the overlay associated with the star tile under Link. If they're the same, the routine exits.</li>
+		<li>When Link is indeed on a star tile, the game loads the room's <span class="dfnwrap" id="04BA"><dfn>active overlay</dfn> (address <dfn><code class="address">$04BA</code></dfn>)</span> is compared to the overlay associated with the star tile under Link. If they're the same, the routine exits.</li>
 		<li>If the overlays are different, the active overlay is updated to the new value and the routine continues.</li>
 		<li>The game clears address <span class="dfnwrap" id="BA"><dfn><code class="address">$BA</code></dfn> and <dfn><code class="address">$BB</code></dfn>. Let's call these addresses the <dfn>buffer index</dfn>.</li>
 		<li>The star jingle is put into a buffer for sound effects.</li>
@@ -55,5 +55,5 @@ background: glitchybg
 	</ol>
 	<p>When that huge mess is over, we store <code class="value">$FFFF</code> to the end of the <a class="term" href="#1100">DMA buffer</a>, signalling the end of data. And before exiting the routine and fixing the submodule back to normal dungeon mode, the address <code class="address">$18</code> is set to 1, indicating a DMA is to take place during the next v-blank period.</p>
 
-	<h3 id="FinallyDone">We're done!!! &hellip;with the previous part&hellip;</h3>
+	<h2 id="FinallyDone">We're done!!! &hellip;with the previous part&hellip;</h2>
 </div>

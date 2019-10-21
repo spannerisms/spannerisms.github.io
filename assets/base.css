@@ -11,10 +11,20 @@ body {
 
 a {
 	text-decoration: none;
+	color: #44D;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #FFC300;
 }
 
 dfn {
 	font-style: normal;
+}
+
+dt {
+	font-weight: bold;
 }
 nav.sitenav {
 	display: block;
@@ -70,6 +80,7 @@ nav > a {
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
+	border: none;
 }
 
 nav ul {
@@ -147,14 +158,32 @@ div.content h1 {
 }
 
 div.content h2 {
-	font-size: 170%;
+	font-size: 190%;
 	position: relative;
-	left: -20px;
+	left: -30px;
 	border-bottom: 1px solid;
 	padding-left: 10px;
-	width: 80%;
+	width: 85%;
 }
 
+div.content h3 {
+	font-size: 130%;
+	position: relative;
+	left: -20px;
+	border-bottom: 1px solid #888;
+	padding-left: 10px;
+	width: 70%;
+}
+
+blockquote {
+	font-style: italic;
+}
+
+blockquote:before,
+blockquote:after {
+	content: "\""
+}
+/* hack formatting */
 code {
 	font-family: consolas, monospace;
 	font-weight: bold;
@@ -178,10 +207,20 @@ code.value {
 	color: #444499;
 }
 
+code.register {
+	color: #0C9200;
+}
 code.routine {
 	color: #6E1BBB;
 }
 
+code.addrsize {
+	font-size: 95%;
+	color: #444444;
+	vertical-align: bottom;
+}
+
+/* Misc */
 q.wrong {
 	font-style: italic;
 	color: #8A2D2D;
@@ -209,6 +248,26 @@ span.evil {
 	text-shadow: 1px 1px 3px #FF9999;
 }
 
+[href="#bigmfloop"] {
+	display: inline-block;
+	text-transform: uppercase;
+	font-weight: 1000;
+}
+
+[href="#bigmfloop"]:hover {
+	transform: scale(1.4);
+	background: #fff;
+}
+
+span.disgusting {
+	color: green;
+	font-weight: bold;
+	font-style: oblique;
+	font-variant: small-caps;
+	text-decoration: underline;
+	text-decoration-style: wavy;
+}
+
 dl.proseList dt:before {
 	content: '';
 	margin-top: 10px;
@@ -224,11 +283,39 @@ dl.proseList dd {
 	display: contents;
 }
 
+ul.postlist {
+	list-style: square;
+}
+
+ul.postlist li {
+	width: 50%;
+}
+
+ul.postlist li .date {
+	font-size: 80%;
+	vertical-align: bottom;
+	font-variant: small-caps;
+}
+
+ul.postlist a {
+	font-size: 110%;
+}
+
 /* Linking to previous terms */
+a.term,
+a.term:visited {
+	color: #5708c7;
+}
+
+a.term:hover {
+	color: #cca350;
+}
+
 span.dfnwrap:target > dfn {
 	background: #FFFF8B;
 	border: 2px solid #CCCC80
 }
+
 /* Backgrounds */
 div.content {
 	background-attachment: fixed;
@@ -236,5 +323,7 @@ div.content {
 
 div.content.glitchybg {
 	background-image: url('bg/vramcorruption.png');
-	background-blend-mode: screen;
+	background-blend-mode: color-burn;
+	background-size: contain;
+	image-rendering: pixelated;
 }
