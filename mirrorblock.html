@@ -26,7 +26,7 @@ background: glitchybg
 	</ol>
 	<p>State <code class="value">2</code> is where the problem is in most cases, so that's the branch we'll focus on. But actually, you can mirror erase a block that's falling, state <code class="value">4</code>. The reason will end up being the same.</p>
 	<ol>
-		<li>State <code class="value">2</code> begins by calling a routine that doesn't have a name, but it's <code class="address">$3EDB5</code> in the US ROM file, so let's call this routine <code class="routine">Bingo</code>, since it ends in B5</li>
+		<li>State <code class="value">2</code> begins by calling a routine that doesn't have a name in the disassembly, but it's <code class="address">$3EDB5</code> in the US ROM file, so let's call this routine <code class="routine">Bingo</code>, since it ends in B5.</li>
 		<li><code class="routine">Bingo</code> goes like this:
 			<ol>
 				<li>Check the current submodule. If it isn't <code class="value">0</code>, exit the routine.</li>
@@ -39,8 +39,8 @@ background: glitchybg
 					</ul>
 				</li>
 				<li>Multiply <code class="register">X</code> by 2 and give it to <code class="register">Y</code>.</li>
-				<li>Continue the movement routine using <code class="register">Y</code> as our index for the block's data.</li>
 			</ol>
+			<li>Continue the movement routine using <code class="register">Y</code> as our index for the block's data.</li>
 		</li>
 	</ol>
 	<p>Hold the phone. What?</p>
