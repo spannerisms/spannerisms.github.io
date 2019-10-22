@@ -26,6 +26,236 @@ dfn {
 dt {
 	font-weight: bold;
 }
+
+:target {
+	padding-top: 40px;
+	margin-top: -40px;
+}
+
+::selection {
+	background: #88F;
+	color: #FCFCFF;
+}
+
+dl.proseList dt:before {
+	content: '';
+	margin-top: 10px;
+	display: block;
+}
+
+dl.proseList dt {
+	display: inline;
+	font-weight: bold;
+}
+
+dl.proseList dd {
+	display: contents;
+}
+
+ul.postlist {
+	list-style: square;
+}
+
+ul.postlist li .date {
+	font-size: 80%;
+	vertical-align: bottom;
+	font-variant: small-caps;
+}
+
+ul.postlist a {
+	font-size: 110%;
+}
+
+li > p {
+	margin-block-start: 0;
+	margin-block-end: 0;
+}
+
+div.content {
+	margin-top: 30px;
+	padding: 30px 10%;
+	background-color: #F9E3F9;
+	height: 100%;
+}
+
+div.content > div {
+	background: #FCFCFF;
+	padding: 30px 10%;
+	box-shadow: 3px 3px 4px black;
+	border: 1px solid black;
+	border-radius: 20px;
+}
+
+div.content h1 {
+	font-size: 300%;
+	position: relative;
+	left: -50px;
+	border-bottom: 3px solid;
+	padding-left: 10px;
+}
+
+div.content h2 {
+	font-size: 190%;
+	position: relative;
+	left: -30px;
+	border-bottom: 1px solid;
+	padding-left: 10px;
+	width: 85%;
+}
+
+div.content h3 {
+	font-size: 130%;
+	position: relative;
+	left: -20px;
+	border-bottom: 1px solid #888888;
+	padding-left: 10px;
+	width: 70%;
+}
+
+blockquote {
+	font-style: italic;
+}
+
+blockquote:before,
+blockquote:after {
+	content: "\""
+}
+
+/* hack formatting */
+code {
+	font-family: consolas, monospace;
+	font-weight: bold;
+	font-size: 97%;
+}
+
+code.snesasm {
+	white-space: pre;
+	font-size: 90%;
+}
+
+code.opcode {
+	color: #0000CC;
+}
+
+code.address {
+	color: #C93858;
+}
+
+code.number,
+code.value {
+	color: #444499;
+}
+
+code.register {
+	color: #0C9200;
+}
+
+code.routine {
+	color: #6E1BBB;
+}
+
+code.addrsize {
+	font-size: 95%;
+	color: #444444;
+	vertical-align: bottom;
+}
+
+/* Misc */
+q.wrong {
+	font-style: italic;
+	color: #8A2D2D;
+}
+
+.wtf {
+	display: inline-block;
+	color: red;
+	transform: skewX(-20deg) rotate(-2deg);
+}
+
+.wtf:hover {
+	transform: none;
+}
+
+strong.wrong {
+	text-decoration: underline;
+	color: red;
+}
+
+span.evil {
+	font-family: comic sans ms;
+	color: red;
+	font-weight: bold;
+	text-shadow: 1px 1px 3px #FF9999;
+}
+
+[href="#bigmfloop"] {
+	display: inline-block;
+	text-transform: uppercase;
+	font-weight: 1000;
+}
+
+[href="#bigmfloop"]:hover {
+	transform: scale(1.4);
+	background: #FCFCFF;
+}
+
+#bigloop { 
+	display: none;
+}
+
+#bigloop:target { 
+	display: block;
+	font-weight: bold;
+}
+
+span.disgusting {
+	color: green;
+	font-weight: bold;
+	font-style: oblique;
+	font-variant: small-caps;
+	text-decoration: underline;
+	text-decoration-style: wavy;
+}
+
+span.poof {
+	color: #FF00FF;
+	font-weight: bold;
+	font-variant: small-caps;
+	text-transform: lowercase
+}
+
+/* Linking to previous terms */
+a.term,
+a.term:visited,
+a.branch,
+a.branch:visited {
+	color: #5708c7;
+}
+
+a.term:hover,
+a.branch:hover {
+	color: #cca350;
+}
+
+li.branchpoint:target,
+span.dfnwrap:target > dfn {
+	background: linear-gradient(to bottom, transparent, 40px, #FFFF8B, 40px, #FFFF8B);
+}
+
+/* Backgrounds */
+html,
+div.content {
+	background-attachment: fixed;
+}
+
+.glitchybg {
+	background-image: url('bg/vramcorruption.png');
+	background-blend-mode: color-burn;
+	background-size: contain;
+	image-rendering: pixelated;
+}
+
+/* Header */
 nav.sitenav {
 	display: block;
 	background: #CCCCFF;
@@ -39,11 +269,6 @@ nav.sitenav {
 	box-shadow: 0 0 20px;
 	z-index: 9999999;
 	font-family: tahoma, geneva, sans-serif;
-}
-
-:target{
-	padding-top: 40px;
-	margin-top: -40px;
 }
 
 nav > div {
@@ -127,221 +352,13 @@ nav > div > ul > li > a:only-child {
 }
 
 nav a:hover {
-	color: white;
+	color: #FCFCFF;
 	background: #5555FF;
+	text-decoration: none;
+	transition: background .4s ease 0s;
+	transition-property: color background;
 }
 
 div.Links {
 	float: right;
-}
-
-div.content {
-	margin-top: 30px;
-	padding: 30px 10%;
-	background-color: #F9E3F9;
-	height: 100%;
-}
-
-div.content > div {
-	background: white;
-	padding: 30px 10%;
-	box-shadow: 3px 3px 4px black;
-	border: 1px solid black;
-	border-radius: 20px;
-}
-
-div.content h1 {
-	font-size: 300%;
-	position: relative;
-	left: -50px;
-	border-bottom: 3px solid;
-	padding-left: 10px;
-}
-
-div.content h2 {
-	font-size: 190%;
-	position: relative;
-	left: -30px;
-	border-bottom: 1px solid;
-	padding-left: 10px;
-	width: 85%;
-}
-
-div.content h3 {
-	font-size: 130%;
-	position: relative;
-	left: -20px;
-	border-bottom: 1px solid #888;
-	padding-left: 10px;
-	width: 70%;
-}
-
-blockquote {
-	font-style: italic;
-}
-
-blockquote:before,
-blockquote:after {
-	content: "\""
-}
-
-/* hack formatting */
-code {
-	font-family: consolas, monospace;
-	font-weight: bold;
-}
-
-code.snesasm {
-	white-space: pre;
-	font-size: 90%;
-}
-
-code.opcode {
-	color: #0000CC;
-}
-
-code.address {
-	color: #C93858;
-}
-
-code.number,
-code.value {
-	color: #444499;
-}
-
-code.register {
-	color: #0C9200;
-}
-code.routine {
-	color: #6E1BBB;
-}
-
-code.addrsize {
-	font-size: 95%;
-	color: #444444;
-	vertical-align: bottom;
-}
-
-/* Misc */
-q.wrong {
-	font-style: italic;
-	color: #8A2D2D;
-}
-
-.wtf {
-	display: inline-block;
-	color: red;
-	transform: skewX(-20deg) rotate(-2deg);
-}
-
-.wtf:hover {
-	transform: none;
-}
-
-strong.wrong {
-	text-decoration: underline;
-	color: red;
-}
-
-span.evil {
-	font-family: comic sans ms;
-	color: red;
-	font-weight: bold;
-	text-shadow: 1px 1px 3px #FF9999;
-}
-
-[href="#bigmfloop"] {
-	display: inline-block;
-	text-transform: uppercase;
-	font-weight: 1000;
-}
-
-[href="#bigmfloop"]:hover {
-	transform: scale(1.4);
-	background: #fff;
-}
-
-#bigloop { 
-	display: none;
-}
-
-#bigloop:target { 
-	display: block;
-	font-weight: bold;
-}
-
-span.disgusting {
-	color: green;
-	font-weight: bold;
-	font-style: oblique;
-	font-variant: small-caps;
-	text-decoration: underline;
-	text-decoration-style: wavy;
-}
-
-span.poof {
-	color: #FF00FF;
-	font-weight: bold;
-	font-variant: small-caps;
-	text-transform: lowercase
-}
-
-dl.proseList dt:before {
-	content: '';
-	margin-top: 10px;
-	display: block;
-}
-
-dl.proseList dt {
-	display: inline;
-	font-weight: bold;
-}
-
-dl.proseList dd {
-	display: contents;
-}
-
-ul.postlist {
-	list-style: square;
-}
-
-ul.postlist li .date {
-	font-size: 80%;
-	vertical-align: bottom;
-	font-variant: small-caps;
-}
-
-ul.postlist a {
-	font-size: 110%;
-}
-
-/* Linking to previous terms */
-a.term,
-a.term:visited,
-a.branch,
-a.branch:visited {
-	color: #5708c7;
-}
-
-a.term:hover,
-a.branch:hover {
-	color: #cca350;
-}
-
-li.branchpoint:target,
-span.dfnwrap:target > dfn {
-	background: linear-gradient(to bottom, transparent, 40px, #FFFF8B, 40px, #FFFF8B);
-}
-
-/* Backgrounds */
-html,
-div.content {
-	background-attachment: fixed;
-}
-
-.glitchybg {
-	background-image: url('bg/vramcorruption.png');
-	background-blend-mode: color-burn;
-	background-size: contain;
-	image-rendering: pixelated;
 }
