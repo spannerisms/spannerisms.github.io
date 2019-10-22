@@ -183,6 +183,7 @@ blockquote:before,
 blockquote:after {
 	content: "\""
 }
+
 /* hack formatting */
 code {
 	font-family: consolas, monospace;
@@ -332,8 +333,7 @@ a.branch:hover {
 
 li.branchpoint:target,
 span.dfnwrap:target > dfn {
-	background: #FFFF8B;
-	border: 2px solid #CCCC80
+	background: linear-gradient(to bottom, transparent, 40px, #FFFF8B, 40px, #FFFF8B);
 }
 
 /* Backgrounds */
