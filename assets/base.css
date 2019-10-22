@@ -304,10 +304,6 @@ ul.postlist {
 	list-style: square;
 }
 
-ul.postlist li {
-	width: 50%;
-}
-
 ul.postlist li .date {
 	font-size: 80%;
 	vertical-align: bottom;

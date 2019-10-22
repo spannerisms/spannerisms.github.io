@@ -5,47 +5,53 @@ background: glitchybg
 ---
 <div class="contentstuff glitchexp">
 	<h1>Mirror Block Erase</h1>
-	<p>Erasing pushable blocks with the mirror is something everyone knows how to do. Just use the mirror while the block is moving, and <span class="poof">POOF!</span> the block is gone. I don't think I've ever seen an earnest attempt to explain why it happens; everyone just accepted that it does. Well, gang, mystery solved. And the explanation is super simple.</p>
+	<p>Erasing pushable blocks with the mirror is something everyone knows how to do. Just use the mirror while the block is moving, and <span class="poof">POOF!</span> the block is gone. I don't think I've ever seen an earnest attempt to explain why it happens; everyone just accepted that it does. Well, gang, the mystery is now solved. And the explanation is super simple, to boot.</p>
 
 	<h2>Blocks</h2>
-	<p>Let's start by trying to understand how pushable blocks move in the first place. Only 2 blocks are meant to do anything at any one time. To handle this, two addresses (<code class="address">$05FC</code> and <code class="address">$05FD</code>), hold the index+1 of the currently active blocks&mdash;more on this weird indexing later. A value of 0 means that slot is not active. If blocks can't find a free slot to use, they simple won't get pushed.</p>
+	<p>Let's start by understanding how pushable blocks move in the first place. Only 2 blocks are meant to do anything at any one time. To handle this, two addresses (<code class="address">$05FC</code> and <code class="address">$05FD</code>) hold the index+1 of the currently active blocks&mdash;more on this weird indexing later. A value of <code class="value">0</code> means that slot is not active. If blocks can't find a free slot to use, they simple won't get pushed.</p>
 
-	<p>With that explained, let's look at the routine that is executed every frame in normal dungeon mode:</p>
+	<p>Now let's look at the routine that is executed every frame in normal dungeon mode:</p>
 	<ol>
-		<li>The address <code class="address">$042C</code> is reset and then routine is <code class="routine">PushBlock_Handler</code> is executed.</li>
-		<li class="branchpoint" id="loopstart">The value of <code class="address">$042C</code> is loaded into <code class="register">Y</code>. It is compared to the value at address <code class="address">$0428</code>. If they are not equal, then the block at that index is checked, otherwise, the routine exits.</li>
+		<li>The address <code class="address">$042C</code> is reset and then the routine <code class="routine">PushBlock_Handler</code> is executed.</li>
+		<li class="branchpoint" id="loopstart">The value of <code class="address">$042C</code> is loaded into <code class="register">Y</code>. It is compared to the value at address <code class="address">$0428</code>. If they are not equal, then the state of the block at that index is checked, otherwise, the routine exits.</li>
 		<li>The desired block's state is read by using <code class="register">Y</code> to index the array starting at <code class="address">$0500</code>.
 			<ul>
-				<li>If the block's state is <code class="value">0</code>, then it is incactive, and the <a class="branch" href="#nextblock">the next block is looked at</a>.</li>
+				<li>If the block's state is <code class="value">0</code>, then it is inactive, and the <a class="branch" href="#nextblock">the next block is looked at</a>.</li>
 				<li>If the block's state is <code class="value">1</code>, then it is erased from the tile and collision maps. Its state is incremented by 1, and <a class="branch" href="#nextblock">the next block is looked at.</a></li>
-				<li>If the block's state is <code class="value">2</code>, then its movement code is executed. After the movement code is executed, the block's state is checked again. If it is <code class="value">3</code>, the block's state is quickly incremented to <code class="value">4</code>. This check for state <code class="value">3</code> is inside the state <code class="value">2</code> code, and will only ever be checked from there. This state appears to be an indication that the block is over a pit.</li>
+				<li>
+						<p>If the block's state is <code class="value">2</code>, then its movement code is executed. After the movement code is executed, the block's state is checked again.</p>
+						<p>If it is <code class="value">3</code>, the block's state is quickly incremented to <code class="value">4</code>. This check for state <code class="value">3</code> is inside the state <code class="value">2</code> block, so it will only ever be checked from there. This state appears to be an indication that the block is over a pit.</p>
+						<p>If the block has finished moving without reaching <code class="value">3</code>, it resets its state <code class="value">0</code>.</p>
+					</li>
 				<li>If the block's state is <code class="value">4</code>, then it is falling, and that animation is performed. When the animation is finished, the block is reset to state <code class="value">0</code>.</li>
 			</ul>
 		</li>
-		<li class="branchpoint" id="nextblock">Address <code class="address">$042C</code> is incremented twice, then <a class="branch" href="#loopstart">the loop is started again</a>.
+		<li class="branchpoint" id="nextblock">Address <code class="address">$042C</code> is incremented twice, then <a class="branch" href="#loopstart">the loop is started again</a>.</li>
 	</ol>
-	<p>State <code class="value">2</code> is where the problem is in most cases, so that's the branch we'll focus on. But actually, you can mirror erase a block that's falling, state <code class="value">4</code>. The reason will end up being the same.</p>
+	<p>State <code class="value">2</code> is where the problem occurs in most cases, so that's the branch we'll focus on. But actually, you can mirror erase a block that's falling (state <code class="value">4</code>). The reason will end up being the same.</p>
 	<ol>
-		<li>State <code class="value">2</code> begins by calling a routine that doesn't have a name in the disassembly, but it's <code class="address">$3EDB5</code> in the US ROM file, so let's call this routine <code class="routine">Bingo</code>, since it ends in B5.</li>
+		<li>State <code class="value">2</code> begins by calling a routine that doesn't have a name in the disassembly, but it's <code class="address">$3EDB5</code> in the US ROM file, so let's call this routine <code class="routine">Bingo</code>, because it ends with B5.</li>
 		<li><code class="routine">Bingo</code> goes like this:
 			<ol>
 				<li>Check the current submodule. If it isn't <code class="value">0</code>, exit the routine.</li>
 				<li>Cache the value of <code class="register">Y</code> in scratch space.</li>
 				<li>Load the value <code class="value">1</code> into the <code class="register">X</code> register.</li>
-				<li>Use <code class="register">X</code> to index address <code class="address">$05FC</code> and load the value into <code class="register">A</code>. Decrement <code class="register">A</code> by 1&mdash;I promise I'll get to it&mdash;, multiply it by 2, then compare it to our cached value of <code class="register">Y</code>.
+				<li>Use <code class="register">X</code> to index address <code class="address">$05FC</code> and load a value into <code class="register">A</code>.</li>
+				<li>Decrement <code class="register">A</code> by 1&mdash;I promise I'll get to it&mdash;, multiply it by 2, then compare it to the cached value of <code class="register">Y</code>.
 					<ul>
-						<li>If <code class="register">A</code> and <code class="register">Y</code> match, then leave <code class="register">X</code> at <code class="value">1</code> and continue.</li>
-						<li>If they don't match, load the value <code class="value">0</code> into<code class="register">X</code> before continuing.</li>
+						<li>If <code class="register">A</code> and <code class="register">Y</code> are equal, then leave <code class="register">X</code> at <code class="value">1</code> and continue.</li>
+						<li>If they don't match, load the value <code class="value">0</code> into <code class="register">X</code> before continuing.</li>
 					</ul>
 				</li>
 				<li>Multiply <code class="register">X</code> by 2 and give it to <code class="register">Y</code>.</li>
+				<li>Do moving and stuff.</li>
 			</ol>
-			<li>Continue the movement routine using <code class="register">Y</code> as our index for the block's data.</li>
+			<li>Continue the movement routine using <code class="register">Y</code> as the index for the block's data.</li>
 		</li>
 	</ol>
 	<p>Hold the phone. What?</p>
 	<p>Why are you using <code class="register">X</code> to index an address outside of a loop? Right after you've loaded a constant into <code class="register">X</code>? That will never <em>not</em> be <code class="address">$05FD</code>.</p>
-	<p>Why are you loading 0 into <code class="register">X</code> and just rolling with it? I think what you <em>meant</em> to do was branch backwards and run that indexed address check again.</p>
+	<p>Why are you loading <code class="value">0</code> into <code class="register">X</code> and just rolling with it? I think what you meant to do was branch backwards and run that indexed address check again.</p>
 	<p>These are questions that people want answered. At least I do!</p>
 	<p>The reason active block indices are stored as index+1 is so that 0 can act as an indicator that means the slot is empty. The reason the value is doubled is because that value indexes bytes; the routine needs to index words, which are twice the size.</p>
 	<p>Rolling with slot 0 allows the possibility of operating on an index of 0. What if a block is moving but doesn't have its index stored? Can you make that happen?</p>
