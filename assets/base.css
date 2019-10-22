@@ -333,11 +333,12 @@ span.dfnwrap:target > dfn {
 }
 
 /* Backgrounds */
+html,
 div.content {
 	background-attachment: fixed;
 }
 
-div.content.glitchybg {
+.glitchybg {
 	background-image: url('bg/vramcorruption.png');
 	background-blend-mode: color-burn;
 	background-size: contain;
