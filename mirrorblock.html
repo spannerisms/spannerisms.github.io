@@ -1,0 +1,70 @@
+---
+layout: default
+title: Mirror Block Erase Explication
+background: glitchybg
+---
+<div class="contentstuff glitchexp">
+	<h1>Mirror Block Erase</h1>
+	<p>Erasing pushable blocks with the mirror is something everyone knows how to do. Just use the mirror while the block is moving, and <span class="poof">POOF!</span> The block is gone. I don't think I've ever seen an earnest attempt to explain why it happens; everyone just accepted that it does. Well, gang, mystery solved. And the explanation is super simple.</p>
+
+	<h2>Blocks</h2>
+	<p>Let's start by trying to understand how pushable blocks move in the first place. Only 2 blocks are meant to do anything at any one time. To handle this, two addresses (<code class="address">$05FC</code> and <code class="address">$05FD</code>), hold the index+1 of the currently active blocks&mdash;more on this weird indexing later. A value of 0 means that slot is not active. If blocks can't find a free slot to use, they simple won't get pushed.</p>
+
+	<p>With that explained, let's look at the routine that is executed every frame in normal dungeon mode:</p>
+	<ol>
+		<li>The address <code class="address">$042C</code> is reset and then routine is <code class="routine">PushBlock_Handler</code> is executed.</li>
+		<li class="branchpoint" id="loopstart">The value of <code class="address">$042C</code> is loaded into <code class="register">Y</code>. It is compared to the value at address <code class="address">$0428</code>. If they are not equal, then the block at that index is checked, otherwise, the routine exits.</li>
+		<li>The desired block's state is read by using <code class="register">Y</code> to index the array starting at <code class="address">$0500</code>.
+			<ul>
+				<li>If the block's state is <code class="value">0</code>, then it is incactive, and the <a class="branch" href="#nextblock">the next block is looked at</a>.</li>
+				<li>If the block's state is <code class="value">1</code>, then it is erased from the tile and collision maps. Its state is incremented by 1, and <a class="branch" href="#nextblock">the next block is looked at.</a></li>
+				<li>If the block's state is <code class="value">2</code>, then its movement code is executed. After the movement code is executed, the block's state is checked again. If it is <code class="value">3</code>, the block's state is quickly incremented to <code class="value">4</code>. This check for state <code class="value">3</code> is inside the state <code class="value">2</code> code, and will only ever be checked from there. This state appears to be an indication that the block is over a pit.</li>
+				<li>If the block's state is <code class="value">4</code>, then it is falling, and that animation is performed. When the animation is finished, the block is reset to state <code class="value">0</code>.</li>
+			</ul>
+		</li>
+		<li class="branchpoint" id="nextblock">Address <code class="address">$042C</code> is incremented twice, then <a class="branch" href="#loopstart">the loop is started again</a>.
+	</ol>
+	<p>State <code class="value">2</code> is where the problem is, so that's the branch we need to focus on.</p>
+	<ol>
+		<li>State <code class="value">2</code> begins by calling a routine that doesn't have a name, but it's <code class="address">$3EDB5</code> in the US ROM file, so let's call this routine <code class="routine">Bingo</code>, since it ends in B5</li>
+		<li><code class="routine">Bingo</code> goes like this:
+			<ol>
+				<li>Check the current submodule. If it isn't <code class="value">0</code>, exit the routine.</li>
+				<li>Cache the value of <code class="register">Y</code> in scratch space.</li>
+				<li>Load the value <code class="value">1</code> into the <code class="register">X</code> register.</li>
+				<li>Use <code class="register">X</code> to index address <code class="address">$05FC</code> and load the value into <code class="register">A</code>. Decrement <code class="register">A</code> by 1&mdash;I promise I'll get to it&mdash;, multiply it by 2, then compare it to our cached value of <code class="register">Y</code>.
+					<ul>
+						<li>If <code class="register">A</code> and <code class="register">Y</code> match, then leave <code class="register">X</code> at <code class="value">1</code> and continue.</li>
+						<li>If they don't match, load the value <code class="value">0</code> into<code class="register">X</code> before continuing.</li>
+					</ul>
+				</li>
+				<li>Multiply <code class="register">X</code> by 2 and give it to <code class="register">Y</code>.</li>
+				<li>Continue the movement routine using <code class="register">Y</code> as our index for the block's data.</li>
+			</ol>
+		</li>
+	</ol>
+	<p>Hold the phone. What?</p>
+	<p>Why are you using <code class="register">X</code> to index an address outside of a loop? Right after you've loaded a constant into <code class="register">X</code>? That will never <em>not</em> be <code class="address">$05FD</code>.</p>
+	<p>Why are you loading 0 into <code class="register">X</code> and just rolling with it? I think what you <em>meant</em> to do was branch backwards and run that indexed address check again.</p>
+	<p>These are questions that people want answered. At least I do!</p>
+	<p>The reason active block indices are stored as index+1 is so that 0 can act as an indicator that means the slot is empty. The reason the value is doubled is because that value indexes bytes; the routine needs to index words, which are twice the size.</p>
+	<p>Rolling with slot 0 allows the possibility of operating on an index of 0. What if a block is moving but doesn't have its index stored? Can you make that happen?</p>
+
+	<h2>Amazing Mirror</h2>
+	<p>You sure can!</p>
+	<p>Only a few things reset those index addresses:</p>
+	<ul>
+		<li>Saving and quitting</li>
+		<li>Blocks themselves, once they are finished doing their thang.</li>
+		<li>Using the mirror.</li>
+		<li>Dying</li>
+		<li>Getting revived by a fairy</li>
+	</ul>
+	<p>You get where I'm going with this already? Well, shut up and let me finish.</p>
+	<p>The developers actually seemed to know that blocks resetting the indices themselves wouldn't be enough. They tried to cover all their bases by examining what could be done if a block is active. They covered most of it. Just me personally, but <em>I</em> would have <strong>made them reset whenever a new room is loaded</strong>. But I digress.</p>
+	<p>The developers also made an itsy-bitsy mistake in JP1.0: they had the mirror clear the slots every time it is used. Later versions fixed this by moving those clears to be <em>inside</em> of the "successfully mirrored" branch.</p>
+	<p>In a way, you're not actually deleting the block, you're just making it behave as if it's somewhere else. In fact, the block remains active after you mirror erase it. It will continue its routine forever, because there's no one telling it to stop. It just chugs on, oblivious to the damnation cast upon it.</p>
+
+	<h2>Now it's your turn</h2>
+	<p>I started this article with 0 clue how the explanation would end up, but it only took a few minutes of playing with memory to see the issue, and then I just had to pinpoint <em>why</em> it was happening. It was fun writing this quick explication. If only all glitches could be described to succinctly. Not that I would. I would pad the hell out of it. After figuring out the root cause, I spent a bit of time seeing what would happen if indices were broken with nonzero values, and the results were quite amusing. I have no clue if such broken indices would be useful, or if they're even possible, but I challenge everyone reading this to make them happen.</p>
+</div>

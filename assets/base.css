@@ -312,14 +312,18 @@ ul.postlist a {
 
 /* Linking to previous terms */
 a.term,
-a.term:visited {
+a.term:visited,
+a.branch,
+a.branch:visited {
 	color: #5708c7;
 }
 
-a.term:hover {
+a.term:hover,
+a.branch:hover {
 	color: #cca350;
 }
 
+li.branchpoint:target,
 span.dfnwrap:target > dfn {
 	background: #FFFF8B;
 	border: 2px solid #CCCC80
