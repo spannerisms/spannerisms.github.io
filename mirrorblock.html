@@ -55,15 +55,17 @@ background: glitchybg
 	<p>Only a few things reset those index addresses:</p>
 	<ul>
 		<li>Saving and quitting</li>
-		<li>Blocks themselves, once they are finished doing their thang.</li>
-		<li>Using the mirror.</li>
+		<li>Blocks themselves, once they are finished doing their thang</li>
+		<li>Using the mirror</li>
 		<li>Dying</li>
 		<li>Getting revived by a fairy</li>
 	</ul>
 	<p>You get where I'm going with this already? Well, shut up and let me finish.</p>
 	<p>The developers actually seemed to know that blocks resetting the indices themselves wouldn't be enough. They tried to cover all their bases by examining what could be done if a block is active. They covered most of it. Just me personally, but <em>I</em> would have <strong>made them reset whenever a new room is loaded</strong>. But I digress.</p>
+	<p>I digress pretty often actually.</p>
 	<p>The developers also made an itsy-bitsy mistake in JP1.0: they had the mirror clear the slots every time it is used. Later versions fixed this by moving those clears to be <em>inside</em> of the "successfully mirrored" branch.</p>
-	<p>In a way, you're not actually deleting the block, you're just making it behave as if it's somewhere else. In fact, the block remains active after you mirror erase it. It will continue its routine forever, because there's no one telling it to stop. It just chugs on, oblivious to the damnation cast upon it.</p>
+	<p>In a way, you're not actually deleting the block, you're just making it behave as if it's somewhere else. In fact, the block remains active after you mirror erase it. It will continue its routine forever, because there's no one telling it to stop. The values it's being told to use are all wrong, and it won't reach its expected destination anymore. It just chugs on, oblivious to the damnation cast upon it.</p>
+	<p>Its index is no longer in the active block array, but it doesn't <em>need</em> to be. That's only used because the developers also wanted to keep the velocities and other values for moving blocks in a smaller portion of memory. A block runs code regardless when its state in the states array is nonzero. That array is not limited to only 2 blocks. The active index array only tells a block what data it should be using to do whatever it's doing. You can conclude that if multiple blocks have been mirror erased, then they're all messing with the same values. I bet things would look bonkers if we could actually see what was going on!</p>
 
 	<h2>Now it's your turn</h2>
 	<p>I started this article with 0 clue how the explanation would end up, but it only took a few minutes of playing with memory to see the issue, and then I just had to pinpoint <em>why</em> it was happening. It was fun writing this quick explication. If only all glitches could be described to succinctly. Not that I would. I would pad the hell out of it. After figuring out the root cause, I spent a bit of time seeing what would happen if indices were broken with nonzero values, and the results were quite amusing. I have no clue if such broken indices would be useful, or if they're even possible, but I challenge everyone reading this to make them happen.</p>
