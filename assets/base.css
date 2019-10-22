@@ -143,9 +143,10 @@ div.content {
 }
 
 div.content > div {
-	background: #FFFFFF;
+	background: white;
 	padding: 30px 10%;
-	box-shadow: 3px 3px 4px #000;
+	box-shadow: 3px 3px 4px black;
+	border: 1px solid black;
 	border-radius: 20px;
 }
 
