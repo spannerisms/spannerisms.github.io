@@ -277,6 +277,13 @@ span.disgusting {
 	text-decoration-style: wavy;
 }
 
+span.poof {
+	color: #FF00FF;
+	font-weight: bold;
+	font-variant: small-caps;
+	text-transform: lowercase
+}
+
 dl.proseList dt:before {
 	content: '';
 	margin-top: 10px;

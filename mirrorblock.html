@@ -5,7 +5,7 @@ background: glitchybg
 ---
 <div class="contentstuff glitchexp">
 	<h1>Mirror Block Erase</h1>
-	<p>Erasing pushable blocks with the mirror is something everyone knows how to do. Just use the mirror while the block is moving, and <span class="poof">POOF!</span> The block is gone. I don't think I've ever seen an earnest attempt to explain why it happens; everyone just accepted that it does. Well, gang, mystery solved. And the explanation is super simple.</p>
+	<p>Erasing pushable blocks with the mirror is something everyone knows how to do. Just use the mirror while the block is moving, and <span class="poof">POOF!</span> the block is gone. I don't think I've ever seen an earnest attempt to explain why it happens; everyone just accepted that it does. Well, gang, mystery solved. And the explanation is super simple.</p>
 
 	<h2>Blocks</h2>
 	<p>Let's start by trying to understand how pushable blocks move in the first place. Only 2 blocks are meant to do anything at any one time. To handle this, two addresses (<code class="address">$05FC</code> and <code class="address">$05FD</code>), hold the index+1 of the currently active blocks&mdash;more on this weird indexing later. A value of 0 means that slot is not active. If blocks can't find a free slot to use, they simple won't get pushed.</p>
@@ -24,7 +24,7 @@ background: glitchybg
 		</li>
 		<li class="branchpoint" id="nextblock">Address <code class="address">$042C</code> is incremented twice, then <a class="branch" href="#loopstart">the loop is started again</a>.
 	</ol>
-	<p>State <code class="value">2</code> is where the problem is, so that's the branch we need to focus on.</p>
+	<p>State <code class="value">2</code> is where the problem is in most cases, so that's the branch we'll focus on. But actually, you can mirror erase a block that's falling, state <code class="value">4</code>. The reason will end up being the same.</p>
 	<ol>
 		<li>State <code class="value">2</code> begins by calling a routine that doesn't have a name, but it's <code class="address">$3EDB5</code> in the US ROM file, so let's call this routine <code class="routine">Bingo</code>, since it ends in B5</li>
 		<li><code class="routine">Bingo</code> goes like this:
