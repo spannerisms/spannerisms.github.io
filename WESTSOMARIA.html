@@ -34,7 +34,7 @@ background: glitchybg
 		</li>
 		<li>Run a subroutine that updates graphics for the doors on the otherside of the one being opened, and also updates memory for other rooms when necessary.</li>
 		<li>Check if the door is a staircase key door. If it is, fix its object properties.</li>
-		<li>Set the submodule to <code class="register">X</code>.</li>
+		<li>Set the submodule to <code class="register">0</code>.</li>
 	</ol>
 
 	<p>You should notice that the routine isn't what sets the initial values of <code class="address">$068E</code> or <code class="address">$0690</code>. This is the responsibility of the routine that set the game submodule. That makes sense. How would a loop running every frame know what step its on by itself?</p>

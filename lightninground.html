@@ -1,0 +1,15 @@
+---
+layout: default
+title: Short Explications
+background: glitchybg
+---
+<div class="contentstuff glitchexp">
+	<h1>Bite-sized Explications</h1>
+	<p>Some glitches are so simple that they can be explained in just a couple of sentences. Actually, I could probably explain any glitch in under 10 sentences. But I don't want to! I want to examine glitches in as much detail as possible. Some just don't have that many details, so I'll stick them here.</p>
+
+	<h2>Bomb dupe</h2>
+	<p>There's an address in save data that indicates you've dropped the super bomb. If this address is set, the super bomb can't move. It gets cleared when the timer hits 0, but the data that says you have the super bomb as a follower isn't cleared until the explosion ancilla does it 12 frames later. During this intermediate time, performing an overworld transition removes the ancilla, which is what's responsible for removing our follower.</p>
+
+	<h2>Sanc and Quit</h2>
+	<p>There's a mosaic buffer in memory. If that has a nonzero value, you will spawn in the sanctuary instead of getting to choose where to go. That's it. The code makes no sense, but it's there.</p>
+</div>
