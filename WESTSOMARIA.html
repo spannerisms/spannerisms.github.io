@@ -57,7 +57,23 @@ background: glitchybg
 	<p>The thing that should stand out is how slashing can be used to set the value to whatever door we want. This is how the vines in Skull Woods and the curtains in Agahnim's Tower work. The tile's graphics are stored first just because. No reason for or against it, that's just when it happens.<p>
 
 	<h3><code class="address">$0690</code></h3>
-	<p>Dollar six ninety is what the door routines use as a timer. Even though it doesn't need to be, it's a 16-bit timer, probably because everything else related to doors is 16-bit. It gets incremented <em>before</em> a comparison is made. For west somarias, the target is being equal to <code class="value">$0010</code>. Not greater than. Not greater than or equal. Just equal. Even if you don't think a timer will ever go over some value, 
+	<p>Dollar six ninety is what the door routines use as a timer. Even though it doesn't need to be, it's a 16-bit timer, probably because everything else related to doors is 16-bit. It gets incremented <em>before</em> a comparison is made. For west somarias, the target is being equal to <code class="value">$0010</code>. Not greater than. Not greater than or equal. Just equal. Even if you don't think a timer will ever go over some value, maybe you should check for greater than as well. It doesn't cost you any cycles or ROM space.</p>
+	<p>The rules of the timer mean that unless you are pushing your crimson cube with a timer of 15 or less, you will be waiting a long time for those doors to open. How long? 65,536 frames to be precise. Just a little over 18 minutes.</p>
+	<p>Here are the rules for how <code class="address">$0690</code> is set:</p>
+	<ul>
+		<li>Subtile transitions settle the value to <code class="value">4</code>.</li>
+		<li>Opening small key doors, big key doors, or broken walls settle the value to <code class="value">16</code>.</li>
+		<li>Shutter doors opening or closing by any means settle the value to <code class="value">16</code>.</li>
+		<li>Touching a big key door without the big key will set the value to <code class="value">0</code>.</li>
+		<li>Mirroring on the same frame that a key door is touched will set the value to <code class="value">0</code>. The key will also not be used.</li>
+		<li>Opening the big doors to Hyrule Castle or the sanctuary will settle the value to <code class="value">3</code>.</li>
+		<li>Lifting big rocks on the overworld will increment the value by <code class="value">1</code>.</li>
+		<li>Breaking bonk rocks will increment the value by <code class="value">1</code>.</li>
+		<li>Opening the grave to sewers or king's tomb or solving the hammer pegs puzzle for the first time will increment the value by <code class="value">1</code>.</li>
+	</ul>
+	<p>I'm not really sure what those last 3 use the value for... but they're sort of important to know if you're lifting a bunch of rocks after getting a workable value. Why are you lifting so many rocks?</p>
 
-	submodule 05 with different 68E
+	<h2>Chocolate</h2>
+	<p>That's everything vanilla that needs to be covered. Isn't it great how I explained how this glitch works just by dissecting vanilla routines working as intended? Now it's time to look at the stuff that isn't supposed to happen. Well, the stuff that definitely isn't supposed to happen. West somarias mostly make stuff that's supposed to happen at the wrong time. Let's look at the stuff that's not supposed to happen ever.</p>
+<!--submodule 05 with different 68E-->
 </div>
