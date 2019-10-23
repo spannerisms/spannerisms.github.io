@@ -37,6 +37,10 @@ dt {
 	color: #FCFCFF;
 }
 
+strong.verdict {
+	display: block;
+}
+
 dl.proseList dt:before {
 	content: '';
 	margin-top: 10px;

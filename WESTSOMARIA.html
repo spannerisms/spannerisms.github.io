@@ -55,5 +55,9 @@ background: glitchybg
 	<p>Big key doors set <code class="address">$068E</code> irrespective of owning the big key because the logic simply does it before checking if you own the big key. I don't think it was actually necessary to do things in this order, but it doesn't have any negatives either.</p>
 	<p>Shutter doors use <code class="address">$068E</code> as a loop counter. That makes sense, because the routines are checking every door to see if they're a shutter when trying to open them. Shutter doors are controlled with submodule <code class="value">$05</code>, which counts from <code class="value">$0000</code> to <code class="value">$0016</code> in steps of 2. This is the same reason subtile transitions give the same value. They may not be doing anything every time, but they are still checking for any shutter doors.</li>
 	<p>The thing that should stand out is how slashing can be used to set the value to whatever door we want. This is how the vines in Skull Woods and the curtains in Agahnim's Tower work. The tile's graphics are stored first just because. No reason for or against it, that's just when it happens.<p>
+
+	<h3><code class="address">$0690</code></h3>
+	<p>Dollar six ninety is what the door routines use as a timer. Even though it doesn't need to be, it's a 16-bit timer, probably because everything else related to doors is 16-bit. It gets incremented <em>before</em> a comparison is made. For west somarias, the target is being equal to <code class="value">$0010</code>. Not greater than. Not greater than or equal. Just equal. Even if you don't think a timer will ever go over some value, 
+
 	submodule 05 with different 68E
 </div>
