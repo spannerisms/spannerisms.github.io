@@ -30,7 +30,7 @@ background: glitchybg
 	<h3>Usage: Apply overlay directly to layer</h3>
 	<p><code class="routine">Dungeon_ApplyOverlay</code> starts by getting into 16-bit mode and checking the <a class="term" href="#BA">object index</a>. As far as I can tell, there are only 2 intended ways to enter this overlay submodule: star tiles, and trap chests (like the compass chest in Skull Woods). In both of these cases, our <a class="term" href="#BA">object index</a> will be 0 from the previous frame's routines. Accordingly, that is the first path we'll follow.</p>
 	<p>When address <a class="term" href="#BA"><code class="address">$BA</code></a> is <code class="value">0</code>, the room's <a class="term" href="#04BA">active overlay</a> is loaded and multiplied by 3 to index a table of available overlays. The 24-bit pointer loaded from that is then put in <span class="dfnwrap" id="B7">addresses <dfn><code class="address">$B7</code>, <code class="address">$B8</code>, and <code class="address">$B9</code></dfn>. I'll refer to these addresses collectively as <dfn><code class="address">[$B7]</code></dfn> or the <dfn>objects data pointer</dfn></span>.</p>
-	<p>Once the <a class="term" href="#B7" title="Did you seriously forget this already? It's right there in the previous paragraph!">objects data pointer</a> is set, a loop is started with the routine <code class="routine">Dungeon_DrawOverlay.</code>.</p>
+	<p>Once the <a class="term" href="#B7" title="Did you seriously forget this already? It's right there in the previous paragraph!">objects data pointer</a> is set, a loop is started with the routine <code class="routine">Dungeon_DrawOverlay</code>.</p>
 	<ol>
 		<li>Clear the addresses <code class="address">$B2</code><code class="addrsize">[2]</code> and <code class="address">$B4</code><code class="addrsize">[2]</code>. These will hold values for width and height, respectively.</li>
 		<li>Load the <a class="term" href="#BA">object index</a> into the <code class="register">Y</code> index register. At this point, <code class="register">Y</code> should always be a multiple of 3.</li>
@@ -63,7 +63,7 @@ background: glitchybg
 	<ol>
 		<li>Set the source bank for DMA channel 1 to <code class="address">$00</code>.</li>
 		<li>Set DMA channel to write to VRAM, 2 bytes at a time.</li>
-		<li>Set the <code class="register">X</code> register to 0.</li>
+		<li>Set the <code class="register">X</code> register to <code class="value">0</code>.</li>
 		<li>Read the first 2 bytes of <a class="term" href="#1100">the DMA buffer</a>. This is the location in VRAM where our first set of data will be written.</li>
 	</ol>
 	<p>I need to cut off the explanation right here just to delimit this code from the code that follows. The rest of this forms a loop, with the first item in the list being the start of the loop. It's important to understand that our first iteration loads the first VRAM address before entering the loop. OK. Let's continue.</p>

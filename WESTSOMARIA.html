@@ -5,5 +5,55 @@ background: glitchybg
 ---
 <div class="contentstuff glitchexp">
 	<h1>West Somarias</h1>
-	
+	<p>If you've ever seen me talk, you've probably seen me say "west somaria". The basic concept of them is super simple: opening doors. West somarias are nowhere near as damaging as the other directions, but they are way cooler. Except for a couple oddities, the west somaria doesn't do much to break the game. In fact, most of what goes on only requires understanding vanilla routines to explain. Oh boy!</p>
+
+	<h2>Doors 101</h2>
+	<p>West somarias put the game into dungeon submodule <code class="value">$04</code>. This is the submodule used for unlocking key doors. Shutters doors are controlled with a different submodule. All that submodule does is call the routine <code class="routine">Dungeon_AnimateOpeningLockedDoor</code> every frame. Here's what that routine does:</p>
+	<ol>
+		<li>Set <code class="register">Y</code> to <code class="value">2</code>. <code class="register">Y</code> will be used later for graphics.</li>
+		<li>Increment address <code class="address">$0690</code>.</li>
+		<li>Load <code class="address">$0690</code> and compare it to <code class="value">4</code>.
+			<ul>
+				<li>If the value is <code class="value">4</code>, set the door's graphics to be half-open and play the door opening sound effect.</li>
+				<li>Otherwise, increment <code class="register">Y</code> twice and compare <code class="address">$0690</code> to <code class="value">12</code> If it is not <code class="value">12</code>, then continue on.
+					<ol>If the value is <code class="value">12</code>:
+						<li>Load address <code class="address">$068E</code> into <code class="register">X</code>. This address currently holds the index into the graphics buffer of the door we're working with.</li>
+						<li>Use <code class="register">X</code> to index the buffer at <code class="address">$7F:2000</code> and load the value into <code class="register">A</code>.</li>
+						<li>Mask <code class="register">A</code> with <code class="value">$0007</code>, double it, and transfer it to <code class="register">X</code>.</li>
+						<li>Use <code class="register">X</code> to index a table at <code class="address">$00:98C0</code>. The value retrieved will be a single bit. That value is used to set that bit for addresses <code class="address">$068C</code> and <code class="address">$0400</code>, the latter of which is used to update save data when the next transition occurs.</li>
+						<li>Animate the door graphics again.</li>
+					</ol>
+				</li>
+			</ul>
+		</li>
+		<li>Read address <code class="address">$0690</code> and compare it to <code class="value">16</code>.
+			<ul>
+				<li>If it is not <code class="value">16</code>, exit the loop and continue the routine next frame.</li>
+				<li>If it is <code class="value">16</code>, continue on with the loop.</li>
+			</ul>
+		</li>
+		<li>Run a subroutine that updates graphics for the doors on the otherside of the one being opened, and also updates memory for other rooms when necessary.</li>
+		<li>Check if the door is a staircase key door. If it is, fix its object properties.</li>
+		<li>Set the submodule to <code class="register">X</code>.</li>
+	</ol>
+
+	<p>You should notice that the routine isn't what sets the initial values of <code class="address">$068E</code> or <code class="address">$0690</code>. This is the responsibility of the routine that set the game submodule. That makes sense. How would a loop running every frame know what step its on by itself?</p>
+
+	<h2>Door slash</h2>
+	<p>The fun comes from the fact that we have very reliable ways to set these addresses ourselves.</p>
+	<h3><code class="address">$068E</code></h3>
+	<p>This address is what's used to index the last tile map character used for door code. It's used in a few ways:</p>
+	<ul>
+		<li>If Link has a key when he touches a small key door, it will be set to the part of the door Link touched.</li>
+		<li>When Link touches a big key door, it will be set to the part of the door Link touched.</li>
+		<li>When Link slashes any closed door, it will be set to the part of the door the sword touched.</li>
+		<li>When a broken wall collapses, it will be set to the part of the door Link or the bomb touched.</li>
+		<li>When shutter doors are opened or close, it will end up being set to <code class="value">$0016</code>.</li>
+		<li>When subtile transitions occur, it will end up being set to <code class="value">$0016</code>.</li>
+	</ul>
+	<p>There are a couple notes to cover with the way <code class="address">$068E</code> is set.</p>
+	<p>Big key doors set <code class="address">$068E</code> irrespective of owning the big key because the logic simply does it before checking if you own the big key. I don't think it was actually necessary to do things in this order, but it doesn't have any negatives either.</p>
+	<p>Shutter doors use <code class="address">$068E</code> as a loop counter. That makes sense, because the routines are checking every door to see if they're a shutter when trying to open them. Shutter doors are controlled with submodule <code class="value">$05</code>, which counts from <code class="value">$0000</code> to <code class="value">$0016</code> in steps of 2. This is the same reason subtile transitions give the same value. They may not be doing anything every time, but they are still checking for any shutter doors.</li>
+	<p>The thing that should stand out is how slashing can be used to set the value to whatever door we want. This is how the vines in Skull Woods and the curtains in Agahnim's Tower work. The tile's graphics are stored first just because. No reason for or against it, that's just when it happens.<p>
+	submodule 05 with different 68E
 </div>
