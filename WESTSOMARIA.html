@@ -75,5 +75,11 @@ background: glitchybg
 
 	<h2>Chocolate</h2>
 	<p>That's everything vanilla that needs to be covered. Isn't it great how I explained how this glitch works just by dissecting vanilla routines working as intended? Now it's time to look at the stuff that isn't supposed to happen. Well, the stuff that definitely isn't supposed to happen. West somarias mostly make stuff that's supposed to happen at the wrong time. Let's look at the stuff that's not supposed to happen ever.</p>
+	<h3>I'm stuck now</h3>
+	<p>When rooms are loaded, every door checks the corresponding bit in memory to see if it should be opened. Normally, the logic for setting these "opened door" bits include a check for tile type, but that only prevents the bit from being set there. If the bit is already set, then the routine continues and allows it to stay open.</p>
+	<h3>But I've found my other half</h3>
+	<p>As per above, trap doors whose bits are set will remain open, but this causes another weird quirk. If a door is open, its current tile type is used to open the door on the other end. This can cause doors that are normally only shutters door on one half to become shutter doors (that are permanently open) on both halves. One such example being the door to the Misery Mire big chest.</p>
+	<h3>Wrong exit</h3>
+	<p>If the object at the tile address just isn't a door, it will cause an erroneous change to the tile and collision maps. One such possibility results in a an entrance door tile being put at the top-left-most tile. You aren't able to reach this too easily, but if you could, the game would try to bring you to the overworld. If the current room has no entrance associated with it (EG1 only), then you just get stuck in an infinite loop while the game fails to find a matching entrance.</p>
 <!--submodule 05 with different 68E-->
 </div>
