@@ -259,6 +259,10 @@ div.content {
 	image-rendering: pixelated;
 }
 
+div.hackTitle.rupeegreentitle {
+	background-image: url('/assets/bg/rupeegreen.png');
+}
+
 /* Header */
 nav.sitenav {
 	display: block;
