@@ -282,7 +282,7 @@ nav.sitenav {
 	display: block;
 	background: #CCCCFF;
 	height: 30px;
-	padding: 10px 40px 0 100px;
+	padding: 10px 40px 0 40px;
 	left: 0;
 	right: 0;
 	top: 0;
@@ -316,18 +316,14 @@ nav > div > ul > li > ul {
 	display: none;
 	list-style: none;
 	border-radius: 0 0 10px 10px;
+}
+
+nav > div > ul > li > a + ul {
 	margin-top: 3px;
 }
 
 nav > div > ul > li:hover > ul {
 	display: block;
-}
-
-nav > a {
-	position: relative;
-	display: inline-block;
-	vertical-align: middle;
-	border: none;
 }
 
 nav ul {
@@ -343,18 +339,26 @@ nav > div > ul > li > ul > li {
 	border-radius: 0 10px 10px;
 }
 
+nav span.dropdown {
+	cursor: default;
+}
+
+nav span.dropdown,
 nav a:visited,
 nav a {
+	margin: 0;
 	text-decoration: none;
 	font-size: 13pt;
 	color: #222266;
-	padding: 3px 10px;
+	padding: 3px 8px;
 }
 
+nav span.dropdown,
 nav > div > ul > li > ul > li > a {
 	display: block;
 }
 
+nav span.dropdown,
 nav > div > ul > li > a:not(:only-child) {
 	border-radius: 10px 10px 0 0 ;
 }
@@ -367,20 +371,33 @@ nav > div > ul > li > ul > li:last-child > a {
 	border-radius: 0 10px 10px;
 }
 
+nav > div.metaLinks a,
 nav > div.Home a,
 nav > div > ul > li,
 nav > div > ul > li > a:only-child {
 	border-radius: 10px;
 }
 
+nav span.dropdown:hover,
 nav a:hover {
 	color: #FCFCFF;
 	background: #5555FF;
 	text-decoration: none;
 	transition: background .4s ease 0s;
-	transition-property: color background;
+	transition-property: color, background;
 }
 
 div.Links {
 	float: right;
 }
+
+div.metaLinks {
+	display: inline-block;
+	font-variant: small-caps;
+}
+
+div.metaLinks a {
+	font-size: 80%;
+	padding: 3px 5px;
+}
+

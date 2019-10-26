@@ -8,7 +8,7 @@ background: glitchybg
 	<p>Erasing pushable blocks with the mirror is something everyone knows how to do. Just use the mirror while the block is moving, and <span class="poof">POOF!</span> the block is gone. I don't think I've ever seen an earnest attempt to explain why it happens; everyone just accepted that it does. Well, gang, the mystery is now solved. And the explanation is super simple, to boot.</p>
 
 	<h2>Blocks</h2>
-	<p>Let's start by understanding how pushable blocks move in the first place. Only 2 blocks are meant to do anything at any one time. To handle this, two addresses (<code class="address">$05FC</code> and <code class="address">$05FD</code>) hold the index+1 of the currently active blocks&mdash;more on this weird indexing later. A value of <code class="value">0</code> means that slot is not active. If blocks can't find a free slot to use, they simple won't get pushed.</p>
+	<p>Let's start by understanding how pushable blocks move in the first place. Only 2 blocks are meant to do anything at any one time. To handle this, two addresses (<code class="address">$05FC</code> and <code class="address">$05FD</code>) hold the index+1 of the currently active blocks&mdash;more on this weird indexing later. A value of <code class="value">0</code> means that slot is not active. If blocks can't find a free slot to use, they simply won't get pushed.</p>
 
 	<p>Now let's look at the routine that is executed every frame in normal dungeon mode:</p>
 	<ol>

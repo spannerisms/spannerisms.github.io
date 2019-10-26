@@ -10,11 +10,15 @@
 
 	<body id="page-top">
 		<nav class="navbar sitenav">
+			<div class="metaLinks">
+				<a href="#top" title="Page top">Top</a>
+				<a href="#null" title="Clear definition hilite">Clr</a>
+			</div>
 			<div class="Home"><a href="https://spannerisms.github.io">Home</a></div>
 			<div class="Links">
 				<ul>
 					<li><a href="lttphack" target="_blank">Practice Hack</a></li>
-					<li><span>Hacks</span>
+					<li><span class="dropdown">Hacks</span>
 						<ul>
 							<li><a href="rupeegreen">Rupee Green</a></li>
 						</ul>
@@ -32,7 +36,7 @@
 		</nav>
 		
 
-	<div class="content {{ page.background }}">
+	<div id="top" class="content {{ page.background }}">
 		{{ content }}
 	</div>
 	</body>

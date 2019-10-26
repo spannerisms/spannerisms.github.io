@@ -24,7 +24,8 @@ title: General Glossary
 	<h2>B</h2>
 	<dl>
 		<dt><dfn id="Bank">Bank</dfn></dt>
-		<dd><p>A bank is a big section of code or data, and it can hold both RAM and/or ROM. There are 256 addressable banks of 65536 bytes each on the Super Nintedo, but with some caveats. If you'd like to know more about those caveats, see <a class="youtube" href="https://www.youtube.com/watch?v=-U76YvWdnZM">this video</a> by Dotsarecool.</p>
+		<dd>
+			<p>A bank is a big section of code or data, and it can hold both RAM and/or ROM. There are 256 addressable banks of 65536 bytes each on the Super Nintedo, but with some caveats. If you'd like to know more about those caveats, see <a class="youtube" href="https://www.youtube.com/watch?v=-U76YvWdnZM">this video</a> by Dotsarecool.</p>
 			<p>If you see me use an address like this <code class="address">$07:8000</code>, then that first byte (<code class="address">$07</code>) is the bank.</p>
 		</dd>
 		<dt><dfn id="Branch">Branch</dfn></dt>
@@ -36,6 +37,8 @@ title: General Glossary
 
 	<h2>C</h2>
 	<dl>
+		<dt><dfn id="Character">Character</dfn></dt>
+		<dd>Characters are what most people would (technically incorrectly) call a <i>sprite</i>. When discussing SNES graphics, the distinct squares of shared graphics are called <i>characters</i>. If you'd like to know more about characters, see <a class="youtube" href="https://www.youtube.com/watch?v=sheOZ-Dlleo">this video</a> by Dotsarecool.</dd>
 		<dt><dfn id="CPU">CPU</dfn></dt>
 		<dd><p>I don't need to, nor will I, explain what a CPU is, but I will explain what the Super Nintendo's CPU is.</p>
 			<p>The SNES uses the Ricoh 5A22, a 16-bit chip based on the Wester Design Center's 65c816. It has the same instruction set and address space as the 65c816, but it also includes proprietary functions as the 60hz interrupt for V-blank/NMI and <a href="DMA">direct memory access</a>.</p>
@@ -49,6 +52,15 @@ title: General Glossary
 		<dd>This is just a really fast way to move data from 1 location in memory to another. If you'd like to know more, I recommend watching <a class="youtube" href="https://www.youtube.com/watch?v=K7gWmdgXPgk">this video</a> by Dotsarecool.</dd>
 	</dl>
 
+	<h2>E</h2>
+	<dl>
+		<dt><dfn id="Endianess">Endianness</dfn></dt>
+		<dd>
+			<p>If I told you to write down a six digit number, say <i>one-hundred-twenty-three-thousand-four-hundred-fifty-six</i>, you would probably write down <i>123456</i>. This isn't really how the SNES works with large numbers in memory, whether they be data, addresses, or pointers.</p>
+			<p>The CPU prefers numbers to be in <dfn id="Little_Endian">little endian</dfn>, which means the bytes are written from low to high. For example, the value <code class="value">$123456</code> would be in memory as <code class="value">$56</code> in the first byte, <code class="value">$34</code> in the second, and <code class="value">$12</code> in the third.</p>
+			<p>All numbers I write will be in <dfn id="Big_Endian">big endian</dfn>, which means the bytes are written from high to low, as you'd expect for human-readable posts. Just don't be confused if I have to reference the memory byte-by-byte and you see numbers reversed.</p>
+		</dd>
+	</dl>
 	<h2>I</h2>
 	<dl>
 		<dt><dfn id="Index">Indexing</dfn></dt>
@@ -63,6 +75,10 @@ title: General Glossary
 		<dd>Masking is just another way of saying "logically AND with a value". It's a <em>mask</em> because it exposes relevant active bits and hides everything else.</dd>
 		<dt><dfn id="Mirror">Mirror</dfn></dt>
 		<dd>Being able to access certain types of memory in more than one place is useful. A mirror is just one of those duplicate places that makes working with that memory doable. If you'd like to learn more, see <a class="youtube" href="https://www.youtube.com/watch?v=PvfhANgLrm4">this video</a> by Dotsarecool.</dd>
+		<dt><dfn id="Mode">Mode</dfn></dt>
+		<dt><dfn id="Module">Module</dfn></dt>
+		<dt><dfn id="Submodule">Submodule</dfn></dt>
+		<dd>The game mode or game module is just the topmost level of the execution hierarchy, and it usually defines the broad class of behavior to be expected of its submodules. Submodules being the next step down. For example, <i class="gameName">A Link to the Past</i> has a module for the both the overworld and the underworld. Within each of those modules, it also has submodules for default player control and transitioning, along with many other module-specific submodules.</dd>
 	</dl>
 
 	<h2>N</h2>
@@ -84,12 +100,21 @@ title: General Glossary
 				<dd>While the <a href="#Stack">stack</a> itself is just a place in RAM, the stack pointer (<code class="register">S</code>) is a special register that says where the next empty slot is.</dd>
 			</dl>
 		</dd>
+		<dt><dfn id="Routine">Routine</dfn></dt>
+		<dt><dfn id="Subroutine">Subroutine</dfn></dt>
+		<dd>A routine is a block of code that does something. I'll usually refer to them as something being <dfn id="Called">called</dfn>. Calling a routine means the routine was pointed to in the middle of another section of code. The routine gets executed and then execution returns to after the location that called it.</dd>
 	</dl>
 
 	<h2>S</h2>
 	<dl>
+		<dt><dfn id="SRAM">SRAM</dfn></dt>
+		<dt><dfn id="Save RAM">Save RAM</dfn></dt>
+		<dd>Exactly what it sounds like. This is the game's save data. More general computer-related posts use <i>SRAM</i> to mean <i>Static RAM</i>; I will only ever use it to mean <i>Save RAM</i>.</dd>
 		<dt><dfn id="Scratch">Scratch</dfn></dt>
-		<dd>Scrach space, scratch memory, or whatever I end up calling it just means memory that is used for temporary calculation or storage. The memory is extremely volatile over the course of a frame. I'll try to only explicitly give the address of scratch space if it will be relevant to some part of the explanation. Otherwise, just consider it something that doesn't matter in end.</dd>
+		<dd>Scrach space, scratch memory, or whatever I end up calling it just means memory that is used for temporary calculation or storage. The memory is extremely volatile over the course of a frame. I'll try to only explicitly give the address of scratch space if it will be relevant to some part of the explication. Otherwise, just consider it something that doesn't matter in end.</dd>
+		<dt><dfn id="Sprite">Sprite</dfn></dt>
+		<dt><dfn id="Object">Object</dfn></dt>
+		<dd>When discussing SNES graphics specifically, a <i>sprite</i> or <i>object</i> is a very specific entity of graphics with the following properties: X-position, Y-position, palette, <a href="#Character">character</a>, priority, V-flip, H-flip. Contrast this with the colloquial use of <i>sprite</i> as either a self-acting entity or a specific graphic. I will use <i>sprite</i> to mean the former, just because even I find it intuitive, but never the latter. If you'd like to know more about sprites, see <a class="youtube" href="https://www.youtube.com/watch?v=sheOZ-Dlleo">this video</a> by Dotsarecool.</dd>
 		<dt><dfn id="Stack">Stack</dfn></dt>
 		<dd>When you want to work with a lot of data at once, or remember your place while you perform a side task, you need a way to remember what you were using or doing. That's where the stack comes in. It's a special place in memory that has special operations specific to it which allow you to store and recall data, pointers, or registers. If you'd like a more in-depth explanation of the stack, see <a class="youtube" href="https://www.youtube.com/watch?v=IWQ74f2ot7E">this video</a> by Dotsarecool.</dd>
 	</dl>
@@ -98,5 +123,15 @@ title: General Glossary
 	<dl>
 		<dt><dfn id="Vector">Vector</dfn></dt>
 		<dd>When an <a href="#Interrupt">interrupt</a> it occurs, it has to know where to go. A small portion of ROM contains pointers for each vector, and that's where the CPU will look when it's told to take a break from its normal operation.</dd>
+		<dt><dfn id="VRAM">VRAM</dfn></dt>
+		<dt><dfn id="Video RAM">Video RAM</dfn></dt>
+		<dd>This is memory specifically allotted for controlling the ile maps and graphics characters that constitute the image shown on your screen. VRAM is on its own chip, separate from other memory.</dd>
+	</dl>
+
+	<h2>W</h2>
+	<dl>
+		<dt><dfn id="WRAM">WRAM</dfn></dt>
+		<dt><dfn id="WRAM">Work RAM</dfn></dt>
+		<dd>This is the main memory the CPU works with to handle temporary data. It contains everything from sprite data and player coordinates to a spare copy of save data in many games.</dd>
 	</dl>
 </div>
