@@ -8,11 +8,14 @@ background: glitchybg
 	<p>Some glitches are so simple that they can be explained in just a couple of sentences. Actually, I could probably explain any glitch in under 10 sentences. But I don't want to! I want to examine glitches in as much detail as possible. Some just don't have that many details, so I'll stick them here.</p>
 
 	<h2 id="bombdupe">Bomb dupe<a href="#bombdupe" class="headerLink">(permalink)</a></h2>
-	<p>There's an address in save data that indicates you've dropped the super bomb. If this address is set, the super bomb can't move. It gets cleared when the timer hits 0, but the data that says you have the super bomb as a follower isn't cleared until the explosion ancilla does it 12 frames later. During this intermediate time, performing an overworld transition removes the ancilla, which is what's responsible for removing our follower.</p>
+	<p>There's an address in save data that indicates you've dropped the super bomb. If this address is set, the super bomb can't move. It gets cleared when the timer hits 0, but the data that says you have the super bomb as a follower isn't cleared until the explosion ancilla does it 12 frames later. During this intermediate time, performing an overworld transition removes the ancilla, which is what's responsible for removing the follower.</p>
 
 	<h2 id="sancandquit">Sanc and Quit<a href="#sancandquit" class="headerLink">(permalink)</a></h2>
 	<p>There's a mosaic buffer in memory. If that has a nonzero value, you will spawn in the sanctuary instead of getting to choose where to go. That's it. The code makes no sense, but it's there.</p>
 
 	<h2 id="bombspriteZ">Sprite altitude and bomb knockback<a href="#bombspriteZ" class="headerLink">(permalink)</a></h2>
 	<p>To calculate the direction of recoil when Link is hit by a bomb, the bomb temporarily hijacks sprite slot 0 and uses the sprite knockback routine for its calculations. In JP1.0, this routine neglects to clear the altitude of the sprite during the hijack. It appears to be fixed in later versions.</p>
+
+	<h2 id="fastkeys">Fast keys with wallmasters<a href="#fastkeys" class="headerLink">(permalink)</a></h2>
+	<p>If you kill a wallmaster as you open a chest, you'll be able to move right away. This is because both wallmasters and chests rely on the same variable to freeze Link. Every frame that a wallmaster is not in the default AI state (in this case, it's dying), it resets the address that freezes you.</p>
 </div>

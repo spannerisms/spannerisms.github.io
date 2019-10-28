@@ -28,7 +28,7 @@ background: glitchybg
 		</li>
 		<li class="branchpoint" id="nextblock">Address <code class="address">$042C</code> is incremented twice, then <a class="branch" href="#loopstart">the loop is started again</a>.</li>
 	</ol>
-	<p>State <code class="value">2</code> is where the problem occurs in most cases, so that's the branch we'll focus on. But actually, you can mirror erase a block that's falling (state <code class="value">4</code>). The reason will end up being the same.</p>
+	<p>State <code class="value">2</code> is where the problem occurs in most cases, so that's the branch we'll focus on. But actually, you can mirror erase a block that's newly pushed (state <code class="value">1</code>) or falling (state <code class="value">4</code>). The reason will end up being the same.</p>
 	<ol>
 		<li>State <code class="value">2</code> begins by calling a routine that doesn't have a name in the disassembly, but it's <code class="address">$3EDB5</code> in the US ROM file, so let's call this routine <code class="routine">Bingo</code>, because it ends with B5.</li>
 		<li><code class="routine">Bingo</code> goes like this:
