@@ -136,7 +136,7 @@ blockquote:after {
 
 /* hack formatting */
 code {
-	font-family: consolas, monospace;
+	font-family: 'Roboto Mono', consolas, monospace;
 	font-weight: bold;
 	font-size: 97%;
 }
