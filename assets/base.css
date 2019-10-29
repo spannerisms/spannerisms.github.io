@@ -380,9 +380,13 @@ nav a {
 	padding: 3px 8px;
 }
 
-nav span.dropdown,
+nav span.dropdown {
+	display: block;
+}
+
 nav > div > ul > li > ul > li > a {
 	display: block;
+	font-size: 10.5pt;
 }
 
 nav span.dropdown,
@@ -424,7 +428,7 @@ div.metaLinks {
 }
 
 div.metaLinks a {
-	font-size: 80%;
+	font-size: 85%;
 	padding: 3px 5px;
 }
 
