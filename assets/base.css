@@ -1,5 +1,5 @@
 html {
-	font-family: "Segoe UI", tahoma, arial, sans-serif;
+	font-family: Roboto, "Segoe UI", tahoma, arial, sans-serif;
 	font-size: 11pt;
 	background-color: #F9E3F9;
 }
@@ -137,13 +137,14 @@ blockquote:after {
 /* hack formatting */
 code {
 	font-family: 'Roboto Mono', consolas, monospace;
-	font-size: 90%;
+	font-size: 91%;
 }
 
 code.snesasm {
 	white-space: pre;
 	font-size: 80%;
 	position: relative;
+	line-height: 20px;
 }
 
 code.snesasm:before {
@@ -153,7 +154,7 @@ code.snesasm:before {
 	word-spacing: 100px;
 	white-space: normal;
 	line-height: 20px;
-	left: 20px;
+	left: 18px;
 	top: 18px;
 	text-align: right;
 	overflow-y: hidden;
