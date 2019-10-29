@@ -137,13 +137,12 @@ blockquote:after {
 /* hack formatting */
 code {
 	font-family: 'Roboto Mono', consolas, monospace;
-	font-weight: bold;
-	font-size: 97%;
+	font-size: 90%;
 }
 
 code.snesasm {
 	white-space: pre;
-	font-size: 90%;
+	font-size: 80%;
 	position: relative;
 }
 
