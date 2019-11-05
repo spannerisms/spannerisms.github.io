@@ -38,7 +38,7 @@ dt {
 	content: '';
 	padding-top: 40px;
 	margin-top: -40px;
-	display: inline-block;
+	display: block;
 }
 
 ::selection {
