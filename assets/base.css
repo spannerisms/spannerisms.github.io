@@ -134,6 +134,19 @@ blockquote:after {
 	content: "\""
 }
 
+.supershort {
+	font-size: 90%;
+	padding-left: 20px;
+	font-style: oblique;
+}
+
+.supershort:before {
+	content: 'IN ONE SENTENCE: ';
+	font-weight: bold;
+	font-size: 85%;
+	color: #D84490;
+}
+
 /* hack formatting */
 code {
 	font-family: 'Roboto Mono', consolas, monospace;

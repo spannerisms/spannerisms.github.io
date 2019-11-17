@@ -5,17 +5,29 @@ background: glitchybg
 ---
 <div class="contentstuff glitchexp">
 	<h1>Bite-sized Explications</h1>
-	<p>Some glitches are so simple that they can be explained in just a couple of sentences. Actually, I could probably explain any glitch in under 10 sentences. But I don't want to! I want to examine glitches in as much detail as possible. Some just don't have that many details, so I'll stick them here.</p>
+	<p>Some glitches are so simple that they can be explained in just a couple of sentences. Actually, I could probably explain any glitch in under 10 sentences. But I don't want to! I want to examine glitches in as much detail as possible. Some just don't have that many details, so I'll stick them here. And for these glitches only, I'll include a 1-sentence explanation that explains it perfectly as well.</p>
 
 	<h2 id="bombdupe">Bomb dupe<a href="#bombdupe" class="headerLink">(permalink)</a></h2>
 	<p>There's an address in save data that indicates you've dropped the super bomb. If this address is set, the super bomb can't move. It gets cleared when the timer hits 0, but the data that says you have the super bomb as a follower isn't cleared until the explosion ancilla does it 12 frames later. During this intermediate time, performing an overworld transition removes the ancilla, which is what's responsible for removing the follower.</p>
+	<p class="supershort">The address that says the bomb isn't following you is cleared before the bomb is removed as a follower.</p>
 
 	<h2 id="sancandquit">Sanc and Quit<a href="#sancandquit" class="headerLink">(permalink)</a></h2>
 	<p>There's a mosaic buffer in memory. If that has a nonzero value, you will spawn in the sanctuary instead of getting to choose where to go. That's it. The code makes no sense, but it's there.</p>
+	<p class="supershort">An unnecessary and nonsensical mosaic check forces a Sanctuary spawn.</p>
 
 	<h2 id="bombspriteZ">Sprite altitude and bomb knockback<a href="#bombspriteZ" class="headerLink">(permalink)</a></h2>
 	<p>To calculate the direction of recoil when Link is hit by a bomb, the bomb temporarily hijacks sprite slot 0 and uses the sprite knockback routine for its calculations. In JP1.0, this routine neglects to clear the altitude of the sprite during the hijack. It appears to be fixed in later versions.</p>
+	<p class="supershort">Bombs hijack sprite 0 to perform a calculation, but they don't clean all variables first.</p>
 
 	<h2 id="fastkeys">Fast keys with wallmasters<a href="#fastkeys" class="headerLink">(permalink)</a></h2>
 	<p>If you kill a wallmaster as you open a chest, you'll be able to move right away. This is because both wallmasters and chests rely on the same variable to freeze Link. Every frame that a wallmaster is not in the default AI state (in this case, it's dying), it resets the address that freezes you.</p>
+	<p class="supershort">Wallmasters not in the default state reset Link's ability to move.</p>
+
+	<h2 id="pchestmirror">Mirroring with a dropped purple chest<a href="#pchestmirror" class="headerLink">(permalink)</a></h2>
+	<p>The behavior of the desert thief is based on his AI pointer. When initially loaded, his AI pointer is determined by your current follower. If you have him as a follower, the sprite version of him will despawn. If you have the purple chest as a follower, he'll begin in "talk about purple chest" mode. In that AI mode he shows a message, and your choice decides the next AI routine he uses. In the "accept offer" routine, the only condition he checks for is whether or not the purple chest is following you, which is indicated by address <code class="address">$7EF3D3</code> being <code class="value">$00</code>. When mirroring with the purple chest dropped, both your follower and this "attachment" address are zeroed out. However, if you mirror while within range of the thief, his initialization routine will occur first, then your follower will be cleared, along with the address that when 0 allows him to gift you the bottle.</p>
+	<p class="supershort">The desert thief is put into purple chest mode early, and later code resets the detachment address he looks at.</p>
+
+	<h2 id="mold2bump">Moldorm 2 bumper<a href="#mold2bump" class="headerLink">(permalink)</a></h2>
+	<p>Bumpers can bounce sprites, so they use a frame rule to cycle through every sprite. One of the conditions they look for is the "invulnerable" bit and the "statis" bit in sprite properties, and at the same time. Invulnerable is self-explanatory; statis means the sprite does not count for kill rooms. If either of those bits is set, then the bumper will not bounce that sprite. This works out fine normally, because bumpers don't count for kill rooms. When transitioning, the previous room's sprites are cached before new ones are loaded, allowing them to be drawn every frame to make the transition seamless. For some reason, Moldorm's draw subroutine handles the hitbox calculation for Moldorm. Since sprites are only initialized once, and this address is not part of the cached values, the bumper is forced into having Moldorm's hitbox and statis properties. This means the bumper is now eligible for bouncing off of bumpers, so it is able to trigger on itself every 4 frames (as its hitbox obviously overlaps with itself).</p>
+	<p class="supershort">Because of how Moldorm's tail's hitbox is handled, the bumper is literally hitting itself.</p>
 </div>
