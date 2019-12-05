@@ -12,7 +12,7 @@ background: glitchybg
 
 	<p>Now let's look at the routine that is executed every frame in normal dungeon mode:</p>
 	<ol>
-		<li>The address <code class="address">$042C</code> is reset and then the routine <code class="routine">PushBlock_Handler</code> is executed.</li>
+		<li>The address <code class="address">$042C</code> is reset and then the routine <code class="routine">PushBlock_Handler</code> is executed. This address is used as an index counter for the following loop.</li>
 		<li class="branchpoint" id="loopstart">The value of <code class="address">$042C</code> is loaded into <code class="register">Y</code>. It is compared to the value at address <code class="address">$0428</code>. If they are not equal, then the state of the block at that index is checked, otherwise, the routine exits.</li>
 		<li>The desired block's state is read by using <code class="register">Y</code> to index the array at <code class="address">$0500</code>.
 			<ul>
