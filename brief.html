@@ -14,17 +14,17 @@ background: glitchybg
 	<p>It is possible to prevent the ancilla from spawning by filling the first 5 ancilla slots before hitting the water. In this scenario, Link is immediately free to swim around. This is possible on later versions, but because they check for flippers while swimming, Link cannot move.</p>
 	<p>When being revived by a fairy over deep water, the game just assumes that Link was swimming, so it places him back in that state.</p>
 
-	<li><a id="mirrorblock" href="mirrorblock">Mirror block erase</a></li>
+	<h2><a id="mirrorblock" href="mirrorblock">Mirror block erase</a></h2>
 	<p>When blocks are pushed, the index of their data is put into an address in a 2 item array. This address is then used to update their coordinates and velocity. When the mirror is used, both values in that index array are set to 0, which is meant to indicate the slot is free. This happens in cave, but it doesn't affect the blocks' actual status; the blocks will keep running, but a coding mistake will have them assume that they should use the first item in the array as an index if the second value is not correct. This bad assumption results in 0, an invalid index, being used for the block's data.</p>
 	<p>The block continues operating, and is not technically erased. This makes this glitch a form of misslotting, but a slightly different species from other known misslots. In versions after JP1.0, a check is performed to see if the beep sound effect was played, and doesn't reset the array if it was.</p>
 
-	<li><a id="houlihan" href="houlihan">Houlihan</a></li>
+	<h2><a id="houlihan" href="houlihan">Houlihan</a></h2>
 	<p>Not a glitch. Often construed as one.</p>
 	<p>When Link falls into a hole on the overworld, the destination is determined by both the current screen ID and his X- and Y-coordinates. As a small catch, before this even happens, Link's Y-coordinate is determined by the top of the camera. Although the camera can move after the Y-coordinate is recalculated, but before the destination is. So calling it camera-based is only about one-quarter correct.</p>
 	<p>Destinations are in a list, which is looked through for a match from the input parameters. If every item is looked at without finding a match, then the Houlihan Room is used as the target destination.</p>
 	<p>This is one of the few failsafes added to the game. No matter how you slice it, the game is doing exactly what the developers wanted it to do. And because it is possible to trigger the failsafe without doing any actual glitches, calling Houlihan a glitch is patently wrong.</p>
 
-	<h2><a id="treewarp" href="treewarp">Tree warp</a><h2>
+	<h2><a id="treewarp" href="treewarp">Tree warp</a></h2>
 	<p>For some stupid reason, the talking tree is composed of 3 permanently active sprites&mdash;1 mouth, 2 eyes. The eyes are spawned dynamically by the mouth. When spawning sprites dynamically, the caller of the routine is left with the responsibility for adding a failsafe when all slots are full. Trees don't.</p>
 	<p>If the mouth spawns into the last available sprite slot, the eyes will end up in slot <code class="value">$FF</code>. Part of these invalid writes loads a value from scratch space to use for the X-coordinate. The value it loads ends up being part of the tree's spawn routine address (<code class="value">$90</code>), and it gets written to the last slot in sprite ID. This is the ID for a wallmaster, which ends up inheriting the properties of whatever sprite was in that slot. In the consistent set ups, this sprite is part of the other talking tree in Village of Outcasts, so the wallmaster is always active. And by sheer coincidence, it spawns immediately in the "grabbed player" mode.</p>
 
