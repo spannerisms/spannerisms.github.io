@@ -37,4 +37,9 @@ background: glitchybg
 
 	<h2>JP1.0</h2>
 	<p>Everything I said about fake flippers above is true for every release of the game. There's just one little difference: versions later than JP1.0 check for the flippers every frame. If you don't have them, then it just skips all swimming logic. This fixes the transition method of fake flippering, but it creates problems for others. There's no further code to do anything about you being in the water; it still relies entirely on the ancilla to do that. The ancilla overload method will work on a US cart. You'll land in the water, but that's it. You're stuck. You can save-and-quit or wait for an enemy to kill you, but you won't be swimming anywhere.</p>
+
+	<h2>Summary</h2>
+	<p>When Link hits the water, a splash ancilla is created to make a splash graphic. This ancilla is also responsible for removing Link from the water if he doesn't have the flippers. The splash is around for 8 frames, and it runs the removal code on the 9th frame when it terminates execution. This is just enough time for Link to gain the acceleration swimming to move 1 pixel and transition. The transition removes the splash ancilla, preventing the code from ever running. Once swimming, in JP1.0, the game doesn't check for flippers.</p>
+	<p>It is possible to prevent the ancilla from spawning by filling the first 5 ancilla slots before hitting the water. In this scenario, Link is immediately free to swim around. This is possible on later versions, but because they check for flippers while swimming, Link cannot move.</p>
+	<p>When being revived by a fairy over deep water, the game just assumes that Link was swimming, so it places him back in that state.</p>
 </div>
