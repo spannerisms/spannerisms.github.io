@@ -78,7 +78,7 @@ background: glitchybg
 
 	<h2>When things go terribly wrong</h2>
 	<p>Tree warp works when only 1 sprite slot is free before spawning the mouth. When 2 slots are free, things go really really wrong and the game crashes.</p>
-	<p>This crash is purely bad luck with ROM data. If 2 slots are free, that means the mouth takes one and eyeball 0 takes the other. So eyeball 0 spawns successfully, in the correct slot, and due to the prep that happens in <code class="routine">Sprite_SpawnDynamically</code>, we now have a new value in <code class="address">$01</code>: <span class="evil">3</span>. Eyeball 1 ends up underflowing, and it ends up writing <span class="evil">3</span> to the last sprite slot.</p>
+	<p>This crash is purely bad luck with ROM data. If 2 slots are free, that means the mouth takes one and eyeball 0 takes the other. So eyeball 0 spawns successfully, in the correct slot, and due to the prep that happens in <code class="routine">Sprite_SpawnDynamically</code>, we now have a new value in <code class="address">$01</code>: <span class="evil">3</span>. Eyeball 1 ends up underflowing, writing <span class="evil">3</span> to the last sprite slot.</p>
 	<p>When it comes to sprite IDs, <span class="evil">3</span> is particularly evil. There isn't actually a sprite with that ID. That slot in the sprite prep routines table just contains a pointer to <code class="address">$0000</code>. That's the same <code class="address">$00</code> we were storing scratch data in, but now we are executing it as code. And because it's consistent from the previous routines, I can tell you exactly what the CPU is doing:</p>
 	<code class="snesasm"><!--Why can't there be a goddamn hilite for 65816-->
 		$060000   PLA        ; $68
