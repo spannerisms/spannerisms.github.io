@@ -13,12 +13,12 @@ background: glitchybg
 	<p>There's a key thing that bumpers do that Moldorm doesn't: bounce other sprites. When bumpers can bounce a sprite is pretty straightforward, but I noticed something funny, and also I want this page to be longer.</p>
 
 	<p>We'll go through this lines one-by-one, and it will all make sense in the end.</p>
-<code class="snesasm">
+	<code class="snesasm">
 		TYA : EOR $1A : AND #$03
 		ORA $0F70, Y : BNE .no_sprite_collision
 		LDA $0DD0, Y : CMP #$09 : BCC .no_sprite_collision
 		LDA $0E60, Y : ORA $0F60, Y : AND #$40 : BNE .no_sprite_collision
-</code>
+	</code>
 
 	<h3>Frame rules</h3>
 	<p>Ahhh, frame rules. Bumper-to-sprite interactions are no exception, and they use the standard collision frame rule. Take the sprite slot of the sprite in question and exclusive-OR it with the frame counter. Finally, look at the bottom 2 bits. If they're both 0, then the collision check proceeds. But this has an efficient twist.</p>
