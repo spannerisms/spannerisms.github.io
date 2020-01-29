@@ -9,10 +9,10 @@ background: glitchybg
 	<p>Something you may have noticed happens sometimes is a violent reaction from one bumper in the next room. Perhaps it's applauding you for saving 6 seconds. Or perhaps it's so delighted with itself for the cleverness of calling you a "cheater" that it can't stop laughing. Neither of these is the case. Unfortunately and fortunately, respectively.</p>
 
 	<h2>Boing, as it were</h2>
-	<p>One misguided explanation of this glitch is some nonsense about Moldorm's head's bouncing being transferred over to the bumper and that somehow does something. Funnily enough, this is like that old adage "A broken clock is always right twice a day." Except, in this case, the clock says it's 5:01:15<span class="timeampm">pm</span> when it's really 3:09:23<span class="timeampm">am</span>. I mean, hey, they got that one number right! There's only a 1/6 chance of that happening!</p>
+	<p>One misguided explanation of this glitch is some nonsense about Moldorm's head's bouncing being transferred over to the bumper and that somehow does something. Funnily enough, this is like that old adage "A broken clock is always right twice a day." Except, in this case, the clock says it's 5:01:15<span class="timeampm">pm</span> when it's really 3:09:23<span class="timeampm">am</span>. I mean, hey, they got that one number right. There's only a 1/6 chance of that happening!</p>
 	<p>There's a key thing that bumpers do that Moldorm doesn't: bounce other sprites. When bumpers can bounce a sprite is pretty straightforward, but I noticed something funny, and also I want this page to be longer, so let's take a deeper dive.</p>
 
-	<p>We'll go through thse lines one-by-one, and it will all make sense in the end.</p>
+	<p>We'll go through these lines one-by-one, and it will all make sense in the end.</p>
 	<code class="snesasm">
 		TYA : EOR $1A : AND #$03
 		ORA $0F70, Y : BNE .no_sprite_collision
@@ -71,7 +71,7 @@ background: glitchybg
 	<p>Now try slashing it. You can't. The switch will clink but not change color, and you'll recoil a little. Other things can trigger the switch, but your hammer and sword will not be among those things.</p>
 
 	<h2>Summary</h2>
-	<p>In practice, a specific property called "statis" is the only thing preventing bumpers from hitting themselves. During transitions, most properties of sprites are cached so that old and new can share the same addresses for execution. Hitboxes and statis (on the same address) are not cached. Moldorm's tail's hitbox is executed as part of a subroutine that also handles drawing, so it is executed during these transitions. This subroutine ends up changing both the hitbox and statis of sprite 0 slots on transitions where Moldorm is visible. Moldorm and bumpers have different hitboxes that happen to be exactly the same size and position, but the statis property that prevented bumpers from interacting themselves was cleared.</p>
+	<p>In practice, a specific property called "statis" is the only thing preventing bumpers from hitting themselves. During transitions, most properties of sprites are cached so that old and new can share the same addresses for execution. Hitboxes and statis (on the same address) are not cached. Moldorm's tail's hitbox is executed as part of a subroutine that also handles drawing, so it is executed during these transitions. This subroutine ends up changing both the hitbox and statis of sprite 0 slots on transitions where Moldorm is visible. Moldorm and bumpers have different hitboxes that happen to be exactly the same size and position, but the statis property that prevented bumpers from interacting with themselves was cleared.</p>
 
 	<h2>Shortest summary</h2>
 	<p>The bumper is literally hitting itself.</p>

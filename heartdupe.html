@@ -1,0 +1,82 @@
+---
+layout: default
+title: Heart Dupe Explication
+background: glitchybg
+---
+<div class="contentstuff glitchexp">
+	<h1>Heart dupe</h1>
+	<p>If you've ever been desperate for health, you might have used the hookshot or boomerang to grab a heart with the hopes of getting double what you bargained for. And if anyone's ever told you that this glitch does not work with rupees, etc, well&hellip; I've got news for you: that's not entirely correct.</p>
+
+	<h2>Absorbables</h2>
+	<p>Unsurprisingly, everything a sprite can drop is grouped together (at least categorically by MathOnNapkins) into a class called "absorbables". Rupees, arrows, bomb refills, magic decanters, and stolen shields all share the exact same routine. Big and small keys share the routine as well, but with a little extra logic beforehand. Fairies and hearts each have their own main routine, but share many subroutines with the rest of the absorbables. Believe it or not, apples are completely unrelated, and share none of the same logic. Apples can't be dropped by sprites, so my previous statement is still correct.</p>
+
+	<p>Did you know you can't actually collect apples with the boomerang? I bet you thought you could.</p>
+
+	<h2>Arnold</h2>
+	<p>Before we look at the actual code, let's discuss a basic computer science topic: stack unwinding. To explain the <a href="generalglossary#Stack">stack</a> as succinctly as possible: you can push and pull; the most recent item pushed will be the first thing pulled. The stack is used for calling subroutines so that the CPU knows where to return to when the routine is exited. The stack is the only reference it has to go by for this, so if the topmost item changes between the time the routine is called and the time it is exited, the CPU will return to a different location than where it started.</p>
+
+	<p>Stack unwinding is doing exactly that, but on purpose. I can use sprites (which hearts and rupees are) as an example. Sprites themselves are subroutines, named in the disassembly as "Sprite_X". A common routine among most sprites is <code class="routine">Sprite_CheckIfActive</code>. This routine will see if the sprite should actually perform its AI. If it should, it just returns. If it shouldn't then this routine unwinds the stack. Doing so removes the return address for <code class="routine">Sprite_CheckIfActive</code>. When it jumps back, it returns to where the sprite was called from.</p>
+
+	<code class="snesasm">
+	Sprite_CheckIfActive:
+		LDA $0D00, X : CMP #$09 : BNE .inactive ; look for active state
+		LDA $0FC1 : BNE .inactive ; global pause flag
+		LDA $11 : BNE .inactive ; only active in default submodules
+		LDA $0CAA, X : BMI .active ; check offscreen activeness flag
+		LDA $0F00, X : BEQ .active ; sprite-specific pause flag
+
+	.inactive
+		PLA : PLA ; unwinds the stack
+
+	.active
+		RTS ; return from subroutine
+	</code>
+
+	<h2>Om nom</h2>
+	<p>There are 2 ways for absorbables to be consumed: touching them directly, and via ancilla. These are handled by  <code class="routine">Sprite_CheckAbsorptionByPlayer</code> and <code class="routine">Sprite_HandleDraggingByAncilla</code>, respectively.</p>
+	<p><code class="routine">Sprite_CheckAbsorptionByPlayer</code> is simple. First it checks <code class="address">$0F10,X</code>, which is used to indicate the sprite is a bonk item. If it is a bonk item, then this routine exits without checking for absorption. If the flag isn't set, the sprite's hitbox is checked to see if it overlaps with Link's, exiting if the result is failure. When the hitboxes overlap, the routine <code class="routine">Sprite_HandleAbsorptionByPlayerLong</code> is called to perform the consumption logic.</p>
+	<p>And that should <em>not</em> be a long routine. Long routines should be used when the caller is not in the same bank. In fact, this routine shouldn't even exist. Everything that does call this is in the same bank. What a waste of cycles!</p>
+	<p>Anyways&hellip;</p>
+	<p><code class="routine">Sprite_HandleAbsorptionByPlayer</code> first kills the sprite by setting its state to 0. Then it uses the sprite ID to index a table of sound effects and a table of consumption logic (what exactly is being restored).</p>
+	<p><code class="routine">Sprite_HandleDraggingByAncilla</code> is a bit different. When a sprite is being carried by an ancilla, the index of that ancilla (plus one; zero means no drag) is stored to <code class="address">$0DA0,X</code>, a property of the sprite. That value is then used to check the ancilla's properties. The first thing checked is the ancilla in that slot. If there's nothing there, the sprite is absorbed. And that's actually it. That's the only logic used to check if a sprite should be consumed when its on an ancilla. <code class="routine">Sprite_HandleDraggingByAncilla</code> is used here as well.</p>
+	<p>When the ancilla <em>is</em> active, its coordinates are copied to the sprite's coordinates. Also, the sprite's altitude is set to 0, regardless of the altitude of the ancilla.</p>
+	<p>In both cases where a sprite is being dragged&mdash;the ancilla is active, or inactive&mdash;this routine will unwind the stack. The rest of the sprite's code is skipped, because the CPU returns not to the sprite, but to whatever called the sprite.</p>
+
+	<h2>Order of operations</h2>
+	<p>The majority of sprites, which all share the same code, perform the routines in this order:</p>
+
+	<code class="snesasm">
+	JSR Sprite_HandleDraggingByAncilla
+	JSR Sprite_CheckAbsorptionByPlayer
+	</code>
+
+	<p>Since <code class="routine">Sprite_HandleDraggingByAncilla</code> unwinds the stack, it will prevent <code class="routine">Sprite_HandleAbsorptionByPlayer</code> from being run.</p>
+
+	<p>Hearts, on the other hand, be like this:</p>
+	<code class="snesasm">
+	JSR Sprite_CheckAbsorptionByPlayer
+	JSR Sprite_HandleDraggingByAncilla
+	</code>
+
+	<p>These look strikingly similar, but in my explanation of <code class="routine">Sprite_HandleAbsorptionByPlayer</code>, nowhere did I mention stack unwinding. And that's because it doesn't. For hearts, the first absorption check can be successful, but it will not prevent the second check from happening. So if you happen to have your hitbox overlap with a heart on the correct frame rule and on the same frame that the ancilla carrying it disappears, the consumption logic is run twice. The healing is additive, allowing it to stack with other healing effects that occured on the same frame. Including itself, apparently.</p>
+	<p>On top of that, the main bulk of absorbables are running the checks at the end of the main routine. Hearts do it at the beginning. If a heart is collected while not on an ancilla, it will technically keep moving for the rest of the frame, despite already being deleted.</p>
+	<p>And that's because killing the sprite doesn't stop its code. This does not take effect until the next frame, where the state will be read as 0, causing the slot to be skipped. Of course, those other absorbables also move on the same frame they get eaten, as it happened beforehand. But I think it'd be nice if those cycles weren't wasted. If you ever somehow lag while collecting a heart, feel free to blame it entirely on this inefficiency.</p>
+
+	<h2>Double Decker!!</h2>
+	<p>Let's play connect the dots.</p>
+	<ul>
+		<li>Ancillae only check for active sprites when seeing what to drag.</li>
+		<li>Bonk items aren't inactive, they just have a special property to have them behave different.</p>
+		<li><code class="routine">Sprite_HandleDraggingByAncilla</code> doesn't check that property.</li>
+	</ul>
+	<p>And that's why bonk prize pre-grabbing works. The sprite is attached to an ancilla, and then the ancilla is gone. From there on, it will be attempting to vore itself every frame, but failing because it's in the bonk prize state. As soon as you release it from that state, it will be consumed.</p>
+	<p>And in writing this, I realized you didn't have to stop there. These sprites don't care what ancilla is there, just that there is one. If before bonking the item free, you spawn a new ancilla into that slot, the sprite will happily attach itself to that one. Unfortunately, it will run its countdown timer, but it's really fun while it lasts.</p>
+
+	<h2>Fairies</h2>
+	<p>Fairies are an odd case. They perform the same order of operations as hearts, but you may not have ever doubled a fairy. That's because the hitbox of fairies makes it exceedingly difficult. You'll probably never do it from a standstill; it's not common even if you're trying. But it <em>is</em> in fact possible, resulting in a whopping 14 heart heal.</p>
+
+	<h2>Summary</h2>
+	<p>There are 2 ways by which absorbable sprites can be consumed: from player contact, and via ancilla. For most absorbables, the ancilla routine is run first. The ancilla check just looks to see if the associated ancilla slot that the sprite has latched onto is occupied. This routine contains a stack unwind to prevent the rest of the normal sprite code from being executed. Hearts and fairies run the player contact check first, and that routine does not unwind the stack. This means the rest of the code, including the ancilla check, can be run. The player contact is based on standard collision checks, so it is subject to frame rules. This means that heart duping is effectively a 1/4 odds of success. Fairies have a weird hitbox that makes successful contact on the same frame that its ancilla disappears difficult. It may only be possible with the boomerang.</p>
+
+	<p>Pre-grab works because the bonk prize state is unique to absorbables, and not subject to the grabbing check run by ancilla. Bonk state prizes also don't bother checking their own status to see if they should allow contact with an ancilla. Once the drag is performed, it can't be undone, so pre-grabbed sprites will be consumed as soon as their freed. Or, if the ancilla slot they latched is occupied by anything, they will follow it around.</p>
+</div>
