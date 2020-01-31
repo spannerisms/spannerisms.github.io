@@ -40,7 +40,7 @@ background: glitchybg
 	<p><code class="routine">Sprite_HandleAbsorptionByPlayer</code> first kills the sprite by setting its state to 0. Then it uses the sprite ID to index a table of sound effects and a table of consumption logic (what exactly is being restored).</p>
 	<p><code class="routine">Sprite_HandleDraggingByAncilla</code> is a bit different. When a sprite is being carried by an ancilla, the index of that ancilla (plus one; zero means no drag) is stored to <code class="address">$0DA0,X</code>, a property of the sprite. That value is then used to check the ancilla's properties. The first thing checked is the ancilla in that slot. If there's nothing there, the sprite is absorbed. And that's actually it. That's the only logic used to check if a sprite should be consumed when its on an ancilla. <code class="routine">Sprite_HandleDraggingByAncilla</code> is used here as well.</p>
 	<p>When the ancilla <em>is</em> active, its coordinates are copied to the sprite's coordinates. Also, the sprite's altitude is set to 0, regardless of the altitude of the ancilla.</p>
-	<p>In both cases where a sprite is being dragged&mdash;the ancilla is active, or inactive&mdash;this routine will unwind the stack. The rest of the sprite's code is skipped, because the CPU returns not to the sprite, but to whatever called the sprite.</p>
+	<p>In both cases where a sprite is being dragged&mdash;the ancilla is active, or inactive&mdash;this routine will unwind the stack. The rest of the sprite's code is skipped, because the CPU returns not to the sprite, but to whatever <em>called</em> the sprite.</p>
 
 	<h2>Order of operations</h2>
 	<p>The majority of sprites, which all share the same code, perform the routines in this order:</p>
@@ -59,10 +59,12 @@ background: glitchybg
 	</code>
 
 	<p>These look strikingly similar, but in my explanation of <code class="routine">Sprite_HandleAbsorptionByPlayer</code>, nowhere did I mention stack unwinding. And that's because it doesn't. For hearts, the first absorption check can be successful, but it will not prevent the second check from happening. So if you happen to have your hitbox overlap with a heart on the correct frame rule and on the same frame that the ancilla carrying it disappears, the consumption logic is run twice. The healing is additive, allowing it to stack with other healing effects that occured on the same frame. Including itself, apparently.</p>
+	<p>So why are hearts different in the first place? The big bunch of absorbables all fall to the ground the same way, with a jump and a bounce. Hearts take a more gentle approach and drift down like a feather. This required custom movement logic, and, at that point, it made more sense to handle everything separately. Somewhere along the line, someone switched the two routines.</p>
 	<p>On top of that, the main bulk of absorbables are running the checks at the end of the main routine. Hearts do it at the beginning. If a heart is collected while not on an ancilla, it will technically keep moving for the rest of the frame, despite already being deleted.</p>
 	<p>And that's because killing the sprite doesn't stop its code. This does not take effect until the next frame, where the state will be read as 0, causing the slot to be skipped. Of course, those other absorbables also move on the same frame they get eaten, as it happened beforehand. But I think it'd be nice if those cycles weren't wasted. If you ever somehow lag while collecting a heart, feel free to blame it entirely on this inefficiency.</p>
 
 	<h2>Double Decker!!</h2>
+	<p>OH, BABY! <em>Two</em> explications in <em>one</em> post?!?!?</p>
 	<p>Let's play connect the dots.</p>
 	<ul>
 		<li>Ancillae only check for active sprites when seeing what to drag.</li>
@@ -70,7 +72,7 @@ background: glitchybg
 		<li><code class="routine">Sprite_HandleDraggingByAncilla</code> doesn't check that property.</li>
 	</ul>
 	<p>And that's why bonk prize pre-grabbing works. The sprite is attached to an ancilla, and then the ancilla is gone. From there on, it will be attempting to vore itself every frame, but failing because it's in the bonk prize state. As soon as you release it from that state, it will be consumed.</p>
-	<p>And in writing this, I realized you didn't have to stop there. These sprites don't care what ancilla is there, just that there is one. If before bonking the item free, you spawn a new ancilla into that slot, the sprite will happily attach itself to that one. Unfortunately, it will run its countdown timer, but it's really fun while it lasts.</p>
+	<p>And in writing this, I realized you didn't have to stop there. These sprites don't care what ancilla is there, just that there is one. If before bonking the item free, you spawn a new ancilla into that slot, the sprite will happily attach itself to that one. Unfortunately, it will still run its countdown timer to despawn, but it's really fun while it lasts.</p>
 
 	<h2>Fairies</h2>
 	<p>Fairies are an odd case. They perform the same order of operations as hearts, but you may not have ever doubled a fairy. That's because the hitbox of fairies makes it exceedingly difficult. You'll probably never do it from a standstill; it's not common even if you're trying. But it <em>is</em> in fact possible, resulting in a whopping 14 heart heal.</p>
@@ -78,5 +80,5 @@ background: glitchybg
 	<h2>Summary</h2>
 	<p>There are 2 ways by which absorbable sprites can be consumed: from player contact, and via ancilla. For most absorbables, the ancilla routine is run first. The ancilla check just looks to see if the associated ancilla slot that the sprite has latched onto is occupied. This routine contains a stack unwind to prevent the rest of the normal sprite code from being executed. Hearts and fairies run the player contact check first, and that routine does not unwind the stack. This means the rest of the code, including the ancilla check, can be run. The player contact is based on standard collision checks, so it is subject to frame rules. This means that heart duping is effectively a 1/4 odds of success. Fairies have a weird hitbox that makes successful contact on the same frame that its ancilla disappears difficult. It may only be possible with the boomerang.</p>
 
-	<p>Pre-grab works because the bonk prize state is unique to absorbables, and not subject to the grabbing check run by ancilla. Bonk state prizes also don't bother checking their own status to see if they should allow contact with an ancilla. Once the drag is performed, it can't be undone, so pre-grabbed sprites will be consumed as soon as their freed. Or, if the ancilla slot they latched is occupied by anything, they will follow it around.</p>
+	<p>Pre-grab works because the bonk prize state is unique to absorbables, and not subject to the grabbing check run by ancilla. Bonk state prizes also don't bother checking their own status to see if they should allow contact with an ancilla. Once the drag is performed, it can't be undone, so pre-grabbed sprites will be consumed as soon as they're freed. Or, if the ancilla slot they latched is occupied by anything, they will follow it around.</p>
 </div>
