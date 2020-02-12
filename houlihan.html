@@ -1,0 +1,84 @@
+---
+layout: default
+title: Houlihan - Not a Glitch
+background: houlihanbg
+---
+<div class="contentstuff mechanicsstuff">
+	<h1>Houlihan</h1>
+	<p>As a change of pace from glitch explication, I want to dissect something that is <em>not</em> a glitch, but it's something everyone immediately labels as one. But it's not a glitch, nor is it necessarily the result of one. There are ways to use glitches to trigger the Houlihan warp, but that just means the code is doing its job. Instead, the Houlihan is an easter egg that's been built in as a failsafe, and it's one of the few general failsafes to exist.</p>
+
+	<h2>Misconceptions</h2>
+	<p>To start, I'd like to clear up the second biggest misconception, which is that <span class="wrong">triggering Houlihan is the result of a messed up camera</span>. That's not exactly really true. The camera matters, but only indirectly. What really matters is your X-coordinate, Y-coordinate, and screen ID.</p>
+
+	<h3>Screen ID</h3>
+	<p>This is the easiest to explain. It's your screen's&hellip; ID&hellip; Basically "which screen are you on?" Except instead of saying <em>"Oh, I'm in Kakariko."</em>, it's the CPU reading address <code class="address">$8A</code><code class="addrsize">[2]</code> and saying <em>"Oh, you're on screen <code class="value">$0018</code>."</em></p>
+
+	<h3>Coordinates</h3>
+	<p>Your coordinates together are used to calculate a location in Map16 (which, to keep it brief, is how overworld tiles are stored to keep them, their graphics, and their behaviors "easy" to control). This location is then used in part of the search for where the hole goes.</p>
+
+	<h4>X-coordinate</h4>
+	<p>This may sound silly, but your X-coordinate is easier to explain than your Y-coordinate. Why? Well, it's taken as what it is when you fall into the hole. </p>
+
+	<h4>Y-coordinate</h4>
+	<p>Your Y-coordinate is a little trickier. When you fall into a hole, your Y-coordinate is modified to be placed above the screen. Here's exactly how the routine goes, starting from when we're finally ready to warp:</p>
+	<ol>
+		<li>Reset ability to dash (I guess that routine has some stuff they needed&hellip;?)</li>
+		<li>Set Link's falling status, turn Link invisible, and set his speed modifier to "fast".</li>
+		<li>Subtract the V-scroll of the BG2 camera from Link's Y-coordinate and store it in scratch space.</li>
+		<li>See if we're indoors or outdoors.</li>
+	</ol>
+	<p>Hey! We're outdoors! Let's follow that branch!</p>
+	<ol start="5">
+		<li>Do stuff that's exclusive to the underworld, because having a branches merged makes some sense, but saving every possible byte by using the same exact branch is important to save space. I could have done this a whole lot better.</li>
+		<li>Take our coordinate-camera difference from earlier and add <code class="value">16</code> to it, then put that new value in scratch space.</li>
+		<li>Take Link's Y-coordinate and subtract from it the value from the previous step. Store that as the new Y-coordinate.</li>
+		<li>See if we're indoors (we're not).</li>
+		<li>See if we're on the broken bridge screen on Death Mountain (we're probably not).</li>
+		<li>Call the routine <code class="routine">Overworld_Hole</code>.</li>
+	</ol>
+	<p>So ya, the routine tries to put Link at the top of the screen for later stuff. Some of you may be screaming, <em>"SO THEN IT'S THE CAMERA!"</em>, but it's not that direct. The vertical scroll of the camera matters only because it determines your Y-coordinate. The horizontal scroll of the camera is completely irrelevant.</p>
+	<p>Another subtlety that should be pointed out is that you may sometimes notice the camera jerk upwards after you've fallen into a hole. This happens <em>after</em> the Y-coordinate recalculation, so that's irrelevant as well.</p>
+
+	<h2>The meat</h2>
+	<p>Now that we know the variables used and how they're determined, let's take a look at the actual routine that finds our destination, <code class="routine">Overworld_Hole</code>:</p>
+	<ol>
+		<li>Do a bunch of garbage to our X- and Y- coordinates to find the map16 tile that Link is on (full details below).</li>
+		<li>Do this loop 19 times:
+			<ol>
+				<li>Compare Link's map16 coordinate to the value in the table.</li>
+				<li>If it doesn't match, skip to next hole.</li>
+				<li>Check the screen ID. If it matches, use that index for the hole.</li>
+			</ol>
+			<p>If the loop reaches -1, set the pit index to 19 (remember: 0-index), and put Link in the Light World.</p>
+		</li>
+		<li>Use the index to set the entrance and exit the subroutine.</li>
+	</ol>
+
+	<h2>100% intended</h2>
+	<p>So what exactly makes this not a glitch? A glitch is something that is <em>not</em> intended by the developers. But if you look at this code, it's pretty clearly intended. After all, they promised a Mr. Chris Houlihan his name would appear in the game. What better way to technically fulfill that promise than an obscure fail-safe room?</p>
+
+	<h2>Putting my money where my mouth is</h2>
+	<p>No seriously, this code is sloppy. Here's the vanilla code:</p>
+	<code class="snesasm">
+		REP #$30           ; m=8 x=8 before this
+		LDA $1B
+		AND #$00FF
+		BEQ OVERWORLD_HOLE
+		LDA $00
+		PHA
+		SEP #$30
+	</code>
+	<p>Seriously? Who knew 14 bytes could be so lame? Here's my better code, which uses space and time more efficiently:</p>
+	<code class="snesasm">
+		LDA $1B            ; Load indoors/outdoors
+		BEQ OVERWORLD_HOLE ; Except this one is further ahead in the code
+		PEI ($00)          ; Underused opcode that is totally AWESOME
+	</code>
+	<p>Ya, that's it. 6 bytes. The branch in my code would be 6 bytes further (accounting for the stuff I removed), hitting the instruction <code class="opcode">REP #$20</code>. <code class="register">X</code> should be 16-bit though, so we need to change that to <code class="opcode">REP #$30</code>. Same number of bytes though.</p>
+	<p><code class="opcode">PEI</code> is an underused and underrated instruction that pushes the 16-bit value in the address it holds to stack, regardless of the accumulator's or index register's current bit mode. In this case, it also makes way more sense than swapping bitmodes just to push to the stack, which also required a mask o&mdash;&hellip; Wait a second. No it didn't. Even if you wanted to do it this inefficient way, why would you set the accumulator to 16-bit and immediately load what's intended to be an 8-bit value? <code class="opcode">REP #$30</code> should have come <em>after</em> the <code class="opcode">LDA $1B</code>. It wouldn't affect the <code class="register">Z</code> flag, and it would have removed the need to mask the accumulator before the branch check.</p>
+
+	<h2>Summary</h2>
+	<p>When Link falls into a hole on the overworld, the destination is determined by both the current screen ID and his X- and Y-coordinates. As a small catch, before this even happens, Link's Y-coordinate is determined by the top of the camera. Although the camera can move after the Y-coordinate is recalculated, but before the destination is. So calling it camera-based is only about one-quarter correct.</p>
+	<p>Destinations are in a list, which is looked through for a match from the input parameters. If every item is looked at without finding a match, then the Houlihan Room is used as the target destination.</p>
+	<p>This is one of the few failsafes added to the game. No matter how you slice it, the game is doing exactly what the developers wanted it to do. And because it is possible to trigger the failsafe without doing any actual glitches, calling Houlihan a glitch is patently wrong.</p>
+</div>

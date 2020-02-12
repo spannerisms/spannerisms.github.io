@@ -1,0 +1,133 @@
+---
+layout: default
+title: Remote Control Boomerang Example
+background: glitchybg
+---
+<div class="contentstuff glitchexp">
+	<h1>fig. a</h1>
+	<h2>Variables</h2>
+	<p>We need 3 input variables, so let's define and assign them:</p>
+	<ul>
+		<li><code class="mathVar">b</code> - The base speed we want to "vectorize"</li>
+		<li><code class="mathVar">x</code> - The displacement of our object from Link along the X-axis</li>
+		<li><code class="mathVar">y</code> - The displacement of our object from Link along the Y-axis</li>
+	</ul>
+
+	<h2>Functions</h2>
+	<p>The best way to think about this is multiple sequences. At least to me. Perhaps there's some obscure high-level branch of mathematics that can deal with this in more universally understandable terms, but we're going to think of it as a series of numbers. Multiple series of numbers.</p>
+	<ul>Before looking at the functions we'll use to describe each sequence, let's define three more variables that will be constant:
+		<li><code class="mathVar">j</code> - The larger magnitude of our two displacements; <code class="mathFunc">j=max(|x|,|y|)</code></li>
+		<li><code class="mathVar">k</code> - The smaller magnitude of our two displacements; <code class="mathFunc">k=min(|x|,|y|)</code></li>
+		<li><code class="mathVar">l</code> - All sequences we have will be of length <code class="mathFunc">l=b+1</code>, unless <code class="mathFunc">b=0</code> in which case they will be of length <code class="mathFunc">l=257</code>.</li>
+	</ul>
+	<ul>And now we can define our sequences:
+		<li><code class="mathFunc">a</code> will describe our collection plate. It has the following rules:
+			<ul>
+				<li><code class="mathFunc">a<sub>0</sub>=0</code></li>
+				<li><code class="mathFunc">a<sub>n</sub>=(a<sub>n-1</sub>+k) mod256</code> when <code class="mathFunc">(a<sub>n-1</sub>+k) mod256&lt;j</code></li>
+				<li><code class="mathFunc">a<sub>n</sub>=(a<sub>n-1</sub>+k-j) mod256</code> when <code class="mathFunc">(a<sub>n-1</sub>+k) mod256&ge;j</code></li>
+			</ul>
+		</li>
+		<li><code class="mathFunc">s</code> will describe our main output. It has the following rules:
+			<ul>
+				<li><code class="mathFunc">s<sub>0</sub>=0</code></li>
+				<li><code class="mathFunc">s<sub>n</sub>=s<sub>n-1</sub></code> when <code class="mathFunc">(a<sub>n-1</sub>+k) mod256&lt;j</code></li>
+				<li><code class="mathFunc">s<sub>n</sub>=s<sub>n-1</sub>+1</code> when <code class="mathFunc">(a<sub>n-1</sub>+k) mod256&ge;j</code></li>
+			</ul>
+		</li>
+	</ul>
+	<p>Okay, so formalizing it didn't make it too much more understandable, but now we have what we need to work through an actual problem step by step.</p>
+	<ul>For our example, let's use the following inputs:
+		<li><code class="mathAns">b=5</code></li>
+		<li><code class="mathAns">x=20</code></li>
+		<li><code class="mathAns">y=-30</code></li>
+	</ul>
+	<ul>In addition to our input variables, we have 3 constants from these inputs:
+		<li><code class="mathAns">l=5</code>, as <code class="mathVar">b</code> was nonzero; <code class="mathAns">b&ne;0</code></li>
+		<li><code class="mathAns">j=30</code>, as <code class="mathVar">y</code> has a larger magnitude; <code class="mathAns">y&gt;x</code></li>
+		<li><code class="mathAns">k=20</code>, as <code class="mathVar">x</code> has a smaller magnitude; <code class="mathAns">x&lt;y</code></li>
+	</ul>
+	<h2>Working out</h2>
+	<ul>Step one is easy enough:
+		<li><code class="mathFunc">a=0, &hellip;</code></li>
+		<li><code class="mathFunc">s=0, &hellip;</code></li>
+	</ul>
+	<p>We did it! Let's keep going.</p>
+	<p>We'll do each step by finding the next element in <code class="mathVar">a</code>. For the first term and beyond, we need to use the functions defined above. For our example, we have <code class="mathFunc">0+20≡20 mod256</code> and <code class="mathFunc">20&lt;30</code>. So <code class="mathFunc">a<sub>1</sub>=(0+20) mod256=20</code>. That inequality is used to contruct a rule for both sequences, so we can also find the next element in <code class="mathVar">s</code>. <code class="mathFunc">s<sub>1</sub>=s<sub>0</sub>=0+</code>.</p>
+	<ul>Now, our sequences look like this:
+		<li><code class="mathFunc">a=0, 20, &hellip;</code></li>
+		<li><code class="mathFunc">s=0, 0, &hellip;</code></li>
+	</ul>
+	<p>Let's do the next 4 steps, but do them faster:</p>
+	<ol start="2">
+		<li><code class="mathFunc">[a<sub>1</sub>+k mod256]=[20+20 mod256]=40</code> and <code class="mathFunc">40&ge;30</code>, so we use the second function for the next term of both sequences.
+			<ul>
+				<li><code class="mathFunc">a<sub>2</sub>=[a<sub>1</sub>+k-j mod256]=[20+20-30 mod256]=10</code></li>
+				<li><code class="mathFunc">s<sub>2</sub>=s<sub>1</sub>+1=0+1=1</code></li>
+			</ul>
+			<ul>Sequences:
+				<li><code class="mathFunc">a=0, 20, 10, &hellip;</code></li>
+				<li><code class="mathFunc">s=0, 0, 1, &hellip;</code></li>
+			</ul>
+		</li>
+
+		<li><code class="mathFunc">[a<sub>2</sub>+k mod256]=[10+20 mod256]=30</code> and <code class="mathFunc">30&ge;30</code>, so we use the second function for the next term of both sequences.
+			<ul>
+				<li><code class="mathFunc">a<sub>3</sub>=[a<sub>2</sub>+k-j mod256]=[10+20-30 mod256]=0</code></li>
+				<li><code class="mathFunc">s<sub>3</sub>=s<sub>2</sub>+1=1+1=2</code></li>
+			</ul>
+			<ul>Sequences:
+				<li><code class="mathFunc">a=0, 20, 10, 0, &hellip;</code></li>
+				<li><code class="mathFunc">s=0, 0, 1, 2, &hellip;</code></li>
+			</ul>
+		</li>
+
+		<li><code class="mathFunc">[a<sub>3</sub>+k mod256]=[0+20 mod256]=0</code> and <code class="mathFunc">0&lt;30</code>, so we use the first function for the next term of both sequences.
+			<ul>
+				<li><code class="mathFunc">a<sub>4</sub>=[a<sub>3</sub>+k mod256]=[0+20 mod256]=20</code></li>
+				<li><code class="mathFunc">s<sub>4</sub>=s<sub>3</sub>=2</code></li>
+			</ul>
+			<ul>Sequences:
+				<li><code class="mathFunc">a=0, 20, 10, 0, 20, &hellip;</code></li>
+				<li><code class="mathFunc">s=0, 0, 1, 2, 2, &hellip;</code></li>
+			</ul>
+		</li>
+
+		<li><code class="mathFunc">[a<sub>4</sub>+k mod256]=[20+20 mod256]=40</code> and <code class="mathFunc">40&ge;30</code>, so we use the second function for the next term of both sequences.
+			<ul>
+				<li><code class="mathFunc">a<sub>5</sub>=[a<sub>4</sub>+k-j mod256]=[20+20-30 mod256]=10</code></li>
+				<li><code class="mathFunc">s<sub>5</sub>=s<sub>4</sub>+1=2+1=3</code></li>
+			</ul>
+			<ul>Sequences:
+				<li><code class="mathFunc">a=0, 20, 10, 0, 20, 10</code></li>
+				<li><code class="mathFunc">s=0, 0, 1, 2, 2, 3</code></li>
+			</ul>
+		</li>
+	</ol>
+
+	<p>Phew. We're done. What we care the most about is the final term of sequence <code class="mathVar">s</code>, which, in this case, is <code class="mathVar">3</code>.</p>
+	<ul>Now we look at this set of rules to determine our final output:
+		<li><code class="mathVar">v<sub>x</sub></code> is the velocity along the X-axis</li>
+		<li><code class="mathVar">v<sub>y</sub></code> is the velocity along the Y-axis</li>
+	</ul>
+	<ul>The values of <code class="mathVar">v<sub>x</sub></code> and <code class="mathVar">v<sub>y</sub></code> are determined by the original displacements:
+		<li>
+			<ul>When <code class="mathFunc">|x|&ge;|y|</code>:
+				<li><code class="mathFunc">v<sub>x</sub>=b&times;(x/|x|)</code></li>
+				<li><code class="mathFunc">v<sub>y</sub>=a<sub>l</sub>&times;(y/|y|)</code></li>
+			</ul>
+		</li>
+		<li>
+			<ul>When <code class="mathFunc">|x|&lt;|y|</code>:
+				<li><code class="mathFunc">v<sub>x</sub>=a<sub>l</sub>&times;(x/|x|)</code></li>
+				<li><code class="mathFunc">v<sub>y</sub>=b&times;(y/|y|)</code></li>
+			</ul>
+		</li>
+	</ul>
+	<ul>Our final values are thus:
+		<li><code class="mathVar">v<sub>x</sub>=5</code></li>
+		<li><code class="mathVar">v<sub>y</sub>=&minus;3</code></li>
+	</ul>
+	<p>In other words, the axis that had the larger displacement (the Y-axis when both are equal) receives the base speed <code class="mathVar">b</code> as the magnitude of its velocity, with the sign matching the displacement along the axis. The smaller displacement (the X-axis when both are equal) receives the final value calculated from the loop, again, matching the sign of the displacement.</p>
+	<p>Our example problem used a small input for <code class="mathVar">b</code>, otherwise the algorithm would have been more difficult and tedious to follow. As such, the resulting output being small is not surprising. Perhaps this example is more enlightening as to why <code class="mathVar">b=0</code> results in the behavior that it does. Working out of such an example is left as an exercise to the reader.</p>
+</div>
