@@ -1,0 +1,200 @@
+---
+layout: default
+title: Testpage
+---
+<style>
+div.patchWindow {
+    background: #F0F0EE;
+    padding: 13px;
+    border-radius: 20px;
+    border: 4px double blue;
+    width: 100%;
+}
+
+.button {
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid;
+    text-align: center;
+}
+
+div.uploadWindow {
+    width: 100%;
+}
+
+.uploadWindow .button {
+    float: right;
+    margin-left: 10px;
+}
+
+.uploadWindow .button.jp {
+    background: #FFFFFF;
+    border-color: red;
+}
+
+.uploadWindow .button.us {
+    background: #FFFFFF;
+    border-color: blue;
+}
+
+.button.romMissing {
+    filter: grayscale(80%);
+    opacity: .7;
+}
+
+div.hackWindow {
+    padding: 20px 10px;
+}
+
+.hackWindow .hackName {
+    border: 2px inset #000;
+    border-radius: 10px 10px 0 0;
+    width: 40%;
+    padding: 0 10px;
+    background: #FFF;
+    font-weight: bold;
+    color: Blue;
+    border-bottom: none;
+    font-size: 150%;
+}
+
+.hackWindow .hackInfo {
+    border: 2px inset #000;
+    border-radius: 0 10px 10px 10px;
+    padding: 20px 30px 10px;
+    background: white;
+}
+
+.hackWindow .hackInfo .name,
+.hackWindow .hackInfo .romNeeded {
+    width: 75%;
+}
+
+.hackWindow .hackInfo .name span.label,
+.hackWindow .hackInfo .romNeeded span.label {
+    display: inline-block;
+    font-weight: bold;
+    width: 100px;
+}
+
+.hackWindow .hackInfo .name span:not(.label),
+.hackWindow .hackInfo .romNeeded span:not(.label) {
+    font-weight: normal;
+    display: inline-block;
+}
+
+.hackWindow .hackInfo .hackDesc {
+    display: inline-block;
+    margin-top: 10px;
+    text-align: justify;
+}
+
+.hackWindow .getHack {
+    padding: 10px 0;
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.hackWindow .getHack .button {
+    display: inline-block;
+    margin: 0 1%;
+    width: 50%;
+}
+
+.hackWindow .getHack .button.patchDownload {
+    background: #fddfe4;
+    color: red;
+}
+
+.hackWindow .getHack .button.hackDownload {
+    background: #4fd9f5;
+    color: #0505af;
+}
+
+.morePatches {
+    background: white;
+    border: 3px solid #FF5500;
+    border-radius: 20px;
+}
+
+.morePatches .patchesHeader {
+    font-weight: bold;
+    font-size: 150%;
+    background: #FF5500;
+    border: 3px solid #FF5500;
+    border-radius: 10px 0 20px;
+    border-left: none;
+    border-top: none;
+    width: 33%;
+    text-align: center;
+}
+
+.morePatches .romsContainer {
+}
+
+.morePatches .romsContainer .button {
+}
+
+.morePatches .romsContainer {
+    padding: 20px 10px;
+    display: flex;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+.morePatches .romsContainer .button {
+    flex-grow: 1;
+    width: 0;
+    flex-basis: 25%;
+    margin: 2px;
+}
+
+.morePatches .romsContainer .button:hover {
+    box-shadow: 0 0 1px red;
+    background: black;
+    color: white;
+}
+.morePatches .romsContainer .filler {
+    opacity: 0;
+    cursor: default;
+}
+</style>
+<div class="contentstuff">
+	<div class="patchWindow">
+		<div class="uploadWindow">
+			<div class="button romType jp">JP1.0</div>
+			<div class="button romType us romMissing">US1.1</div>
+		</div>
+		<div class="hackWindow">
+			<div class="hackName">Rupee Green</div>
+			<div class="hackInfo">
+				<div class="name"><span class="label">Author:</span> <span>Kan</span></div>
+				<div class="romNeeded"><span class="label">Base ROM:</span> <span>US1.1</span></div>
+				<div class="hackDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+				<div class="getHack">
+					<div class="button patchDownload">Download .bps</div>
+					<div class="button hackDownload romMissing">Download ROM</div>
+				</div>
+			</div>
+		</div>
+	<div class="morePatches">
+		<div class="patchesHeader">More ROMS</div>
+		<div class="romsContainer">
+			<div class="otherROM button selected">Rupee Green</div>
+			<div class="otherROM button">Gerudo Exile</div>
+			<div class="otherROM button">Hylian Legacy</div>
+			<div class="otherROM button">Secrets of the Past</div>
+			<div class="otherROM button filler"></div>
+			<div class="otherROM button filler"></div>
+		</div>
+	</div>
+</div>
