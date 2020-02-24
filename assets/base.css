@@ -203,6 +203,35 @@ code.addrsize {
 	vertical-align: bottom;
 }
 
+span.underRadical {
+}
+
+code.mathVar,
+code.mathFunc,
+code.mathAns {
+	font-size: 95%;
+	line-height: 80%;
+	letter-spacing: -.05em;
+	font-style: italic;
+}
+
+code.mathFunc {
+	background: #F0F0FF;
+	border-radius: 5px;
+	white-space: nowrap;
+	padding: 0 6px;
+}
+
+code.mathVar {
+	color: #1936EA;
+	font-weight: bold;
+}
+
+code.mathAns {
+	color: #B5370B;
+	font-weight: bold;
+}
+
 /* Misc */
 span.wrong,
 q.wrong {
