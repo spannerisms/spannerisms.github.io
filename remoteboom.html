@@ -46,143 +46,15 @@ background: glitchybg
 	<p>So what does this mess actually do? Well, it's an over-the-top algorithm to calculate <code class="mathFunc">b&times;tan(&theta;)</code>, where <code class="mathVar">b</code> is the base speed given as an input and <code class="mathVar">&theta;</code> is the angle of a right triangle whose hypotenuse is a line that connects Link and the entity, with the side adjacent to <code class="mathVar">&theta;</code> being longer or as long as the side opposite to <code class="mathVar">&theta;</code>.</p>
 	<p>Or to put it less formally: <code class="mathFunc">base_speed&times;(smaller/bigger)</code>.</p>
 	<p>I don't think I get it either. I mean, I get it. But why? That's a really weird way to go about doing this. It doesn't even partition the velocity cleanly. One of the axes (the further one) will always have the input value. The other will have something else. This results in values anywhere from <code class="mathAns">b</code> to <code class="mathAns">b&radic;<span class="underRadical">2</span></code> as the final gross speed, which shouldn't be desirable. The more reasonable expectation is that the gross speed is the magnitude of the sum of each axis' vector.</p>
-	<p>The worst part, though, is that all this is doing is multiplication and division. While there may not be any operations in the CPU's instruction set for these functions, there <em>are</em> hardware registers specifically for that purpose. Very small base speeds will outperform those registers, but values are never that small. By using this looped algorithm, the runtime becomes longer as the base speed increases. Using the built-in registers would pretty much always have the same run time.</p>
-
-	<h2>fig. a</h2>
-	<p>Let's try working out an example problem with simpler inputs, and let's look at it in more mathematical terms.</p>
-
-	<h3>Variables</h3>
-	<p>We need 3 input variables, so let's define and assign them:</p>
-	<ul>
-		<li><code class="mathVar">b</code> - The base speed we want to "vectorize"</li>
-		<li><code class="mathVar">x</code> - The displacement of our object from Link along the X-axis</li>
-		<li><code class="mathVar">y</code> - The displacement of our object from Link along the Y-axis</li>
-	</ul>
-
-	<h3>Functions</h3>
-	<p>The best way to think about this is multiple sequences. At least to me. Perhaps there's some obscure high-level branch of mathematics that can deal with this in more universally understandable terms, but we're going to think of it as a series of numbers. Multiple series of numbers.</p>
-	<ul>Before looking at the functions we'll use to describe each sequence, let's define three more variables that will be constant:
-		<li><code class="mathVar">j</code> - The larger magnitude of our two displacements; <code class="mathFunc">j=max(|x|,|y|)</code></li>
-		<li><code class="mathVar">k</code> - The smaller magnitude of our two displacements; <code class="mathFunc">k=min(|x|,|y|)</code></li>
-		<li><code class="mathVar">l</code> - All sequences we have will be of length <code class="mathFunc">l=b+1</code>, unless <code class="mathFunc">b=0</code> in which case they will be of length <code class="mathFunc">l=257</code>.</li>
-	</ul>
-	<ul>And now we can define our sequences:
-		<li><code class="mathFunc">a</code> will describe our collection plate. It has the following rules:
-			<ul>
-				<li><code class="mathFunc">a<sub>0</sub>=0</code></li>
-				<li><code class="mathFunc">a<sub>n</sub>=(a<sub>n-1</sub>+k) mod256</code> when <code class="mathFunc">(a<sub>n-1</sub>+k) mod256&lt;j</code></li>
-				<li><code class="mathFunc">a<sub>n</sub>=(a<sub>n-1</sub>+k-j) mod256</code> when <code class="mathFunc">(a<sub>n-1</sub>+k) mod256&ge;j</code></li>
-			</ul>
-		</li>
-		<li><code class="mathFunc">s</code> will describe our main output. It has the following rules:
-			<ul>
-				<li><code class="mathFunc">s<sub>0</sub>=0</code></li>
-				<li><code class="mathFunc">s<sub>n</sub>=s<sub>n-1</sub></code> when <code class="mathFunc">(a<sub>n-1</sub>+k) mod256&lt;j</code></li>
-				<li><code class="mathFunc">s<sub>n</sub>=s<sub>n-1</sub>+1</code> when <code class="mathFunc">(a<sub>n-1</sub>+k) mod256&ge;j</code></li>
-			</ul>
-		</li>
-	</ul>
-	<p>Okay, so formalizing it didn't make it too much more understandable, but now we have what we need to work through an actual problem step by step.</p>
-	<ul>For our example, let's use the following inputs:
-		<li><code class="mathAns">b=5</code></li>
-		<li><code class="mathAns">x=20</code></li>
-		<li><code class="mathAns">y=-30</code></li>
-	</ul>
-	<ul>In addition to our input variables, we have 3 constants from these inputs:
-		<li><code class="mathAns">l=5</code>, as <code class="mathVar">b</code> was nonzero; <code class="mathAns">b&ne;0</code></li>
-		<li><code class="mathAns">j=30</code>, as <code class="mathVar">y</code> has a larger magnitude; <code class="mathAns">y&gt;x</code></li>
-		<li><code class="mathAns">k=20</code>, as <code class="mathVar">x</code> has a smaller magnitude; <code class="mathAns">x&lt;y</code></li>
-	</ul>
-	<h3>Working out</h3>
-	<ul>Step one is easy enough:
-		<li><code class="mathFunc">a=0, &hellip;</code></li>
-		<li><code class="mathFunc">s=0, &hellip;</code></li>
-	</ul>
-	<p>We did it! Let's keep going.</p>
-	<p>We'll do each step by finding the next element in <code class="mathVar">a</code>. For the first term and beyond, we need to use the functions defined above. For our example, we have <code class="mathFunc">0+20≡20 mod256</code> and <code class="mathFunc">20&lt;30</code>. So <code class="mathFunc">a<sub>1</sub>=(0+20) mod256=20</code>. That inequality is used to contruct a rule for both sequences, so we can also find the next element in <code class="mathVar">s</code>. <code class="mathFunc">s<sub>1</sub>=s<sub>0</sub>=0+</code>.</p>
-	<ul>Now, our sequences look like this:
-		<li><code class="mathFunc">a=0, 20, &hellip;</code></li>
-		<li><code class="mathFunc">s=0, 0, &hellip;</code></li>
-	</ul>
-	<p>Let's do the next 4 steps, but do them faster:</p>
-	<ol start="2">
-		<li><code class="mathFunc">[a<sub>1</sub>+k mod256]=[20+20 mod256]=40</code> and <code class="mathFunc">40&ge;30</code>, so we use the second function for the next term of both sequences.
-			<ul>
-				<li><code class="mathFunc">a<sub>2</sub>=[a<sub>1</sub>+k-j mod256]=[20+20-30 mod256]=10</code></li>
-				<li><code class="mathFunc">s<sub>2</sub>=s<sub>1</sub>+1=0+1=1</code></li>
-			</ul>
-			<ul>Sequences:
-				<li><code class="mathFunc">a=0, 20, 10, &hellip;</code></li>
-				<li><code class="mathFunc">s=0, 0, 1, &hellip;</code></li>
-			</ul>
-		</li>
-
-		<li><code class="mathFunc">[a<sub>2</sub>+k mod256]=[10+20 mod256]=30</code> and <code class="mathFunc">30&ge;30</code>, so we use the second function for the next term of both sequences.
-			<ul>
-				<li><code class="mathFunc">a<sub>3</sub>=[a<sub>2</sub>+k-j mod256]=[10+20-30 mod256]=0</code></li>
-				<li><code class="mathFunc">s<sub>3</sub>=s<sub>2</sub>+1=1+1=2</code></li>
-			</ul>
-			<ul>Sequences:
-				<li><code class="mathFunc">a=0, 20, 10, 0, &hellip;</code></li>
-				<li><code class="mathFunc">s=0, 0, 1, 2, &hellip;</code></li>
-			</ul>
-		</li>
-
-		<li><code class="mathFunc">[a<sub>3</sub>+k mod256]=[0+20 mod256]=0</code> and <code class="mathFunc">0&lt;30</code>, so we use the first function for the next term of both sequences.
-			<ul>
-				<li><code class="mathFunc">a<sub>4</sub>=[a<sub>3</sub>+k mod256]=[0+20 mod256]=20</code></li>
-				<li><code class="mathFunc">s<sub>4</sub>=s<sub>3</sub>=2</code></li>
-			</ul>
-			<ul>Sequences:
-				<li><code class="mathFunc">a=0, 20, 10, 0, 20, &hellip;</code></li>
-				<li><code class="mathFunc">s=0, 0, 1, 2, 2, &hellip;</code></li>
-			</ul>
-		</li>
-
-		<li><code class="mathFunc">[a<sub>4</sub>+k mod256]=[20+20 mod256]=40</code> and <code class="mathFunc">40&ge;30</code>, so we use the second function for the next term of both sequences.
-			<ul>
-				<li><code class="mathFunc">a<sub>5</sub>=[a<sub>4</sub>+k-j mod256]=[20+20-30 mod256]=10</code></li>
-				<li><code class="mathFunc">s<sub>5</sub>=s<sub>4</sub>+1=2+1=3</code></li>
-			</ul>
-			<ul>Sequences:
-				<li><code class="mathFunc">a=0, 20, 10, 0, 20, 10</code></li>
-				<li><code class="mathFunc">s=0, 0, 1, 2, 2, 3</code></li>
-			</ul>
-		</li>
-	</ol>
-
-	<p>Phew. We're done. What we care the most about is the final term of sequence <code class="mathVar">s</code>, which, in this case, is <code class="mathVar">3</code>.</p>
-	<ul>Now we look at this set of rules to determine our final output:
-		<li><code class="mathVar">v<sub>x</sub></code> is the velocity along the X-axis</li>
-		<li><code class="mathVar">v<sub>y</sub></code> is the velocity along the Y-axis</li>
-	</ul>
-	<ul>The values of <code class="mathVar">v<sub>x</sub></code> and <code class="mathVar">v<sub>y</sub></code> are determined by the original displacements:
-		<li>
-			<ul>When <code class="mathFunc">|x|&ge;|y|</code>:
-				<li><code class="mathFunc">v<sub>x</sub>=b&times;(x/|x|)</code></li>
-				<li><code class="mathFunc">v<sub>y</sub>=a<sub>l</sub>&times;(y/|y|)</code></li>
-			</ul>
-		</li>
-		<li>
-			<ul>When <code class="mathFunc">|x|&lt;|y|</code>:
-				<li><code class="mathFunc">v<sub>x</sub>=a<sub>l</sub>&times;(x/|x|)</code></li>
-				<li><code class="mathFunc">v<sub>y</sub>=b&times;(y/|y|)</code></li>
-			</ul>
-		</li>
-	</ul>
-	<ul>Our final values are thus:
-		<li><code class="mathVar">v<sub>x</sub>=5</code></li>
-		<li><code class="mathVar">v<sub>y</sub>=&minus;3</code></li>
-	</ul>
-	<p>In other words, the axis that had the larger displacement (the Y-axis when both are equal) receives the base speed <code class="mathVar">b</code> as the magnitude of its velocity, with the sign matching the displacement along the axis. The smaller displacement (the X-axis when both are equal) receives the final value calculated from the loop, again, matching the sign of the displacement.</p>
-	<p>Our example problem used a small input for <code class="mathVar">b</code>, otherwise the algorithm would have been more difficult and tedious to follow. As such, the resulting output being small is not surprising. Perhaps this example is more enlightening as to why <code class="mathVar">b=0</code> results in the behavior that it does. Working out of such an example is left as an exercise to the reader.</p>
+	<p>The worst part, though, is that all this is doing is multiplication and division. While there may not be any operations in the CPU's instruction set for these functions, there are hardware registers specifically for that purpose. Very small base speeds will outperform those registers, but values are never that small. By using this looped algorithm, the runtime becomes longer as the base speed increases. Using the built-in registers would pretty much always have the same run time.</p>
+	<p>If you want to see an example problem worked through (and you don't), check out <a href="remoteboomex">this page</a>.</p>
 
 	<h2>Tackling the real issues</h2>
-	<p>The problem we're interested in, though, is how the loop is terminated. It's when the loop counter is <em>exactly</em> 0. This is fine in most cases. The routine is basically copy/paste from the sprite version, which does find use negative values to move sprites away from the player. But in the case of 0, it's acting like a big negative value, but only for the loop.</p>
-	<p>Oh wait, here's a funny thing: the sprite version of this routine does not accept values of 0. Someone must have realized it could be a problem there, so the routine exit immediately.</p>
+	<p>The problem we're interested in, specifically, is how the loop is terminated. It's when the loop counter is <em>exactly</em> 0. This is fine in most cases. The routine is basically copy/paste from the sprite version, which does find use negative values to move sprites away from the player. But in the case of 0, it's acting like a big negative value, but only for the loop.</p>
+	<p>Oh wait, here's a funny thing: the sprite version of this routine does not accept values of 0. Someone must have realized it could be a problem there, so the routine exits immediately.</p>
 	<p>The more displaced axis will always get 0. The other axis will get a speed that locks it onto 1 of 8 lines, which are 45&deg; (&pi;/4 rad) apart, starting from 0. Once the boomerang has reached a point on this line, it will stay there until disturbed. If it has to move, it will favor one of the directions it was thrown in, preferring Y over X when both are equally displaced.</p>
 	<p>In some sense, the boomerang no longer cares about returning to Link. It will return if you can reach it, which is possible if you move towards it along the same line it's obsessed with. The boomerang normally seems to be moving pretty slow with this, but that's only because it doesn't need to move much to stay on the line. If you move closer to it in one direction but not the other during a diagonal throw, it will achieve high instantaneous velocities as it snaps towards a cardinal line.</p>
 
 	<h2>Summary</h2>
-	<p>Data bleed causes the ice rod shot to set the boomerang's return speed to 0 when it's in a slot 3 positions lower. Funky speed math causes the boomerang to snap to and stay on specific lines, which all intersect at Link. This funky math also involves an underflow from the value of 0, resulting in negative numbers that tend to push the boomerang away from Link.</p>
+	<p>Data bleed causes the ice rod shot to set the boomerang's return speed to 0 when it's in a slot 3 positions lower. Funky speed math causes the boomerang to snap to and stay on specific lines, which all intersect at Link. This funky math also involves an overflow from the value of 0, resulting in negative numbers that tend to push the boomerang away from Link.</p>
 </div>

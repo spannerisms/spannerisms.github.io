@@ -332,6 +332,13 @@ div.content {
 	image-rendering: pixelated;
 }
 
+.houlihanbg {
+	background-image: url('bg/houlihan.png');
+	background-blend-mode: color-burn;
+	background-size: contain;
+	image-rendering: pixelated;
+}
+
 div.hackTitle {
 	width: 100%;
 	height: 300px;
