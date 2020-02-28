@@ -33,7 +33,7 @@ background: houlihanbg
 		<li>Take our coordinate-camera difference from earlier and add <code class="value">16</code> to it, then put that new value in scratch space.</li>
 		<li>Take Link's Y-coordinate and subtract from it the value from the previous step. Store that as the new Y-coordinate.</li>
 		<li>See if we're indoors (we're not).</li>
-		<li>See if we're on the broken bridge screen on Death Mountain (we're probably not)</li>
+		<li>See if we're on the broken bridge screen on Death Mountain (we're probably not).</li>
 		<li>Call the routine <code class="routine">Overworld_Hole</code>.</li>
 	</ol>
 	<p>So ya, the routine tries to put Link at the top of the screen for later stuff. Some of you may be screaming, <em>"SO THEN IT'S THE CAMERA!"</em>, but it's not that direct. The vertical scroll of the camera matters only because it determines your Y-coordinate. The horizontal scroll of the camera is completely irrelevant.</p>
@@ -68,7 +68,7 @@ background: houlihanbg
 		PHA
 		SEP #$30
 	</code>
-	<p>Seriously? Who knew 14 bytes could be so lame? Here's my better code, which uses space more efficiently:</p>
+	<p>Seriously? Who knew 14 bytes could be so lame? Here's my better code, which uses space and time more efficiently:</p>
 	<code class="snesasm">
 		LDA $1B            ; Load indoors/outdoors
 		BEQ OVERWORLD_HOLE ; Except this one is further ahead in the code
