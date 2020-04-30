@@ -109,6 +109,7 @@ div.content h1 {
 	left: -50px;
 	border-bottom: 3px solid;
 	padding-left: 10px;
+	clear: both;
 }
 
 div.content h2 {
@@ -118,6 +119,7 @@ div.content h2 {
 	border-bottom: 1px solid;
 	padding-left: 10px;
 	width: 85%;
+	clear: both;
 }
 
 div.content h3 {
@@ -127,6 +129,7 @@ div.content h3 {
 	border-bottom: 1px solid #888888;
 	padding-left: 10px;
 	width: 70%;
+	clear: both;
 }
 
 blockquote {
@@ -140,10 +143,6 @@ blockquote:after {
 
 .float-right {
 	float: right;
-}
-
-.clear {
-	clear: both;
 }
 
 .supershort {
@@ -416,6 +415,10 @@ span.poof {
 	font-weight: bold;
 	font-variant: small-caps;
 	text-transform: lowercase
+}
+
+p.damagepad {
+	padding: 0 80px 0 40px;
 }
 
 /* Linking to previous terms */
