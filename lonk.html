@@ -6,5 +6,59 @@ background: glitchybg
 
 <div class="contentstuff glitchexp">
 	<h1>Lonk</h1>
+	<p>We all know what superbunny is. I hope. Lonk is the exact opposite. Two separate addresses help control Link's general state (actually like 300, but we're looking at 2). Address <code class="address">$5D</code> is Link's general state handler. Address <code class="address">$02E0</code> is a graphics flag.</p>
+	<p>In the superbunny state, <code class="address">$02E0</code> has a value of <code class="value">1</code>, signalling bunny graphics, but <code class="address">$5D</code> has a value of <code class="value">$00</code>, which indicates Link is in his default, human state. Anything that looks at <code class="address">$02E0</code> for the bunny (such as using items), will believe that Link is a bunny. But anything using <code class="address">$5D</code> (such as the general routine handler that handles <span class="snesbutton snesA">A</span> and <span class="snesbutton snesB">B</span> inputs will think he's human.</p>
+	<p>For Lonk, it's the opposite. <code class="address">$02E0</code> is <code class="value">0</code>, signalling human form, but <code class="address">$5D</code> is <code class="value">$17</code>, which means Link is a bunny.</p>
 
+	<h2>Underworld</h2>
+	<p>To understand how Lonk can trigger when entering the underworld, we need to look at 2 routines that are run when loading the underworld. These routines are executed one after another, so let's show them for fun:</p>
+
+	<code class="snesasm">
+	02822B    JSR $89F1      Dungeon_ResetTorchBackgroundAndPlayer
+	02822E    JSL $1CFCE2    Link_CheckBunnyStatus
+	</code>
+
+	<p><code class="routine">Dungeon_ResetTorchBackgroundAndPlayer</code> does what it says on the tin, but we want to look specifically at the end of it&mdash;the part that handles player properties:</p>
+	<code class="snesasm">
+	       028A12    LDA $0372       Is Link dashing (or armed spinspeed)
+	       028A15    BEQ exit        If not, do nothing
+	       028A17    STZ $4D         Clear secondary state handler
+	       028A19    STZ $46         Clear recoil timer
+	       028A1B    LDA #$FF
+	       028A1D    STA $29         Reset z-axis recoil
+	       028A1F    STA $C7         I think this one is pointless
+	       028A21    STZ $3D         Reset sword stuff
+	       028A23    STZ $5E         Reset speed
+	       028A25    STZ $032B       Collision related?
+	       028A28    STZ $0372       Reset dashing
+	       028A2B    LDA #$00        Why is this not an STZ?
+	       028A2D    STA $5D         Reset primary state handler
+	exit   028A2F    RTS
+	</code>
+
+	<p>The important take away here is that if Link is dashing, then his primary state handler <code class="address">$5D</code> is reset, otherwise, it is left alone.</p>
+
+	<p><code class="routine">Link_CheckBunnyStatus</code> is as follows:</p>
+	<code class="snesasm">
+	       1CFCE2    LDA $5D         Check primary state handler
+	       1CFCE4    CMP #$02        Is Link recoiling?
+	       1CFCE6    BNE exit        If not, just leave
+	       1CFCE8    LDY #$00        $00 indicates default state
+	butt   1CFCEA    LDA $02E0       Check graphics flag
+	       1CFCEC    BEQ set         If human, set $5D to $00
+	       1CFCEE    LDY #$17        $17 indicates bunny state
+	       1CFCF0    LDA $7EF357     Check for pearl
+	       1CFCF4    BEQ set         If no pearl, $5D to $17
+	       1CFCF6    LDY #$1C        $1C indicates temporary bunny
+	set    1CFCF8    STY $5D         Set primary state handler
+	exit   1CFCFA    RTL
+	</code>
+
+	<p>EXCEPT I LIED!!!!</p>
+	<p>You see that instruction labelled <code class="routine">butt</code>? That's what they <em>intended</em> to do, and that's what's executed in the US version, but in JP1.0, this is what actually happens:</p>
+	<code class="snesasm">
+	butt   1CFCEA    LDA $E0         Check the camera
+	</code>
+	<p>They assembled it wrong. Instead of reading the 16-bit address for Link's graphics, the addressing mode tells the CPU to read the direct page address for the low byte of the BG1 camera.</p>
+	<p>The properties of the camera looked at are for the landing point of the entrance. As long as the camera is <em>not</em> 0, then damage boosting into an entrance will put Link in Lonk state when he doesn't have the moon pearl. In practice, this means that Lonk can only be triggered the entrance is in the middle of the supertile.</p>
 </div>
