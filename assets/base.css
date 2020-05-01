@@ -330,6 +330,7 @@ td.dead {
 td.badsubclass {
 	background: #ff0000AA;
 }
+
 span.damage-subclass {
 	display: block;
 }
