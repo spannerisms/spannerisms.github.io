@@ -59,6 +59,6 @@ background: glitchybg
 	<code class="snesasm">
 	butt   1CFCEA    LDA $E0         Check the camera
 	</code>
-	<p>They assembled it wrong. Instead of reading the 16-bit address for Link's graphics, the addressing mode tells the CPU to read the direct page address for the low byte of the BG1 camera.</p>
-	<p>The properties of the camera looked at are for the landing point of the entrance. As long as the camera is <em>not</em> 0, then damage boosting into an entrance will put Link in Lonk state when he doesn't have the moon pearl. In practice, this means that Lonk can only be triggered the entrance is in the middle of the supertile.</p>
+	<p>They assembled it wrong. Instead of reading the 16-bit address for Link's graphics, the addressing mode used was direct page, an 8-bit address. It just so happens that the low byte of the intended address is the address for the low byte of the BG1 horizontal scroll.</p>
+	<p>The properties of the camera looked at are for the landing point of the entrance. As long as the camera is <em>not</em> 0, then damage boosting into an entrance will put Link in Lonk state when he doesn't have the moon pearl. In practice, this means that Lonk can only be triggered if the entrance is in the middle of the supertile.</p>
 </div>

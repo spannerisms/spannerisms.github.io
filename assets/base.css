@@ -323,6 +323,18 @@ th.divider {
 	background: transparent;
 }
 
+th.number,
+td.number {
+	text-align: right;
+}
+
+th.value,
+td.value {
+	font-family: 'Roboto Mono', consolas, monospace;
+	font-size: 90%;
+	color: #4040C0
+}
+
 td.dead {
 	opacity: 0.4;
 }
