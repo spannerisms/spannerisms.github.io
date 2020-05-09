@@ -3,7 +3,6 @@ layout: default
 title: Lonk
 background: glitchybg
 ---
-
 <div class="contentstuff glitchexp">
 	<h1>Lonk</h1>
 	<p>We all know what superbunny is. I hope. Lonk is the exact opposite. Two separate addresses help control Link's general state (actually like 300, but we're looking at 2). Address <code class="address">$5D</code> is Link's general state handler. Address <code class="address">$02E0</code> is a graphics flag.</p>
@@ -59,6 +58,13 @@ background: glitchybg
 	<code class="snesasm">
 	butt   1CFCEA    LDA $E0         Check the camera
 	</code>
-	<p>They assembled it wrong. Instead of reading the 16-bit address for Link's graphics, the addressing mode used was direct page, an 8-bit address. It just so happens that the low byte of the intended address is the address for the low byte of the BG1 horizontal scroll.</p>
-	<p>The properties of the camera looked at are for the landing point of the entrance. As long as the camera is <em>not</em> 0, then damage boosting into an entrance will put Link in Lonk state when he doesn't have the moon pearl. In practice, this means that Lonk can only be triggered if the entrance is in the middle of the supertile.</p>
+	<p>They assembled it wrong. Instead of reading the 16-bit address for Link's graphics, the addressing mode used was direct page, an 8-bit address. Their source code probably had the correct address, but a stray symbol must have caused it to discard the high byte. It just so happens that the low byte of the intended address is the address for the low byte of the BG1 horizontal scroll.</p>
+	<p>By the time this check is performed, the entrance's properties has been loaded. Thus, the camera properties being looked at are for the landing point of the entrance. As long as the camera's low byte is <em>not</em> 0, then damage boosting into an entrance will put Link in Lonk state when he doesn't have the moon pearl. In practice, this means that Lonk can only be triggered if the entrance is in the middle of the supertile.</p>
+
+	<h2>Misbehavior</h2>
+	<p>The state mismatch between the two addresses I originally described (<code class="address">$5D</code> and <code class="address">$02E0</code>) is all you really need to understand the majority of this glitch. Lonk's walk's wonk is due to a shorter animation cycle from <code class="address">$5D</code> being <code class="value">$17</code> for bunny. Sword and boots are inhibited by that as well. Items, on the other hand, are looking at <code class="address">$02E0</code>. Why? The bunny is allowed to use bottles, so the general state handler can't be used to&mdash;well, I guess it could&hellip;? That's just not the way they coded it.</p>
+	<p>Pretty much everything related to both Lonk and Superbunny boil down to which address the developers decided to check for bunny status. Some of these decisions may have been to facilitate the logic when taking temporary bunny into account, but all we can really do is guess.</p>
+
+	<h2>Summary</h2>
+	<p>A disagreement between two addresses&mdash;<code class="address">$5D</code> and <code class="address">$02E0</code>&mdash;is the cause of all weird Lonk behavior. Taking damage into an overworld&ndash;underworld transition causes Link's general state handler (<code class="address">$5D</code>) to either be put into temporary bunny (with the moon pearl), or permabunny (without) when the entrance leads to the center of a supertile. This is a JP1.0 glitch caused by an erroneously assembled instruction.</p>
 </div>
