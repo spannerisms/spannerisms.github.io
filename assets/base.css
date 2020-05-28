@@ -616,3 +616,41 @@ div.metaLinks a {
 	font-size: 85%;
 	padding: 3px 5px;
 }
+
+.glitchclasslist > li.hassublist {
+	position: relative;
+}
+
+.glitchclasslist > li.hassublist ul {
+	height: auto;
+	max-height: 0px;
+	transition: max-height 1s linear;
+	overflow-y: hidden;
+	position: absolute;
+	background: #FFF;
+	box-shadow: 1px 1px 2px;
+	z-index: 1000;
+	padding: 0 20px 0 40px;
+}
+
+.glitchclasslist > li.hassublist:after {
+	content: ' ';
+	height: 0px;
+	border:5px solid transparent;
+	border-top-color: black;
+	display: inline-block;
+	vertical-align: text-bottom;
+}
+
+.glitchclasslist >li.hassublist:hover::after {
+	border-top-color: transparent;
+	border-bottom-color: blue;
+}
+
+.glitchclasslist >li.hassublist:hover ul {
+	display: block;
+	overflow-y: hidden;
+	max-height: 200px;
+	height: auto;
+	transition: max-height 1s linear;
+}
