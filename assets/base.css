@@ -272,7 +272,7 @@ table > thead th {
 }
 
 table > tbody th {
-	padding: 2px 5px;;
+	padding: 2px 5px;
 	background: #E0E0FF;
 	text-align: inherit;
 }
@@ -305,16 +305,37 @@ td, th {
 	box-shadow: 2px 2px 1px #BBBBDD;
 }
 
-tbody > tr:nth-child(odd) {
-	background: #E8E8FF;
+td.givesitem {
+	background: #4466FF;
 }
 
-tbody > tr:nth-child(odd) th {
+td.noitem {
+	background: #CCCCCC;
+}
+
+td.givesitem,
+td.noitem {
+	opacity: .8;
+}
+
+table.dungeonitemgive td:nth-child(18) {
+	text-align:left;
+}
+
+tr.header th {
+	text-align: center;
+}
+
+tbody > tr:nth-child(odd):not(.header) th {
 	background: #D0D0FF;
 }
 
 tbody > tr:nth-child(even) {
-	background: #FFFFFF
+	background: #FFFFFF;
+}
+
+tr.header th:not(.divider) {
+	background:#adadfd;
 }
 
 th.divider {
