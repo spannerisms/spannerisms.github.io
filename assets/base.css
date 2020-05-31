@@ -318,8 +318,8 @@ td.noitem {
 	opacity: .8;
 }
 
-table.dungeonitemgive td:nth-child(10),
-table.dungeoncrystalgive td:nth-child(18) {
+table.dungeonitemgive td:nth-child(18),
+table.dungeoncrystalgive td:nth-child(10) {
 	text-align:left;
 }
 
