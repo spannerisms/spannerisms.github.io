@@ -319,7 +319,7 @@ td.noitem {
 }
 
 table.dungeonitemgive td:nth-child(10),
-table.dungeonitemgive td:nth-child(18) {
+table.dungeoncrystalgive td:nth-child(18) {
 	text-align:left;
 }
 
