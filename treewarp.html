@@ -3,7 +3,6 @@ layout: default
 title: Tree Warp Explication
 background: glitchybg
 ---
-
 <div class="contentstuff glitchexp">
 	<h1>Tree Warp</h1>
 	<p>Tree warp, or Dynamic Sprite Spawn Overflow (DSSO) for the glitch in general, is a strong contender for the coolest glitch. I've explained it before using the Agahnim 2 stal, but for this explanation, I'll be focusing on tree warp.</p>
@@ -33,19 +32,26 @@ background: glitchybg
 	<h2>The Overflow</h2>
 	<p>What exactly happens when this assumption is made depends on <em>where</em> it was made, but in every case, just spawning a sprite is not good enough. Now that the sprite is spawned, routines continue prepping it in whatever ways are needed. There's just one itsy-bitsy problem: <em class="wtf">our index is out of whack</em>. Remember that failure is indicated by an index of <code class="value">$FF</code> being reached, that means we're waaaay out of bounds, and whatever we do will be operating on the invalid sprite slot 255.</p>
 	<p>Okay, so we're way out of bounds, but what exactly are we writing? Let's go through the opcodes 1-by-1.</p>
-	<code class="snesasm">
-	Eyeballs_table:
-		.x_offset_lo
-			db &minus;4, 14
-		.x_offset_hi
-			db &minus;1, 0
+	<div class="snesasm noaddress">
+		<span>Eyeballs_table:</span>
+		<div>.x_offset_lo:</div><div>db &minus;4</div><div></div>
+		<div></div><div>db 14</div><div></div>
+		<div>.x_offset_hi:</div><div>db &minus;1</div><div></div>
+		<div></div><div>db 0</div><div></div>
+		<span></span>
+		<span>TalkingTree_SpawnEyes:</span>
+		<div></div><div>PHX</div><div>Save sprite index</div>
+		<div></div><div>PHA</div><div>Save eye ID; EYE D</div>
+		<div></div><div>LDA #$25</div><div>Load sprite ID</div>
+		<div></div><div>JSL Sprite_SpawnDynamically</div><div></div>
+		<div></div><div>PLA</div><div>Recover EYE D</div>
+		<div></div><div>STA $0EB0, Y</div><div>Save as a property</div>
+		<div></div><div>TAX</div><div>Use it to index offsets</div>
+		<div></div><div>LDA $00</div><div></div>
+		<div></div><div>CLC</div><div></div>
+		<div></div><div>ADC</div><div></div>
+	</div>
 
-	TalkingTree_SpawnEyes:
-		PHX : PHA
-		LDA #$25 : JSL Sprite_SpawnDynamically
-		PLA : STA $0EB0, Y : TAX
-		LDA $00 : CLC : ADC
-	</code>
 	<p>Wait. You don't need to see all that. I'll just describe the routine in plain English:</p>
 	<ol>
 		<li>Put the sprite index for the talking tree and the eyeball id (0 or 1) we're working with in a safe place so we can't forget them.</li>
@@ -80,13 +86,15 @@ background: glitchybg
 	<p>Tree warp works when only 1 sprite slot is free before spawning the mouth. When 2 slots are free, things go really really wrong and the game crashes.</p>
 	<p>This crash is purely bad luck with ROM data. If 2 slots are free, that means the mouth takes one and eyeball 0 takes the other. So eyeball 0 spawns successfully, in the correct slot, and due to the prep that happens in <code class="routine">Sprite_SpawnDynamically</code>, we now have a new value in <code class="address">$01</code>: <span class="evil">3</span>. Eyeball 1 ends up overflowing, writing <span class="evil">3</span> to the last sprite slot.</p>
 	<p>When it comes to sprite IDs, <span class="evil">3</span> is particularly evil. There isn't actually a sprite with that ID. That slot in the sprite prep routines table just contains a pointer to <code class="address">$0000</code>. That's the same <code class="address">$00</code> we were storing scratch data in, but now we are executing it as code. And because it's consistent from the previous routines, I can tell you exactly what the CPU is doing:</p>
-	<code class="snesasm"><!--Why can't there be a goddamn hilite for 65816-->
-		$060000   PLA        ; $68
-		$060001   ORA $50,S  ; $03 $50
-		$060003   ORA #$00   ; $09 $00
-		$060005   BRK #$00   ; $00 $00
-		$00FFFF   BRL $0368  ; $82 $68 $03 - to address $036A
-	</code>
+
+	<div class="snesasm">
+		<div>$68 |</div><div addr="$060000">PLA</div><div></div>
+		<div>$03 $50 |</div><div addr="$060001">ORA $50, S</div><div></div>
+		<div>$09 $00 |</div><div addr="$060003">ORA #$00</div><div></div>
+		<div>$00 $00 |</div><div addr="$060005">BRK $00</div><div></div>
+		<div>$82 $68 $03 |</div><div addr="$00FFFF">BRL $0368</div><div></div>
+	</div>
+
 	<p>And that's where Mr. Smith hits the fan. <code class="opcode">BRK</code> is an instruction inherited from the WDC 65c816, which the SNES's Ricoh 5A22 is based on. The instruction is meant to be used in a debugging environment on a computer's operating system to track down bugs and errors. That obviously is of no use for a cartridge game running on a console, so the developers replaced the break vector with <code class="value">$FFFF</code>, just a filler value. The CPU doesn't know that though, so it follows it blindly. The byte at <code class="address">$00:FFFF</code> is <code class="value">$82</code>, which is the byte for a branch long instruction (<code class="opcode">BRL</code>). But this is the end of the bank, so the operand of this instruction is read by wrapping around back to <code class="address">$0000</code>. Data we executed as code is now being used as a relative pointer for the CPU to follow. It's telling us to branch forward <code class="value">$0368</code> bytes and resume execution at <code class="address">$036A</code>. This address is related to lifting tiles, and it will hold a value based on the last liftable tile you touched. Long story short, there's no predicting what happens next.</p>
 
 	<h2>What else can we spawn?</h2>

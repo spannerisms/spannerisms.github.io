@@ -18,47 +18,46 @@ background: glitchybg
 	</code>
 
 	<p><code class="routine">Dungeon_ResetTorchBackgroundAndPlayer</code> does what it says on the tin, but we want to look specifically at the end of it&mdash;the part that handles player properties:</p>
-	<code class="snesasm">
-	       028A12    LDA $0372       Is Link dashing (or armed spinspeed)
-	       028A15    BEQ exit        If not, do nothing
-	       028A17    STZ $4D         Clear secondary state handler
-	       028A19    STZ $46         Clear recoil timer
-	       028A1B    LDA #$FF
-	       028A1D    STA $29         Reset z-axis recoil
-	       028A1F    STA $C7         I think this one is pointless
-	       028A21    STZ $3D         Reset sword stuff
-	       028A23    STZ $5E         Reset speed
-	       028A25    STZ $032B       Collision related?
-	       028A28    STZ $0372       Reset dashing
-	       028A2B    LDA #$00        Why is this not an STZ?
-	       028A2D    STA $5D         Reset primary state handler
-	exit   028A2F    RTS
-	</code>
-
+	<div class="snesasm">
+		<div></div><div addr="$028A12">LDA $0372</div><div>Is Link dashing (or armed spinspeed)</div>
+		<div></div><div addr="$028A15">BEQ exit</div><div>If not, do nothing</div>
+		<div></div><div addr="$028A17">STZ $4D</div><div>Clear secondary state handler</div>
+		<div></div><div addr="$028A19">STZ $46</div><div>Clear recoil timer</div>
+		<div></div><div addr="$028A1B">LDA #$FF</div><div></div>
+		<div></div><div addr="$028A1D">STA $29</div><div>Reset z-axis recoil</div>
+		<div></div><div addr="$028A1F">STA $C7</div><div>I think this one is pointless</div>
+		<div></div><div addr="$028A21">STZ $3D</div><div>Reset sword stuff</div>
+		<div></div><div addr="$028A23">STZ $5E</div><div>Reset speed</div>
+		<div></div><div addr="$028A25">STZ $032B</div><div>Collision related?</div>
+		<div></div><div addr="$028A28">STZ $0372</div><div>Reset dashing</div>
+		<div></div><div addr="$028A2B">LDA #$00</div><div>Why is this not an STZ?</div>
+		<div></div><div addr="$028A2D">STA $5D</div><div>Reset primary state handler</div>
+		<div>exit</div><div addr="$028A2F">RTS</div><div></div>
+	</div>
 	<p>The important take away here is that if Link is dashing, then his primary state handler <code class="address">$5D</code> is reset, otherwise, it is left alone.</p>
 
 	<p><code class="routine">Link_CheckBunnyStatus</code> is as follows:</p>
-	<code class="snesasm">
-	       1CFCE2    LDA $5D         Check primary state handler
-	       1CFCE4    CMP #$02        Is Link recoiling?
-	       1CFCE6    BNE exit        If not, just leave
-	       1CFCE8    LDY #$00        $00 indicates default state
-	butt   1CFCEA    LDA $02E0       Check graphics flag
-	       1CFCEC    BEQ set         If human, set $5D to $00
-	       1CFCEE    LDY #$17        $17 indicates bunny state
-	       1CFCF0    LDA $7EF357     Check for pearl
-	       1CFCF4    BEQ set         If no pearl, $5D to $17
-	       1CFCF6    LDY #$1C        $1C indicates temporary bunny
-	set    1CFCF8    STY $5D         Set primary state handler
-	exit   1CFCFA    RTL
-	</code>
+	<div class="snesasm">
+		<div></div><div addr="$1CFCE2">   LDA $5D</div><div>Check primary state handler</div>
+		<div></div><div addr="$1CFCE4">   CMP #$02</div><div>Is Link recoiling?</div>
+		<div></div><div addr="$1CFCE6">   BNE exit</div><div>If not, just leave</div>
+		<div></div><div addr="$1CFCE8">   LDY #$00</div><div>$00 indicates default state</div>
+		<div>butt</div><div addr="$1CFCEA">   LDA $02E0</div><div>Check graphics flag</div>
+		<div></div><div addr="$1CFCEC">   BEQ set</div><div>If human, set $5D to $00</div>
+		<div></div><div addr="$1CFCEE">   LDY #$17</div><div>$17 indicates bunny state</div>
+		<div></div><div addr="$1CFCF0">   LDA $7EF357</div><div>Check for pearl</div>
+		<div></div><div addr="$1CFCF4">   BEQ set</div><div>If no pearl, $5D to $17</div>
+		<div></div><div addr="$1CFCF6">   LDY #$1C</div><div>$1C indicates temporary bunny</div>
+		<div>set</div><div addr="$1CFCF8">   STY $5D</div><div>Set primary state handler</div>
+		<div>exit</div><div addr="$1CFCFA">   RTL</div><div></div>
+	</div>
 
 	<p>EXCEPT I LIED!!!!</p>
 	<p>You see that instruction labelled <code class="routine">butt</code>? That's what they <em>intended</em> to do, and that's what's executed in the US version, but in JP1.0, this is what actually happens:</p>
 
-	<code class="snesasm">
-	butt   1CFCEA    LDA $E0         Check the camera
-	</code>
+	<div class="snesasm">
+		<div>butt</div><div addr="$1CFCEA">LDA $E0</div><div>Check the camera</div>
+	</div>
 	<p>They assembled it wrong. Instead of reading the 16-bit address for Link's graphics, the addressing mode used was direct page, an 8-bit address. Their source code probably had the correct address, but a stray symbol must have caused it to discard the high byte. It just so happens that the low byte of the intended address is the address for the low byte of the BG1 horizontal scroll.</p>
 	<p>By the time this check is performed, the entrance's properties has been loaded. Thus, the camera properties being looked at are for the landing point of the entrance. As long as the camera's low byte is <em>not</em> 0, then damage boosting into an entrance will put Link in Lonk state when he doesn't have the moon pearl. In practice, this means that Lonk can only be triggered if the entrance is in the middle of the supertile.</p>
 

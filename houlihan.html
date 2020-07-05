@@ -59,21 +59,23 @@ background: houlihanbg
 
 	<h2>Putting my money where my mouth is</h2>
 	<p>No seriously, this code is sloppy. Here's the vanilla code:</p>
-	<code class="snesasm">
-		REP #$30           ; m=8 x=8 before this
-		LDA $1B
-		AND #$00FF
-		BEQ OVERWORLD_HOLE
-		LDA $00
-		PHA
-		SEP #$30
-	</code>
+	<div class="snesasm noaddress nolabel nolines">
+		<div></div><div>REP #$30</div><div>m=8 x=8 before this</div>
+		<div></div><div>LDA $1B</div><div></div>
+		<div></div><div>AND #$00FF</div><div></div>
+		<div></div><div>BEQ OVERWORLD_HOLE</div><div></div>
+		<div></div><div>LDA $00</div><div></div>
+		<div></div><div>PHA</div><div></div>
+		<div></div><div>SEP #$30</div><div></div>
+	</div>
 	<p>Seriously? Who knew 14 bytes could be so lame? Here's my better code, which uses space and time more efficiently:</p>
-	<code class="snesasm">
-		LDA $1B            ; Load indoors/outdoors
-		BEQ OVERWORLD_HOLE ; Except this one is further ahead in the code
-		PEI ($00)          ; Underused opcode that is totally AWESOME
-	</code>
+	
+	<div class="snesasm noaddress nolabel nolines">
+		<div></div><div>LDA $1B</div><div>Load indoors/outdoors</div>
+		<div></div><div>BEQ OVERWORLD_HOLE</div><div>but further ahead than vanilla</div>
+		<div></div><div>PEI ($00)</div><div>Underused opcode that is totally AWESOME</div>
+	</div>
+
 	<p>Ya, that's it. 6 bytes. The branch in my code would be 6 bytes further (accounting for the stuff I removed), hitting the instruction <code class="opcode">REP #$20</code>. <code class="register">X</code> should be 16-bit though, so we need to change that to <code class="opcode">REP #$30</code>. Same number of bytes though.</p>
 	<p><code class="opcode">PEI</code> is an underused and underrated instruction that pushes the 16-bit value in the address it holds to stack, regardless of the accumulator's or index register's current bit mode. In this case, it also makes way more sense than swapping bitmodes just to push to the stack, which also required a mask o&mdash;&hellip; Wait a second. No it didn't. Even if you wanted to do it this inefficient way, why would you set the accumulator to 16-bit and immediately load what's intended to be an 8-bit value? <code class="opcode">REP #$30</code> should have come <em>after</em> the <code class="opcode">LDA $1B</code>. It wouldn't affect the <code class="register">Z</code> flag, and it would have removed the need to mask the accumulator before the branch check.</p>
 
