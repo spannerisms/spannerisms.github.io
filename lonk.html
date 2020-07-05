@@ -12,10 +12,10 @@ background: glitchybg
 	<h2>Underworld</h2>
 	<p>To understand how Lonk can trigger when entering the underworld, we need to look at 2 routines that are run when loading the underworld. These routines are executed one after another, so let's show them for fun:</p>
 
-	<code class="snesasm">
-	02822B    JSR $89F1      Dungeon_ResetTorchBackgroundAndPlayer
-	02822E    JSL $1CFCE2    Link_CheckBunnyStatus
-	</code>
+	<div class="snesasm nolabel">
+		<div></div><div addr="$02822B">JSR $89F1</div><div>Dungeon_ResetTorchBackgroundAndPlayer</div>
+		<div></div><div addr="$02822E">JSL $1CFCE2</div><div>Link_CheckBunnyStatus</div>
+	</div>
 
 	<p><code class="routine">Dungeon_ResetTorchBackgroundAndPlayer</code> does what it says on the tin, but we want to look specifically at the end of it&mdash;the part that handles player properties:</p>
 	<div class="snesasm">
