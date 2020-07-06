@@ -14,14 +14,14 @@ background: glitchybg
 
 	<h2>The short straw we got</h2>
 	<p>Here's the <code class="routine">GetRandomInt</code> routine used in <i class="gameName">A Link to the Past</i> in its full, uncensored glory:</p>
-	<code class="snesasm">
-		$0DBA71   LDA $2137    ; software latch to update ppu counters
-		$0DBA74   LDA $213C    ; ppu hcount
-		$0DBA77   ADC $1A      ; +frame counter
-		$0DBA79   ADC $0FA1    ; +previous value
-		$0DBA7C   STA $0FA1    ; save result
-		$0DBA7F   RTL          ; exit
-	</code>
+	<div class="snesasm nolabel">
+		<div></div><div addr="$0DBA71">LDA $2137</div><div>software latch to update ppu counters</div>
+		<div></div><div addr="$0DBA74">LDA $213C</div><div>ppu hcount</div>
+		<div></div><div addr="$0DBA77">ADC $1A</div><div>+frame counter</div>
+		<div></div><div addr="$0DBA79">ADC $0FA1</div><div>+previous value</div>
+		<div></div><div addr="$0DBA7C">STA $0FA1</div><div>save result</div>
+		<div></div><div addr="$0DBA7F">RTL</div><div>exit</div>
+	</div>
 
 	<p>The comments should be helpful enough, but let's get real specific about what's going on here.</p>
 	<h3>hcount</h3>
@@ -49,16 +49,16 @@ background: glitchybg
 	<p>But does that make it good?</p>
 	<p>A while back, I created <a href="https://docs.google.com/spreadsheets/d/1Eh3LR3gR7Xi_JeZNIV8vSaOpJIxpRiXVDoGibEBon5s/edit#gid=0">this document</a>. It contains 6,560 outputs of the RNG function that were obtained by running a script as I replayed the <a href="http://tasvideos.org/3874M.html">100% TAS I created with Yuzuhara</a>. I created a table of frequency for each value and plotted those frequences in descending order to create a rough visualization of the output. It looks kind of bad, but let's not be foolish.</p>
 	<p>I then generated 6,560 values using a quick Java program. Java's <code class="routine">Math.random()</code>, is a linear congruential generator. It's not the best possible algorithm, but, for non crypography purposes, it is fast and reliable, tried and true.</p>
-	<p>And, somewhat surprisingly, the shape of the frequency graph is roughly the same. I ran multiple samples of the same size in Java, since it took a few seconds and not over an hour, but the shape didn't really change. The numbers that were the most frequent changed, but that's to be expected. The documented linked above contains only the last sample, as the plot was counting each result.</p>
+	<p>And, somewhat surprisingly, the shape of the frequency graph is roughly the same. I ran multiple samples of the same size in Java, since it took a few seconds and not over an hour, but the shape didn't really change. The numbers that were the most frequent changed, but that's to be expected. The document linked above contains only the last sample, as the plot was counting each result.</p>
 	<p>So it's looking pretty good, huh?</p>
 	<p>No.</p>
 	<p>No matter how good this routine or its results look, it still suffers from a major flaw: values are too interdependent. To demonstrate this, let's push this to the extreme:</p>
-	<code class="snesasm">
-		CLC            ; Clear the carry flag
-		JSL $0DBA71    ; Call GetRandomInt
-		CLC            ; Clear again
-		JSL $0DBA71    ; Call GetRandomInt again
-	</code>
+	<div class="snesasm nolabel noaddress">
+		<div></div><div>CLC</div><div>Clear the carry flag</div>
+		<div></div><div>JSL $0DBA71</div><div>Call GetRandomInt</div>
+		<div></div><div>CLC</div><div>Clear again</div>
+		<div></div><div>JSL $0DBA71</div><div>Call GetRandomInt again</div>
+	</div>
 	<p>Imagine that at the first call, the frame counter is at <code class="value">$00</code>. To simplify the example, let's remove the complexities of the CPU with exact values. These values are not perfectly correct, but they are close enough for the example, and the system is consistent enough for these short time periods.</p>
 	<ul>Our simplifications:
 		<li>1 CPU cycle = 2 dots</li>

@@ -259,30 +259,49 @@ div.snesasm > div {
 
 div.snesasm > span {
 	grid-column-start: span 3;
-	display: block;
+	display: inline-block;
 	min-height: 1em;
+	padding-left: 10px;
 }
 
 div.snesasm > div:nth-of-type(3n+1) {
 	text-align: right;
 }
 
-div.snesasm.linenumbers > div:nth-of-type(3n+1):before {
+div.snesasm > div:nth-of-type(3n+1):before {
 	counter-increment: asmline;
 	content: counter(asmline);
+}
+
+div.snesasm > div:nth-of-type(3n+1):before,
+div.snesasm > span:before {
 	text-align: right;
 	float: left;
 	display: block;
-	width: 25%;
+	width: 3em;
 	padding-right: 5px;
-	background: #666666;
+	border-right: 3px solid #666666;
+	background: #898989;
 	color: white;
 	margin: 0;
 }
 
+div.snesasm > span:before {
+	content: '.';
+	display: block;
+	color: transparent;
+}
+
 div.snesasm:not(.noaddress) > div:nth-of-type(3n+2):before {
 	content: attr(addr);
-	padding-right: 20px;
+	margin-right: 20px;
+	display: inline-block;
+	padding: 0 3px;
+	background: #DDDDFF;
+}
+
+div.snesasm > div:nth-of-type(3n+1) {
+	color: #4444FF;
 }
 
 div.snesasm > div:nth-of-type(3n+2) {
@@ -290,7 +309,7 @@ div.snesasm > div:nth-of-type(3n+2) {
 }
 
 div.snesasm > div:nth-of-type(3n+3) {
-	color: green;
+	color: #339933;
 }
 
 div.snesasm > div:nth-of-type(6n+1),
