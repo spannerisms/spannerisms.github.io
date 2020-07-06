@@ -17,7 +17,7 @@ background: glitchybg
 
 	<p>Stack unwinding is doing exactly that, but on purpose. I can use sprites (which hearts and rupees are) as an example. Sprites themselves are subroutines, named in the disassembly as "Sprite_X". A common routine among most sprites is <code class="routine">Sprite_CheckIfActive</code>. This routine will see if the sprite should actually perform its AI. If it should, it just returns. If it shouldn't then this routine unwinds the stack. Doing so removes the return address for <code class="routine">Sprite_CheckIfActive</code>. When it jumps back, it returns to where the sprite was called from.</p>
 
-	<div class="snesasm nolabel nolines noaddress">
+	<div class="snesasm nolines noaddress">
 		<div></div><div>LDA $0D00, X</div><div>Get AI state</div>
 		<div></div><div>CMP #$09</div><div>Are we active?</div>
 		<div></div><div>BNE inactive</div><div>Not 9? Not active.</div>

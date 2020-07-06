@@ -31,28 +31,7 @@ background: glitchybg
 
 	<h2>The Overflow</h2>
 	<p>What exactly happens when this assumption is made depends on <em>where</em> it was made, but in every case, just spawning a sprite is not good enough. Now that the sprite is spawned, routines continue prepping it in whatever ways are needed. There's just one itsy-bitsy problem: <em class="wtf">our index is out of whack</em>. Remember that failure is indicated by an index of <code class="value">$FF</code> being reached, that means we're waaaay out of bounds, and whatever we do will be operating on the invalid sprite slot 255.</p>
-	<p>Okay, so we're way out of bounds, but what exactly are we writing? Let's go through the opcodes 1-by-1.</p>
-	<div class="snesasm noaddress">
-		<span>Eyeballs_table:</span>
-		<div>.x_offset_lo:</div><div>db &minus;4</div><div></div>
-		<div></div><div>db 14</div><div></div>
-		<div>.x_offset_hi:</div><div>db &minus;1</div><div></div>
-		<div></div><div>db 0</div><div></div>
-		<span></span>
-		<span>TalkingTree_SpawnEyes:</span>
-		<div></div><div>PHX</div><div>Save sprite index</div>
-		<div></div><div>PHA</div><div>Save eye ID; EYE D</div>
-		<div></div><div>LDA #$25</div><div>Load sprite ID</div>
-		<div></div><div>JSL Sprite_SpawnDynamically</div><div></div>
-		<div></div><div>PLA</div><div>Recover EYE D</div>
-		<div></div><div>STA $0EB0, Y</div><div>Save as a property</div>
-		<div></div><div>TAX</div><div>Use it to index offsets</div>
-		<div></div><div>LDA $00</div><div></div>
-		<div></div><div>CLC</div><div></div>
-		<div></div><div>ADC</div><div></div>
-	</div>
-
-	<p>Wait. You don't need to see all that. I'll just describe the routine in plain English:</p>
+	<p>Okay, so we're way out of bounds, but what exactly are we writing? Let's go through the routine in plain English:</p>
 	<ol>
 		<li>Put the sprite index for the talking tree and the eyeball id (0 or 1) we're working with in a safe place so we can't forget them.</li>
 		<li>Tell the dynamic spawn routine to create sprite id <code class="value">$25</code>, which is a talking tree.</li>
