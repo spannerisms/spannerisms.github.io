@@ -1,0 +1,364 @@
+---
+layout: default
+title: Misslot Dossier
+background: glitchybg dossier
+---
+<div class="contentstuff glitchexp">
+	<h1>Misslot Dossier</h1>
+	<p>This document aims to catalog and understand the behavior and potential of misslotting every ancillae and the potential corruption they can effect in any situation.</p>
+	<h2>Glossary</h2>
+	<p>This glossary seeks to establish accurate and comprehensible terminology for describing the various concepts pertinent to misslotting.</p>
+	<dl>
+		<dt>Ancilla</dt>
+		<dd>A self-acting entity whose routines and existence are established and controlled from the 10 item array at <div class="address">$0C4A</div>.</dd>
+		<dt>Arbitrary misslot</dt>
+		<dd>Putting an ancilla into an illegal slot (10+). Ancillae in these slot are not executed, but their placement can corrupt memory during their initialization.</dd>
+		<dt>Former slot/Front slot</dt>
+		<dd>The first 5 slots (0&ndash;4) used by ancillae. This is where ancillae with more significant effects are placed. An ancillae designed to be in this section can be declared a <i>front half</i>, etc. ancilla. This may be abbreviated to F-Slot in disassembly comments.</dd>
+		<dt>(General) Misslot</dt>
+		<dd>Placing an ancilla into a slot which it is not designed to be in. This includes bombs (ID: <code class="value">$07</code>) in slots 2+ and front slot ancillae in the latter slots.</dd>
+		<dt>Illegal ancilla/object</dt>
+		<dd>An ancilla with an ID greater than <code class="value">$43</code>. IDs of <code class="value">$44</code> do not have a defined entry in the routine jump table.</dd>
+		<dt>Illegal slot</dt>
+		<dd>An ancilla slot (10&ndash;255) not recognized by the general ancilla execution routine.</dd>
+		<dt>Latter slot/Back slot</dt>
+		<dd>The last 5 slots (5&ndash;9) used by ancillae. Ancillae with less significance usually begin here for placement. This may be abbreviated to L-Slot in disassembly comments.</dd>
+		<dt>Overload</dt>
+		<dd>Causing either the former slots or every slot to be occupied, often intentionally.</dd>
+		<dt>Particle</dt>
+		<dd>One of the three ancillae (IDs: <code class="value">$0A</code>, <code class="value">$13</code>, <code class="value">$3C</code>) that can be overwritten to force the creation of a new ancilla.</dd>
+	<h2>Ancillae creation</h2>
+	<div class="snesasm">
+		<div></div><div addr="$08833C">PHA</div><div>A contains Ancilla ID at this time</div>
+		<div></div><div addr="$08833D">CPX #$06</div><div>L-Slot ancillae have limited OAM</div>
+		<div></div><div addr="$08833F">BCS skip_oam</div><div>Likely irrelevant beyond graphical glitches.</div>
+		<div></div><div addr="$088341">LDA $0C90, X</div><div>Allocation>>2 of ancilla</div>
+		<div></div><div addr="$088344">LDY $0FB3</div><div>Room flag for object display</div>
+		<div></div><div addr="$088347">BEQ sorted</div><div></div>
+		<div></div><div addr="$088349">LDY $0C7C, X</div><div>Layer of ancilla</div>
+		<div></div><div addr="$08834C">BNE layer2</div><div>Only 2 layers recognized</div>
+		<div></div><div addr="$08834E">JSL $0DBA8C</div><div>Unsorted layer 1 objects to OAM-D</div>
+		<div></div><div addr="$088352">BRA finish_oam</div><div></div>
+		<div>layer2</div><div addr="$088354">JSL $0DBA94</div><div>Unsorted layer 2 objects to OAM-F</div>
+		<div></div><div addr="$088358">BRA finish_oam</div><div></div>
+		<div>sorted</div><div addr="$08835A">JSL $0DBA80</div><div>Sorted objects to OAM-A</div>
+		<div>finish_oam</div><div addr="$08835E">TYA</div><div>Save allocated slot as a property</div>
+		<div></div><div addr="$08835F">STA $0C86, X</div><div></div>
+		<span></span>
+		<div>skip_oam</div><div addr="$088362">LDY $11</div><div>Check for default submodule</div>
+		<div></div><div addr="$088364">BNE skip_timer</div><div>Only tick when default</div>
+		<div></div><div addr="$088366">LDY $0C68, X</div><div>Check if timer is already zero</div>
+		<div></div><div addr="$088369">BEQ skip_timer</div><div>Don't tick at 0</div>
+		<div></div><div addr="$08836B">DEC $0C68, X</div><div>Tick tock</div>
+		<div>skip_timer</div><div addr="$08836E">PLA</div><div>Recover ancilla ID</div>
+		<div></div><div addr="$08836F">DEC A</div><div>Decrement to account for invalid ID 0</div>
+		<div></div><div addr="$088370">ASL A</div><div>Shift left to index words</div>
+		<div></div><div addr="$088371">TAY</div><div></div>
+		<div></div><div addr="$088372">LDA jump_table+0, Y</div><div>That DEC A could have been removed</div>
+		<div></div><div addr="$088375">STA $00</div><div>By just indexing from before the table</div>
+		<div></div><div addr="$088377">LDA jump_table+1, Y</div><div></div>
+		<div></div><div addr="$08837A">STA $01</div><div></div>
+		<div></div><div addr="$08837C">JMP ($0000)</div><div>At least it's not a NES jump</div>
+		<span></span>
+		<div>jump_table</div><div addr="$08837F">dw $851B</div><div>ID: $01 - Somaria missile</div>
+		<div></div><div addr="$088381">dw $86D2</div><div>ID: $02 - Fire rod shot</div>
+		<div></div><div addr="$088383">dw $8852</div><div>ID: $03 - Unused</div>
+		<div></div><div addr="$088385">dw $8D19</div><div>ID: $04 - Beam wall hit</div>
+		<div></div><div addr="$088387">dw $90FC</div><div>ID: $05 - Boomerang</div>
+		<div></div><div addr="$088389">dw $93E8</div><div>ID: $06 - Wall hit</div>
+		<div></div><div addr="$08838B">dw $955A</div><div>ID: $07 - Bomb</div>
+		<div></div><div addr="$08838D">dw $9FDA</div><div>ID: $08 - Door debris</div>
+		<div></div><div addr="$08838F">dw $A155</div><div>ID: $09 - Arrow</div>
+		<div></div><div addr="$088391">dw $A47F</div><div>ID: $0A - Wall arrow</div>
+		<div></div><div addr="$088393">dw $A501</div><div>ID: $0B - Ice shot</div>
+		<div></div><div addr="$088395">dw $DDE9</div><div>ID: $0C - Sword beam</div>
+		<div></div><div addr="$088397">dw $DDEE</div><div>ID: $0D - Max sword charge sparkle</div>
+		<div></div><div addr="$088399">dw $A632</div><div>ID: $0E - Unused</div>
+		<div></div><div addr="$08839B">dw $A632</div><div>ID: $0F - Unused</div>
+		<div></div><div addr="$08839D">dw $A632</div><div>ID: $10 - Unused</div>
+		<div></div><div addr="$08839F">dw $A55A</div><div>ID: $11 - Ice rod shot wall hit</div>
+		<div></div><div addr="$0883A1">dw $A632</div><div>ID: $12 - Unused</div>
+		<div></div><div addr="$0883A3">dw $8435</div><div>ID: $13 - Ice shot sparkle</div>
+		<div></div><div addr="$0883A5">dw $A831</div><div>ID: $14 - Unused</div>
+		<div></div><div addr="$0883A7">dw $A833</div><div>ID: $15 - Splash</div>
+		<div></div><div addr="$0883A9">dw $A909</div><div>ID: $16 - Stars</div>
+		<div></div><div addr="$0883AB">dw $A9CD</div><div>ID: $17 - Dirt</div>
+		<div></div><div addr="$0883AD">dw $AAC4</div><div>ID: $18 - Ether</div>
+		<div></div><div addr="$0883AF">dw $B0F2</div><div>ID: $19 - Bombos</div>
+		<div></div><div addr="$0883B1">dw $BAD4</div><div>ID: $1A - Powder</div>
+		<div></div><div addr="$0883B3">dw $93FF</div><div>ID: $1B - Wall poke spark</div>
+		<div></div><div addr="$0883B5">dw $B68E</div><div>ID: $1C - Quake</div>
+		<div></div><div addr="$0883B7">dw $BBE0</div><div>ID: $1D - Bonk screen shake</div>
+		<div></div><div addr="$0883B9">dw $BCB6</div><div>ID: $1E - Dash dust</div>
+		<div></div><div addr="$0883BB">dw $BD98</div><div>ID: $1F - Hookshot</div>
+		<div></div><div addr="$0883BD">dw $C037</div><div>ID: $20 - Link's blanky</div>
+		<div></div><div addr="$0883BF">dw $C0B8</div><div>ID: $21 - Link snoring</div>
+		<div></div><div addr="$0883C1">dw $C3AE</div><div>ID: $22 - Item get</div>
+		<div></div><div addr="$0883C3">dw $D3E0</div><div>ID: $23 - Poof</div>
+		<div></div><div addr="$0883C5">dw $EE13</div><div>ID: $24 - Overworld gravestone</div>
+		<div></div><div addr="$0883C7">dw $A907</div><div>ID: $25 - Unused</div>
+		<div></div><div addr="$0883C9">dw $D67E</div><div>ID: $26 - Sword swing sparkle</div>
+		<div></div><div addr="$0883CB">dw $DE0C</div><div>ID: $27 - Duck</div>
+		<div></div><div addr="$0883CD">dw $C716</div><div>ID: $28 - Fairy pond toss item</div>
+		<div></div><div addr="$0883CF">dw $CAB0</div><div>ID: $29 - Pendant/crystal/medallion item get</div>
+		<div></div><div addr="$0883D1">dw $D7D6</div><div>ID: $2A - Spin attack sparkle</div>
+		<div></div><div addr="$0883D3">dw $D921</div><div>ID: $2B - Spin attack sparkle</div>
+		<div></div><div addr="$0883D5">dw $E377</div><div>ID: $2C - Somaria block</div>
+		<div></div><div addr="$0883D7">dw $E9FA</div><div>ID: $2D - Somaria block dying</div>
+		<div></div><div addr="$0883D9">dw $EB50</div><div>ID: $2E - Somaria block exploding</div>
+		<div></div><div addr="$0883DB">dw $EC25</div><div>ID: $2F - Lamp flame</div>
+		<div></div><div addr="$0883DD">dw $DB48</div><div>ID: $30 - Byrna charge up spark</div>
+		<div></div><div addr="$0883DF">dw $DC94</div><div>ID: $31 - Byrna spark</div>
+		<div></div><div addr="$0883E1">dw $AA59</div><div>ID: $32 - Blast wall explosion</div>
+		<div></div><div addr="$0883E3">dw $A632</div><div>ID: $33 - Blast wall explosion</div>
+		<div></div><div addr="$0883E5">dw $EFAC</div><div>ID: $34 - Skull Woods fire</div>
+		<div></div><div addr="$0883E7">dw $C283</div><div>ID: $35 - Master Sword cutscene</div>
+		<div></div><div addr="$0883E9">dw $CFCE</div><div>ID: $36 - Flute from ground</div>
+		<div></div><div addr="$0883EB">dw $D061</div><div>ID: $37 - Flute spot debris</div>
+		<div></div><div addr="$0883ED">dw $D1FC</div><div>ID: $38 - Flute cutscene bird</div>
+		<div></div><div addr="$0883EF">dw $EA95</div><div>ID: $39 - Somaria platform poof</div>
+		<div></div><div addr="$0883F1">dw $F19F</div><div>ID: $3A - Super Bomb explosion</div>
+		<div></div><div addr="$0883F3">dw $C18B</div><div>ID: $3B - Sword up sparkle</div>
+		<div></div><div addr="$0883F5">dw $C20E</div><div>ID: $3C - Sword charge sparkle</div>
+		<div></div><div addr="$0883F7">dw $CA25</div><div>ID: $3D - Item splash</div>
+		<div></div><div addr="$0883F9">dw $CC16</div><div>ID: $3E - Crystal rising</div>
+		<div></div><div addr="$0883FB">dw $D53D</div><div>ID: $3F - Bush powder poof</div>
+		<div></div><div addr="$0883FD">dw $D4BE</div><div>ID: $40 - Smithy poof</div>
+		<div></div><div addr="$0883FF">dw $ECC1</div><div>ID: $41 - Waterfall splash</div>
+		<div></div><div addr="$088401">dw $C802</div><div>ID: $42 - Upgrade rupees</div>
+		<div></div><div addr="$088403">dw $CCC4</div><div>ID: $43 - Ganon's Tower cutscene</div>
+		<div>illegal_ancillae</div><div addr="$088405">dw $0702</div><div>ID: $44</div>
+		<div></div><div addr="$088407">dw $0106</div><div>ID: $45</div>
+		<div></div><div addr="$088409">dw $0701</div><div>ID: $46</div>
+		<div></div><div addr="$08840B">dw $0107</div><div>ID: $47</div>
+		<div></div><div addr="$08840D">dw $0700</div><div>ID: $48</div>
+		<div></div><div addr="$08840F">dw $0108</div><div>ID: $49</div>
+		<div></div><div addr="$088411">dw $0904</div><div>ID: $4A</div>
+		<div></div><div addr="$088413">dw $FF04</div><div>ID: $4B</div>
+		<div></div><div addr="$088415">dw $0302</div><div>ID: $4C</div>
+		<div></div><div addr="$088417">dw $0708</div><div>ID: $4D</div>
+		<div></div><div addr="$088419">dw $0101</div><div>ID: $4E</div>
+		<div></div><div addr="$08841B">dw $0707</div><div>ID: $4F</div>
+		<div></div><div addr="$08841D">dw $0001</div><div>ID: $50</div>
+		<div></div><div addr="$08841F">dw $0807</div><div>ID: $51</div>
+		<div></div><div addr="$088421">dw $04FF</div><div>ID: $52</div>
+		<div></div><div addr="$088423">dw $0409</div><div>ID: $53</div>
+		<div></div><div addr="$088425">dw $8383</div><div>ID: $54</div>
+		<div></div><div addr="$088427">dw $8383</div><div>ID: $55</div>
+		<div></div><div addr="$088429">dw $80B6</div><div>ID: $56</div>
+		<div></div><div addr="$08842B">dw $80B6</div><div>ID: $57</div>
+		<div></div><div addr="$08842D">dw $B6B7</div><div>ID: $58</div>
+		<div></div><div addr="$08842F">dw $B6B7</div><div>ID: $59</div>
+		<div></div><div addr="$088431">dw $B6B7</div><div>ID: $5A</div>
+		<div></div><div addr="$088433">dw $B6B7</div><div>ID: $5B</div>
+		<div></div><div addr="$088435">dw $68BD</div><div>ID: $5C</div>
+		<div></div><div addr="$088437">dw $D00C</div><div>ID: $5D</div>
+		<div></div><div addr="$088439">dw $9E03</div><div>ID: $5E</div>
+		<div></div><div addr="$08843B">dw $0C4A</div><div>ID: $5F</div>
+		<div></div><div addr="$08843D">dw $11A5</div><div>ID: $60</div>
+		<div></div><div addr="$08843F">dw $06D0</div><div>ID: $61</div>
+		<div></div><div addr="$088441">dw $8020</div><div>ID: $62</div>
+		<div></div><div addr="$088443">dw $2090</div><div>ID: $63</div>
+		<div></div><div addr="$088445">dw $908B</div><div>ID: $64</div>
+		<div></div><div addr="$088447">dw $2A20</div><div>ID: $65</div>
+		<div></div><div addr="$088449">dw $A086</div><div>ID: $66</div>
+		<div></div><div addr="$08844B">dw $A904</div><div>ID: $67</div>
+		<div></div><div addr="$08844D">dw $D90B</div><div>ID: $68</div>
+		<div></div><div addr="$08844F">dw $0C4A</div><div>ID: $69</div>
+		<div></div><div addr="$088451">dw $03F0</div><div>ID: $6A</div>
+		<div></div><div addr="$088453">dw $1088</div><div>ID: $6B</div>
+		<div></div><div addr="$088455">dw $B9F8</div><div>ID: $6C</div>
+		<div></div><div addr="$088457">dw $0280</div><div>ID: $6D</div>
+		<div></div><div addr="$088459">dw $04F0</div><div>ID: $6E</div>
+		<div></div><div addr="$08845B">dw $30A9</div><div>ID: $6F</div>
+		<div></div><div addr="$08845D">dw $0485</div><div>ID: $70</div>
+		<div></div><div addr="$08845F">dw $10A9</div><div>ID: $71</div>
+		<div></div><div addr="$088461">dw $B3AC</div><div>ID: $72</div>
+		<div></div><div addr="$088463">dw $F00F</div><div>ID: $73</div>
+		<div></div><div addr="$088465">dw $BC11</div><div>ID: $74</div>
+		<div></div><div addr="$088467">dw $0C7C</div><div>ID: $75</div>
+		<div></div><div addr="$088469">dw $06D0</div><div>ID: $76</div>
+		<div></div><div addr="$08846B">dw $8C22</div><div>ID: $77</div>
+		<div></div><div addr="$08846D">dw $0DBA</div><div>ID: $78</div>
+		<div></div><div addr="$08846F">dw $0A80</div><div>ID: $79</div>
+		<div></div><div addr="$088471">dw $9022</div><div>ID: $7A</div>
+		<div></div><div addr="$088473">dw $0DBA</div><div>ID: $7B</div>
+		<div></div><div addr="$088475">dw $0480</div><div>ID: $7C</div>
+		<div></div><div addr="$088477">dw $8022</div><div>ID: $7D</div>
+		<div></div><div addr="$088479">dw $0DBA</div><div>ID: $7E</div>
+		<div></div><div addr="$08847B">dw $00A0</div><div>ID: $7F</div>
+		<div></div><div addr="$08847D">dw $03A9</div><div>ID: $80</div>
+	</div>
+
+	<h2>Shared Ancillae Routines</h2>
+
+	<h2>Illegal ancillae</h2>
+	<p>Illegal IDs can be placed into the execution array; however, the addresses they jump to are not necessarily valid pointers.</p>
+	<p>The following section headers will name each entry as <b>IAx##</b>, where <b>IA</b> abbreviates Illegal Ancilla; <b>x</b> indicates a hexadecimal value; <b>##</b> is the hexadecimal ID of the ancilla.</p>
+
+	<h3 id="IAx44">IAx44</h3>
+	<div class="snesasm">
+		<div>IAx44_entry</div><div addr="$080702">BRK #$00</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0702</div><div></div>
+		<div></div><div addr="$000704">BRK #$00</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0702</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The address is seemingly unused, so it will most likely have <code class="value">$0000</code>, which will execute the break vector. Thhis vector jumps to <code class="address">$00FFFF</code>, which has a <code class="opcode">BRL</code> that wraps around and reads <code class="address">$0000</code> as the argument to the opcode, which is a relative distance to branch from the byte after the argument. <code class="address">$0000</code> is expected to have the original illegal pointer, so execution resumes at <code class="address">$000704</code>, more unused space. This begins a long loop of repeated break vectors. Eventually, the stack will overwrite <code class="address">$0000</code>, resulting in unpredictable effects.</p>
+
+	<h3 id="IAx45">IAx45</h3>
+	<div class="snesasm">
+		<div>IAx45_entry</div><div addr="$080106">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0106</div><div></div>
+		<div></div><div addr="$000108">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The low byte of the address is seemingly unused, so it will most likely have <code class="value">$00</code>. The next byte is not predictable, but the argument to <code class="opcode">BRK</code> is generally ignorable. The break vector leads to a jump to <code class="address">$000108</code>. From here, the results are not predictable.</p>
+
+	<h3 id="IAx46">IAx46</h3>
+	<div class="snesasm">
+		<div>IAx46_entry</div><div addr="$080701">BRK #$00</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0701</div><div></div>
+		<div></div><div addr="$000703">BRK #$00</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0701</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The high byte of the address is technically used, but seemingly always has a value of <code class="value">$00</code>. This leads a similar <code class="opcode">BRK</code> loop as <a href="#IAx44">IAx44</a>.</p>
+
+	<h3 id="IAx47">IAx47</h3>
+	<div class="snesasm">
+		<div>IAx47_entry</div><div addr="$080107">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
+
+	<h3 id="IAx48">IAx48</h3>
+	<div class="snesasm">
+		<div>IAx48_entry</div><div addr="$080700">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The low byte (which will determine the first opcode used) is technically predictable, as it is determined by Link's coordinates; however, with 7 consecutive <code class="value">$00</code> bytes following, there is not much useful that can be done besides returning from the routine safely with an <code class="opcode">RTS</code> (<code class="value">$60</code>).</p>
+
+	<h3 id="IAx49">IAx49</h3>
+	<div class="snesasm">
+		<div>IAx49_entry</div><div addr="$080108">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
+
+	<h3 id="IAx4A">IAx4A</h3>
+	<div class="snesasm">
+		<div>IAx4A_entry</div><div addr="$080904">????</div><div></div>
+		<span></span>
+		<div>IAx4A_entry</div><div addr="$080904">BRK #$F0</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0904</div><div></div>
+		<div>brk_vector</div><div addr="$008906">BRK #$F0</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the OAM buffer. The results are most likely unpredictable. In specific circumstances, this location of the buffer may not be written to, meaning it will have the repeated value <code class="value">$00F0</code>. In these cases, a <code class="opcode">BRK</code> loop will occur.</p>
+
+	<h3 id="IAx4B">IAx4B</h3>
+	<div class="snesasm">
+		<div dasm="$0B $FC">IAx4B_entry</div><div addr="$08FF04">BCS &minus;4</div><div>Carry should be clear from the ASL prior</div>
+		<div dasm="$0E $FC"></div><div addr="$08FF06">CPX #$FC</div><div>X&lt;10</div>
+		<div dasm="$11 $FC"></div><div addr="$08FF08">ORA ($FC), Y</div><div>Y=$8E</div>
+		<div dasm="$14 $FC"></div><div addr="$08FF0A">TRB $FC</div><div></div>
+		<div dasm="$17 $FC"></div><div addr="$08FF0C">ORA [$FC], Y</div><div></div>
+		<div dasm="$1D $FC $23"></div><div addr="$08FF0E">ORA $23FC, X</div><div>Open bus</div>
+		<div dasm="$FC $29 $FC"></div><div addr="$08FF11">JSR ($FC29, X)</div><div></div>
+	</div>
+	<p>This entry points to a location in ROM. Specifically, it is executing data that is part of the quake draw routine's tables. Depending on the slot, different code from another table will be executed. I consider this a lost cause, but may revisit it later.</p>
+
+	<h3 id="IAx4C">IAx4C</h3>
+	<div class="snesasm">
+		<div>IAx4C_entry</div><div addr="$080302">BRK ??</div><div></div>
+		<div>IAx4C_entry</div><div addr="$080302">BPL ??</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The address <code class="address">$0302</code> is not well documented, but it only appears to take on values of <code class="value">$00</code> or <code class="value">$01</code>. In the case of <code class="value">$00</code>, the <code class="opcode">BRK</code> vector will lead to unpredictable results. When <code class="opcode">BRL</code> is executed, the branch will always be taken, as the last operation that affected the <code class="register">Z</code> flag was loading the high byte of the pointer, which is <code class="value">$03</code>. The length of the branch will be determined by the current item being used, but the results after that are unpredictable.</p>
+
+	<h3 id="IAx4D">IAx4D</h3>
+	<div class="snesasm">
+		<div>IAx4D_entry</div><div addr="$080708">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The address will contain a value based on the current overworld area, but the results are unpredictable.</p>
+
+	<h3 id="IAx4E">IAx4E</h3>
+	<div class="snesasm">
+		<div>IAx4E_entry</div><div addr="$080101">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
+
+	<h3 id="IAx4F">IAx4F</h3>
+	<div class="snesasm">
+		<div>IAx4F_entry</div><div addr="$080707">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0707</div><div></div>
+		<div></div><div addr="$000709">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The addresses containing the opcode seems unused, resulting in a <code class="opcode">BRK</code>, but is followed by overworld-related data, resulting in unpredictable code.</p>
+
+	<h3 id="IAx50">IAx50</h3>
+	<div class="snesasm">
+		<div>IAx50_entry</div><div addr="$080001">BPL ??</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The high byte of the address will be the opcode, a branch instruction that is always taken, but the contents of the next byte, which contains the length of the branch, are not predictable.</p>
+
+	<h3 id="IAx51">IAx51</h3>
+	<div class="snesasm">
+		<div>IAx51_entry</div><div addr="$080807"></div><div></div>
+	</div>
+		<p>This entry points to a location in WRAM, specifically the OAM buffer. This section of the buffer generally has values written to it. If this section is somehow clear, a <code class="opcode">BRK</code> loop similar to <a href="#IAx4A">IAx4A</a> will occur.</p>
+
+	<h3 id="IAx52">IAx52</h3>
+	<div class="snesasm">
+		<div>IAx52_entry</div><div addr="$0804FF">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $04FF</div><div></div>
+		<div></div><div addr="$000501">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the last slot in the torch timer array. This array has 16 slots, but in practice, this slot is never used. A <code class="opcode">BRK</code> will occur, but it will then jump to <code class="address">$0501</code> for execution. This is the beginning of a table for replacement objects. In the underworld, this will be fairly predictable. In the overworld, it will be predictable, but more robust, as this table updates as Link moves. In both cases, the end result is likely a crash.</p>
+
+	<h3 id="IAx53">IAx53</h3>
+	<div class="snesasm">
+		<div>IAx53_entry</div><div addr="$080409">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0409</div><div></div>
+		<div></div><div addr="$00040B">BRK ??</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the high byte of the quadrant visits flag for the current underworld tile. This high byte seems unused, so it will result in a <code class="opcode">BRK</code>. The addressed branched to after the <code class="opcode">BRK</code> also appears unused, resulting in a <code class="opcode">BRK</code> loop.</p>
+
+	<h3 id="IAx54">IAx54</h3>
+	<div class="snesasm">
+		<div dasm="$52 $88">IAx54_entry</div><div addr="$088383">EOR ($88)</div><div></div>
+		<div dasm="$19 $8D $FC"></div><div addr="$088385">ORA $FC8D, Y</div><div>Y=$A6 so [$08FD33]:$C4</div>
+		<div dasm="$90 $E8"></div><div addr="$088388">BCC &minus;24</div><div>Carry will be cleared</div>
+		<div dasm="$BC $68 $0C"></div><div addr="$088366">LDY $0C86, X</div><div>We've been here before</div>
+	</div>
+	<p>This entry points to a location in ROM. Funnily enough, it is pointing straight to another pointer from the jump table we just used, specifically the pointer for the unused ancilla with an ID of <code class="value">$03</code>. Quite quickly, this routine covers into actual code; in fact, it's the code just run to find out which ancilla subroutine to execute. Unfortunately, this returns to a point in the code after a stack push has occured. When a value assumed to be the ancilla ID is recovered from the stack, it will rip off the type byte of our return address (<code class="value">). This results in it executing the routine for the ancilla with the ID of <code class="value">$02</code>, the fire rod shot. When it's finished, the unbalanced stack will eventually cause the game to crash.</p>
+
+	<h3 id="IAx55">IAx55</h3>
+	<div class="snesasm">
+		<div dasm="$52 $88">IAx55_entry</div><div addr="$088383">EOR ($88)</div><div></div>
+		<div dasm="$19 $8D $FC"></div><div addr="$088385">ORA $FC8D, Y</div><div></div>
+		<div dasm="$90 $E8"></div><div addr="$088388">BCC &minus;24</div><div>Carry will be cleared</div>
+	</div>
+	<p>This entry uses the same pointer and behaves the same as <a href="#IAx54">IAx54</a>.</p>
+
+	<h3 id="IAx56">IAx56</h3>
+	<div class="snesasm">
+		<div dasm="$00 $22">IAx56_entry</div><div addr="$0880B6">BRK #$22</div><div></div>
+		<div dasm="$82 $B6 $80"></div><div addr="$00FFFF">BRL $80B6</div><div></div>
+		<div dasm="$61 $80"></div><div addr="$0080B8">ADC ($80, X)</div><div></div>
+		<div dasm="$85 $03"></div><div addr="$0080BA">STA $03</div><div></div>
+		<div dasm="$B9 $7D $80"></div><div addr="$0080BC">LDA $807D, Y</div><div>Y=$AA; so [$8127]:$8D</div>
+		<div dasm="$85 $04"></div><div addr="$0080BF">STA $04</div><div></div>
+		<div dasm="$B9 $99 $80"></div><div addr="$0080C1">LDA $8099, Y</div><div>Y=$AA; so [$8143]:$83</div>
+		<div dasm="$85 $05"></div><div addr="$0080C4">STA $05</div><div></div>
+		<div dasm="$DC $03 $00"></div><div addr="$0080C6">JMP [$0003]</div><div></div>
+	</div>
+	<p>This entry points to a location in ROM, specifically the routine <code class="routine">AddFireRodShot</code>; however, its entry point does not align with the code, and it treats the parameter of an <code class="opcode">STA dp</code> as the opcode, resulting in a <code class="opcode">BRK</code>being executed. The break vector leads to the middle of the topmost subroutine, <code class="routine">Module_MainRouting</code>. The entry point does not align with the code, but it recovers after 1 instruction. From here, the result is mostly unpredictable.</p>
+	<p>However, <code class="address">$80</code> is in the middle of some seemingly unused RAM. If this illegal ancilla is in slots 0, 1, or 2, then the <code class="opcode">ADC</code> will look at the word in addresses <code class="address">$80</code>, <code class="address">$81</code>, or <code class="address">$82</code>, respectively, all of which contain the value <code class="value">$0000</code>. In these cases, the accumulator, which currently contains the high byte of our pointer, will have the value of <code class="address">$0000</code> added to it, which contains the low byte of our pointer. The carry is always clear, so we know that we will get <code class="value">$36</code> as our result, with the carry flag set. This results in a jump to a known address in bank83, which is a mirror of bank03. This bank contains entirely data, so, needless to say, the results are garbage. But we can follow along for a bit:</p>
+
+	<div class="snesasm">
+		<div dasm="$01 $00"></div><div addr="$838D36">ORA ($00, X)</div><div></div>
+		<div dasm="$D5 $2D"></div><div addr="$838D38">CMP ($2D, X)</div><div></div>
+		<div dasm="$0A $0C"></div><div addr="$838D3A">LDY #$0C</div><div></div>
+		<div dasm="$21 $00"></div><div addr="$838D3C">AND ($00, X)</div><div></div>
+		<div dasm=""></div><div addr="$838D"></div><div></div>
+		<div dasm=""></div><div addr="$838D"></div><div></div>
+		<div dasm=""></div><div addr="$838D"></div><div></div>
+		<div dasm=""></div><div addr="$838D"></div><div></div>
+	</div>
+
+	<p>For all other indices, the results are unpredictable; however, in slot 10, the address <code class="address">$8A</code> will be used. This address contains the overworld screen ID, which means execution can resume at a handful of locations around the same area.</p>
+</div>

@@ -191,9 +191,6 @@ code.addrsize {
 	vertical-align: bottom;
 }
 
-span.underRadical {
-}
-
 code.mathVar,
 code.mathFunc,
 code.mathAns {
@@ -237,13 +234,13 @@ div.snesasm {
 	flex-wrap: wrap;
 	columns: 5;
 	font-family: 'Roboto Mono', consolas, monospace;
-	font-size: .9em;
-	line-height: 1.2em;
+	font-size: .85em;
+	line-height: 1.3em;
 	background: #F8F8FF;
 }
 
 div.snesasm:not(.nolabel) {
-	grid-template-columns: 20% 33% auto;
+	grid-template-columns: 22% 33% auto;
 }
 
 div.snesasm.nolabel {
@@ -252,7 +249,7 @@ div.snesasm.nolabel {
 
 div.snesasm > div {
 	display: inline-block;
-	padding-left: 10px;
+	padding-left: 5px;
 	overflow-x: visible;
 	white-space: nowrap;
 }
@@ -261,7 +258,9 @@ div.snesasm > span {
 	grid-column-start: span 3;
 	display: inline-block;
 	min-height: 1em;
-	padding-left: 10px;
+	padding-left: 5px;
+	text-indent: 20px;
+	background:#E8E8F8;
 }
 
 div.snesasm > div:nth-of-type(3n+1) {
@@ -300,8 +299,29 @@ div.snesasm:not(.noaddress) > div:nth-of-type(3n+2):before {
 	background: #DDDDFF;
 }
 
+div.snesasm > div:nth-of-type(3n+1):not(:empty) {
+	color: white;
+	background: #7777FF;
+}
+
+div.snesasm > div:nth-of-type(3n+1)[dasm]:after {
+	content: attr(dasm);
+	padding: 0 3px;
+	display: inline-block;
+	margin-left: 4px;
+	text-align: right;
+	background: #60608F;
+	color: #F9F9F9;
+}
+
+div.snesasm > div:nth-of-type(6n+1):not(:empty) {
+	color: white;
+	background: #4477FF;
+	padding-right: 5px;
+}
+
 div.snesasm > div:nth-of-type(3n+1) {
-	color: #4444FF;
+	padding-right: 5px;
 }
 
 div.snesasm > div:nth-of-type(3n+2) {
@@ -750,4 +770,15 @@ div.metaLinks a {
 	max-height: 200px;
 	height: auto;
 	transition: max-height 1s linear;
+}
+
+.dossier {
+	font-family: Courier prime, inerit;
+	color: #303030;
+	filter: grayscale(60%);
+}
+
+.dossier .contentstuff {
+	border-radius: 0px;
+	background-image: repeating-linear-gradient(40deg, #F8F8F8 5%, #FFFFFF 40%, #F8F8F8 57%);
 }
