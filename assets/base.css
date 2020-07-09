@@ -162,6 +162,7 @@ blockquote:after {
 code {
 	font-family: 'Roboto Mono', consolas, monospace;
 	font-size: 91%;
+	line-height: 0;
 }
 
 code.opcode {
@@ -775,7 +776,7 @@ div.metaLinks a {
 .dossier {
 	font-family: Courier prime, inerit;
 	color: #303030;
-	filter: grayscale(60%);
+	filter: grayscale(30%);
 }
 
 .dossier .contentstuff {
