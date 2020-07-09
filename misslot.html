@@ -353,15 +353,15 @@ background: glitchybg dossier
 		<div dasm="$CC $CC $4C"></div><div addr="$838D44">CPY $4CCC</div><div>Open bus</div>
 		<div dasm="$4E $22 $44"></div><div addr="$838D47">LSR $4422</div><div>More open bus</div>
 		<div dasm="$4F $4E $4D $51"></div><div addr="$838D4A">EOR $514D4E</div><div></div>
-		<div dasm="$44 $44 $FF"></div><div addr="$838D4E"></div>MVP $FF, $44<div>Nice</div>
+		<div dasm="$44 $44 $FF"></div><div addr="$838D4E">MVP $FF, $44</div><div>Nice</div>
 		<div dasm="$A2 $57"></div><div addr="$838D51">LDX #$57</div><div></div>
 		<div dasm="$59 $23 $44"></div><div addr="$838D53">EOR $4423, Y</div><div>Speed 5: Open Bus</div>
 		<div dasm="$59 $5B $5D"></div><div addr="$838D56">EOR $5D5B, Y</div><div></div>
 		<div dasm="$59 $44 $44"></div><div addr="$838D59">EOR $4444</div><div></div>
 		<div dasm="$5F $58 $60 $37"></div><div addr="$838D5C">EOR $376058, X</div><div></div>
-		<div dasm="$44 $42 $37"></div><div addr="$838D60"></div>MVP $37, $42<div></div>
+		<div dasm="$44 $42 $37"></div><div addr="$838D60">MVP $37, $42</div><div></div>
 		<div dasm="$A8"></div><div addr="$838D63">TAY</div><div></div>
-		<div dasm="$6B"></div><div addr="$838D64">RTL></div><div></div>
+		<div dasm="$6B"></div><div addr="$838D64">RTL</div><div></div>
 	</div>
 	<p>The game crashes because the stack is unbalanced after this <code class="opcode">RTL</code>.</p>
 	<p>For all other indices, the results are unpredictable; however, in slot 10, the address <code class="address">$8A</code> will be used. This address contains the overworld screen ID, which means execution can resume at a handful of locations around the same area.</p>
@@ -378,10 +378,10 @@ background: glitchybg dossier
 
 	<h3 id="IAx5C">IAx5C</h3>
 	<div class="snesasm">
-		<div>IAx5C_entry</div><div addr="$0868B8"></div>PXH</div><div>This is skipped</div>
-		<div></div><div addr="$0868B9"></div>JSL $06EC62</div><div>Medallion_CheckSpriteDamage</div>
-		<div>IAx5C_entry</div><div addr="$0868BD"></div>JSL $0680FA</div><div>Player_ApplyRumbleToSprites</div>
-		<div></div><div addr="$0868C1"></div>PLX</div><div>Breaks the stack</div>
+		<div>IAx5C_entry</div><div addr="$0868B8">PHX</div><div>This is skipped</div>
+		<div></div><div addr="$0868B9">JSL $06EC62</div><div>Medallion_CheckSpriteDamage</div>
+		<div>IAx5C_entry</div><div addr="$0868BD">JSL $0680FA</div><div>Player_ApplyRumbleToSprites</div>
+		<div></div><div addr="$0868C1">PLX</div><div>Breaks the stack</div>
 	</div>
 	<p>This entry points to a location in ROM, specifically the active run code of <code class="routine">Ancilla_QuakeSpell</code>. Unfortunately, this entry point lands between a <code class="opcode">PHX</code> and <code class="opcode">PLX</code>. This leads to an unbalanced stack, resulting in a game crash.</p>
 
@@ -414,7 +414,6 @@ background: glitchybg dossier
 		<div></div><div addr="$08F6E6">STA $04</div><div></div>
 		<div></div><div addr="$08F6E8">SEP #$20</div><div></div>
 		<div></div><div addr="$08F6EA">RTS</div><div></div>
-		<span></span>
 	</div>
 	<p>This entry points to a location in ROM, specifically part of the flute ancilla's consumption code. The entry point aligns perfectly with the code. The branch is always taken, as the <code class="register">Z</code> flag will always be set from reading the high byte of the pointer.</p>
 	<p>The routine most likely results in a broken object on screen, but beyond that, it does not appear to have any interesting consequences in and of itself.</p>
