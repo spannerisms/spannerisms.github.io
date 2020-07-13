@@ -31,18 +31,26 @@ background: glitchybg dossier
 		<dd>One of the three ancillae (IDs: <code class="value">$0A</code>, <code class="value">$13</code>, <code class="value">$3C</code>) that can be overwritten to force the creation of a new ancilla.</dd>
 	<h2>Ancilla creation</h2>
 	<p>Ancillae are created by calling various subroutines. F-Slot ancillae generally use a more fine-tuned search routine. L-Slot ancillae tend to find a slot themselves and ignore extra precautions. Though, ultimately, it is those precautions that give rise to misslotting.</p>
-	
+
 	<div class="snesasm">
-		<div></div><div addr="$08806F">db $00, $08, $0C, $10, $10, $04, $10, $18</div><div>Data in bank08 used below</div>
-		<div></div><div addr="$088077">db $08, $08, $08, $00, $14, $00, $10, $28</div><div>Appears to be number of OAM objects&lt;&lt;2</div>
-		<div></div><div addr="$08807F">db $18, $10, $10, $10, $10, $0C, $08, $08</div><div></div>
-		<div></div><div addr="$088087">db $50, $00, $10, $08, $40, $00, $0C, $24</div><div></div>
-		<div></div><div addr="$08808F">db $10, $0C, $08, $10, $10, $04, $0C, $1C</div><div></div>
-		<div></div><div addr="$088097">db $00, $10, $14, $14, $10, $08, $20, $10</div><div></div>
-		<div></div><div addr="$08809F">db $10, $10, $04, $00, $80, $10, $04, $30</div><div></div>
-		<div></div><div addr="$0880A7">db $14, $10, $00, $10, $00, $00, $08, $00</div><div></div>
-		<span></span>
+		<div></div><div addr="$08806F">db $00, $08, $0C, $10</div><div>Data in used for below</div>
+		<div></div><div addr="$088073">db $10, $04, $10, $18</div><div>Appears to be number of OAM objects&lt;&lt;2</div>
+		<div></div><div addr="$088077">db $08, $08, $08, $00</div><div></div>
+		<div></div><div addr="$08807B">db $14, $00, $10, $28</div><div></div>
+		<div></div><div addr="$08807F">db $18, $10, $10, $10</div><div></div>
+		<div></div><div addr="$088083">db $10, $0C, $08, $08</div><div></div>
+		<div></div><div addr="$088087">db $50, $00, $10, $08</div><div></div>
+		<div></div><div addr="$08808B">db $40, $00, $0C, $24</div><div></div>
+		<div></div><div addr="$08808F">db $10, $0C, $08, $10</div><div></div>
+		<div></div><div addr="$088093">db $10, $04, $0C, $1C</div><div></div>
+		<div></div><div addr="$088097">db $00, $10, $14, $14</div><div></div>
+		<div></div><div addr="$08809B">db $10, $08, $20, $10</div><div></div>
+		<div></div><div addr="$08809F">db $10, $10, $04, $00</div><div></div>
+		<div></div><div addr="$0880A3">db $80, $10, $04, $30</div><div></div>
+		<div></div><div addr="$0880A7">db $14, $10, $00, $10</div><div></div>
+		<div></div><div addr="$0880AB">db $00, $00, $08, $00</div><div></div>
 		<div></div><div addr="$0880AF">db $10, $08, $78, $80</div><div></div>
+		<span></span>
 		<div></div><div addr="$099CCE">PHA</div><div>A contains Ancilla ID at this time</div>
 		<div></div><div addr="$099CCF">JSL $1CF537</div><div>Ancilla_CheckForAvailableSlot</div>
 		<div></div><div addr="$099CD3">PLA</div><div>Get ID back</div>
