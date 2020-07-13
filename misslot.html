@@ -30,10 +30,443 @@ background: glitchybg dossier
 		<dt>Particle</dt>
 		<dd>One of the three ancillae (IDs: <code class="value">$0A</code>, <code class="value">$13</code>, <code class="value">$3C</code>) that can be overwritten to force the creation of a new ancilla.</dd>
 	<h2>Ancilla creation</h2>
+	<p>Ancillae are created by calling various subroutines. F-Slot ancillae generally use a more fine-tuned search routine. L-Slot ancillae tend to find a slot themselves and ignore extra precautions. Though, ultimately, it is those precautions that give rise to misslotting.</p>
+	
+	<div class="snesasm">
+		<div></div><div addr="$08806F">db $00, $08, $0C, $10, $10, $04, $10, $18</div><div>Data in bank08 used below</div>
+		<div></div><div addr="$088077">db $08, $08, $08, $00, $14, $00, $10, $28</div><div>Appears to be number of OAM objects&lt;&lt;2</div>
+		<div></div><div addr="$08807F">db $18, $10, $10, $10, $10, $0C, $08, $08</div><div></div>
+		<div></div><div addr="$088087">db $50, $00, $10, $08, $40, $00, $0C, $24</div><div></div>
+		<div></div><div addr="$08808F">db $10, $0C, $08, $10, $10, $04, $0C, $1C</div><div></div>
+		<div></div><div addr="$088097">db $00, $10, $14, $14, $10, $08, $20, $10</div><div></div>
+		<div></div><div addr="$08809F">db $10, $10, $04, $00, $80, $10, $04, $30</div><div></div>
+		<div></div><div addr="$0880A7">db $14, $10, $00, $10, $00, $00, $08, $00</div><div></div>
+		<span></span>
+		<div></div><div addr="$0880AF">db $10, $08, $78, $80</div><div></div>
+		<div></div><div addr="$099CCE">PHA</div><div>A contains Ancilla ID at this time</div>
+		<div></div><div addr="$099CCF">JSL $1CF537</div><div>Ancilla_CheckForAvailableSlot</div>
+		<div></div><div addr="$099CD3">PLA</div><div>Get ID back</div>
+		<div></div><div addr="$099CD4">TYX</div><div>If no slot found</div>
+		<div></div><div addr="$099CD5">BMI fail</div><div></div>
+		<div></div><div addr="$099CD7">STA $0C4A, X</div><div>Save ID to slot</div>
+		<div></div><div addr="$099CDA">TAY</div><div>To save ID</div>
+		<div></div><div addr="$099CDB">LDA $EE</div><div>Get Link's layer</div>
+		<div></div><div addr="$099CDD">STA $0C7C, X</div><div>Give it to the ancilla</div>
+		<div></div><div addr="$099CE0">LDA $0476</div><div>Another layer flag</div>
+		<div></div><div addr="$099CE3">STA $03CA, X</div><div>Saved</div>
+		<div></div><div addr="$099CE6">STZ $0C22, X</div><div>Clears Y velocity</div>
+		<div></div><div addr="$099CE9">STZ $0C2C, X</div><div>Clears X velocity</div>
+		<div></div><div addr="$099CEC">STZ $0280, X</div><div>Clears OAM properties</div>
+		<div></div><div addr="$099CEF">STZ $028A, X</div><div>Clears collision flag</div>
+		<div></div><div addr="$099CF2">PHX</div><div></div>
+		<div></div><div addr="$099CF3">TYX</div><div></div>
+		<div></div><div addr="$099CF4">LDA $08806F, X</div><div>Get OAM size</div>
+		<div></div><div addr="$099CF8">STA $0E</div><div></div>
+		<div></div><div addr="$099CFA">PLX</div><div></div>
+		<div></div><div addr="$099CFB">LDA $0E</div><div>It's already there...</div>
+		<div></div><div addr="$099CFD">STA $0C90, X</div><div>Save as a property</div>
+		<div></div><div addr="$099D00">CLC</div><div>Clear carry to indicate success</div>
+		<div></div><div addr="$099D01">RTS</div><div></div>
+		<span></span>
+		<div>fail</div><div addr="$099D02">SEC</div><div>Set carry to indicate failure</div>
+		<div></div><div addr="$099D03">RTS</div><div></div>
+		<span></span>
+		<div>FindAncillaSlot</div><div addr="$1CF537">STY $0F</div><div>Save the number of type allowed</div>
+		<div></div><div addr="$1CF539">INY</div><div>+1 for later comparison</div>
+		<div></div><div addr="$1CF53A">STY $0E</div><div>Save comparison value</div>
+		<div></div><div addr="$1CF53C">LDY #$00</div><div>Y will be our counter</div>
+		<div></div><div addr="$1CF53E">LDX #$04</div><div>Slot index</div>
+		<div>tally</div><div addr="$1CF540">CMP $0C4A, X</div><div>Is it the ancilla we're making?</div>
+		<div></div><div addr="$1CF543">BNE diff</div><div>If not, keep looking</div>
+		<div></div><div addr="$1CF545">INY</div><div>If so, count up</div>
+		<div>diff</div><div addr="$1CF546">DEX</div><div>Next slot</div>
+		<div></div><div addr="$1CF547">BPL tally</div><div>Stop after 0</div>
+		<div></div><div addr="$1CF549">CPY $0E</div><div>Compare tally to quota</div>
+		<div></div><div addr="$1CF54B">BEQ too_many</div><div>Except this doesn't work if we have more&hellip;</div>
+		<div></div><div addr="$1CF54D">LDY #$01</div><div>Prep Y with slot 1</div>
+		<div></div><div addr="$1CF54F">CMP #$07</div><div>Only allow bombs and door debris</div>
+		<div></div><div addr="$1CF551">BEQ find_slot</div><div>Into the first 2 slots</div>
+		<div></div><div addr="$1CF553">CMP #$08</div><div></div>
+		<div></div><div addr="$1CF555">BEQ find_slot</div><div>Continue with slot 1 start if those</div>
+		<div></div><div addr="$1CF557">LDY #$04</div><div>Otherwise, start with slot 4</div>
+		<div>find_slot</div><div addr="$1CF559">LDA $0C4A, Y</div><div>Check the slot</div>
+		<div></div><div addr="$1CF55C">BEQ open</div><div>Is it empty?</div>
+		<div></div><div addr="$1CF55E">DEY</div><div>Next slot</div>
+		<div></div><div addr="$1CF55F">BPL find_slot</div><div>Stop after 0</div>
+		<div>find_harder</div><div addr="$1CF561">DEC $03C4</div><div>Decrement our search index</div>
+		<div></div><div addr="$1CF564">BPL positive</div><div>If our search index is positive</div>
+		<div></div><div addr="$1CF566">LDA $0F</div><div>Leave it; otherwise, load our quota</div>
+		<div></div><div addr="$1CF568">STA $03C4</div><div></div>
+		<div>positive</div><div addr="$1CF56B">LDY $03C4</div><div>Search index to register</div>
+		<div></div><div addr="$1CF56E">LDA $0C4A, Y</div><div>Check that slot</div>
+		<div></div><div addr="$1CF571">CMP #$3C</div><div>Sword sparkle</div>
+		<div></div><div addr="$1CF573">BEQ open</div><div>These ancillae are all considered "replacable"</div>
+		<div></div><div addr="$1CF575">CMP #$13</div><div>Ice rod sparkle</div>
+		<div></div><div addr="$1CF577">BEQ open</div><div></div>
+		<div></div><div addr="$1CF579">CMP #$0A</div><div>Lobbed arrow</div>
+		<div></div><div addr="$1CF57B">BEQ open</div><div></div>
+		<div></div><div addr="$1CF57D">DEY</div><div></div>
+		<div></div><div addr="$1CF57E">BPL find_harder</div><div>Stop after slot 0</div>
+		<div>open</div><div addr="$1CF580">RTL</div><div>Return with our index</div>
+		<span></span>
+		<div>too_many</div><div addr="$1CF581">TXY</div><div>Returns with &minus;1</div>
+		<div></div><div addr="$1CF582">RTL</div><div></div>
+	</div>
+
+	<hr />
+
+	<table class="align-right tablefloatright">
+		<caption>Ancilla quota</caption>
+		<thead>
+			<tr>
+				<th colspan="2">Ancilla</th>
+				<th>Quota</th>
+				<th class="divider"></th>
+				<th colspan="2">Ancilla</th>
+				<th>Quota</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="number value">$00</td>
+				<td>Nothing</td>
+				<td class="number value">&mdash;</td>
+
+				<th rowspan="34" class="divider"></th>
+
+				<td class="number value">$22</td>
+				<td>Item get</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$01</td>
+				<td>Somaria missile</td>
+				<td class="number value"></td>
+
+				<td class="number value">$23</td>
+				<td>Poof</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$02</td>
+				<td>Fire rod shot</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$24</td>
+				<td>Overworld gravestone</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$03</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$25</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+			</tr>
+			<tr>
+				<td class="number value">$04</td>
+				<td>Beam wall hit</td>
+				<td class="number value"></td>
+
+				<td class="number value">$26</td>
+				<td>Sword swing sparkle</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$05</td>
+				<td>Boomerang</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$27</td>
+				<td>Duck</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$06</td>
+				<td>Wall hit</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$28</td>
+				<td>Fairy pond toss</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$07</td>
+				<td>Bomb</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$29</td>
+				<td>Falling item get</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$08</td>
+				<td>Door debris</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$2A</td>
+				<td>Spin sparkle</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$09</td>
+				<td>Arrow</td>
+				<td class="number value">3</td>
+
+				<td class="number value">$2B</td>
+				<td>Spin sparkle</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$0A</td>
+				<td>Wall arrow</td>
+				<td class="number value"></td>
+
+				<td class="number value">$2C</td>
+				<td>Somaria block</td>
+				<td class="number value">1*</td>
+			</tr>
+			<tr>
+				<td class="number value">$0B</td>
+				<td>Ice shot</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$2D</td>
+				<td>Somaria block dying</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$0C</td>
+				<td>Sword beam</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$2E</td>
+				<td>Somaria block exploding</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$0D</td>
+				<td>Max charge sparkle</td>
+				<td class="number value"></td>
+
+				<td class="number value">$2F</td>
+				<td>Lamp flame</td>
+				<td class="number value">3</td>
+			</tr>
+			<tr>
+				<td class="number value">$0E</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$30</td>
+				<td>Byrna charge up</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$0F</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$31</td>
+				<td>Byrna spark</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$10</td>
+				<td>Unused</td>
+				<td class="number value"></td>
+
+				<td class="number value">$32</td>
+				<td>Blast wall explosion</td>
+				<td class="number value">&mdash;*</td>
+
+			</tr>
+			<tr>
+				<td class="number value">$11</td>
+				<td>Ice shot wall hit</td>
+				<td class="number value"></td>
+
+				<td class="number value">$33</td>
+				<td>Blast wall explosion</td>
+				<td class="number value">2^</td>
+			</tr>
+			<tr>
+				<td class="number value">$12</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$34</td>
+				<td>Skull Woods fire</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$13</td>
+				<td>Ice shot sparkle</td>
+				<td class="number value"></td>
+
+				<td class="number value">$35</td>
+				<td>Master Sword cutscene</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$14</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$36</td>
+				<td>Flute from ground</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$15</td>
+				<td>Splash</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$37</td>
+				<td>Flute spot debris</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$16</td>
+				<td>Stars</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$38</td>
+				<td>Flute cutscene bird</td>
+				<td class="number value">1&dagger;</td>
+			</tr>
+			<tr>
+				<td class="number value">$17</td>
+				<td>Dirt</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$39</td>
+				<td>Somaria platform poof</td>
+				<td class="number value">&mdash;</td>
+			</tr>
+			<tr>
+				<td class="number value">$18</td>
+				<td>Ether</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$3A</td>
+				<td>Super Bomb explosion</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$19</td>
+				<td>Bombos</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$3B</td>
+				<td>Sword up sparkle</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$1A</td>
+				<td>Powder</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$3C</td>
+				<td>Sword charge sparkle</td>
+				<td class="number value">&mdash;*</td>
+			</tr>
+			<tr>
+				<td class="number value">$1B</td>
+				<td>Wall poke spark</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$3D</td>
+				<td>Item splash</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$1C</td>
+				<td>Quake</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$3E</td>
+				<td>Crystal rising</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$1D</td>
+				<td>Bonk screen shake</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$3F</td>
+				<td>Bush powder poof</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$1E</td>
+				<td>Dash dust</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$40</td>
+				<td>Smithy poof</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$1F</td>
+				<td>Hookshot</td>
+				<td class="number value">4</td>
+
+				<td class="number value">$41</td>
+				<td>Waterfall splash</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$20</td>
+				<td>Link's blanky</td>
+				<td class="number value">&mdash;*</td>
+
+				<td class="number value">$42</td>
+				<td>Upgrade rupees</td>
+				<td class="number value">10</td>
+			</tr>
+			<tr>
+				<td class="number value">$21</td>
+				<td>Link snoring</td>
+				<td class="number value">2/5**</td>
+
+				<td class="number value">$43</td>
+				<td>Ganon's Tower cutscene</td>
+				<td class="number value">1&dagger;</td>
+			</tr>
+		</tbody>
+		<caption class="footnotes">
+			<ul class="footnotes">
+				<li>* Unique initialization routine</li>
+				<li>** Varies depending on routine caller</li>
+				<li>&dagger; Limited to 1 by a different search routine of the first 5 slots</li>
+				<li>^ The blast wall is hardcoded to always be in the first 2 slots</li>
+			</ul>
+		</caption>
+	</table>
+
+	<p>The <code class="routine">Ancilla_CheckForAvailableSlot</code> routine is extremely similar to another routine, <code class="routine">Ancilla_GetRidOfArrowInWall</code>, which searches for lobbed arrows and removes them if there are no open slots, or if exactly 3 are already present. The table to the right documents the quota of each ancilla, based on the code that creates it.</p>
+	<p>The critical fault that allows for misslotting is the use of <code class="address">$03C4</code> as a search index. This address is only ever written to in 4 locations. 2 of these locations are in <code class="routine">Ancilla_GetRidOfArrowInWall</code>, where it is decremented, or set to 4, similar to the logic at <code class="address">$1CF561</code> in <code class="routine">Ancilla_CheckForAvailableSlot</code>, the other 2 instances of writing to this address.</p>
+	<p>Both of these routines follow the path of <i>"decrement search index; set it to &lt;value&gt; if it goes negative"</i>. In the arrow routine, this value is 4; for the general routine, it is the ancilla-specific quota. The entire purpose of this in the general routine is questionable. Take, for example, the hookshot, which has a quota of 4. If <code class="address">$03C4</code> goes negative when decremented, then the second search will begin at 4, the same starting point already used in the previous search. All F-slot ancillae use one of these prebuilt routines. Ancillae designed for L-slots use local searches to find empty slots. So for the case of most ancilla using these routines to initialize, the second search is pointless, as it is looking at slots already checked.</p>
+	<p>At least by design. Both of these search routines assume that this address has been pre-initialized elsewhere, but that is never the case. If, by any means, <code class="address">$03C4</code> already has a value, this will determine where a secondary search begins. If the value is greater than <code class="value">$7F</code> after decrementing, then the ancilla's quota will overwrite it.</p>
+	<p>The implementation of this secondary search is questionable. It is likely the result of copying code from the arrow routine. A more sensible solution would be to start from index 4 every time.</p>
+	<p>The foremost curiosity is why the individual initialization routines don't take care of ID and quota themselves. In many cases, these are parameters loaded before the initialization is called.</p>
+	<p>The table here should not be taken at face value, as other factors may limit when, where, and how many of any particular ancilla can spawn.</p>
 
 	<h2>Ancillae execution</h2>
 	<div class="snesasm">
-		<div></div><div addr="$08833C">PHA</div><div>A contains Ancilla ID at this time</div>
+		<div>Ancillae_DoAll:</div><div addr="$08832B">LDX #$09</div><div>Start at slot 9</div>
+		<div>next</div><div addr="$08832D">STX $0FA0</div><div>Save index</div>
+		<div></div><div addr="$088330">LDA $0C4A, X</div><div>Get ancilla ID</div>
+		<div></div><div addr="$088333">BEQ inactive</div><div>ID 0 is no ancilla</div>
+		<div></div><div addr="$088335">JSR Ancilla_Do</div><div></div>
+		<div>inactive</div><div addr="$088338">DEX</div><div>Next slot</div>
+		<div></div><div addr="$088339">BPL next</div><div>Stop after 0</div>
+		<div></div><div addr="$08833B">RTS</div><div></div>
+		<span></span>
+		<div>Ancilla_Do</div><div addr="$08833C">PHA</div><div>A contains Ancilla ID at this time</div>
 		<div></div><div addr="$08833D">CPX #$06</div><div>L-Slot ancillae have limited OAM</div>
 		<div></div><div addr="$08833F">BCS skip_oam</div><div>Likely irrelevant beyond graphical glitches.</div>
 		<div></div><div addr="$088341">LDA $0C90, X</div><div>Allocation>>2 of ancilla</div>
@@ -198,7 +631,22 @@ background: glitchybg dossier
 
 	<h2>Addresses of interest</h2>
 	<h2>Valid ancillae</h2>
+	<p>These are ancillae with valid pointers that were intended to exist.
 
+	<p>The following section headers will name each entry as <b>Ax##</b>, where <b>A</b> abbreviates Ancilla; <b>x</b> indicates a hexadecimal value; <b>##</b> is the hexadecimal ID of the ancilla. In less technical contexts, a descriptive English name will be used.</p>
+<!---------
+	outline:
+	<h3 id="Ax01">Ax01 - Somaria missile</h3>
+	<h4>Creation</h4>
+		<asm>
+	
+	<h4>Execution</h4>
+		<asm>
+
+	<h4>Addresses used</h4>
+	<h5>$0xxx</h5>
+	<p>oh man bad stuff happens if this is wrong</p>
+---------->
 	<h2>Illegal ancillae</h2>
 	<p>Illegal IDs can be placed into the execution array; however, the addresses they jump to are not necessarily valid pointers.</p>
 	<p>The following section headers will name each entry as <b>IAx##</b>, where <b>IA</b> abbreviates Illegal Ancilla; <b>x</b> indicates a hexadecimal value; <b>##</b> is the hexadecimal ID of the ancilla.</p>
@@ -458,7 +906,7 @@ background: glitchybg dossier
 	<div class="snesasm">
 		<div>IAx5F_entry</div><div addr="$080C4A">????</div><div></div>
 	</div>
-	<p>This entry points to a location in WRAM, specifically the start of the ancilla ID table. This table is easily manipulable; it can, and has, been used for arbitrary code execution.</p>
+	<p>This entry points to a location in WRAM, specifically the start of the ancilla ID array. This array is easily manipulable; it can, and has, been used for arbitrary code execution.</p>
 
 	<h3 id="IAx60">IAx60</h3>
 	<div class="snesasm">
@@ -554,12 +1002,12 @@ background: glitchybg dossier
 		<tr>
 			<td><code class="address">$30</code></td>
 			<td>Link's Y velocity</td>
-			<td>Nothing; overwritten before it takes effect</td>
+			<td>Nothing; overwritten before used</td>
 		</tr>
 		<tr>
 			<td><code class="address">$40</code></td>
-			<td>Not sure</td>
-			<td>???</td>
+			<td>Temp variable for coordinates</td>
+			<td>Nothing; overwritten before used</td>
 		</tr>
 		<tr>
 			<td><code class="address">$50</code></td>
@@ -589,7 +1037,7 @@ background: glitchybg dossier
 		<tr>
 			<td><code class="address">$A0</code></td>
 			<td>Room ID</td>
-			<td>Repointed to EP big chest room or a nonexistent room</td>
+			<td>Repointed to EP big chest room or a nonexistent room<br/>ID <code class="value">$01A9</code> corresponds to cape and mirror in SRAM</td>
 		</tr>
 		<tr>
 			<td><code class="address">$B0</code></td>
@@ -898,6 +1346,7 @@ background: glitchybg dossier
 	<p>This entry points to a location in ROM, specifically the repulse spark draw routine. The entry point does not align perfectly with the code, but it recovers after 1 instruction. Eventually the routine returns cleanly.</p>
 	<p>Of particular interest, is the instruction at <code class="address">$08:905A</code>, which loads the <code class="register">X</code> register with the value of <code class="address">$0FAC</code>. The repulse spark is not a slotted ancilla, so it does not have any recovery of slot after this. Thus, this instruction will determine the next slot executed &minus;1. Normally, this address only takes on values from <code class="value">0</code>&ndash;</code class="value">5</code>; however, if we found a way to modify this address, we could execute ancillae in the illegal slots from <code class="value">$0A</code>&ndash;<code class="value">$7F</code>.</p>
 	<p>This also comes with the potential to hardlock the game in an infinite loop. For example, if IAx7A is in slot 0 and <code class="address">$0FAC</code> has a value of <code class="value">$02</code>, then the next ancilla executed will be slot 1, followed by slot 0 again. This will repeat <i>ad infinitum</i>.</p>
+	<p>Less interestingly, this illegal ancilla should also result in some broken objects on screen.</p>
 
 	<h3 id="IAx7B">IAx7B</h3>
 	<p>This illegal ancilla shares the same pointer and effect as <a href="#IAx78">IAx78</a>.</p>
