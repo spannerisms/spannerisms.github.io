@@ -235,7 +235,7 @@ background:
 		</tbody>
 	</table>
 	<p>Before looking at how damage is applied, we need to understand how it is calculated.</p>
-	<p>There are 15 damage classes, each having 8 subclasses. These subclasses determine the damage or effect inflicted on a sprite. Subclass data is stored as a table in ROM at <code class="address">$0D:B8F1</code>. A value of <code class="value">$00</code> not only results in 0 damage, but will also prevent hits from even registering for the sword by default (though other properties of a sprite may let it clink anyways). Values of <code class="value">$F9</code> or higher result in specific code being run, in lieu of damage being applied. All other values are subtracted directly from a sprite's health.</p>
+	<p>There are 16 damage classes, each having 8 subclasses. These subclasses determine the damage or effect inflicted on a sprite. Subclass data is stored as a table in ROM at <code class="address">$0D:B8F1</code>. A value of <code class="value">$00</code> not only results in 0 damage, but will also prevent hits from even registering for the sword by default (though other properties of a sprite may let it clink anyways). Values of <code class="value">$F9</code> or higher result in specific code being run, in lieu of damage being applied. All other values are subtracted directly from a sprite's health.</p>
 
 	<table class="align1right">
 		<caption>Special damage classes</caption>
