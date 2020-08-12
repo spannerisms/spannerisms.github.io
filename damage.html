@@ -9,14 +9,13 @@ background:
 	<p>It is not to be confused with damage, which is how much health is taken away from Link or an enemy when attacking. There are a handful of routines that do some sort of damage handling. Who's hitting whom determines which calculation will be used. This explication will cover what happens when <em>you</em>, the player, are the aggressor.</p>
 
 	<h2>The Basics</h2>
-	<p>Quite a few pieces are needed to know exactly how much damage by is taken or what happens to an enemy when it is hit with something. Our 4 components are the object of infliction, the sprite's ID, the damage class, and the damage subclass. The damage class is derived from whatever is dealing the hit. It is then used with the sprite's ID to index a table for the damage subclass. Finally, the damage class and subclass together are fed to another table for the final value.</p>
-	<p>That's all these is to understand the basics, but if the basics are all you're after, then you are clearly opposed to learning.</p>
-	<p>The rest of you should continue reading, as we will dive into the inner workings of each of these calculations to understand how they differ and how they all converge into a single routine.</p>
-	<p>Sprites don't just take damage out of nowhere. Specific routines need to be called for damage to happen. There are 3 main ways that sprites can take damage:</p>
+	<p>A few pieces of data are needed to know exactly how much damage is taken or what happens to an enemy when it is hit with something. Our 4 components are: the object of infliction, the sprite's ID, the damage class, and the damage subclass. The damage class is derived from whatever is dealing the hit. It is then used with the sprite's ID to index a table for the damage subclass. Finally, the damage class and subclass together are fed to another table for the final value.</p>
+	<p>That's all there is to understand the basics, but if the basics are all you're after, then you are clearly opposed to learning. The rest of you should continue reading, as we will dive into the inner workings of each of these calculations to understand how they differ and how they all converge into a single routine.</p>
+	<p>Sprites don't just take damage out of nowhere. Specific routines need to be called. There are 3 main ways that sprites can take damage:</p>
 	<ul>
-		<li>From Link's sword or hammer attacks - in this case, the sprite to take damage is responsible for calling the <code class="routine">Sprite_CheckDamageFromPlayer</code> routine. Any sprite that doesn't call this routine is more than immune to direct attacks; it completely ignores them.</li>
-		<li>From ancillae - in this case, the ancillae is calling the <code class="routine">Ancilla_CheckSpriteDamage</code> routine. Just like sprites and direct damage, any ancilla that doesn't call this routine just will not do damage, no matter how hard you try.</li>
-		<li>From other sprites - and in this last case, the sprite <em>doing</em> the damage is calling code <code class="routine">ThrownSprite_CheckDamageToPeers</code> routine. A couple sprites call this routine as part of their normal behavior, but every sprite has access to it when frozen, via the frozen state handler.</li>
+		<li>From Link's sword or hammer attacks&mdash;in this case, the sprite to take damage is responsible for calling the <code class="routine">Sprite_CheckDamageFromPlayer</code> routine. Any sprite that doesn't call this routine is more than immune to direct attacks; it completely ignores them.</li>
+		<li>From ancillae&mdash;in this case, the ancillae is calling the <code class="routine">Ancilla_CheckSpriteDamage</code> routine. Just like sprites and direct damage, any ancilla that doesn't call this routine will just not do damage, no matter how hard you try.</li>
+		<li>From other sprites&mdash;and in this last case, the sprite <em>doing</em> the damage is calling the <code class="routine">ThrownSprite_CheckDamageToPeers</code> routine. A couple sprites call this routine as part of their normal behavior, but every sprite has access to it when frozen, via the frozen state handler.</li>
 	</ul>
 	<p>There are other, minor ways to deal damage to sprites, but we'll cover those after the main trilogy.</p>
 
@@ -279,18 +278,19 @@ background:
 
 	<p>The subclass that each sprite should look for in each damage class is in a table in WRAM at <code class="address">$7F:6000</code>. The data in ROM is actually compressed two-fold. When the game first boots up, it runs the normal decompression routine to obtain 8 bytes for each sprite. Why 8 when there are 16 damage classes? Well, each damage class only has 8 subclasses, which only needs 3 bits to reference. Each byte holds the subclass for 2 damage classes. Bits 3 and 7 hold no data. The high and low nibble of each byte are split apart and then written to WRAM separately, where the entire table can be read uncompressed.</p>
 	<p>The full table for each sprite, including how much damage that subclass results in, is documented <a href="alldamage">here</a>.</p>
-	<p>Contrary to some's belief, there is no "insta kill" damage. Anything that dies to a single hit just doesn't have enough health to survive the damage inflicted. <em>Technically</em>, the inceration damage just sets sprites to AI mode <code class="value">$7</code>, which burns them to death. Slowly. The damage routine itself never interacts with the sprite's health when doing this; it's the conflagratory AI module that deals the killing blow.</p>
+	<p>Honestly, I'm not sure why damage subclass is even a gameplay routine. All this data is static, so they could have easily precalculated every damage value as they were decompressing the subclass data and stuck <em>that</em> into WRAM.</p>
+	<p>Contrary to some's belief, there is no "insta-kill" damage. Anything that dies to a single hit just doesn't have enough health to survive the damage inflicted. <em>Technically</em>, the inceration damage just sets sprites to AI mode <code class="value">$7</code>, which burns them to death. Slowly. The damage routine itself never interacts with the sprite's health when doing this; it's the conflagratory AI module that deals the killing blow.</p>
 	<p>I don't know about you, but when I hear "instant", I expect things to be done without delay. I don't see how sadistically roasting your victims alive until their 3rd degree burns kill them is "instant" by any stretch of the word.</p>
 	<p>You sicken me.</p>
 
 	<h2>Sword and hammer</h2>
-	<p>Most people understand the sword's damage mechanics, but it's still worth looking at parts of this routine more indepth, mostly to understand how exactly the game knows what damage to do.</p>
-	<p>Sword and hammer damage require that the sprite in question calls <code class="routine">Sprite_CheckDamageFromPlayer</code> as part of its daily regimen. The routine begins by performing variour checks to see if damage should even be considered, including:</p>
+	<p>Most people understand the sword's damage mechanics, but it's still worth looking at parts of this routine more indepth, just to understand how exactly the game knows what damage to do.</p>
+	<p>Sword and hammer damage require that the sprite in question calls <code class="routine">Sprite_CheckDamageFromPlayer</code> as part of its daily regimen. The routine begins by performing various checks to see if damage should even be considered, including:</p>
 	<ul>
-		<li>Is the sprite is already dying?</li>
-		<li>Are Link and the sprite are on the same layer?</li>
-		<li>Does the hitbox of the attack overlap the hitbox of the sprite?<li>
-		<li>Is Link using the bug net?<li>
+		<li>Is the sprite already dying?</li>
+		<li>Are Link and the sprite on the same layer?</li>
+		<li>Does the hitbox of the attack overlap the hitbox of the sprite?</li>
+		<li>Is Link using the bug net?</li>
 	</ul>
 
 	<p>Along with these checks is a nested series of checks to handle the ice smash prize pack:</p>
@@ -309,7 +309,7 @@ background:
 			</ul>
 		</li>
 	</ul>
-	<p>This is where Ganon's immunity to the hammer is coded, causing the routine to exit, but if the rest of the checks pass, the sprite is put into a poofing state and its prize pack is set to the magic pack. After this, the routine is satisfied, and it exits.</p>
+	<p>This is where Ganon's immunity to the hammer is coded. If the rest of the checks pass, the sprite is put into a poofing state and its prize pack is set to the magic pack. After this, the routine is satisfied.</p>
 	<p>When any of these other checks fail, the routine continues just checkin' more things:</p>
 	<ul>
 		<li>Is the target an Agahnim energy shot? If so, make sure Link isn't poking.</li>
@@ -372,19 +372,19 @@ background:
 		</tbody>
 	</table>
 	<p>If the sprite made it that far and is not immune, then it will continue to a subroutine that checks for the sprite's ability to discharge electrons through Link's nerves. If the sprite is properly grounded and Link is unable to steal the negative charge, then we'll finally reach the routine that handles sword damage classes. Otherwise, Link will end up like Mehdi Sadaghdar.</p>
-
+	<p>And now&hellip;</p>
 	<p>We're finally here. Sword damage classes. There are several types of sword damages that can be dealt, and most people are familiar with them, but here's exactly how the game sees it:</p>
 	<ul>
 		<li><code class="address">$0E60,X</code> is a bitfield sprite property. Bit 6 of this property is a flag for total immunity to damage.</li>
 		<li><code class="address">$0372</code> is one of a couple addresses used to indicate that Link is dashing. This address is checked to determine if Link is performing a dashpoke.</li>
 		<li><code class="address">$3C</code> is a timer/bitfield used for handling spin attacks. Bit 7 indicates a spin attack is in progress, and the timer segment is used to determine if we're doing a normal poke.</li>
 		<li><code class="address">$0301</code> is a bitfield for items. Bit 1 indicates the hammer is being used.</li>
-		<li>The value <code class="value">$9D</code> is used as a parameter to the damage routine for the sprite's recoil.</li>
+		<li>The value <code class="value">$9D</code> is used as a parameter to the damage routine for the sprite's iframe timer.</li>
 	</ul>
-	<p>The damage application routine actually begins right after this. It's literally the next instruction. But before we look at it, we have other things to cover&hellip;</p>
+	<p>The damage application routine actually begins right after this. It's literally the next instruction. But before we look at it, we have other things to cover.</p>
 
-	<h2>Ancilla</h2>
-		<table class="align-right float-right">
+	<h2>Ancillæ</h2>
+	<table class="align-right float-right">
 		<caption>Ancilla damage classes</caption>
 		<thead>
 			<tr>
@@ -707,17 +707,16 @@ background:
 			</tr>
 		</tbody>
 	</table>
-	<p>Let's look at ancillae next:</p>
 	<p>Ancillae begin by using their ID to index a table of damage classes. This table has a couple of oddities. First off, there are a total of 68 ancillae, but the table only has 57 entries; the last 11 bleed into code. While it might make sense to only include data up to the highest ID that can do damage, that's not what this table does. The last ID that needs a damage class is entry 49, the cane of byrna spark.</p>
 	<p>Half of the default values here are <code class="value">$0</code> and the other half are <code class="value">$1</code>. That I can't really come up with a reason for. Personally, I would have made every unneeded value <code class="value">$FF</code>, to distinguish empty values from the boomerang's damage class. It's also interesting that the null ID of <code class="value">$00</code> has the arrow damage class (<code class="value">$6</code>). That's not reading code as data. That's actually the value they gave it.</p>
 	<p>Lamp flames don't contain any routine for checking damage, but if they did, they would do the same damage as fire rod.</p>
 	<p>But I digress&hellip;</p>
 	<p>Once the damage class is determined, it is used to perform a couple more checks that determine the flow of the routine.</p>
 	<ul>
-		<li>If the damage is class <code class="value">$6</code>, check for silver arrows. If we do have silver arrows, change the damage class to <code class="value">$9</code>. This is also where an explicit check for silver-vulnerable Ganon is performed; if it's him, his damage timer is set to 32 frames.</li>
+		<li>If the damage is class <code class="value">$6</code> (arrows), check for silver arrows. If we do have silver arrows, change the damage class to <code class="value">$9</code>. This is also where an explicit check for silver-vulnerable Ganon is performed; if it's him, his damage timer is set to 32 frames.</li>
 		<li>If the damage class is <code class="value">$F</code> (quake), check the target and make sure it isn't airborne. If it is, the routine exits and no damage is done.</li>
 		<li>If the damage class is either <code class="value">$0</code> (boomerang) or<code class="value">$7</code> (hookshot), then a repulse spark ancilla is added after the damage routine.</li>
-		<li>If the damage class is <code class="value">$8</code> (bombs), then <code class="value">53</code> will be used as the recoil timer for the damage routine. Otherwise, <code class="value">32</code> is used.</li>
+		<li>If the damage class is <code class="value">$8</code> (bombs), then <code class="value">53</code> will be used as the iframe timer parameter for the damage routine. Otherwise, <code class="value">32</code> is used.</li>
 	</ul>
 
 	<h2>Thrown sprites</h2>
@@ -798,18 +797,18 @@ background:
 
 	<h2>The Main Event</h2>
 	<p>Now that we've covered damage class calculation, we can finally examine the <code class="routine">Damage Application</code> routine.</p>
-	<p>This routine has a single parameter, which is a value used later for recoil. Everything else in memory should already be set up for damage to occur.</p>
+	<p>This routine has a single parameter, which is a value used later for an iframe timer. Everything else in memory should already be set up for damage to occur.</p>
 	<p>First, 2 checks are performed: bit 6of <code class="address">$0E60,X</code> is checked for total immunity. Then the sprite ID is checked. IDs of <code class="value">$D8</code> and higher belong to items and a couple other undamageable sprites. So if the ID is in this range, the routine just exits immediately.</p>
 	<p>Next, the sprite's ID and the calculated damage class are used to index the WRAM sprite damage table for the subclass. The subclass is combined with the damage class to index the table in ROM at <code class="address">$0D:B8F1</code> to get the actual damage inflicted.</p>
 	<p>Now we begin individual checks to see if we're doing using a special damage class or direct damage. This is the point in the routine that Agahnim's energy shots enter from. The fairy (<code class="value">$F9</code>) and blob (<code class="value">$FA</code>) classes are checked for first. These simply transmute the target sprite into the new sprite; a new sprite is not actually spawned, per se.</p>
 	<p>Following that is a check to make sure that better damage is not being overwritten. If the damage we entered with is less than the damage already being dealt, then the sprite's current "damage taken" property is left alone. But that's all that's skipped. The rest of the routine still continues as normal. This allows for damage application to be extended, such as with doubling fire rod shots on Kholdstare's shell.</p>
-	<p>If the inflicted damage is 0, it continues, but otherwise, there's this weird segment of code. As far as I can tell, it's essentially useless, but this code appears to "shield" non-boss sprites from damage, and even revive them. If the damage class was powder and powder doesn't damage the sprite normally, then its damage timer and damage taken properties will be zeroed.</p>
+	<p>If the inflicted damage is 0, it continues, but otherwise, there's this weird segment of code. As far as I can tell, it's essentially useless, but this code appears to "shield" non-boss sprites from damage, and even revive them. If the damage class was powder and powder doesn't damage the sprite normally, then its iframe timer and damage taken property will be zeroed.</p>
 	<p>For some reason, powder is a bit special when it deals damage to sprites. It does use the same routine, but only part of it. When the routine is entered normally, the sprite's death is checked, and bit 7 is a flag that tells the ancilla to stop. This check is not performed at the point where magic powder enters the routine.</p>
 	<p>The reason this seems pretty useless is that you don't really have time to use powder in most cases. The best place to see this is to get an enemy that takes damage from the boomerang (debirandos are good because they don't move) and throw behind it. Then right before the boomerang hits it on its return, sprinkle the target.</p>
 	<p>But let's continue with the routine when it's nonzero damage. More special damage classes are checked. First, freeze and long stun are checked together.</p>
 	<p>After this is the code that handles water bubble respawning. I'm not sure why it's here, but it is. Basically, it just sets the bubble back to alive and resets its AI.</p>
 	<p>Enemy arrows also have their deflection code here.</p>
-	<p>The value we entered with is used for a recoil timer, the same one that controls how long damage flashing occurs for. Helmasaur King has a special check here to determine which sound to play, based on what phase he's on. Otherwise, the boss flag sprite property is checked to determine which OOF is heard.</p>
+	<p>The value we entered with is used for the iframe timer, the same one that controls how long damage flashing occurs for. Helmasaur King has a special check here to determine which sound to play, based on what phase he's on. Otherwise, the boss flag sprite property is checked to determine which OOF is heard.</p>
 	<p>And finally, the damage class is checked again to apply recoil. Forcing 0 recoil against the sprite if it's one of the medallion classes. This is how recoilless Agahnim hits happen. The damage class address is a single byte, and it's only updated when it needs to be. So if the last damage class used was a medallion, it will be checked when energy balls deal damage, because they jump in halfway through the routine, and don't need to use the address; it gets left alone, but checked later for recoil.</p>
 	<p>For non-medallion damage classes, 3 sprites have a special recoil timer:</p>
 	<ul>
