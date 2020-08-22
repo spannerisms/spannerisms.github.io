@@ -715,7 +715,7 @@ background:
 	<ul>
 		<li>If the damage is class <code class="value">$6</code> (arrows), check for silver arrows. If we do have silver arrows, change the damage class to <code class="value">$9</code>. This is also where an explicit check for silver-vulnerable Ganon is performed; if it's him, his damage timer is set to 32 frames.</li>
 		<li>If the damage class is <code class="value">$F</code> (quake), check the target and make sure it isn't airborne. If it is, the routine exits and no damage is done.</li>
-		<li>If the damage class is either <code class="value">$0</code> (boomerang) or<code class="value">$7</code> (hookshot), then a repulse spark ancilla is added after the damage routine.</li>
+		<li>If the damage class is either <code class="value">$0</code> (boomerang) or <code class="value">$7</code> (hookshot), then a repulse spark ancilla is added after the damage routine.</li>
 		<li>If the damage class is <code class="value">$8</code> (bombs), then <code class="value">53</code> will be used as the iframe timer parameter for the damage routine. Otherwise, <code class="value">32</code> is used.</li>
 	</ul>
 
@@ -796,9 +796,9 @@ background:
 	<p>Spike damage requires a specific routine to be called as well, but, in this case, it's <code class="routine">Sprite_CheckTileCollision</code>. As part of this routine, if a sprite interacts with a spike block and is currently recoiling, then the ancilla damage routine is hijacked with a damage class of <code class="value">4</code>.</p>
 
 	<h2>The Main Event</h2>
-	<p>Now that we've covered damage class calculation, we can finally examine the <code class="routine">Damage Application</code> routine.</p>
+	<p>Now that we've covered damage class calculation, we can finally examine the <code class="routine">Damage_Application</code> routine.</p>
 	<p>This routine has a single parameter, which is a value used later for an iframe timer. Everything else in memory should already be set up for damage to occur.</p>
-	<p>First, 2 checks are performed: bit 6of <code class="address">$0E60,X</code> is checked for total immunity. Then the sprite ID is checked. IDs of <code class="value">$D8</code> and higher belong to items and a couple other undamageable sprites. So if the ID is in this range, the routine just exits immediately.</p>
+	<p>First, 2 checks are performed: bit 6 of <code class="address">$0E60,X</code> is checked for total immunity. Then the sprite ID is checked. IDs of <code class="value">$D8</code> and higher belong to items and a couple other undamageable sprites. So if the ID is in this range, the routine just exits immediately.</p>
 	<p>Next, the sprite's ID and the calculated damage class are used to index the WRAM sprite damage table for the subclass. The subclass is combined with the damage class to index the table in ROM at <code class="address">$0D:B8F1</code> to get the actual damage inflicted.</p>
 	<p>Now we begin individual checks to see if we're doing using a special damage class or direct damage. This is the point in the routine that Agahnim's energy shots enter from. The fairy (<code class="value">$F9</code>) and blob (<code class="value">$FA</code>) classes are checked for first. These simply transmute the target sprite into the new sprite; a new sprite is not actually spawned, per se.</p>
 	<p>Following that is a check to make sure that better damage is not being overwritten. If the damage we entered with is less than the damage already being dealt, then the sprite's current "damage taken" property is left alone. But that's all that's skipped. The rest of the routine still continues as normal. This allows for damage application to be extended, such as with doubling fire rod shots on Kholdstare's shell.</p>
