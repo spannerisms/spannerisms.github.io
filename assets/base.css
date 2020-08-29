@@ -2,6 +2,7 @@ html {
 	font-family: Roboto, "Segoe UI", tahoma, arial, sans-serif;
 	font-size: 11pt;
 	background-color: #F9E3F9;
+	height: 100%;
 }
 
 body {
@@ -50,6 +51,10 @@ strong.verdict {
 	display: block;
 }
 
+div.clear {
+	clear: both;
+}
+
 dl.proseList dt:before {
 	content: '';
 	margin-top: 10px;
@@ -88,7 +93,7 @@ div.content {
 	margin-top: 30px;
 	padding: 30px 10%;
 	background-color: #F9E3F9;
-	height: 100%;
+	height: auto;
 }
 
 div.content > div {
@@ -202,7 +207,6 @@ code.mathAns {
 }
 
 code.mathFunc {
-	background: #F0F0FF;
 	border-radius: 5px;
 	white-space: nowrap;
 	padding: 0 6px;
@@ -349,6 +353,10 @@ table {
 	font-size: 90%;
 }
 
+table.shrunktable {
+	min-width: 10%;
+}
+
 table.centertable {
 	margin: 0 auto;
 }
@@ -370,8 +378,8 @@ table > caption:not(.footnotes) {
 }
 
 table > caption.footnotes {
-    caption-side: bottom;
-    text-align: left;
+	caption-side: bottom;
+	text-align: left;
 }
 
 ul.footnotes {
@@ -598,6 +606,15 @@ div.content {
 	background-blend-mode: color-burn;
 	background-size: contain;
 	image-rendering: pixelated;
+}
+
+.mechanicsbg {
+	background-image: url('bg/bank07code.png'), linear-gradient(to bottom, #CCCCFF, #777799);
+	background-repeat: repeat, repeat;
+	image-rendering: pixelated;
+	background-attachment: fixed, scroll !important;
+	background-position: left, center;
+	background-blend-mode: multiply;
 }
 
 .houlihanbg {

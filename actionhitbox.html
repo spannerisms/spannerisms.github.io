@@ -1,0 +1,569 @@
+---
+layout: default
+title: Action Hitbox
+background: mechanicsbg
+---
+<div class="contentstuff mechanicsstuff">
+	<h1>Action Hitbox</h1>
+	<p>The action hitbox, like all abstract mechanical concepts, is a name given to us by MathOnNapkins in his US disassembly. This hitbox describes the current size and location of Link's sword and hammer attacks. Its routine begins at <code class="address">$06F5E6</code>, and is surprisingly simple.</p>
+
+	<h2>What even is a hitbox?</h2>
+	<p>Hitboxes are very simple shapes. In fact, they're rectangles defined by 4 parameters:</p>
+	<ul>
+		<li><code class="mathVar">x</code> - The x-position of the top-left corner of the rectangle</li>
+		<li><code class="mathVar">y</code> - The y-position of the top-left corner of the rectangle</li>
+		<li><code class="mathVar">w</code> - The length in pixels that the rectangle extends towards the right; i.e. its width</li>
+		<li><code class="mathVar">h</code> - The length in pixels that the rectangle extends downwards; i.e. its height</li>
+	</ul>
+	<p>For the action hitbox specifically, <code class="mathVar">x</code> and <code class="mathVar">y</code> will be <em>relative</em> offsets, rather than <em>absolute</em>. That is, all values of <code class="mathVar">x</code> and <code class="mathVar">y</code> will need to be added to Link's x- and y-coordinates to get the actual position of the hitbox.</p>
+
+	<p>Hitboxes are simple shapes because this cuts down on calculation time. Even modern 3D games still use basic shapes (spheres or rectangular prisms), because they are much more efficient. These games tend to use a whole lot of them to approximate more complex shapes, but the calculations are so fast and easy that this turns out to be better than a single complicated calculation.</p>
+
+	<h2>The boxes</h2>
+	<p>Within the action hitbox routine, there are several branches to determine which hitbox is used, checked in the following order:</p>
+	<ol>
+		<li>Dash hitbox</li>
+		<li>Hammer and Net hitboxes</li>
+		<li>Spin hitbox</li>
+		<li>Sword swing and poke hitboxes</li>
+	</ol>
+
+	<h3>Dashing</h3>
+	<table class="align-right float-right shrunktable">
+		<caption>Dashing</caption>
+		<thead>
+			<tr>
+				<th rowspan="2">Direction</th>
+				<th colspan="4">Parameters</th>
+			</tr>
+			<tr>
+				<th>x</th>
+				<th>y</th>
+				<th>w</th>
+				<th>h</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>Up</th>
+				<td>0</td>
+				<td>&minus;8</td>
+				<td>16</td>
+				<td>16</td>
+			</tr>
+			<tr>
+				<th>Down</th>
+				<td>0</td>
+				<td>16</td>
+				<td>16</td>
+				<td>16</td>
+			</tr>
+			<tr>
+				<th>Left</th>
+				<td>&minus;8</td>
+				<td>8</td>
+				<td>16</td>
+				<td>16</td>
+			</tr>
+			<tr>
+				<th>Right</th>
+				<td>8</td>
+				<td>8</td>
+				<td>16</td>
+				<td>16</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>The dashing hitbox is used whenever the dashing flag at <code class="address">$0372</code> is nonzero. The direction Link is facing is used to index tables just before the routine to determine the relative offsets of the top-left corner. Regardless of Link's direction, the dash hitbox always extends 16 pixels right and 16 pixels down.</p>
+
+	<h3>Brashing I guess</h3>
+	<p>The spin hitbox is next, because it's dead simple, and because the next two sets need to be discussed together. This hitbox is used when bit7 of <code class="address">$3C</code>, an address for sword control, is set.</p>
+	<p>Link's direction is completely irrelevant for the spin hitbox. This hitbox will always be 14 pixels up, 10 pixels left, and extend 44 pixels right and 44 pixels down.</p>
+
+	<h3>Smashing and Caching and Slashing</h3>
+	<table class="float-right shrunktable">
+		<caption>Box?</caption>
+		<thead>
+			<tr>
+				<th>$3C</th>
+				<th>Box?</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>$00</td>
+				<td>false</td>
+			</tr>
+			<tr>
+				<td>$01</td>
+				<td>false</td>
+			</tr>
+			<tr>
+				<td>$02</td>
+				<td>false</td>
+			</tr>
+			<tr>
+				<td>$03</td>
+				<td>true</td>
+			</tr>
+			<tr>
+				<td>$04</td>
+				<td>true</td>
+			</tr>
+			<tr>
+				<td>$05</td>
+				<td>true</td>
+			</tr>
+			<tr>
+				<td>$06</td>
+				<td>true</td>
+			</tr>
+			<tr>
+				<td>$07</td>
+				<td>false</td>
+			</tr>
+			<tr>
+				<td>$08</td>
+				<td>false</td>
+			</tr>
+			<tr>
+				<td>$09</td>
+				<td>true</td>
+			</tr>
+			<tr>
+				<td>$0A</td>
+				<td>true</td>
+			</tr>
+			<tr>
+				<td>$0B</td>
+				<td>false</td>
+			</tr>
+			<tr>
+				<td>$0C</td>
+				<td>false</td>
+			</tr>
+			<tr>
+				<td>$80+</td>
+				<td>spin</td>
+		</tbody>
+	</table>
+	<p>The hammer and net hitboxes point to the same branch, which is taken when the hammer is flagged (bit 1 or unused bit 3 of <code class="address">$0372</code>) or the net is flagged (bit 4 of <code class="address">$037A</code>). This routine shares code with slashing and poking, but there's a key difference. Believe it or not, the direction Link is facing is not taken into account.</p>
+	<p>The sword control address <code class="address">$3C</code> handles spin attacks, but it also handles whether or not a hitbox should even be calculated for other sword attacks. In this case, when the value is non-negative, it indexes a table (shown to the right), for this decision. For the hammer and net, the value here is irrelevant.</p>
+	<p>The parameters of the hitbox are indexed from various tables using the <code class="register">X</code> register. For the hammer and net, this index is always 0, but for sword attacks, it is a function of Link's direction and the current animation step of the attack, which is held in <code class="address">$3C</code>. Once this index is calculated, both branches merge, and the rest of the routine is the same.</p>
+	<p>If direction is irrelevant for the hammer and net, how are their hitboxes actually different?</p>
+	<p>This is where two more variables come into play. They're pretty much an additional offset to <code class="mathVar">x</code> and <code class="mathVar">y</code>, so we'll call them <code class="mathVar">O<sub>x</sub></code> and <code class="mathVar">O<sub>y</sub></code>.</p>
+	<p>These offsets are constantly being recalculated, and they depend mostly on Link's current action and the direction he's facing. So I kinda lied. Direction does matter for the hammer and net, but it's done indepedently in an entirely separate part of the code. Furthermore, this means direction matters <em>twice</em> for slash and poke attacks.</p>
+	<p>As for why the sword can extend the hammer hitbox, that's just because a hitbox calculation is requested after the sword has placed its values, but before the offsets are reset again.</p>
+
+	<p>With just that much information, the calculations are super simple:</p>
+	<ul>
+		<li><code class="mathFunc">x<sub>hitbox</sub> = x<sub>Link</sub> + x<sub>i</sub> + O<sub>x</sub></code></li>
+		<li><code class="mathFunc">y<sub>hitbox</sub> = y<sub>Link</sub> + y<sub>i</sub> + O<sub>y</sub></code></li>
+		<li><code class="mathFunc">w<sub>hitbox</sub> = w<sub>i</sub></code></li>
+		<li><code class="mathFunc">h<sub>hitbox</sub> = h<sub>i</sub></code></li>
+	</ul>
+	<p>Where <code class="mathVar">v<sub>i</sub></code> just indicates the variable came from our tables indexed by the <code class="register">X</code> register, which we will call <code class="mathVar">I</code> to avoid confusion. The table is documented below, but keep reading afterwards.</p>
+
+	<div class="clear">
+	<table class="align-right centertable">
+		<caption>SlBCash</caption>
+		<tr class="header">
+			<th></th>
+			<th colspan="28">Parameters</th>
+		</tr>
+		<tr class="header">
+			<th>I</th>
+			<th>x</th>
+			<th>y</th>
+			<th>w</th>
+			<th>h</th>
+			<th class="divider" rowspan="14"></th>
+			<th>I</th>
+			<th>x</th>
+			<th>y</th>
+			<th>w</th>
+			<th>h</th>
+			<th class="divider" rowspan="14"></th>
+			<th>I</th>
+			<th>x</th>
+			<th>y</th>
+			<th>w</th>
+			<th>h</th>
+			<th class="divider" rowspan="14"></th>
+			<th>I</th>
+			<th>x</th>
+			<th>y</th>
+			<th>w</th>
+			<th>h</th>
+			<th class="divider" rowspan="14"></th>
+			<th>I</th>
+			<th>x</th>
+			<th>y</th>
+			<th>w</th>
+			<th>h</th>
+		</tr>
+		<tr>
+			<th>$00</th>
+			<td>0</td>
+			<td>0</td>
+			<td>15</td>
+			<td>15</td>
+			<th>$0D</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$1A</th>
+			<td>1</td>
+			<td>1</td>
+			<td>6</td>
+			<td>6</td>
+			<th>$27</th>
+			<td>4</td>
+			<td>1</td>
+			<td>4</td>
+			<td>4</td>
+			<th>$34</th>
+			<td>&minus;4</td>
+			<td>&minus;2</td>
+			<td>10</td>
+			<td>8</td>
+		</tr>
+		<tr>
+			<th>$01</th>
+			<td>2</td>
+			<td>2</td>
+			<td>4</td>
+			<td>4</td>
+			<th>$0E</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$1B</th>
+			<td>1</td>
+			<td>1</td>
+			<td>6</td>
+			<td>4</td>
+			<th>$28</th>
+			<td>2</td>
+			<td>2</td>
+			<td>4</td>
+			<td>4</td>
+			<th>$35</th>
+			<td>&minus;4</td>
+			<td>0</td>
+			<td>14</td>
+			<td>8</td>
+		</tr>
+		<tr>
+			<th>$02</th>
+			<td>0</td>
+			<td>0</td>
+			<td>8</td>
+			<td>8</td>
+			<th>$0F</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$1C</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$29</th>
+			<td>2</td>
+			<td>2</td>
+			<td>4</td>
+			<td>4</td>
+			<th>$36</th>
+			<td>&minus;10</td>
+			<td>&minus;4</td>
+			<td>15</td>
+			<td>12</td>
+		</tr>
+		<tr>
+			<th>$03</th>
+			<td>0</td>
+			<td>2</td>
+			<td>8</td>
+			<td>2</td>
+			<th>$10</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$1D</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$2A</th>
+			<td>2</td>
+			<td>1</td>
+			<td>6</td>
+			<td>6</td>
+			<th>$37</th>
+			<td>0</td>
+			<td>1</td>
+			<td>4</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<th>$04</th>
+			<td>&minus;8</td>
+			<td>4</td>
+			<td>8</td>
+			<td>12</td>
+			<th>$11</th>
+			<td>2</td>
+			<td>2</td>
+			<td>4</td>
+			<td>4</td>
+			<th>$1E</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$2B</th>
+			<td>2</td>
+			<td>1</td>
+			<td>6</td>
+			<td>6</td>
+			<th>$38</th>
+			<td>2</td>
+			<td>2</td>
+			<td>4</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<th>$05</th>
+			<td>0</td>
+			<td>4</td>
+			<td>8</td>
+			<td>8</td>
+			<th>$12</th>
+			<td>4</td>
+			<td>0</td>
+			<td>16</td>
+			<td>8</td>
+			<th>$1F</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$2C</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$39</th>
+			<td>2</td>
+			<td>2</td>
+			<td>4</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<th>$06</th>
+			<td>2</td>
+			<td>4</td>
+			<td>12</td>
+			<td>12</td>
+			<th>$13</th>
+			<td>4</td>
+			<td>2</td>
+			<td>12</td>
+			<td>4</td>
+			<th>$20</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$2D</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$3A</th>
+			<td>0</td>
+			<td>1</td>
+			<td>6</td>
+			<td>6</td>
+		</tr>
+		<tr>
+			<th>$07</th>
+			<td>0</td>
+			<td>7</td>
+			<td>8</td>
+			<td>8</td>
+			<th>$14</th>
+			<td>0</td>
+			<td>&minus;4</td>
+			<td>8</td>
+			<td>12</td>
+			<th>$21</th>
+			<td>0</td>
+			<td>0</td>
+			<td>8</td>
+			<td>8</td>
+			<th>$2E</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$3B</th>
+			<td>0</td>
+			<td>1</td>
+			<td>6</td>
+			<td>6</td>
+		</tr>
+		<tr>
+			<th>$08</th>
+			<td>2</td>
+			<td>2</td>
+			<td>4</td>
+			<td>4</td>
+			<th>$15</th>
+			<td>0</td>
+			<td>&minus;3</td>
+			<td>8</td>
+			<td>12</td>
+			<th>$22</th>
+			<td>0</td>
+			<td>0</td>
+			<td>8</td>
+			<td>8</td>
+			<th>$2F</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$3C</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<th>$09</th>
+			<td>2</td>
+			<td>2</td>
+			<td>4</td>
+			<td>4</td>
+			<th>$16</th>
+			<td>&minus;4</td>
+			<td>&minus;8</td>
+			<td>12</td>
+			<td>12</td>
+			<th>$23</th>
+			<td>0</td>
+			<td>0</td>
+			<td>8</td>
+			<td>8</td>
+			<th>$30</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$3D</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<th>$0A</th>
+			<td>1</td>
+			<td>1</td>
+			<td>6</td>
+			<td>6</td>
+			<th>$17</th>
+			<td>&minus;4</td>
+			<td>0</td>
+			<td>11</td>
+			<td>4</td>
+			<th>$24</th>
+			<td>2</td>
+			<td>&minus;2</td>
+			<td>10</td>
+			<td>8</td>
+			<th>$31</th>
+			<td>0</td>
+			<td>0</td>
+			<td>8</td>
+			<td>8</td>
+			<th>$3E</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<th>$0B</th>
+			<td>1</td>
+			<td>1</td>
+			<td>6</td>
+			<td>6</td>
+			<th>$18</th>
+			<td>&minus;6</td>
+			<td>0</td>
+			<td>12</td>
+			<td>8</td>
+			<th>$25</th>
+			<td>2</td>
+			<td>0</td>
+			<td>14</td>
+			<td>8</td>
+			<th>$32</th>
+			<td>0</td>
+			<td>0</td>
+			<td>8</td>
+			<td>8</td>
+			<th>$3F</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<th>$0C</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<th>$19</th>
+			<td>2</td>
+			<td>2</td>
+			<td>4</td>
+			<td>4</td>
+			<th>$26</th>
+			<td>4</td>
+			<td>&minus;4</td>
+			<td>15</td>
+			<td>12</td>
+			<th>$33</th>
+			<td>0</td>
+			<td>0</td>
+			<td>8</td>
+			<td>8</td>
+			<th>$40</th>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+	</table>
+
+	<h3>Oddities</h3>
+	<p>Interestingly, I didn't make any mention of how exactly a hitbox is cancelled. That's because, they kind of aren't. In the case where everything else fails the scratch space values are mostly left alone. The only one that isn't is the high byte of the x-coordinate, which will take on the value <code class="value">0x80</code>. This means the existing values will be used for the size and vertical position of the hitbox, but the horizontal position will be anywhere from &minus;32513 to &minus;32768 pixels away.</p>
+	<p>What about the offsets for the hammer? Most of the time, these extra offsets are <code class="value">0x80</code>. They are only set to proper values for a single frame. But, nothing actually prevents the hitbox from being created. Instead, it will just use that default value. Unfortunately, everything that requests an action hitbox also checks <code class="mathVar">O<sub>y</sub></code> beforehand, skipping the request and subsequent hitbox code if the value is exactly <code class="value">0x80</code>.</p>
+
+	<h2>Before I go</h2>
+	<p>And as one last thing: ya know that thing where you hit King Helma and then he clinks you and you see the clink at the bottom. What's that about?</p>
+	<p>At first, I thought it had to do with those offsets, since there's a routine for placing what's known as a repulse spark, and they're used in the calculation.</p>
+	<p>It turns out to be even dumber.</p>
+	<p>When you hit King Helma with the hammer while outmaneuvering him, the game uses a routine to calculate the velocity of Link's recoil. In doing so, it leaves some leftovers in scratch space. And for some got dang reason, right after doing that, those same leftovers are used for the coordinates of the repulse spark.</p>
+	<p>I think what they were going for is using the leftovers of the action hitbox routine for these coordinates, but, yeah&hellip;</p>
+</div>
