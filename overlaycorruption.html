@@ -21,7 +21,7 @@ background: glitchybg
 		<li>The status of star tiles is swapped and their graphics updated.</li>
 	</ol>
 
-	<p>That's what happens on the frame that you touch the star tile. It's not until the next frame, when we execute underworld submodule <code class="value">$03</code> that the overlay changes are applied to the collision and tile maps. The most important take away is the zeroing of the <a class="term" href="#BA">object index</a>. When overlay corruption happens, none of the star tile code is executed; it's going straight to submodule <code class="value">$03</code></p>
+	<p>That's what happens on the frame that you touch the star tile. It's not until the next frame, when we execute underworld submodule <code class="value">$03</code> that the overlay changes are applied to the collision and tile maps. The most important take away is the zeroing of the <a class="term" href="#BA">object index</a>. When overlay corruption happens, none of the star tile code is executed; it's going straight to submodule <code class="value">$03</code>.</p>
 
 	<h2>Overlay submodule</h2>
 	<p>This is the point in this post where I must warn you that complexity ramps up, and not even to its max. Just hold my hand, and we can power through this together.</p>
