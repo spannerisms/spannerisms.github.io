@@ -148,7 +148,7 @@ background: mechanicsbg
 				<td>spin</td>
 		</tbody>
 	</table>
-	<p>The hammer and net hitboxes point to the same branch, which is taken when the hammer is flagged (bit 1 or unused bit 3 of <code class="address">$0372</code>) or the net is flagged (bit 4 of <code class="address">$037A</code>). This routine shares code with slashing and poking, but there's a key difference. Believe it or not, the direction Link is facing is not taken into account.</p>
+	<p>The hammer and net hitboxes point to the same branch, which is taken when the hammer is flagged (bit 1 or unused bit 3 of <code class="address">$0301</code>) or the net is flagged (bit 4 of <code class="address">$037A</code>). This routine shares code with slashing and poking, but there's a key difference. Believe it or not, the direction Link is facing is not taken into account.</p>
 	<p>The sword control address <code class="address">$3C</code> handles spin attacks, but it also handles whether or not a hitbox should even be calculated for other sword attacks. In this case, when the value is non-negative, it indexes a table (shown to the right), for this decision. For the hammer and net, the value here is irrelevant.</p>
 	<p>The parameters of the hitbox are indexed from various tables using the <code class="register">X</code> register. For the hammer and net, this index is always 0, but for sword attacks, it is a function of Link's direction and the current animation step of the attack, which is held in <code class="address">$3C</code>. Once this index is calculated, both branches merge, and the rest of the routine is the same.</p>
 	<p>If direction is irrelevant for the hammer and net, how are their hitboxes actually different?</p>

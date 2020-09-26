@@ -49,14 +49,11 @@ background: glitchybg
 	<p>Another oddity that will be important to remember is that all of these initial checks are executor-agnostic. Only the sprite to be bounced is looked at; who actually does the bouncing is irrelevant.</p>
 
 	<h2>:Oooox</h2>
-	<p>You now know everything there is to know about bumpers for this glitch. But it doesn't explain the bouncing. Clearly, something is off about Moldorm. There are a lot of things off about Moldorm, but we only need to look at one thing (with some rubbernecking along the way)</p>
+	<p>You now know everything there is to know about bumpers for this glitch. But it doesn't explain the bouncing. Clearly, something is off about Moldorm. There are a lot of things off about Moldorm, but we only need to look at one thing (with some rubbernecking along the way).</p>
 
 	<h3>Hitboxes</h3>
 	<p>Moldorm has 2 hitboxes. This should come as no surprise to anyone, but it <em>is</em> a little unorthodox. Moldorm consists of a single sprite, and each sprite is only assigned one hitbox. So how does the second hitbox work? Which one even is the second hitbox?</p>
-	<p>It's the tail. Duh. Moldorm's main hitbox is his head. The specific thing about Moldorm that we need to look at is his segmentation. Each segment needs to operate somewhat independently, but also dependently. Moldorm uses subroutines&mdash;
-	<p><em>What? Subroutines? No wayyyyy.</em></p>
-	<p>Shut up. Don't interrupt me.</p>
-	<p>Moldorm uses subroutines to operate each segment of his body, and this occurs in the draw routine. Sure, that makes sense. Most of his body does nothing except exist. They need to move with the head in a choo-choo train fashion, but that's it. The tail is different.</p>
+	<p>It's the tail. Duh. Moldorm's main hitbox is his head. The specific thing about Moldorm that we need to look at is his segmentation. Each segment needs to operate somewhat independently, but also dependently. Moldorm uses subroutines to operate each segment of his body, and this occurs in the draw routine. Sure, that makes sense. Most of his body does nothing except exist. They need to move with the head in a choo-choo train fashion, but that's it. The tail is different.</p>
 
 	<h3>x</h3>
 	<p>Moldorm's tail is the only part that can be damaged, and it accomplishes this in an inelegant way. The first thing to do after drawing is set the address <code class="address">$0D90,X</code> to 1. Next, the addresses <code class="address">$0F60,X</code> and <code class="address">$0CAA,X</code> are set to 0. These are the addresses for hitbox and deflection properties, respectively. Clearing the deflection properties makes some sense, assuming we want them all 0. And hitbox 0 happens to be the one we want for the tail, but these addresses contain other properties&hellip; I guess they'll fix it later?</p>
