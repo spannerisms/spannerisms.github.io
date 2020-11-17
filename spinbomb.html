@@ -15,7 +15,7 @@ background: glitchybg
 	<p>I had originally planned to write an explication for this <em>"when we get closer to release"</em>, but never did. Then I suddenly felt motivated to write this.</p>
 
 	<h2>Link, please breathe into this tube.</h2>
-	<p>The most glaringly obvious, easy-to-see, couldn't-miss-it-if-you-tried consequence of carrying a bomb with spinspeed armed is that Link has a funny walk where he changes directions every few frames. This is caused by errors in calulating <code class="address">$2E</code>, which controls Link's current animation step.</p>
+	<p>The most glaringly obvious, easy-to-see, couldn't-miss-it-if-you-tried consequence of carrying a bomb with spinspeed armed is that Link has a funny walk where he changes directions every few frames. This is caused by errors in calculating <code class="address">$2E</code>, which controls Link's current animation step.</p>
 	<p>Link's animations are handled by using a handful of variables to determine a specific pose ID. This pose ID is then used to look up the placement of Link's head/extremities relative to his body, their properties, and the location in ROM to copy their character data from. This pose index table begins at <code class="address">$0D:85FB</code>. We want to specifically look at the "carrying item walk" animation, at these addresses in ROM:</p>
 
 	<table class="centertable">
@@ -111,7 +111,7 @@ background: glitchybg
 		</tbody>
 	</table>
 
-	<p>But this table only has 6 values, so we need to look at the next table to see what it bleeds into. The table that follors the Z-offset happens to be the velocity of the bomb on the Y-axis, based on what direction you're facing. But the problem is made messier by the fact that this velocity table supplies signed 8-bit values. If we treat them as signed 16-bit values and append them to our Z-offset table, we end up with this (we also need to read even further to the next table, which is the X-axis velocity):</p>
+	<p>But this table only has 6 values, so we need to look at the next table to see what it bleeds into. The table that follows the Z-offset happens to be the velocity of the bomb on the Y-axis, based on what direction you're facing. But the problem is made messier by the fact that this velocity table supplies signed 8-bit values. If we treat them as signed 16-bit values and append them to our Z-offset table, we end up with this (we also need to read even further to the next table, which is the X-axis velocity):</p>
 
 	<table class="centertable">
 		<thead>
