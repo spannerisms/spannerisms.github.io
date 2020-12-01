@@ -145,7 +145,7 @@ background: glitchybg
 		</tbody>
 	</table>
 
-	<p>Oh me, oh my. That's a big number. The Y-velocity table begins with <code class="value">&minus;32</code>, <code class="value">32</code>, or, in hexadecimal: <code class="value">0xE0</code>, <code class="value">0x20</code>. To treat this as a 16-bit number, we swap the order of the bytes (because the 65c816 is a little-endian processor), and concatenate them, giving us <code class="value">0x02E0</code>, or, as I put in the table above: <code class="value">736</code>.</p>
+	<p>Oh me, oh my. That's a big number. The Y-velocity table ends with <code class="value">&minus;32</code>, <code class="value">32</code>, or, in hexadecimal: <code class="value">0xE0</code>, <code class="value">0x20</code>. To treat this as a 16-bit number, we swap the order of the bytes (because the 65c816 is a little-endian processor), and concatenate them, giving us <code class="value">0x02E0</code>, or, as I put in the table above: <code class="value">736</code>.</p>
 
 	<h2>The best graphical glitch known to man</h2>
 	<p>On a related note, this animation step indexing also explains the prayer animation you can get while walking in tall grass with spinspeed or a well timed dash buffer. The animation looks normal most of the time because dashing or walking in tall grass or water only has 6 animation steps, but, if you can reach the tall grass on the same frame your animation counter hits a number higher than 5 while facing right, it will keep that value for the next frame (because the animation steps every other frame). And, by a beautiful miracle of some benevolent god, the prayer pose index table immediately follows the tall grass table.</p>
