@@ -55,6 +55,11 @@ div.clear {
 	clear: both;
 }
 
+div.center {
+	margin: auto;
+	text-align: center;
+}
+
 dl.proseList dt:before {
 	content: '';
 	margin-top: 10px;
@@ -174,7 +179,8 @@ code.opcode {
 	color: #0000CC;
 }
 
-code.address {
+code.address,
+code.label {
 	color: #C93858;
 }
 
@@ -816,4 +822,44 @@ div.metaLinks a {
 .dossier .contentstuff {
 	border-radius: 0px;
 	background-image: repeating-linear-gradient(40deg, #F8F8F8 5%, #FFFFFF 40%, #F8F8F8 57%);
+}
+
+/* SMT stuff */
+div.smtasm {
+	display: grid;
+	flex-direction: row;
+	flex-wrap: wrap;
+	columns: 2;
+	font-weight: bold;
+	font-family: 'Roboto Mono', consolas, monospace;
+	font-size: .8em;
+	line-height: 1.3em;
+	background: #000000;
+	color: #F8F8F8;
+	width:85%;
+	padding:20px;
+	grid-template-columns: 50% 50%;
+}
+
+div.smtasm > div {
+	display: inline-block;
+	overflow-x: visible;
+	white-space: nowrap;
+	margin-left: 60px;
+}
+
+div.smtasm > div.label {
+	margin-left: 0px;
+}
+
+div.smtasm > div.sep,
+div.smtasm > div.chant {
+	grid-column-start: span 2;
+	display: inline-block;
+	min-height: 1em;
+}
+
+.smtbg {
+	background-color:black !important;
+	background-image: radial-gradient(black 60%, #630063 67%, #2184E7 77%, #630063 81%, black);
 }
