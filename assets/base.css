@@ -179,9 +179,12 @@ code.opcode {
 	color: #0000CC;
 }
 
-code.address,
-code.label {
+code.address {
 	color: #C93858;
+}
+
+code.label {
+	color: #C03200;
 }
 
 code.number,
