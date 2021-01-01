@@ -724,9 +724,9 @@ background: glitchybg dossier
 	<div class="snesasm">
 		<div>IAx4C_entry</div><div addr="$080302">BRK ??</div><div></div>
 		<span></span>
-		<div>IAx4C_entry</div><div addr="$080302">BPL ??</div><div></div>
+		<div>IAx4C_entry</div><div addr="$080302">ORA (??,X)</div><div></div>
 	</div>
-	<p>This entry points to a location in WRAM. The address <code class="address">$0302</code> is not well documented, but it only appears to take on values of <code class="value">$00</code> or <code class="value">$01</code>. In the case of <code class="value">$00</code>, the <code class="opcode">BRK</code> vector will lead to unpredictable results. When <code class="opcode">BPL</code> is executed, the branch will always be taken, as the last operation that affected the <code class="register">Z</code> flag was loading the high byte of the pointer, which is <code class="value">$03</code>. The length of the branch will be determined by the current item being used, but the results after that are unpredictable.</p>
+	<p>This entry points to a location in WRAM. The address <code class="address">$0302</code> is not well documented, but it only appears to take on values of <code class="value">$00</code> or <code class="value">$01</code>. In the case of <code class="value">$00</code>, the <code class="opcode">BRK</code> vector will lead to unpredictable results. When <code class="opcode">ORA (dp,X)</code> is executed, the inevitable is only being delayed.</p>
 
 	<h3 id="IAx4D">IAx4D</h3>
 	<div class="snesasm">
@@ -777,7 +777,7 @@ background: glitchybg dossier
 		<div></div><div addr="$00040B">BRK ??</div><div></div>
 		<div>brk_vector</div><div addr="$00FFFF">BRL $0409</div><div></div>
 	</div>
-	<p>This entry points to a location in WRAM, specifically the high byte of the quadrant visits flag for the current underworld tile. This high byte seems unused, so it will result in a <code class="opcode">BRK</code>. The addressed branched to after the <code class="opcode">BRK</code> also appears unused, resulting in a <code class="opcode">BRK</code> loop.</p>
+	<p>This entry points to a location in WRAM, specifically the high byte of the quadrant visits flag for the current underworld tile. This high byte seems unused, so it will result in a <code class="opcode">BRK</code>. The address branched to after the <code class="opcode">BRK</code> also appears unused, resulting in a <code class="opcode">BRK</code> loop.</p>
 
 	<h3 id="IAx54">IAx54</h3>
 	<h3 id="IAx55">IAx55</h3>
@@ -788,7 +788,7 @@ background: glitchybg dossier
 		<div dasm="$BC $68 $0C"></div><div addr="$088366">LDY $0C86, X</div><div>We've been here before</div>
 	</div>
 	<p>IAx54 and IAx55 share the same entry point.</p>
-	<p>This entry points to a location in ROM. Funnily enough, it is pointing straight to another pointer from the jump table we just used, specifically the pointer for the unused ancilla with an ID of <code class="value">$03</code>. Quite quickly, this routine converges into actual code; in fact, it's the code just run to find out which ancilla subroutine to execute. Unfortunately, this returns to a point in the code after a stack push was meant to occur. When a value assumed to be the ancilla ID is recovered from the stack, it will rip off the top byte of our return address (<code class="value">$83</code>). This results in it executing the routine for the ancilla with the ID of <code class="value">$02</code>, the fire rod shot. When it's finished, the unbalanced stack will eventually cause the game to crash.</p>
+	<p>This entry points to a location in ROM. Funnily enough, it is pointing straight to another pointer from the jump table we just used, specifically the pointer for the unused ancilla with an ID of <code class="value">$03</code>. Quite quickly, this routine converges into actual code; in fact, it's the code just run to find out which ancilla subroutine to execute. Unfortunately, this returns to a point in the code after a stack push was meant to occur. When a value assumed to be the ancilla ID is recovered from the stack, it will rip off the low byte of our return address (<code class="value">$37</code>). This results in it executing the routine for the ancilla with the ID of <code class="value">$02</code>, the fire rod shot. When it's finished, the unbalanced stack will eventually cause the game to crash. Forever.</p>
 
 	<h3 id="IAx56">IAx56</h3>
 	<h3 id="IAx57">IAx57</h3>
@@ -828,7 +828,7 @@ background: glitchybg dossier
 		<div dasm="$6B"></div><div addr="$838D64">RTL</div><div></div>
 	</div>
 	<p>The game crashes because the stack is unbalanced after this <code class="opcode">RTL</code>.</p>
-	<p>For all other indices, the results are unpredictable; however, in slot 10, the address <code class="address">$8A</code> will be used. This address contains the overworld screen ID, which means execution can resume at a handful of locations around the same area.</p>
+	<p>For all other indices, the results are unpredictable.</p>
 
 	<h3 id="IAx58">IAx58</h3>
 	<h3 id="IAx59">IAx59</h3>
@@ -848,7 +848,7 @@ background: glitchybg dossier
 
 	<h3 id="IAx5D">IAx5D</h3>
 	<div class="snesasm">
-		<div>IAx5D_entry</div><div addr="$08D00C">BNE +$13</div><div>Z=0 because we last loaded $D0</div>
+		<div>IAx5D_entry</div><div addr="$08D00C">BNE $13</div><div>Z=0 because we last loaded $D0</div>
 		<div></div><div addr="$08D021">JSR $F6B6</div><div>Ancilla_PrepAdjustedOamCoord</div>
 		<span></span>
 		<div>Adjust_OAM</div><div addr="$08F6B6">LDY $0C7C, X</div><div></div>
