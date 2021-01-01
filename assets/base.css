@@ -817,7 +817,7 @@ div.metaLinks a {
 }
 
 .dossier {
-	font-family: Courier prime, inerit;
+	font-family: Courier prime, inherit;
 	color: #303030;
 	filter: grayscale(30%);
 }

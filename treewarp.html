@@ -17,7 +17,7 @@ background: glitchybg
 		<dt>Dynamic spawning </dt>
 		<dd>covers everything else. When some routine wants to spawn a sprite when an area has already loaded or under specific circumstances, the sprite's ID is loaded into a CPU register and the routine <code class="routine">Sprite_SpawnDynamically</code> is called.</dd>
 	</dl>
-	<p>When a sprite is spawned, no matter what method, it undergoes certain preparations to set its coordinates, AI pointers, etc., along with a routine that each sprite has specifically designated to it. Sprite prep happens exactly once.</p>
+	<p>When a sprite is spawned, no matter what method, it undergoes certain preparations to set its coordinates, AI pointers, etc.. This happens exactly once, but who performs this prep depends on the method the sprite is spawned with.</p>
 
 	<h2>Dinomaniac spawning</h2>
 	<p>As mentioned before, there are only 16 slots for active sprites to be in. To make sure there's room, <code class="routine">Sprite_SpawnDynamically</code> starts an index register at 15 and uses it to count down through all the sprite slots by looking for a sprite that is totally inactive and dead. If it finds an empty slot, it jumps ahead to set its properties and run its prep routine. Actually, it branches ahead, but if I said "branches", anyone who doesn't understand assembly terminology might get confused. Or maybe not, I'm sure the context makes it obvious.</p>
@@ -64,7 +64,7 @@ background: glitchybg
 	<h2>When things go terribly wrong</h2>
 	<p>Tree warp works when only 1 sprite slot is free before spawning the mouth. When 2 slots are free, things go really really wrong and the game crashes.</p>
 	<p>This crash is purely bad luck with ROM data. If 2 slots are free, that means the mouth takes one and eyeball 0 takes the other. So eyeball 0 spawns successfully, in the correct slot, and due to the prep that happens in <code class="routine">Sprite_SpawnDynamically</code>, we now have a new value in <code class="address">$01</code>: <span class="evil">3</span>. Eyeball 1 ends up overflowing, writing <span class="evil">3</span> to the last sprite slot.</p>
-	<p>When it comes to sprite IDs, <span class="evil">3</span> is particularly evil. There isn't actually a sprite with that ID. That slot in the sprite prep routines table just contains a pointer to <code class="address">$0000</code>. That's the same <code class="address">$00</code> we were storing scratch data in, but now we are executing it as code. And because it's consistent from the previous routines, I can tell you exactly what the CPU is doing:</p>
+	<p>When it comes to sprite IDs, <span class="evil">3</span> is particularly evil. There isn't actually a sprite with that ID. That slot in the sprite routines table just contains a pointer to <code class="address">$0000</code>. That's the same <code class="address">$00</code> we were storing scratch data in, but now we are executing it as code. And because it's consistent from the previous routines, I can tell you exactly what the CPU is doing:</p>
 
 	<div class="snesasm">
 		<div>$68 |</div><div addr="$060000">PLA</div><div></div>
