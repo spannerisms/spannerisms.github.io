@@ -79,6 +79,7 @@ background: glitchybg
 	<p>Since this is entirely up to the developers, let's look at a few game's to see what they do.</p>
 
 	<h2><i>The Legend of Zelda: A Link to the Past</i></h2>
+	<p>Hitting a <code class="opcode">BRK</code> is pretty easy in this game. Many flavors of transition corruption can result in an illegal submodule, causing the game to execute erroneous code or data as code in who-even-knows-where? Most <a href="misslot#illegal">illegal ancillae</a> end up breaking, many of them immediately. Sprite ID 3, which points to <code class="address">$0000</code> causes the infamous <a href="treewarp">tree warp</a> crash, and going out-of-bounds in the single-entrance underworld more often than not loads an invalid room effect that eventuallys runs a <code class="value">$00</code>. These examples aren't exhaustive, but they should give you an idea of just how easy it is to literally break the game.</p>
 	<p>The break vector here points to <code class="address">$FFFF</code> in all versions of the game. Whatever they might have been using it for has been erased when production ROMs were produced. This vector is pointing to the high byte of the emulation mode's IRQ/BRK vector, which, in this game, is <code class="value">$82</code>. That's the opcode for the <code class="opcode">BRL</code> instruction. The next 2 bytes form the operand, which is a relative offset to jump to. So, for example, if the operand were <code class="value">$0004</code>, we would add 4 to the program counter, which is currently sitting at the <em>next</em> instruction, which is <code class="address">$0002</code>. Thus, after this branch is executed, our PC would be at <code class="address">$0006</code>.</p>
 	<p>You might be wondering whether this operand is read from the next bank or if it wraps around, but it doesn't matter! Both answers would give the same result, because both of these addresses are mirrors of the same address: <code class="address">$7E:0000</code>!</p>
 	<p>Since the operand is pulled from extremely volatile memory, the results are, at least to mortals, unpredictable. But, like anything software, they're completely deterministic. The effects of this <a href="http://tasvideos.org/6230S.html">can and have been used for Tool-Assisted Speedruns</a>. But even then, it sometimes doesn't play nice.</p>
@@ -87,7 +88,7 @@ background: glitchybg
 	<p>It's a metaphor for life, really.</p>
 
 	<h2><i>Shin Megami Tensei</i></h2>
-	<p>A lot of things I've seen in my disassembly suggest that the developers of this game overwrote whatever was already on their floppies every time they reassembled. This vector points to a routine that updates a given characters sword power stat, and it enters right after the <code class="opcode">PHP</code> instruction. So, actually, this one will exit cleanly! <code class="opcode">PLP</code> followed by <code class="opcode">RTL</code> will accomplish the same thing as an <code class="opcode">RTI</code>. I'm not sure if it's intentional, but, if it is, it's some fascinating insight into the last pieces of code the developers were working on.</p>
+	<p>This vector points to a routine that updates a given characters sword power stat, and it enters right after the <code class="opcode">PHP</code> instruction. So, actually, this one will exit cleanly! <code class="opcode">PLP</code> followed by <code class="opcode">RTL</code> will accomplish the same thing as an <code class="opcode">RTI</code>. I'm not sure if it's intentional, but, if it is, it's some fascinating insight into the last pieces of code the developers were working on.</p>
 	<p>Of course, this only works properly when we're looking at a properly placed <code class="opcode">BRK</code>. This routine expects the <code class="register">X</code> register to already be loaded with a value corresponding to the desired character's stat offset in memory. Anything else and we're likely looking at some corruption.</p>
 
 	<h2><i>Kirby Super Star</i></h2>
@@ -99,6 +100,14 @@ background: glitchybg
 
 	<h2><i>Whizz</i></h2>
 	<p>These guys tried, but it doesn't do much. This break vector points to code that jumps to an <code class="opcode">RTI</code> elsewhere. So a software break will immediately return to where it was. This prevents break loops from destroying the stack, thus increasing the chances that proper code is eventually executed, but it doesn't save the end user from much else. But why expect it to? Pretty much every developer is hoping people won't ever be glitching their game that badly.</p>
+
+	<h2><i>Super Mario World</i></h2>
+	<p>There's a whole host of different break vectors for this game, depending on which version you're using. Hitting one isn't too difficult with some of the game's more powerful glitches, such as item swapping, brown platform loogies, or sprite stunning.</p>
+	<p>The Japanese version is arguably the worst of the bunch, as it points to open bus at <code class="address">$50B2</code>. How careless. The high byte puts the opcode for <code class="opcode">BVC</code> in the bus, which will keep us branching ahead 80 bytes at a time until we hit ROM code.</p>
+	<p>The US version points to <code class="address">$FFFF</code>, and the byte there just so happens to be the same <code class="value">$82</code> that ALttP has, producing a similar result with break loop potential.</p>
+	<p>The 1.0 European version points directly to the reset vector, the same decision we saw for <i>Shin-chan</i>.</p>
+	<p>The Super System version points to <code class="address">$0000</code>, which will execute RAM as code only slightly differently from the <code class="opcode">BRL</code>s we saw in ALttP and the US version. The biggest difference is that those branches had strong potential to lead anywhere else in the bank, wheras executing <code class="address">$0000</code> is a bit more likely to stay where it is.</p>
+	<p>And for some reason, the 1.1 European version points to <code class="address">$0000</code> as well. What gives? The reset vector is a fairly solid decision as a last ditch recovery if we consider a break a fatal problem. What made them change it back to something that's just going to crash <em>and</em> burn?</p>
 
 	<h2><i>Family Dog</i></h2>
 	<p>Unfortunately, this vector is as boring as the game. It points directly to an <code class="opcode">RTI</code>.</p>
