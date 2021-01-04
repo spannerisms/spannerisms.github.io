@@ -10,6 +10,30 @@ body {
 	height: 100%;
 }
 
+
+div.content {
+	margin-top: 30px;
+	padding: 30px 10%;
+	background-color: #F9E3F9;
+	height: auto;
+}
+
+div.content > div {
+	background: #FCFCFF;
+	padding: 30px 10%;
+	box-shadow: 3px 3px 4px black;
+	border: 1px solid black;
+	border-radius: 20px;
+}
+
+div.content > div {
+	background: #FCFCFF;
+	padding: 30px 10%;
+	box-shadow: 3px 3px 4px black;
+	border: 1px solid black;
+	border-radius: 20px;
+}
+
 a {
 	text-decoration: none;
 	color: #44D;
@@ -47,10 +71,6 @@ dt {
 	color: #FCFCFF;
 }
 
-strong.verdict {
-	display: block;
-}
-
 div.clear {
 	clear: both;
 }
@@ -60,57 +80,9 @@ div.center {
 	text-align: center;
 }
 
-dl.proseList dt:before {
-	content: '';
-	margin-top: 10px;
-	display: block;
-}
-
-dl.proseList dt {
-	display: inline;
-	font-weight: bold;
-}
-
-dl.proseList dd {
-	display: contents;
-}
-
-ul.postlist {
-	list-style: square;
-}
-
-ul.postlist li .date {
-	font-size: 80%;
-	vertical-align: bottom;
-	font-variant: small-caps;
-}
-
-ul.postlist a {
-	font-size: 110%;
-}
-
 li > p {
 	margin-block-start: 0;
 	margin-block-end: 0;
-}
-
-div.content {
-	margin-top: 30px;
-	padding: 30px 10%;
-	background-color: #F9E3F9;
-	height: auto;
-}
-
-div.content > div {
-	background: #FCFCFF;
-	padding: 30px 10%;
-	box-shadow: 3px 3px 4px black;
-	border: 1px solid black;
-	border-radius: 20px;
-}
-
-div.content > div.lesspadding {
-	padding: 30px 4%;
 }
 
 div.content h1 {
@@ -120,6 +92,31 @@ div.content h1 {
 	border-bottom: 3px solid;
 	padding-left: 10px;
 	clear: both;
+}
+
+table > thead th {
+	background: #B0B0FF;
+	padding: 2px;
+	text-align: center;
+}
+
+table > tbody th {
+	padding: 2px 5px;
+	background: #E0E0FF;
+	text-align: inherit;
+}
+
+table {
+	min-width: 40%;
+	border: 1px solid #CCCCFF;
+	box-shadow: 3px 3px 3px #606060;
+	background: #EEEEFF;
+	padding: 2px 1px;
+	font-size: 90%;
+}
+
+td, th {
+	box-shadow: 2px 2px 1px #BBBBDD;
 }
 
 div.content h2 {
@@ -142,6 +139,16 @@ div.content h3 {
 	clear: both;
 }
 
+div.content h4 {
+	font-size: 115%;
+	position: relative;
+	left: -10px;
+	border-bottom: 1px solid #A8A8A8;
+	padding-left: 8px;
+	width: 60%;
+	clear: both;
+}
+
 blockquote {
 	font-style: italic;
 }
@@ -153,19 +160,6 @@ blockquote:after {
 
 .float-right {
 	float: right;
-}
-
-.supershort {
-	font-size: 90%;
-	padding-left: 20px;
-	font-style: oblique;
-}
-
-.supershort:before {
-	content: 'IN ONE SENTENCE: ';
-	font-weight: bold;
-	font-size: 85%;
-	color: #D84490;
 }
 
 /* hack formatting */
@@ -231,137 +225,9 @@ code.mathAns {
 	font-weight: bold;
 }
 
-/* SNES assembly code formatting */
-/* avoid code tag */
-/* only a small thing in lttprng.html uses this */
-code.snesasm {
-	white-space: pre;
-	font-size: 80%;
-	position: relative;
-	line-height: 20px;
-}
 
-div.snesasm {
-	counter-reset: asmline;
-	display: grid;
-	flex-direction: row;
-	flex-wrap: wrap;
-	columns: 5;
-	font-family: 'Roboto Mono', consolas, monospace;
-	font-size: .85em;
-	line-height: 1.3em;
-	background: #F8F8FF;
-}
-
-div.snesasm:not(.nolabel) {
-	grid-template-columns: 22% 33% auto;
-}
-
-div.snesasm.nolabel {
-	grid-template-columns: 10% 40% auto;
-}
-
-div.snesasm > div {
-	display: inline-block;
-	padding-left: 5px;
-	overflow-x: visible;
-	white-space: nowrap;
-}
-
-div.snesasm > span {
-	grid-column-start: span 3;
-	display: inline-block;
-	min-height: 1em;
-	padding-left: 5px;
-	text-indent: 20px;
-	background:#E8E8F8;
-}
-
-div.snesasm > div:nth-of-type(3n+1) {
-	text-align: right;
-}
-
-div.snesasm > div:nth-of-type(3n+1):before {
-	counter-increment: asmline;
-	content: counter(asmline);
-}
-
-div.snesasm > div:nth-of-type(3n+1):before,
-div.snesasm > span:before {
-	text-align: right;
-	float: left;
-	display: block;
-	width: 3em;
-	padding-right: 5px;
-	border-right: 3px solid #666666;
-	background: #898989;
-	color: white;
-	margin: 0;
-}
-
-div.snesasm > span:before {
-	content: '.';
-	display: block;
-	color: transparent;
-}
-
-div.snesasm:not(.noaddress) > div:nth-of-type(3n+2):before {
-	content: attr(addr);
-	margin-right: 20px;
-	display: inline-block;
-	padding: 0 3px;
-	background: #DDDDFF;
-}
-
-div.snesasm > div:nth-of-type(3n+1):not(:empty) {
-	color: white;
-	background: #7777FF;
-}
-
-div.snesasm > div:nth-of-type(3n+1)[dasm]:after {
-	content: attr(dasm);
-	padding: 0 3px;
-	display: inline-block;
-	margin-left: 4px;
-	text-align: right;
-	background: #60608F;
-	color: #F9F9F9;
-}
-
-div.snesasm > div:nth-of-type(6n+1):not(:empty) {
-	color: white;
-	background: #4477FF;
-	padding-right: 5px;
-}
-
-div.snesasm > div:nth-of-type(3n+1) {
-	padding-right: 5px;
-}
-
-div.snesasm > div:nth-of-type(3n+2) {
-	z-index: 20000;
-}
-
-div.snesasm > div:nth-of-type(3n+3) {
-	color: #339933;
-}
-
-div.snesasm > div:nth-of-type(6n+1),
-div.snesasm > div:nth-of-type(6n+2),
-div.snesasm > div:nth-of-type(6n+3) {
-	background: #F0F0FF;
-}
 
 /* tables */
-table {
-	min-width: 40%;
-	border: 1px solid #CCCCFF;
-	box-shadow: 3px 3px 3px #606060;
-	background: #EEEEFF;
-	padding: 2px 1px;
-	font-size: 90%;
-}
-
 table.shrunktable {
 	min-width: 10%;
 }
@@ -372,39 +238,6 @@ table.centertable {
 
 table.tablefloatright {
 	float: right;
-}
-
-table > caption:not(.footnotes) {
-	font-weight: bold;
-	text-align: left;
-	padding: 2px 5px 2px 10px;
-	background: #DDDDFF;
-	border: inherit;
-	border-bottom: none;
-	border-radius: 10px 10px 0 0;
-	width: 40%;
-	white-space: nowrap;
-}
-
-table > caption.footnotes {
-	caption-side: bottom;
-	text-align: left;
-}
-
-ul.footnotes {
-	list-style: none;
-}
-
-table > thead th {
-	background: #B0B0FF;
-	padding: 2px;
-	text-align: center;
-}
-
-table > tbody th {
-	padding: 2px 5px;
-	background: #E0E0FF;
-	text-align: inherit;
 }
 
 table.align-right {
@@ -431,36 +264,16 @@ td {
 	padding: 2px 5px;
 }
 
-td, th {
-	box-shadow: 2px 2px 1px #BBBBDD;
-}
-
-td.givesitem {
-	background: #4466FF;
-}
-
-td.noitem {
-	background: #CCCCCC;
-}
-
-td.givesitem,
-td.noitem {
-	opacity: .8;
-}
-
-table.dungeonitemgive td:nth-child(18),
-table.dungeoncrystalgive td:nth-child(10) {
-	text-align:left;
-}
-
 tr.header th {
 	text-align: center;
 }
 
+.nostripes > tbody > tr > th,
 tbody > tr:nth-child(odd):not(.header) th {
 	background: #D0D0FF;
 }
 
+.nostripes > tbody > tr,
 tbody > tr:nth-child(even) {
 	background: #FFFFFF;
 }
@@ -480,90 +293,8 @@ td.number {
 	text-align: right;
 }
 
-th.value,
-td.value {
-	font-family: 'Roboto Mono', consolas, monospace;
-	font-size: 90%;
-	color: #4040C0
-}
-
 td.dead {
 	opacity: 0.4;
-}
-
-td.badsubclass {
-	background: #ff0000AA;
-}
-
-span.damage-subclass {
-	display: block;
-}
-
-th.vert-text {
-	vertical-align: middle;
-	font-size: 80%;
-	padding: 3px 5px;
-	white-space: nowrap;
-
-}
-
-.stickyrow th {
-	position: sticky;
-	top: 43px;
-	z-index: 9999;
-}
-
-/* Misc */
-span.wrong,
-q.wrong {
-	font-style: italic;
-	color: #8A2D2D;
-}
-
-strong.wrong {
-	text-decoration: underline;
-	color: red;
-}
-
-.wtf {
-	display: inline-block;
-	color: red;
-	transform: skewX(-20deg) rotate(-2deg);
-}
-
-.wtf:hover {
-	transform: none;
-}
-
-span.evil {
-	font-family: comic sans ms;
-	color: red;
-	font-weight: bold;
-	text-shadow: 1px 1px 3px #FF9999;
-}
-
-[href="#bigmfloop"] {
-	display: inline-block;
-	text-transform: uppercase;
-	font-weight: 1000;
-}
-
-[href="#bigmfloop"]:hover {
-	transform: scale(1.4);
-	background: #FCFCFF;
-}
-
-#bigloop { 
-	display: none;
-}
-
-#bigloop:target { 
-	display: block;
-	font-weight: bold;
-}
-
-span.timeampm {
-	font-variant:small-caps;
 }
 
 span.disgusting {
@@ -573,35 +304,6 @@ span.disgusting {
 	font-variant: small-caps;
 	text-decoration: underline;
 	text-decoration-style: wavy;
-}
-
-span.poof {
-	color: #FF00FF;
-	font-weight: bold;
-	font-variant: small-caps;
-	text-transform: lowercase
-}
-
-p.damagepad {
-	padding: 0 80px 0 40px;
-}
-
-/* Linking to previous terms */
-a.term,
-a.term:visited,
-a.branch,
-a.branch:visited {
-	color: #5708c7;
-}
-
-a.term:hover,
-a.branch:hover {
-	color: #cca350;
-}
-
-li.branchpoint:target,
-span.dfnwrap:target > dfn {
-	background: linear-gradient(to bottom, transparent, 40px, #FFFF8B, 40px, #FFFF8B);
 }
 
 /* Backgrounds */
@@ -652,6 +354,18 @@ div.hackTitle.rupeegreentitle {
 
 /* Header */
 nav.sitenav {
+	position: fixed;
+	box-shadow: 0 0 20px;
+	z-index: 9999999;
+}
+
+footer {
+	box-shadow: 0 0 20px;
+	z-index: 9999999;
+}
+
+nav.sitenav,
+footer {
 	display: block;
 	background: #CCCCFF;
 	height: 30px;
@@ -660,9 +374,6 @@ nav.sitenav {
 	right: 0;
 	top: 0;
 	font-weight: bold;
-	position: fixed;
-	box-shadow: 0 0 20px;
-	z-index: 9999999;
 	font-family: tahoma, geneva, sans-serif;
 }
 
@@ -670,6 +381,12 @@ nav > div {
 	display: inline-block;
 }
 
+footer > div {
+	margin: 0 auto;
+	text-align: center;
+}
+
+footer > div > ul,
 nav > div > ul {
 	list-style: none;
 	padding: 0;
@@ -677,12 +394,14 @@ nav > div > ul {
 	margin: 0
 }
 
+footer > div > ul > li,
 nav > div > ul > li {
 	display: inline-block;
 	vertical-align: middle;
 	margin: 0;
 }
 
+footer > div > ul > li > ul,
 nav > div > ul > li > ul {
 	position: absolute;
 	background: #CCCCFF;
@@ -703,10 +422,12 @@ nav ul {
 	padding: 0;
 }
 
+footer > div > ul > li:hover,
 nav > div > ul > li:hover {
 	background: #AAAADD;
 }
 
+footer > div > ul > li > ul > li,
 nav > div > ul > li > ul > li {
 	border-top: 1px solid;
 	border-radius: 0 10px 10px;
@@ -716,6 +437,8 @@ nav span.dropdown {
 	cursor: default;
 }
 
+footer a,
+footer a:visited,
 nav span.dropdown,
 nav a:visited,
 nav a {
@@ -730,6 +453,7 @@ nav span.dropdown {
 	display: block;
 }
 
+footer a,
 nav > div > ul > li > ul > li > a {
 	display: block;
 	font-size: 10.5pt;
@@ -755,11 +479,16 @@ nav > div > ul > li > a:only-child {
 	border-radius: 10px;
 }
 
+footer a:hover,
 nav span.dropdown:hover,
 nav a:hover {
 	color: #FCFCFF;
 	background: #5555FF;
 	text-decoration: none;
+}
+
+nav span.dropdown:hover,
+nav a:hover {
 	transition: background .4s ease 0s;
 	transition-property: color, background;
 }
@@ -825,44 +554,4 @@ div.metaLinks a {
 .dossier .contentstuff {
 	border-radius: 0px;
 	background-image: repeating-linear-gradient(40deg, #F8F8F8 5%, #FFFFFF 40%, #F8F8F8 57%);
-}
-
-/* SMT stuff */
-div.smtasm {
-	display: grid;
-	flex-direction: row;
-	flex-wrap: wrap;
-	columns: 2;
-	font-weight: bold;
-	font-family: 'Roboto Mono', consolas, monospace;
-	font-size: .8em;
-	line-height: 1.3em;
-	background: #000000;
-	color: #F8F8F8;
-	width:85%;
-	padding:20px;
-	grid-template-columns: 50% 50%;
-}
-
-div.smtasm > div {
-	display: inline-block;
-	overflow-x: visible;
-	white-space: nowrap;
-	margin-left: 60px;
-}
-
-div.smtasm > div.label {
-	margin-left: 0px;
-}
-
-div.smtasm > div.sep,
-div.smtasm > div.chant {
-	grid-column-start: span 2;
-	display: inline-block;
-	min-height: 1em;
-}
-
-.smtbg {
-	background-color:black !important;
-	background-image: radial-gradient(black 60%, #630063 67%, #2184E7 77%, #630063 81%, black);
 }
