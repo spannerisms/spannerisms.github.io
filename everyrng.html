@@ -120,7 +120,7 @@ background: mechanicsbg
 		<li>Boulders
 			<ul>
 				<li>Location along X-axis to spawn (64&ndash;192 pixels from left side of screen).</li>
-				<li>Bounce left or right (1/2 chance).</li>
+				<li>Bounce left or right (50:50).</li>
 			</ul>
 		</li>
 		<li>Pink ball guy
@@ -406,7 +406,8 @@ background: mechanicsbg
 				<li>5 distinct calls in the sidenexx file for god knows what. I'll figure it out later.</li>
 				<li>Offset on X-axis of explosion (8 possible values, indexing a table).</li>
 				<li>Offset on Y-axis of explosion (8 possible values, indexing a table).</li>
-				<li>2 more calls for something not worth my time to figure out right now.</li>
+				<li>1 rng call for choosing the next AI mode.</li>
+				<li>1 rng call for choosing the next location to move to (4 possible values, indexing a table).</li>
 			</ul>
 		</li>
 		<li>Sluggula
@@ -430,7 +431,7 @@ background: mechanicsbg
 		<li>Stalfos Knight
 			<ul>
 				<li>When to jump calculation. I don't get it 100% yet.</li>
-				<li>Routine jump for setting next movement stuff or something (1/2 chance).</li>
+				<li>Action after recovering (1/2 chance to celebrate).</li>
 			</ul>
 		</li>
 		<li>Hint NPCs
