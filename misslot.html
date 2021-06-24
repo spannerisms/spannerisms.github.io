@@ -934,7 +934,7 @@ background: glitchybg dossier
 		<div></div><div addr="$088023">STA $012D</div><div></div>
 		<div></div><div addr="$088026">RTS</div><div></div>
 	</div>
-	<p>This entry points to a location in ROM, specifically the <code class="routine">Ancilla_DoSfx1</code> routine. The entry point aligns with the code perfectly and results in a stable return. This will take a sound effect and apply panning to it based on the location of the player; however, in this case, only a broken blip of noise will be played. This is because the sound effect attempted is <code class="value">$80</code>. For sound effects in general, only the bottom 6 bits constitute the ID; the top 2 bytes are used to control panning. For SFX1, panning isn't actually taken into account, so the full value is treated as an ID. The engine only ignores values of exactly <code class="value">$00</code>, so this passes through successfully, resulting in an invalid value. Besides the noise, the SPC seems to remain fine.</p>
+	<p>This entry points to a location in ROM, specifically the <code class="routine">Ancilla_DoSfx1</code> routine. The entry point aligns with the code perfectly and results in a stable return. This will take a sound effect and apply panning to it based on the location of the player; however, in this case, only a broken blip of noise will be played. This is because the sound effect attempted is <code class="value">$80</code>. For sound effects in general, only the bottom 6 bits constitute the ID; the top 2 bytes are used to control panning. For SFX1, panning isn't actually taken into account; negative values actually indicate an instruction to fade the volume of this sound effect.</p>
 
 	<h3 id="IAx63">IAx63</h3>
 	<div class="snesasm">
