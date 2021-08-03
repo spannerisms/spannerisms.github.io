@@ -1,0 +1,33 @@
+---
+layout: default
+title: Double Gibo Kill Explication
+background: glitchybg
+---
+<div class="contentstuff glitchexp">
+	<h1>Double Gibo Kill</h1>
+	<p>A relatively uncommon occurance people encounter in Thieves' Town is killing one gibo, and, for some reason, another gibo follows suit. That is, it dies.</p>
+
+	<h2>Red string of fate</h2>
+	<p>Gibos are those red, 5-armed blobs floating around on the hellway screen. Their schtick is dislodging their nucleus and recombining with it. When they do this, they are actually creating a new sprite. To track down the correct daughter, they also need to remember the slot of the sprite they created; this value is saved in an array at <code class="address">$0EB0,X</code>. Normally, this is a perfecctly valid way to go about doing things; however, there are 2 flaws in the way this is executed for gibos. One of these flaws will answer why the double kill occurs.</p>
+
+	<h2>Off target</h2>
+	<p>The first error occurs when the membrane is trying to recombine with its nucleus. Every frame, the membrane loads the slot of its nucleus into the <code class="register">Y</code> register to perform a couple checks. When it runs its nucleus tracking subroutine, it relies on this earlier read to identify the coordinates of its daughter. Again, this would be fine, except that every 64 frames, gibos turn to "face" Link (it's hard to tell which way a blob is facing). This calculation uses the <code class="register">Y</code> register without preserving it, resulting in the tracking calculations looking at slot 0 (left of Link) or slot 1 (right of Link).</p>
+	<p>In theory, you could use menus to force gibos to only track on this frame, but gibos also use a frame rule to decide when to retarget their daughter cell. In practice, only slots 0, 4, 8, and 12 can move to the wrong sprite. In the vanilla game, that's only the top right gibo in the southeast quadrant. Still, it's theoretically possible, and you could slowly make it find its way to the top right zazak in the room to the north. Once it touches the zazak, it will magically recombine with its nucleus and properly delete the sprite it created originally.</p>
+
+	<h2>Shakespearean tragedy</h2>
+	<p>The index troubles that cause the double kill happen earlier, with that pre-AI check. When grabbing the initial slot of its daughter, gibos don't bother checking whether or not they have a daughter in the first place. Whatever slot they decide to look at it, whether it belongs to them or not, if it's dying, the membrane dies too.</p>
+	<p>Most of the time, no conflict occurs. There's no randomness to any timers, which keeps the blobs relatively in sync. There is, however, randomness to the direction that the nucleus is dislodged. After a few splits, they become less together in their transitions, increasing the likelihood of a conflict. To be precise, this order of events can cause a conflict:</p>
+	<ol>
+		<li>Gibo A recombines with its nucleus.</li>
+		<li>On the next frame, Gibo B splits and uses the slot Gibo A's nucleus was in.</li>
+		<li>Before Gibo A splits again, kill Gibo B's nucleus.</li>
+		<li>When Gibo A checks for nucleus death, it will think it had a connection with Gibo B's nucleus.</li>
+		<li>Gibo A and Gibo B both die, as both are looking at the same slot.</li>
+	</ol>
+
+	<p>Another fun way to abuse this is using the fact that the daughter slot watch variable is initialized to 0. By entering the hellway supertile from the conveyor toilet, the gibos in hellway will be inactive, as they are off screen. Wait until the zazak that spawns in the top right of the room reaches the western door. Kill it and transition before the poof animation completes. Both gibos visible will die immediately.</p>
+
+	<h2>Summary</h2>
+	<p>The gibo is looking at a slot despite being whole. So it kills itself because it saw another gibo die. What a buffoon!</p>
+
+</div>
