@@ -5,58 +5,27 @@ background: glitchybg
 ---
 <div class="contentstuff glitchexp">
 	<h1>Mirror Block Erase</h1>
-	<p>Erasing pushable blocks with the mirror is something everyone knows how to do. Just use the mirror while the block is moving, and <span class="poof">POOF!</span> the block is gone. I don't think I've ever seen an earnest attempt to explain why it happens; everyone just accepted that it does. Well, gang, the mystery is now solved. And the explanation is super simple, to boot.</p>
+	<p>Erasing pushable blocks with the mirror is something everyone knows how to do. Just use the mirror while the block is moving, and <span class="poof">POOF!</span> the block is gone. I don't think I've ever seen an earnest attempt to explain why it happens; everyone just accepted that it does.</p>
 
 	<h2>Blocks</h2>
-	<p>Let's start by understanding how pushable blocks move in the first place. Only 2 blocks are meant to do anything at any one time. To handle this, two addresses (<code class="address">$05FC</code> and <code class="address">$05FD</code>) hold the index+1 of the currently active blocks&mdash;more on this weird indexing later. A value of <code class="value">0</code> means that the slot is not active. If blocks can't find a free slot to use, they simply won't get pushed.</p>
-
-	<p>Now let's look at the routine that is executed every frame in normal dungeon mode:</p>
-	<ol>
-		<li>The index loop variable (address <code class="address">$042C</code>) is reset and then the routine <code class="routine">PushBlock_Handler</code> is executed.</li>
-		<li class="branchpoint" id="loopstart">The value of <code class="address">$042C</code> is loaded into <code class="register">Y</code>. It is compared to the stopping point (address <code class="address">$0428</code>). If they are not equal, then the state of the block at that index is checked, otherwise, the routine exits.</li>
-		<li>The desired block's state is read by using <code class="register">Y</code> to index the array at <code class="address">$0500</code>.
-			<ul>
-				<li>If the block's state is <code class="value">0</code>, then it is inactive, and the <a class="branch" href="#nextblock">the next block is looked at</a>.</li>
-				<li>If the block's state is <code class="value">1</code>, then it is erased from the tile and collision maps. Its state is incremented to <code class="value">2</code>, and <a class="branch" href="#nextblock">the next block is looked at.</a></li>
-				<li>
-						<p>If the block's state is <code class="value">2</code>, then its movement code is executed. Afterwards, the block's state is checked again.</p>
-						<p>If it is <code class="value">3</code>, the block's state is quickly incremented to <code class="value">4</code>. This check for state <code class="value">3</code> is inside the state <code class="value">2</code> branch, so it will only ever be checked from there. This state appears to be an indication that the block is over a pit.</p>
-						<p>If the block has finished moving without reaching <code class="value">3</code>, it resets its state <code class="value">0</code>.</p>
-					</li>
-				<li>If the block's state is <code class="value">4</code>, then it is falling, and that animation is performed. When the animation is finished, the block is reset to state <code class="value">0</code>.</li>
-			</ul>
-		</li>
-		<li class="branchpoint" id="nextblock">Address <code class="address">$042C</code> is incremented twice, then <a class="branch" href="#loopstart">the loop is started again</a>.</li>
-	</ol>
-	<p>State <code class="value">2</code> is where the problem occurs in most cases, so that's the branch we'll focus on. But actually, you can mirror erase a block that's newly pushed (state <code class="value">1</code>) or falling (state <code class="value">4</code>). The reason will end up being the same.</p>
-	<ol>
-		<li>State <code class="value">2</code> begins by calling a routine that doesn't have a name in the disassembly, but it's <code class="address">$3EDB5</code> in the US ROM file, so let's call this routine <code class="routine">Bingo</code>, because it ends with B5.</li>
-		<li><code class="routine">Bingo</code> goes like this:
-			<ol>
-				<li>Check the current submodule. If it isn't <code class="value">0</code>, exit the routine.</li>
-				<li>Cache the value of <code class="register">Y</code> in scratch space.</li>
-				<li>Set <code class="register">X</code> to <code class="value">1</code> and use <code class="register">X</code> to index address <code class="address">$05FC</code>, loading that value into <code class="register">A</code>.</li>
-				<li>Decrement <code class="register">A</code> by 1&mdash;I promise I'll get to it&mdash;, multiply it by 2, then compare it to the cached value of <code class="register">Y</code>.
-					<ul>
-						<li>If <code class="register">A</code> and <code class="register">Y</code> are equal, then leave <code class="register">X</code> at <code class="value">1</code> and continue.</li>
-						<li>If they don't match, set <code class="register">X</code> to <code class="value">0</code> before continuing.</li>
-					</ul>
-				</li>
-				<li>Multiply <code class="register">X</code> by 2 and give it to <code class="register">Y</code>.</li>
-				<li>Do moving and stuff.</li>
-			</ol>
-			<li>Continue the movement routine using <code class="register">Y</code> as the index for the block's data.</li>
-		</li>
-	</ol>
-	<p>Hold the phone. What?</p>
-	<p>Why are you using <code class="register">X</code> to index an address outside of a loop, right after you've loaded a constant into <code class="register">X</code>? That will never <em>not</em> be <code class="address">$05FD</code>.</p>
-	<p>Why are you loading <code class="value">0</code> into <code class="register">X</code> and just rolling with it? I think what you meant to do was branch backwards and run that indexed address check again.</p>
-	<p>These are questions that people want answered. At least I do!</p>
-	<p>The reason active block indices are stored as index+1 is so that 0 can act as an indicator that means the slot is empty. The reason the value is doubled is because that value indexes bytes; the routine needs to index words, which are twice the size.</p>
-	<p>Rolling with slot 0 allows the possibility of operating on an index of 0. What if a block is moving but doesn't have its index stored? Can you make that happen?</p>
+	<p>Let's start by understanding how pushable blocks move in the first place. Everyone is likely familiar with sprites and ancillae, but blocks are neither of these; they are their own, unique class of self-acting entities.</p>
+	<p>Only two blocks can behave at any one time. They all "exist" in RAM when exploring the underworld, but they spend the majority of that existence doing nothing. A two-item array exists to identify active blocks with a meta-index: <code class="address">$05FC</code> and <code class="address">$05FD</code>. These entries normally hold <code class="value">$00</code>, which means they don't identify an active block. When a block becomes active, it will store its index+1 into an available slot to identify itself.</p>
+	<p>Take note that I am saying "identify", rather than another word. This is because this array doesn't actually <i>control</i> which block is active. Every manipulable room object&mdash;push blocks, pots, rocks, bombable floors, hammer pegs&mdash;have a property listed in the 16 item array at <code class="address">$0500</code>. Six of these values correspond to push block behavior:</p>
+	<ul>
+		<li><code class="value">$0000</code> - Nothing / stationary push block</li>
+		<li><code class="value">$0001</code> - Triggered push block</li>
+		<li><code class="value">$0002</code> - Moving push block</li>
+		<li><code class="value">$0003</code> - Stopped push block</li>
+		<li><code class="value">$0004</code> - Falling push block</li>
+		<li><code class="value">$0005</code> - Push block on switch</li>
+	</ul>
+	<p>This array is populated during the room building module. Its size is then saved to <code class="address">$042C</code>. During player control, that address is used to loop through every manipulable object in the list. Any object in states 1 through 4 will run special push block code for that object. In practice, this tends to be actual push blocks.</p>
+	<p>The meta-index table is populated upon pushing a block. To find which meta-index to use, <code class="address">$05FD</code> is checked for a value of <code class="value">$00</code>. If it is, then that meta-index is used. If not, <code class="address">$05FC</code> is checked. If it too is occupied, then pushing fails. The meta-index chosen is used to index the other two-item arrays between the addresses <code class="address">$05E0</code> and <code class="address">$05F8</code>. These hold properties derived from the block's primary properties, including absolute coordinates, direction, and target position.</p>
+	<p>But how do blocks know which meta-index to use? There's no remembering of the meta-index a block initially took. Instead, blocks will first check <code class="address">$05FD</code> to see if it contains their slot. If it doesn't, they use <code class="address">$05FC</code>. This code is weird not only because it makes this bad assumption, but also because it's written as if it were meant to loop without making any attempt to actually do so.</p>
+	<p>Can we mess with these meta-indices to confuse currently active blocks?</p>
 
 	<h2>Amazing Mirror</h2>
-	<p>You sure can!</p>
+	<p>We sure can!</p>
 	<p>Only a few things reset those index addresses:</p>
 	<ul>
 		<li>Saving and quitting</li>
@@ -65,14 +34,16 @@ background: glitchybg
 		<li>Dying</li>
 		<li>Dying (it's there twice, okay?)</li>
 	</ul>
-	<p>You get where I'm going with this already? Well, shut up and let me finish.</p>
-	<p>The developers actually seemed to know that blocks resetting the indices themselves wouldn't be enough. They tried to cover all their bases by examining what could be done if a block is active. They covered most of it. Just me personally, but <em>I</em> would have <strong>made them reset whenever a new room is loaded</strong>. But I digress.</p>
-	<p>I digress pretty often actually.</p>
-	<p>The developers also made an itsy-bitsy mistake in JP1.0: they had the mirror clear the slots every time it is used. Later versions fixed this by moving those clears to be <em>inside</em> of the "successfully mirrored" branch.</p>
-	<p>In a way, you're not actually deleting the block, you're just making it behave as if it's somewhere else. In fact, the block remains active after you mirror erase it. It will continue its routine forever, because there's no one telling it to stop. The values it's being told to use are all wrong, and it won't reach its expected destination anymore. It just chugs on, oblivious to the damnation cast upon it.</p>
-	<p>Its index is no longer in the active block array, but it doesn't <em>need</em> to be. That's only used because the developers also wanted to keep the velocities and other values for moving blocks in a smaller portion of memory. A block runs code regardless when its state in the states array is nonzero. That array is not limited to only 2 blocks. The active index array only tells a block what data it should be using to do whatever it's doing. You can conclude that if multiple blocks have been mirror erased, then they're all messing with the same values. I bet things would look bonkers if we could actually see what was going on!</p>
+	<p>The developers made an itsy-bitsy mistake in JP1.0: they had the mirror clear the slots every time it is used. Later versions fixed this by moving those clears to be <em>inside</em> of the "successfully mirrored" branch. Since these meta-indices are only used after the block's actual state is checked, active blocks can be confused into checking meta-index slot 0, regardless of it matching the block's true index. When taking on a value of <code class="value">$00</code>, accountinf for the +1 from before makes the block use <code class="value">$FF</code>, which is shifted left once to <code class="value">$FE</code>, </p>
+	<p>In the most precise sense, you're not actually deleting the block, you're just making it behave as if it's somewhere else. In fact, the block remains active after you mirror erase it. It will continue its routine forever, because there's no one telling it to stop. The values it's being told to use are all wrong, and it won't reach its expected destination anymore. It just chugs on, oblivious to the damnation cast upon it.</p>
+	<p>Its index is no longer in the active block array, but it doesn't <em>need</em> to be. That's only used because the developers also wanted to keep the velocities and other values for moving blocks in a smaller portion of memory. A block runs code regardless when its state in the states array is nonzero. Garbage values will be read when using the meta-index to calculate collision and draw locaion. The meta-index is also used to recalculate the original block's slot for advancing its handler state. With a value of <code class="value">$FE</code>, the address for this is never looked at, instead, an otherwise unused address is incremented indefinitely.</p>
+
+	<h2>BONK</h2>
+	<p>So now it's time to answer the big question: Why does bonking weird?</p>
+	<p>Every frame that these blocks move, they also calculate and save a recoil velocity based on the direction their moving. This determines its movement as well as Link's, should he do something recoily. This doesn't just include bonking; it includes other actions that use the recoil speeds, such as taking damage or jumping.</p>
+	<p>These values are set constantly, overriding previous actions that only set them on initialization, such as the aforementioned. The reason push blocks always seem to make you recoil upwards is because they're fast, and it's really hard to make two go at once. In fact, it seems impossible. The active slot 0 seems virtually impossible to reach, so it will always have 0 as its direction, which goes up. Were you to get a new block in that slot moving in a different direction at the same time as a block is in slot 1 (which is populated first), you would recoil in whatever direction it was pushed instead.</p>
 
 	<h2>Summary</h2>
-	<p>When blocks are pushed, the index of their data is put into a slot in a 2 item array. This slot is then used to update their coordinates and velocity. When the mirror is used, both values in that index array are set to 0, which is meant to indicate the slot is free. This happens in caves, but it doesn't affect the blocks' actual status; the blocks will keep running, but a coding mistake will have them assume that they should use the first value in the array as an index if the second value is not correct. This bad assumption results in 0, an invalid index, being used for the block's data.</p>
+	<p>When blocks are pushed, the index of their data is put into a slot in a 2 item array. This slot is then used to update their coordinates and velocity. When the mirror is used, both values in that index array are set to 0, which is meant to indicate the slot is free. This happens in caves, but it doesn't affect the blocks' actual statuses; the blocks will keep running, but a coding mistake will have them assume that they should use the first value in the array as an index if the second value is not correct. This bad assumption results in 0, an invalid index, being used for the block's data.</p>
 	<p>The block continues operating, and is not technically erased. This makes this glitch a form of misslotting, but a slightly different species from other known misslots. In versions after JP1.0, a check is performed to see if the beep sound effect was played, and doesn't reset the array if it was.</p>
 </div>

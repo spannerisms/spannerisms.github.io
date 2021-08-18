@@ -19,35 +19,14 @@ background: glitchybg
 	<h2>Sharing is erring</h2>
 	<p>We've already got our finger pointed at the ice rod, so let's see what's up. The answer is a bit subtle, but it's a single operation in the ice shot initialization code: <code class="opcode">STZ $03C2,X</code>. In our example, the ice rod is slot 4, so that'd be <code class="address">$03C6</code>. Hmmmmm&hellip; If the boomerang is slot 1, that means&hellip; Aha! The return speed of the boomerang is the first slot of <code class="address">$03C5,X</code>, which is also <code class="address">$03C6</code>. The ice rod is using a shorter space as if it were longer, which causes it to bleed over into memory already allotted for something else. Case closed! And, later on, it uses this value for <em><b>absolutely nothing</b></em>.</p>
 	<p>That's right! That damaging operation had no function whatsoever. If it were removed, ice rod shots would act no differently, but the boomerang wouldn't be subject to this glitch. Or would it&hellip;?</p>
-	<p>The ice rod isn't the only thing that messes with this array. In fact, there's another array that's only got space for 2 elements right before it. And <em>that</em> array is responsible for somaria lamp bouncing. Somaria blocks also use <code class="address">$03C5,X</code>, but they use it to control bouncing, which you probably figured out from the preceding sentence.</p>
+	<p>The ice rod isn't the only thing that messes with this array. Powder uses it as well. And, for some reason, instead of running the routines itself, the lamp creates a powder ancilla to run collision checks. This is why the lamp is so powerful to set <code class="address">$03C4</code>.</p>
 
 	<h2>RC</h2>
 	<p>So we have that much figured out. Most people would be satisfied with that. Not me. Sure, we know why it stops, but what about how it moves? Why does it sort of move with Link? Why does it seem to move away from him?</p>
-	<p>To answer these questions, we need to take a look at <code class="routine">Ancilla_ProjectSpeedTowardsPlayer</code>.</p>
-	<ol>
-		<li>Cache the base speed in scratch space. Save the <code class="register">X</code> and <code class="register">Y</code> registers in the stack.</li>
-		<li>Do a bunch of weird garbage to see whether the ancilla is farther from Link on the X-axis to the left or to the right. Remember the absolute value.</li>
-		<li>Do similar weird garbage to see if the ancilla is farther from Link on the Y-axis to the up or the down. Remember the absolute value.</li>
-		<li>Zero out an address we'll use to collect numbers later.</li>
-		<li>Zero out an address we'll use to build speed for one axis.</li>
-		<li>Load the base speed we cached earlier into <code class="register">X</code>.</li>
-		<li>Load the collection plate, and add the displacement on whichever axis was closer to Link. Compare it to the displacement of the farther axis.
-			<ul>
-				<li>If this first sum is less than the second value, just continue to the next step.</li>
-				<li>If this sum is greater than or equal to the farther axis' displacement, subtract its displacement from the sum, then increment the speed building address by 1.</li>
-			</ul>
-		</li>
-		<li>Use the final calculation from the previous step to update our collection plate. Decrement <code class="register">X</code> by 1. If it's not <code class="value">0</code>, go back to the previous step.</li>
-		<li>When we're done, whichever axis had the lower displacement that frame gets the collection plate. The farther axis gets the base speed.</li>
-		<li>Correct the direction of these new speeds, based on the direction they were displaced from Link.</li>
-		<li>Recover our <code class="register">X</code> and <code class="register">Y</code> registers from the stack and return.</li>
-	</ol>
-
-	<p>So what does this mess actually do? Well, it's an over-the-top algorithm to calculate <code class="mathFunc">b&times;tan(&theta;)</code>, where <code class="mathVar">b</code> is the base speed given as an input and <code class="mathVar">&theta;</code> is the angle of a right triangle whose hypotenuse is a line that connects Link and the entity, with the side adjacent to <code class="mathVar">&theta;</code> being longer or as long as the side opposite to <code class="mathVar">&theta;</code>.</p>
+	<p>To answer these questions, we need to take a look at <code class="routine">Ancilla_ProjectSpeedTowardsPlayer</code>. This is a mess of a routine that I won't bother trying to explain. In short: it's an over-the-top algorithm to calculate <code class="mathFunc">b&times;tan(&theta;)</code>, where <code class="mathVar">b</code> is the base speed given as an input and <code class="mathVar">&theta;</code> is the angle of a right triangle whose hypotenuse is a line that connects Link and the entity, with the side adjacent to <code class="mathVar">&theta;</code> being longer or as long as the side opposite to <code class="mathVar">&theta;</code>.</p>
 	<p>Or to put it less formally: <code class="mathFunc">base_speed&times;(smaller/bigger)</code>.</p>
 	<p>I don't think I get it either. I mean, I get it. But why? That's a really weird way to go about doing this. It doesn't even partition the velocity cleanly. One of the axes (the further one) will always have the input value. The other will have something else. This results in values anywhere from <code class="mathAns">b</code> to <code class="mathAns">b&radic;<span class="underRadical">2</span></code> as the final gross speed, which shouldn't be desirable. The more reasonable expectation is that the gross speed is the magnitude of the sum of each axis' vector.</p>
-	<p>The worst part, though, is that all this is doing is multiplication and division. While there may not be any operations in the CPU's instruction set for these functions, there are hardware registers specifically for that purpose. Very small base speeds will outperform those registers, but values are never that small. By using this looped algorithm, the runtime becomes longer as the base speed increases. Using the built-in registers would pretty much always have the same run time.</p>
-	<p>If you want to see an example problem worked through (and you don't), check out <a href="remoteboomex">this page</a>.</p>
+	<p>The worst part, though, is that all this is doing is multiplication and division. While there may not be any operations in the CPU's instruction set for these functions, there are hardware registers specifically for that purpose. Using the built-in registers would pretty much always have the same run time. And that run time will always be faster than this loop.</p>
 
 	<h2>Tackling the real issues</h2>
 	<p>The problem we're interested in, specifically, is how the loop is terminated. It's when the loop counter is <em>exactly</em> 0. This is fine in most cases. The routine is basically copy/paste from the sprite version, which does find use negative values to move sprites away from the player. But in the case of 0, it's acting like a big negative value, but only for the loop.</p>
