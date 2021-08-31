@@ -279,7 +279,7 @@ tbody > tr:nth-child(even) {
 }
 
 tr.header th:not(.divider) {
-	background:#adadfd;
+	background: #ADADFD;
 }
 
 th.divider {
@@ -391,7 +391,7 @@ nav > div > ul {
 	list-style: none;
 	padding: 0;
 	display: inline-block;
-	margin: 0
+	margin: 0;
 }
 
 footer > div > ul > li,
@@ -526,7 +526,7 @@ div.metaLinks a {
 .glitchclasslist > li.hassublist:after {
 	content: ' ';
 	height: 0px;
-	border:5px solid transparent;
+	border: 5px solid transparent;
 	border-top-color: black;
 	display: inline-block;
 	vertical-align: text-bottom;
