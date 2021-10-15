@@ -316,12 +316,14 @@ div.content {
 	background-image: url('bg/vramcorruption.png');
 	background-blend-mode: color-burn;
 	background-size: contain;
+	image-rendering: crisp-edges;
 	image-rendering: pixelated;
 }
 
 .mechanicsbg {
 	background-image: url('bg/bank07code.png'), linear-gradient(to bottom, #CCCCFF, #777799);
 	background-repeat: repeat, repeat;
+	image-rendering: crisp-edges;
 	image-rendering: pixelated;
 	background-attachment: fixed, scroll !important;
 	background-position: left, center;
@@ -331,6 +333,7 @@ div.content {
 .houlihanbg {
 	background-image: url('bg/houlihanbg.png');
 	background-blend-mode: hard-light;
+	image-rendering: crisp-edges;
 	image-rendering: pixelated;
 }
 
