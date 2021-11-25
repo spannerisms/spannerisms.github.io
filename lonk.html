@@ -10,33 +10,13 @@ background: glitchybg
 	<p>For Lonk, it's the opposite. <code class="address">$02E0</code> is <code class="value">0</code>, signalling human form, but <code class="address">$5D</code> is <code class="value">$17</code>, which means Link is a bunny.</p>
 
 	<h2>Underworld</h2>
-	<p>To understand how Lonk can trigger when entering the underworld, we need to look at 2 routines that are run when loading the underworld. These routines are executed one after another, so let's show them for fun:</p>
+	<p>To understand how Lonk can trigger when entering the underworld, we need to look at a simple routine that gets run when loading the underworld:</p>
 
 	<div class="snesasm nolabel">
 		<div></div><div addr="$02822B">JSR $89F1</div><div>Dungeon_ResetTorchBackgroundAndPlayer</div>
 		<div></div><div addr="$02822E">JSL $1CFCE2</div><div>Link_CheckBunnyStatus</div>
 	</div>
 
-	<p><code class="routine">Dungeon_ResetTorchBackgroundAndPlayer</code> does what it says on the tin, but we want to look specifically at the end of it&mdash;the part that handles player properties:</p>
-	<div class="snesasm">
-		<div></div><div addr="$028A12">LDA $0372</div><div>Is Link dashing (or armed spinspeed)</div>
-		<div></div><div addr="$028A15">BEQ exit</div><div>If not, do nothing</div>
-		<div></div><div addr="$028A17">STZ $4D</div><div>Clear secondary state handler</div>
-		<div></div><div addr="$028A19">STZ $46</div><div>Clear recoil timer</div>
-		<div></div><div addr="$028A1B">LDA #$FF</div><div></div>
-		<div></div><div addr="$028A1D">STA $29</div><div>Reset z-axis recoil</div>
-		<div></div><div addr="$028A1F">STA $C7</div><div>I think this one is pointless</div>
-		<div></div><div addr="$028A21">STZ $3D</div><div>Reset sword stuff</div>
-		<div></div><div addr="$028A23">STZ $5E</div><div>Reset speed</div>
-		<div></div><div addr="$028A25">STZ $032B</div><div>Collision related?</div>
-		<div></div><div addr="$028A28">STZ $0372</div><div>Reset dashing</div>
-		<div></div><div addr="$028A2B">LDA #$00</div><div>Why is this not an STZ?</div>
-		<div></div><div addr="$028A2D">STA $5D</div><div>Reset primary state handler</div>
-		<div>exit</div><div addr="$028A2F">RTS</div><div></div>
-	</div>
-	<p>The important take away here is that if Link is dashing, then his primary state handler <code class="address">$5D</code> is reset, otherwise, it is left alone.</p>
-
-	<p><code class="routine">Link_CheckBunnyStatus</code> is as follows:</p>
 	<div class="snesasm">
 		<div></div><div addr="$1CFCE2">   LDA $5D</div><div>Check primary state handler</div>
 		<div></div><div addr="$1CFCE4">   CMP #$02</div><div>Is Link recoiling?</div>
@@ -74,5 +54,5 @@ background: glitchybg
 	<p>The hookshot disables Lonk because it actually puts Link into a special state, setting <code class="address">$5D</code> to <code class="value">$13</code>. When that's over, the address is reset to <code class="value">0</code>, because it was assumed that the hookshot could only be used in the default state.</p>
 
 	<h2>Summary</h2>
-	<p>A disagreement between two addresses&mdash;<code class="address">$5D</code> and <code class="address">$02E0</code>&mdash;is the cause of all weird Lonk behavior. Taking damage into an overworld&ndash;underworld transition causes Link's general state handler (<code class="address">$5D</code>) to either be put into temporary bunny (with the moon pearl), or permabunny (without) when the entrance leads to the center of a supertile. The damage in an entrance version a JP1.0 glitch caused by an erroneously assembled instruction.</p>
+	<p>A disagreement between two addresses&mdash;<code class="address">$5D</code> and <code class="address">$02E0</code>&mdash;is the cause of all weird Lonk behavior. Taking damage into an overworld&ndash;underworld transition causes Link's general state handler (<code class="address">$5D</code>) to either be put into temporary bunny (with the moon pearl), or permabunny (without) when the entrance leads to the center of a supertile. The damage in an entrance version is a JP1.0 glitch caused by an erroneously assembled instruction.</p>
 </div>

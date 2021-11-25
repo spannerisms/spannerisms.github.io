@@ -23,7 +23,7 @@ background: houlihanbg
 	<p>Your Y-coordinate is a little trickier. When you fall into a hole, your Y-coordinate is modified to be placed above the screen. Why? It just seems to be some hacky way to prepare Link to fall on the next screen. This probably should have been written to use the Z-coordinate instead.</p>
 
 	<h2>100% intended</h2>
-	<p>So what exactly makes this not a glitch? A glitch is something that is <em>not</em> intended by the developers. But if you look at this code, it's pretty clearly intended. After all, they promised a Mr. Chris Houlihan his name would appear in the game. What better way to technically fulfill that promise than an obscure fail-safe room?</p>
+	<p>So what exactly makes this not a glitch? A glitch is something that is <em>not</em> intended by the developers. But if you look at this code, it's pretty clearly intended. After all, they promised a Mr. Chris Houlihan his name would appear in the game. What better way to technically fulfill that promise than an obscure failsafe room?</p>
 
 	<h2>Summary</h2>
 	<p>When Link falls into a hole on the overworld, the destination is determined by both the current screen ID and his X- and Y-coordinates. As a small catch, before this even happens, Link's Y-coordinate is determined by the top of the camera. Although the camera can move after the Y-coordinate is recalculated, but before the destination is. So calling it camera-based is only about one-quarter correct.</p>
