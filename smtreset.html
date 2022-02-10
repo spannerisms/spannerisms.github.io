@@ -73,8 +73,7 @@ background: smtbg
 	<h3>Technically correct</h3>
 	<p><code class="opcode">X16</code> isn't a valid opcode. Or is it? This is almost certainly an assembler specific mnemonic for exactly what I have on the right: <code class="opcode">REP #$10</code>, which means <code><b>R</b>es<b>E</b>t <b>P</b>rocessor flags</code>. In this case, the only flag being reset is bit 4, the index register flag also known as <code class="register">X</code>. When this flag is reset, the index registers will be in 16-bit mode.</p>
 	<p><code class="opcode">M8</code> is in the same situation as above. It's not an official mnemonic, but there's no doubt that it corresponds to <code class="opcode">SEP #$20</code>, which means <code><b>SE</b>t <b>P</b>rocessor flags</code>. This time, the 5th bit (the <code class="register">M</code> flag) is being set, which puts the accumulator in 8-bit mode.</p>
-	<p>And this is where I must intervene to shame the developers. The accumulator is already in 8-bit mode. That's part of the architecture's emulation mode.</p>
-	<p>But that's not all. Even though that <code class="opcode">REP #$10</code> did actually do something, it could have been combined with the <code class="opcode">CLD</code> just before it. <code class="opcode">REP #$18</code> would have cleared both the <code class="register">X</code> and <code class="register">D</code> flags in a single instruction.</p>
+	<p>And this is where I must intervene to shame the developers. The accumulator is already in 8-bit mode. That's part of the architecture's emulation mode. The same is true for the <code class="opcode">CLD</code>; the architecture will always clear this flag on reset.</p>
 	<p>Whatever&hellip; let's move on.</p>
 
 	<h3 joke="tasteless" title="Because she is stacked.">I call her LIFO</h3>

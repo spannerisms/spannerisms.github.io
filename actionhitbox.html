@@ -583,8 +583,8 @@ background: mechanicsbg
 
 	<h2>Tiny glitch</h2>
 	<p>And as one last thing: ya know that thing where you hit King Helma and then he clinks you and you see the clink at the bottom. What's that about?</p>
-	<p>At first, I thought it had to do with those offsets, since there's a routine for placing what's known as a repulse spark, and they're used in the calculation.</p>
+	<p>At first, I thought it had to do with those offsets, since there's a routine for placing that tink spark, and they're used in the calculation.</p>
 	<p>It turns out to be even dumber.</p>
-	<p>When you hit King Helma with the hammer while outmaneuvering him, the game uses a routine to calculate the velocity of Link's recoil. In doing so, it leaves some leftovers in scratch space. And for some got dang reason, right after doing that, those same leftovers are used for the coordinates of the repulse spark.</p>
+	<p>When you hit King Helma with the hammer while outmaneuvering him, the game uses a routine to calculate the velocity of Link's recoil. In doing so, it leaves some leftovers in scratch space. And for some got dang reason, right after doing that, those same leftovers are used for the coordinates of the tink.</p>
 	<p>I think what they were going for is using the leftovers of the action hitbox routine for these coordinates, but, yeah&hellip;</p>
 </div>
