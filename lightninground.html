@@ -11,10 +11,6 @@ background: glitchybg
 	<p>There's an address in save data that indicates you've dropped the super bomb. If this address is set, the super bomb can't move. It gets cleared when the timer hits 0, but the data that says you have the super bomb as a follower isn't cleared until the explosion ancilla does it 12 frames later. During this intermediate time, performing an overworld transition removes the ancilla, which is what's responsible for removing the follower.</p>
 	<p class="supershort">The address that says the bomb isn't following you is cleared before the bomb is removed as a follower.</p>
 
-	<h2 id="sancandquit">Sanc and Quit<a href="#sancandquit" class="headerLink">(permalink)</a></h2>
-	<p>There's a mosaic buffer in memory. If that has a nonzero value, you will spawn in the sanctuary instead of getting to choose where to go. That's it. The code makes no sense, but it's there.</p>
-	<p class="supershort">An unnecessary and nonsensical mosaic check forces a Sanctuary spawn.</p>
-
 	<h2 id="bombspriteZ">Sprite altitude and bomb knockback<a href="#bombspriteZ" class="headerLink">(permalink)</a></h2>
 	<p>To calculate the direction of recoil when Link is hit by a bomb, the bomb temporarily hijacks sprite slot 0 and uses the sprite knockback routine for its calculations. In JP1.0, this routine neglects to clear the altitude of the sprite during the hijack. It appears to be fixed in later versions.</p>
 	<p class="supershort">Bombs hijack sprite 0 to perform a calculation, but they don't clean all variables first.</p>
