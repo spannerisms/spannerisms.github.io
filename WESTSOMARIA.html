@@ -49,11 +49,11 @@ background: glitchybg
 		<li>When Link slashes any closed door, it will be set to the part of the door the sword touched.</li>
 		<li>When a broken wall collapses, it will be set to the part of the door Link or the bomb touched.</li>
 		<li>When shutter doors are opened or close, it will end up being set to <code class="value">$0016</code>.</li>
-		<li>When subtile transitions occur, it will end up being set to <code class="value">$0016</code>.</li>
+		<li>When intraroom transitions occur, it will end up being set to <code class="value">$0016</code>.</li>
 	</ul>
 	<p>There are a couple notes to cover with the way <code class="address">$068E</code> is set.</p>
 	<p>Big key doors set <code class="address">$068E</code> irrespective of owning the big key because the logic simply does it before checking if you own the big key. I don't think it was actually necessary to do things in this order, but it doesn't have any negatives either.</p>
-	<p>Shutter doors use <code class="address">$068E</code> as a loop counter. That makes sense, because the routines are checking every door to see if they're a shutter when trying to open them. Shutter doors are controlled with submodule <code class="value">$05</code>, which counts from <code class="value">$0000</code> to <code class="value">$0016</code> in steps of 2. This is the same reason subtile transitions give the same value. They may not be doing anything every time, but they are still checking for any shutter doors.</li>
+	<p>Shutter doors use <code class="address">$068E</code> as a loop counter. That makes sense, because the routines are checking every door to see if they're a shutter when trying to open them. Shutter doors are controlled with submodule <code class="value">$05</code>, which counts from <code class="value">$0000</code> to <code class="value">$0016</code> in steps of 2. This is the same reason intraroom transitions give the same value. They may not be doing anything every time, but they are still checking for any shutter doors.</li>
 	<p>The thing that should stand out is how slashing can be used to set the value to whatever door we want. This is how the vines in Skull Woods and the curtains in Agahnim's Tower work. The tile's graphics are stored first just because. No reason for or against it, that's just when it happens.<p>
 
 	<h3><code class="address">$0690</code></h3>
@@ -61,7 +61,7 @@ background: glitchybg
 	<p>The rules of the timer mean that unless you are pushing your crimson cube with a timer of 15 or less, you will be waiting a long time for those doors to open. How long? 65,536 frames to be precise. Just a little over 18 minutes.</p>
 	<p>Here are the rules for how <code class="address">$0690</code> is set:</p>
 	<ul>
-		<li>Subtile transitions settle the value to <code class="value">4</code>.</li>
+		<li>Intraroom transitions settle the value to <code class="value">4</code>.</li>
 		<li>Opening small key doors, big key doors, or broken walls settle the value to <code class="value">16</code>.</li>
 		<li>Shutter doors opening or closing by any means settle the value to <code class="value">16</code>.</li>
 		<li>Touching a big key door without the big key will set the value to <code class="value">0</code>.</li>
@@ -84,6 +84,6 @@ background: glitchybg
 <!--submodule 05 with different 68E-->
 
 	<h2>Summary</h2>
-	<p>Supertile west somarias corrupt the game submodule to 4, which is used when opening a key door. The parameters to this submodule's routines are meant to be set on the previous frame, usually via intended methods such as touching a key door with a key. The parameters are changed in very predictable and manipulable ways, such as slashing a door or transitioning. This makes opening specific doors with a west somaria fairly easy, at least in theory.</p>
-	<p>Shutter doors will remain open because they are actually assigned door numbers that do indeed correspond to bits in SRAM. Because code is shared for this, they will use those bits to determine what to do when the supertile is loaded.</p>
+	<p>West somarias corrupt the game submodule to 4, which is used when opening a key door. The parameters to this submodule's routines are meant to be set on the previous frame, usually via intended methods such as touching a key door with a key. The parameters are changed in very predictable and manipulable ways, such as slashing a door or transitioning. This makes opening specific doors with a west somaria fairly easy, at least in theory.</p>
+	<p>Shutter doors will remain open because they are actually assigned door numbers that do indeed correspond to bits in SRAM. Because code is shared for this, they will use those bits to determine what to do when the room is loaded.</p>
 </div>

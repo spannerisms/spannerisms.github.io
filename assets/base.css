@@ -115,6 +115,10 @@ table {
 	font-size: 90%;
 }
 
+table.disassembly [rowspan] {
+	vertical-align: top;
+}
+
 td, th {
 	box-shadow: 2px 2px 1px #BBBBDD;
 }
@@ -169,6 +173,7 @@ code {
 	line-height: 0;
 }
 
+code.instruction,
 code.opcode {
 	color: #0000CC;
 }
