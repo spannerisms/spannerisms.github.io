@@ -65,7 +65,7 @@ background: mechanicsbg
 	</table>
 
 	<p>These laser garnish do nothing but display themselves. They stay put where the laser was when they spawned, and just disappear after 10 frames. Only the main laser (which is technically invisible!) can damage Link. It has a hitbox of 4-by-4 pixels.</p>
-	<p>Lasers don't stop for anything (except walls). If they hit Link, they'll still keep doing. But once they hit a wall (a wall), they'll fade away after 11 frames&mdash;just enough time to spawn at least 1 more garnish.</p>
+	<p>Lasers don't stop for anything (except walls). If they hit Link, they'll still keep going. But once they hit a wall (a wall), they'll fade away after 11 frames&mdash;just enough time to spawn at least 1 more garnish.</p>
 
 	<h2>Making my head spin</h2>
 	<p>Blind likes to be on top of things. Literally. That's why his detached heads set their sprite priority to maximum every frame; it lets them always appear on top of backgrounds 1 and 2. Blind's heads then use a generic subroutine to draw a single 16-by-16 object. The object drawn is actually part of Blind's dress, but the heads double back and replace the character and flip with values obtained based on the direction the head is facing (not to be confused with the direction the face is heading).</p>
