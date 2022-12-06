@@ -31,9 +31,14 @@ ul.postlist a {
 	font-size: 110%;
 }
 
-
 div.content > div.lesspadding {
 	padding: 30px 4%;
+}
+
+span.snark {
+	cursor: help;
+	text-decoration: underline;
+	text-decoration-style: dotted;
 }
 
 /* SNES assembly code formatting */
