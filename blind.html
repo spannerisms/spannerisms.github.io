@@ -127,7 +127,7 @@ background: mechanicsbg
 
 	<h3>Change of scenery</h3>
 	<p>When Blind decides to change sides, he will wait 48 frames before continuing. During this time, he will also decelerate until his speed reaches 0, at either 4/16 (moving left) or 2/16 (moving right) pixels per frame per frame. No, I don't know why these decelerations are different. In either case, it happens too quickly for us to notice the difference. He will also decelerate on the Y axis with a similarly bizarre difference at either 4/16 (moving down) or 8/16 (moving up) pixels per frame per frame.</p>
-	<p>During these 48 frames, should Blind be in flurry mode, we will act twice per frame. This means his head spins twice as fast, but because the action timer isn't ticked twice, it means 2 fireballs are shot at once! And if his head happens to turn during the first flurry call, the two fireballs will be shot with a small angle between them.</p>
+	<p>During these 48 frames, should Blind be in flurry mode, he will act twice per frame. This means his head spins twice as fast, but because the action timer isn't ticked twice, it means 2 fireballs are shot at once! And if his head happens to turn during the first flurry call, the two fireballs will be shot with a small angle between them.</p>
 	<p>For the side switch itself, Blind will accelerate at 2/16 pixels per frame per frame up to a maximum speed of 8 pixels per frame until he reaches his target Y-coordinate at either <code class="value">$50</code> (top) or <code class="value">$90</code> (bottom).</p>
 	<p>If, somehow, the Big Cheese has not yet completely stopped moving on the X-axis, he will decelerate as he did during his 48 frame windup.</p>
 
