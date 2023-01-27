@@ -35,6 +35,10 @@ div.content > div.lesspadding {
 	padding: 30px 4%;
 }
 
+div.content > p {
+	padding-right: 10%;
+}
+
 span.snark {
 	cursor: help;
 	text-decoration: underline;

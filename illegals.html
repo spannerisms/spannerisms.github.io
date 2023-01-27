@@ -706,87 +706,120 @@ background: glitchybg dossier
 	</div>
 	<p>This entry points to a location in ROM, specifically the end of the jump splash draw routine. The entry point does not align perfectly with the code, but it recovers quickly. This code takes the value of the accumulator, which currently holds the high byte of the pointer (<code class="value">$A9</code>), and stores it with an indirect write to the 16-bit address present in <code class="address">$FA</code>. This address holds the player 1 joypad input from the previous frame: <code class="value">AXLR....</code>. <code class="address">$FB</code> is the same for player 2, but the code for writing it is unreachable; thus, the high byte of the indirect address is always <code class="value">$00</code>.</p>
 	<p>Effectively, this means we can write <code class="value">$A9</code> to 16 different addresses using a standard SNES controller; within the address range <code class="address">$00</code>&ndash;<code class="address">$F0</code>, for low nibbles of <code class="address">$0</code>. The bottom nibble is the controller's signature, which is <code class="value">%0000</code> for a regular controller.</p>
-	<table class="centertable align1right">
+	<table class="centertable align3right">
 		<tr class="header">
+			<th colspan="2">Controller input</th>
 			<th colspan="2">Address</th>
 			<th>Effect</th>
 		</tr>
 		<tr>
+			<td><code class="value">%0000</code></td>
+			<td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
 			<td><code class="address">$00</code></td>
 			<td>Scratch space</td>
 			<td>Useless</td>
 		</tr>
 		<tr>
+			<td><code class="value">%0001</code></td>
+			<td><code>&nbsp;&nbsp;&nbsp;R</code></td>
 			<td><code class="address">$10</code></td>
 			<td>Game module</td>
 			<td>Crash</td>
 		</tr>
 		<tr>
+			<td><code class="value">%0010</code></td>
+			<td><code>&nbsp;&nbsp;L&nbsp;</code></td>
 			<td><code class="address">$20</code></td>
 			<td>Link's Y-coordinate low byte</td>
 			<td>Funny teleport</td>
 		</tr>
 		<tr>
+			<td><code class="value">%0011</code></td>
+			<td><code>&nbsp;&nbsp;LR</code></td>
 			<td><code class="address">$30</code></td>
 			<td>Link's Y velocity</td>
 			<td>Nothing; overwritten before used</td>
 		</tr>
 		<tr>
+			<td><code class="value">%0100</code></td>
+			<td><code>&nbsp;X&nbsp;&nbsp;</code></td>
 			<td><code class="address">$40</code></td>
 			<td>Temp variable for coordinates</td>
 			<td>Nothing; overwritten before used</td>
 		</tr>
 		<tr>
+			<td><code class="value">%0101</code></td>
+			<td><code>&nbsp;X&nbsp;R</code></td>
 			<td><code class="address">$50</code></td>
 			<td>Change direction flag</td>
 			<td>Link cannot turn anymore</td>
 		</tr>
 		<tr>
+			<td><code class="value">%0110</code></td>
+			<td><code>&nbsp;XL&nbsp;</code></td>
 			<td><code class="address">$60</code></td>
 			<td>Attract mode sequence counter</td>
 			<td>Nothing; zeroed every frame as collateral damage</td>
 		</tr>
 		<tr>
+			<td><code class="value">%0111</code></td>
+			<td><code>&nbsp;XLR</code></td>
 			<td><code class="address">$70</code></td>
 			<td>Free RAM</td>
 			<td>Nothing</td>
 		</tr>
 		<tr>
+			<td><code class="value">%1000</code></td>
+			<td><code>A&nbsp;&nbsp;&nbsp;</code></td>
 			<td><code class="address">$80</code></td>
 			<td>Free RAM</td>
 			<td>Nothing</td>
 		</tr>
 		<tr>
+			<td><code class="value">%1001</code></td>
+			<td><code>A&nbsp;&nbsp;R</code></td>
 			<td><code class="address">$90</code></td>
 			<td>OAM buffer location pointer</td>
 			<td>Seemingly nothing; at worst, broken graphics for 1 frame</td>
 		</tr>
 		<tr>
+			<td><code class="value">%1010</code></td>
+			<td><code>A&nbsp;L&nbsp;</code></td>
 			<td><code class="address">$A0</code></td>
 			<td>Room ID</td>
 			<td>Repointed to EP big chest room or a nonexistent room<br/>ID <code class="value">$01A9</code> corresponds to cape and mirror in SRAM</td>
 		</tr>
 		<tr>
+			<td><code class="value">%1011</code></td>
+			<td><code>A&nbsp;LR</code></td>
 			<td><code class="address">$B0</code></td>
 			<td>Subsubmodule</td>
 			<td>Game will crash during transitions</td>
 		</tr>
 		<tr>
+			<td><code class="value">%1100</code></td>
+			<td><code>AX&nbsp;&nbsp;</code></td>
 			<td><code class="address">$C0</code></td>
 			<td>Tilemap buffer pointer</td>
 			<td>Nothing?</td>
 		</tr>
 		<tr>
+			<td><code class="value">%1101</code></td>
+			<td><code>AX&nbsp;R</code></td>
 			<td><code class="address">$D0</code></td>
 			<td>Room load pointers</td>
 			<td>No effect; overwritten when required by the CPU</td>
 		</tr>
 		<tr>
+			<td><code class="value">%1110</code></td>
+			<td><code>AXL&nbsp;</code></td>
 			<td><code class="address">$E0</code></td>
 			<td>BG1 horizontal scroll low byte</td>
 			<td>Seemingly nothing; fixed every frame</td>
 		</tr>
 		<tr>
+			<td><code class="value">%1111</code></td>
+			<td><code>AXLR</code></td>
 			<td><code class="address">$F0</code></td>
 			<td>Joypad 1 inputs</td>
 			<td>Changes input for joypad 1 to B+Select+Up+Right</td>

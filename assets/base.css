@@ -540,7 +540,7 @@ div.metaLinks a {
 	vertical-align: text-bottom;
 }
 
-.glitchclasslist >li.hassublist:hover::after {
+.glitchclasslist > li.hassublist:hover::after {
 	border-top-color: transparent;
 	border-bottom-color: blue;
 }
@@ -553,8 +553,10 @@ div.metaLinks a {
 	transition: max-height 1s linear;
 }
 
+/*
+
 .dossier {
-	font-family: Courier prime, inherit;
+	font-family: Courier Prime;
 	color: #303030;
 	filter: grayscale(30%);
 }
@@ -563,3 +565,5 @@ div.metaLinks a {
 	border-radius: 0px;
 	background-image: repeating-linear-gradient(40deg, #F8F8F8 5%, #FFFFFF 40%, #F8F8F8 57%);
 }
+
+*/
