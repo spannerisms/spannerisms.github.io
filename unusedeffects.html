@@ -1,0 +1,29 @@
+---
+layout: default
+title: Unused Room Effects
+background: mechanicsbg
+---
+<div class="contentstuff glitchexp">
+	<h1>Unused room effects</h1>
+	<p>Whenever you have to kill or push something to open a door or reveal a chest, that's being handled by a room effect. These effects are decided when the room is loaded, with the tag for that effect being held in the room's header. Not every room has an effect tag, but some have a tag that they never even use.</p>
+	<p>A lot of unused rooms share headers as a means of saving ROM space, which technically results in unused effects. The most infamous consequence of this is that room 002D shares a header with room 002E, giving it the "kill enemies to spawn a chest" effect. But this room has no chest, so the game just crashes.</p>
+	<p>Okay fine, I'll tell you why:</p>
+	<p>The game runs a loop to reveal every chest, not just a single chest. This loop starts at 0 and stops when it reaches the index of the end of the list. In rooms with no chest, this index is also 0. The comparison is made at the end of the loop, so if there are no chests, the counter needs to overflow for the loop to terminate. The counter is 16-bit and counts up by 2, so it's <em>attempting</em> to spawn 32,768 chests. I'm pretty sure it breaks everything before it can get that far though.</p>
+	<p>Back to my point: I wont be discussing unused values that come from shared headers, because those are pretty trivial.</p>
+
+	<h2>The list</h2>
+	<h3>Room 001A</h3>
+	<p>This is the big chest room with a falling bridge in Palace of Darkness, and, for some reason, it has the tag for a held-switch shutter door. But there's no switch or shutter in sight! Perhaps the south-east quadrant with spikes and a statue was going to be a trap room wherein you pushed the statue onto a switch to escape?</p>
+
+	<h3>Room 0020</h3>
+	<p>The Agahnim fight has both the tag to drop a dungeon prize and the tag to open shutter doors when that prize is collected. Hard to say what that's all about. It might have been that Agahnim originally dropped something, or maybe the developers were just copying room headers the same way for every boss fight. Neither of these tags is necessary though; code elsewhere handles this room's transition to dark world.</p>
+
+	<h3>Room 0041</h3>
+	<p>In the first room of the sewers, a room without blocks, is a tag that allows push blocks to trigger shutter doors. This implies that you may have been allowed to go backwards into the castle at some point. The weirdest part of this tag is that it is a quadrant-scoped tag, even though this is a full-sized room. Although, this probably doesn't matter, and just appears to be part of the spaghetti of the room effect code. This room is the only instance of this tag anyway.</p>
+
+	<h3>Rooms 00F2 and 00F3</h3>
+	<p>These rooms are the weirdest ones, because they don't have tags to call their own. Their data stops before those values are defined, which means the room effects are bleeding into the next header. These are the only rooms where this happens (and they share the same header), but it results in them having a nothing tag, and a north-east kill door tag.</p>
+
+	<h3>Rooms 0128 through 013F</h3>
+	<p>This post wouldn't be complete if I didn't mention that these unused rooms all point to null data filled with <code class="value">$FF</code>. That value is not a valid room tag, and when it's used to find an effect routine, the game reads code as a vector that takes it to open bus, crashing the game.</p>
+</div>
