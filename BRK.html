@@ -9,7 +9,7 @@ background: glitchybg
 
 	<h2>What exactly does an interrupt do?</h2>
 	<p>Thanks, me. I'm glad I asked.</p>
-	<p>For this, we'll assume we're running out 65c816 in Native mode, rather than 6502 Emulation mode. And actually, we'll assume we're specifically using the SNES's Ricoh 5A22. There are eight 16-bit vectors located at <code class="address">$00:FFE0</code>. A vector is just a pointer to other code. These ones specifically are hardware vectors, used by the CPU after an interrupt. All of these native mode vectors start by doing the same sequence:</p>
+	<p>For this, we'll assume we're running our 65c816 in Native mode, rather than 6502 Emulation mode. And actually, we'll assume we're specifically using the SNES's Ricoh 5A22. There are eight 16-bit vectors located at <code class="address">$00:FFE0</code>. A vector is just a pointer to other code. These ones specifically are hardware vectors, used by the CPU after an interrupt. All of these native mode vectors start by doing the same sequence:</p>
 	<ol>
 		<li>The 24-bit address to return to after the interrupt is pushed to stack.</li>
 		<li>The program status register is pushed to stack.</li>
@@ -88,7 +88,7 @@ background: glitchybg
 	<p>It's a metaphor for life, really.</p>
 
 	<h2><i>Shin Megami Tensei</i></h2>
-	<p>This vector points to a routine that updates a given characters sword power stat, and it enters right after the <code class="opcode">PHP</code> instruction. So, actually, this one will exit fairly cleanly! <code class="opcode">PLP</code> followed by <code class="opcode">RTL</code> will accomplish <i>almost</i> the same thing as an <code class="opcode">RTI</code>. The difference between the two opcodes is that <code class="opcode">RTI</code> returns to an exact address pulled from the stack, while <code class="opcode">RTL</code> uses 1 less than an address. However, this is nothing a few <code class="opcode">NOP</code>s can't fix. I'm not sure if all this is intentional, but, if it is, it's some fascinating insight into the last pieces of code the developers were working on.</p>
+	<p>This vector points to a routine that updates a given character's sword power stat, and it enters right after the <code class="opcode">PHP</code> instruction. So, actually, this one will exit fairly cleanly! <code class="opcode">PLP</code> followed by <code class="opcode">RTL</code> will accomplish <i>almost</i> the same thing as an <code class="opcode">RTI</code>. The difference between the two instructions is that <code class="opcode">RTI</code> returns to an exact address pulled from the stack, while <code class="opcode">RTL</code> uses 1 less than an address. However, this is nothing a few <code class="opcode">NOP</code>s can't fix. I'm not sure if all this is intentional, but, if it is, it's some fascinating insight into the last pieces of code the developers were working on.</p>
 	<p>Of course, this only works properly when we're looking at a properly placed <code class="opcode">BRK</code>. This routine expects the <code class="register">X</code> register to already be loaded with a value corresponding to the desired character's stat offset in memory. Anything else and we're likely looking at some corruption.</p>
 
 	<h2><i>Kirby Super Star</i></h2>
