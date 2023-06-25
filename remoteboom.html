@@ -5,8 +5,6 @@ background: glitchybg
 ---
 <div class="contentstuff glitchexp">
 	<h1>Remote Control Boomerang</h1>
-	<p><b>STOP THE PRESSES!</b></p>
-	<p>I guess, in this case, they're key presses. But that's besides the point. There's a hot new glitch discovered this morning, the 15<sup>th</sup> of February 2020. And we're the first on the scene.</p>
 	<p>What's the scoop? It's easy. Get a boomerang into slot 0 or 1, then get an ice rod shot into slot 3 or 4, respectively. The boomerang stops moving on its own, instead following a weird trajectory as Link moves around.</p>
 
 	<h2>Velocity</h2>
@@ -23,10 +21,11 @@ background: glitchybg
 
 	<h2>RC</h2>
 	<p>So we have that much figured out. Most people would be satisfied with that. Not me. Sure, we know why it stops, but what about how it moves? Why does it sort of move with Link? Why does it seem to move away from him?</p>
-	<p>To answer these questions, we need to take a look at <code class="routine">Ancilla_ProjectSpeedTowardsPlayer</code>. This is a mess of a routine that I won't bother trying to explain. In short: it's an over-the-top algorithm to calculate <code class="mathFunc">b&times;tan(&theta;)</code>, where <code class="mathVar">b</code> is the base speed given as an input and <code class="mathVar">&theta;</code> is the angle of a right triangle whose hypotenuse is a line that connects Link and the entity, with the side adjacent to <code class="mathVar">&theta;</code> being longer or as long as the side opposite to <code class="mathVar">&theta;</code>.</p>
+	<p>To answer these questions, we need to take a look at <code class="routine">Ancilla_ProjectSpeedTowardsPlayer</code>. This is a mess of a routine that I won't bother trying to explain. In short: it's an inefficient algorithm to calculate <code class="mathFunc">b&times;tan(&theta;)</code>, where <code class="mathVar">b</code> is the base speed given as an input and <code class="mathVar">&theta;</code> is the angle of a right triangle whose hypotenuse is a line that connects Link and the entity, with the side adjacent to <code class="mathVar">&theta;</code> being longer or as long as the side opposite to <code class="mathVar">&theta;</code>.</p>
 	<p>Or to put it less formally: <code class="mathFunc">base_speed&times;(smaller/bigger)</code>.</p>
 	<p>I don't think I get it either. I mean, I get it. But why? That's a really weird way to go about doing this. It doesn't even partition the velocity cleanly. One of the axes (the further one) will always have the input value. The other will have something else. This results in values anywhere from <code class="mathAns">b</code> to <code class="mathAns">b&radic;<span class="underRadical">2</span></code> as the final gross speed, which shouldn't be desirable. The more reasonable expectation is that the gross speed is the magnitude of the sum of each axis' vector.</p>
 	<p>The worst part, though, is that all this is doing is multiplication and division. While there may not be any operations in the CPU's instruction set for these functions, there are hardware registers specifically for that purpose. Using the built-in registers would pretty much always have the same run time. And that run time will always be faster than this loop.</p>
+	<p>As is, the function runs in O(n) time, when it could have run in O(1).</p>
 
 	<h2>Tackling the real issues</h2>
 	<p>The problem we're interested in, specifically, is how the loop is terminated. And to be precise, we care about when the loop counter is <em>exactly</em> 0. This is fine in most cases. The routine is basically a copy/paste of the sprite version, which does find use for negative values to move sprites away from the player. But in the case of 0, it's acting like a big negative value, but only for the loop.</p>

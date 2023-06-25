@@ -50,7 +50,7 @@ background: glitchybg
 	<p>Because this apparition occupies a real slot, it means any block you push while it is visible will be forced to occupy the other slot&mdash;the one that's normally impossible to need. If the real block you push happens to occupy the same slot as a spectre (perhaps you used the same block for both steps), then the action routines will operate on the ghost block (if it's in slot 1, because then it's found first), turning it real. At the end, you'll have a ghost block in slot 0, the one that's hard to use.</p>
 	<p>The last oddity with both slots being drawn is that the variables used to control the block falling animation are not slotted. There is only a single shared step and timer, so if one block looks like it's falling, the other will too, regardless of their indices.</p>
 
-	<h2>Taking this to the extreme</h2>
+	<h2>Blockbuster</h2>
 	<p>It's now time to combine everything we know into some brand new tech.</p>
 	<ul>
 		<li>We know that blocks populate slot 1 first.</li>
