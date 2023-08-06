@@ -179,6 +179,10 @@ table > caption:not(.footnotes) {
 	white-space: nowrap;
 }
 
+table.smalltable {
+	min-width: 20%;
+}
+
 td.givesitem {
 	background: #4466FF;
 }

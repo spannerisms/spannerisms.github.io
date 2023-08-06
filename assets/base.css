@@ -24,14 +24,9 @@ div.content > div {
 	box-shadow: 3px 3px 4px black;
 	border: 1px solid black;
 	border-radius: 20px;
-}
-
-div.content > div {
-	background: #FCFCFF;
-	padding: 30px 10%;
-	box-shadow: 3px 3px 4px black;
-	border: 1px solid black;
-	border-radius: 20px;
+	max-width: 800px;
+	min-width: 500px;
+	margin: inherit auto;
 }
 
 a {
@@ -75,8 +70,9 @@ div.clear {
 	clear: both;
 }
 
-div.center {
-	margin: auto;
+div.center,
+p.center {
+	margin: inherit auto;
 	text-align: center;
 }
 
@@ -269,7 +265,8 @@ td {
 	padding: 2px 5px;
 }
 
-tr.header th {
+tr.header th,
+th.header {
 	text-align: center;
 }
 
@@ -283,8 +280,9 @@ tbody > tr:nth-child(even) {
 	background: #FFFFFF;
 }
 
-tr.header th:not(.divider) {
-	background: #ADADFD;
+tr.header th:not(.divider),
+th.header {
+	background: #ADADFD !important;
 }
 
 th.divider {

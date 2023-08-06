@@ -1,0 +1,28 @@
+---
+layout: default
+title: Jingle Glitch Explication
+background: glitchybg
+---
+
+<div class="contentstuff glitchexp">
+	<h1>Jingle Glitch</h1>
+	<p>There are a lot of jingles in the game, and there are also a lot of glitches, but a particular intersection of these disciplines intrigues many and arouses all.</p>
+	<p>This is one of a large class of glitches that exists because two actions occurred on the same frame. Naïvely, this might lead one to surmise that something with the shutter doors prevents something with the stairs from happening, but it's actually the opposite. Something with the shutter doors causes something with the stairs to happen <em>twice</em>!</p>
+	<p>Said thing is triggering the stairs transition. Only two really important things happen when these transitions are triggered: the room ID is updated to the target room, and room data is saved. The former is the issue, because, it first saves the current ID to a variable that tracks the previous room. This means that if the update happens twice, the previous room ID and the current room ID will be the same.</p>
+	<p>Where this breaks is the adjustment that occurs dozens of frames after the trigger. Once the room has faded to black, values for Link's coordinate and the camera and its boundaries are adjusted to a position that will work for the new room. While the hardware can only make sense of the lower 9 bits, the full 16-bit values are used by the software for gameplay calculations. When a room transition occurs, all 16 bits need to be updated, not just the lower order ones.</p>
+	<p>Despite the simple and straightforward relationship between room ID, coordinates, and camera position, the latter two are always adjusted relatively using the first. The following formulae approximate the code, where <code class="mathVar">R</code> is room ID:</p>
+	<div class="center">
+		<code class="mathFunc">X<sub>new</sub> = X<sub>old</sub> + 512 &times; ((R<sub>new</sub> &minus; R<sub>old</sub>) mod 16)</code>
+		<br />
+		<code class="mathFunc">Y<sub>new</sub> = Y<sub>old</sub> + 1024 &times; (&LeftFloor;R<sub>new</sub> &div; 16&RightFloor; &minus; &LeftFloor;R<sub>old</sub> &div; 16&RightFloor;)</code>
+		<p>It's much prettier in assembly; I promise!</p>
+	</div>
+	<p>When the old and new room IDs are the same, such as in the jingle glitch, the adjustments are calculated to be 0. In a sense, it's as if a certain step was skipped, but it did literally happen.</p>
+	<p>While Link's coordinates may be in sync with the camera, sprites' coordinates are not. It's often horribly misstated that the jingle glitch despawns sprites, but that's patently incorrect. Sprites <em>always</em> spawn in the underworld, unless they're dead. What's actually happening is sprites are being displaced. They're just too far off camera to be seen, and their true coordinates are nowhere near Link's. For most sprites, being off-screen also means being inactive; i.e., they won't do anything.</p>
+	<p>The best way to illustrate is this distinction is with Moldorm. As I have <a href="moldormbumper">previously explained</a>, everyone's favorite worm is supposed to remain active off-screen. The reason he doesn't is because of an error that occurs when drawing his tail. But! If his tail is never drawn (because he's off-screen), that error won't occur. If you make it to Moldorm 2 in Ganon's Tower with a broken camera&mdash;<span class="snark" title="You'll need an extra key before doing this, because the helmasaur won't be there and neither will the crystal switches, making both keys upstairs unobtainable with a broken camera.">perhaps</span> with a jingle on a certain set of stairs after a certain set of torches that a certain set of the population is all too familiar with&mdash;you'll hear Moldorm shuffling. You won't see him, but you <em>will</em> hear him. That's not something we could experience if he were despawned.</p>
+	<p>That's all clear now, but why does this even happen in the first place? What causes the double trigger?</p>
+	<p>As mentioned, touching the stairs kicks things off with the room changes, but it also changes the game submodule to whatever relevant stairs module is required. It will only do this while in the default module (<code class="value">$00</code>). Shutter doors are controlled with room tags, which also only occur in the default submodule. Though it sounds like one of these should preclude the other, the funny thing is that these are both under the same submodule check. In fact, the <code class="routine">DetectStaircase</code> routine is actually called from <em>inside</em> the <code class="routine">HandleRoomTags</code> routine. If stairs are being detected, those shutter doors are already queued up.</p>
+	<p>As it so happens, shutter doors themselves are animated with a submodule too. Once the animation is complete, the submodule is reset back to the default one. The game makes a pretty fair assumption that shutter doors can only be triggered from the default submodule, so there's no reason to change to anything but when finished.</p>
+	<p>Interroom stairs are where this assumption doesn't work. On the next frame after the shutters fully close, room tags&mdash;and thus staircase detection&mdash;will be run again. Movement on stairs is checked for with <code class="label">WALKDIR</code> (at <code class="address">$67</code>), and that says Link is still moving.</p>
+	<p><em>Quoth the staircase, "Triggered more."</em></p>
+</div>
