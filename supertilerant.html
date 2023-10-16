@@ -4,24 +4,26 @@ title: Supertiles Is Not Good
 ---
 <div class="contentstuff">
 	<h1>Ranting about a word</h1>
-	<p>I no longer like the name "supertile" (surprise surprise&mdash;I dislike the name of something). But I really do find the name problematic in some (admittedly minor) ways.</p>
+	<p>"Supertile" is a bad name, and it always has been.</p>
 
-	<p>First and foremost is the fact that we're overloading terminology when we don't need to. The term "tile" already means several things, and now it means another, but on top of that, we're not even using our prefixes correctly. The prefix <i>super-</i> means "above". A tile is <span class="snark" title="Or 16-by-16 pixels, if you're wrong.">8-by-8 pixels</span>, and sure, a supertile is bigger than a tile. A lot bigger. But then there are "subtiles".</p>
+	<p>First and foremost is the fact that we're overloading terminology when we don't need to. The term "tile" already means several things&mdash;an enemy, a unit of area, a unit of graphics&mdash;and now it means another, but on top of that, we're not even using our prefixes correctly. The prefix <i>super-</i> means "above". A tile is <span class="snark" title="Or 16-by-16 pixels, if you're wrong.">8-by-8 pixels</span>, and sure, a supertile is bigger than a tile. A lot bigger. But then there are "subtiles".</p>
 
-	<p>The prefix <i>sub-</i> means "below". So, based on our terminology, our hierarchy is, from largest to smallest: supertile, subtile, tile. With a name like "subtile", you should expect it to be <em>smaller</em> than a tile, but it's not. It's a lot bigger!</p>
+	<p>The prefix <i>sub-</i> means "below". So, based on our terminology, our hierarchy is, from largest to smallest: supertile, subtile, tile. With a name like "subtile", you should expect it to be <em>smaller</em> than a tile, but it's not. It's a lot bigger. </p>
 
 	<p>Now, you're probably thinking, <em>"No no no&mdash;'tile' refers to something else. It's not those tiles!!!"</em></p>
 	<p>Okay, then what are <em>these</em> "tiles"? The hierarchy still has nothing between "super" and "sub". The names still imply that there exists something called a tile below supertiles and above subtiles (since, ya know, the prefixes are on the word "tile"). But what you'll actually find is that below the supertile is the subtile; above, vice versa. One of these prefixes is both wrong and redundant (a nasty combination); however, if we change one of the terms simply "tile", we come back to the problem that this already refers to something else commonly discussed.</p>
 
-	<p>Obviously, this is an important concept. Definitely important enough to need a name. So what do I prefer? I think we should just call supertiles "rooms". The only real argument against this is that, in the real world, rooms are defined by how the walls divide the space. In theory, what I am proposing we call a "room" could have any number of what would be considered a "room" in the real world! (though, in practice, the most seen is 4) But I think this just does not matter. I am not looking for a definition that precisely matches the real world. I just want a rigorous one. Which we already have. I just want to rename it.</p>
+	<p>Obviously, this is an important concept. Definitely important enough to need a name. So what do I prefer? I think we should just call supertiles "rooms". The only real argument against this is that, in the real world, rooms are defined by how the walls divide the space. In theory, what I am proposing we call a "room" could have any number of what would be considered a "room" in the real world! (though, in practice, the most seen is 4) But I think this just does not matter. I am not looking for a definition that precisely matches the real world. I just want a rigorous one.</p>
 
-	<p>If we use the name "room", our transition names just change to "inter-room" and "intra-room" transition. With <i>inter-</i> meaning "between" and <i>intra-</i> meaning "within", these names will come with the added benefit of being more precise. I admit that no one was really confused by "subtile transition", but, technically a supertile transition also changes your subtile.</p>
+	<p>If we use the name "room", our transition names just change to "inter-room" and "intra-room" transition. With <i>inter-</i> meaning "between" and <i>intra-</i> meaning "within", these names will come with the added benefit of being more precise.</p>
 
-	<p>Subtiles, for that matter, would just be "subrooms". There was nothing inherently wrong with the prefixes we used, but we were using them wrong such that our terminology was contradictory. A subroom is the next thing down from a room. It makes sense now: "sub", below; "room", room. A subroom is below a room. There would be no such thing as a "superroom". Well, at least we have no need for the term. We could have sensible terminology using "superroom" to replace supertile and then just "room" for subtile.</p>
-
-	<p>As for "quadrants"&hellip; Quadrant is a fine name, and I think it can stay. Though I do need to mention that they don't <em>actually</em> exist in any sense other than the abstract. Whether you want the actual quadrant you physically stand in or the one the game thinks you're in, the value is always derived from other information. But don't get me wrong&mdash;that doesn't mean I think the concept is useless! However, I do think we use "quadrant" to describe more than it was designed to.</p>
-	<p>The game engine sees your quadrant as the intersection between which halves of the room you're in on each axis. The difference between these two is not always important, or even necessary, to acknowledge, but I believe we could improve communication and understanding of certain mechanics and glitches if we did acknowledge this difference when relevant. In most cases, we can continue using "quadrant", but when we need to be more technical, or explicitly axis-exclusive, we should probably use the word "half". Or this new word I just made up: "bidrant".</p>
-
-	<p>Unfortunately, I cannot force anyone to follow this terminology. All I can do is use it myself and hope people slowly begin to agree that this is the superior nomenclature.</p>
+	<p>What we call rooms is less important than just not calling them "supertiles", and there are plenty of better alternatives:</p>
+	<ul>
+		<li>Rooms and subrooms</li>
+		<li>Rooms and chambers</li>
+		<li>Rooms and quadrants</li>
+		<li>Superrooms and rooms</li>
+	</ul>
+	<p>Any of those would be infinitely better. The root of our current terminology is grossly overloaded, and we're not even using the rest of the word correctly.</p>
 
 </div>

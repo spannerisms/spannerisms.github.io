@@ -19,7 +19,7 @@ background: glitchybg
 		<li>The appropriate pointer is loaded into the program counter (PC) from the vector table.</li>
 	</ol>
 
-	<p>Every vector available to the SNES is shown in the table below. 2 of these vectors are unused by the architecture itself. The abort vector is unavailable on the SNES. The native mode reset can never occur by design, as any reset of the CPU will put it into emulation mode. Every interrupt is exited by a special instruction: <code class="opcode">RTI</code>, ReTurn from Interrupt. This instruction pulls the program status register before it pulls the PC from stack.</p>
+	<p>Every vector available to the SNES is shown in the table below. Two of these vectors are unused by the architecture itself. The abort vector is unavailable on the SNES. The native mode reset can never occur by design, as any reset of the CPU will put it into emulation mode. Every interrupt is exited by a special instruction: <code class="opcode">RTI</code>, ReTurn from Interrupt. This instruction pulls the program status register before it pulls the PC from stack.</p>
 
 	<table class="centertable">
 		<caption>Hardware vectors as seen by the SNES</caption>

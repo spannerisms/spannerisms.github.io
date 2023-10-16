@@ -95,7 +95,7 @@ div.snesasm > div:nth-of-type(3n+1) {
 	text-align: right;
 }
 
-div.snesasm > div:nth-of-type(3n+1):before {
+div.snesasm:not(.nolinenumbers) > div:nth-of-type(3n+1):before {
 	counter-increment: asmline;
 	content: counter(asmline);
 }
@@ -107,8 +107,8 @@ div.snesasm > span:before {
 	display: block;
 	width: 3em;
 	padding-right: 5px;
-	border-right: 3px solid #666666;
-	background: #898989;
+	border-right: 3px solid #5151A4;
+	background: #8181CC;
 	color: white;
 	margin: 0;
 }
@@ -128,7 +128,7 @@ div.snesasm:not(.noaddress) > div:nth-of-type(3n+2):before {
 }
 
 div.snesasm > div:nth-of-type(3n+1):not(:empty) {
-	color: white;
+	color: #EEEEFF;
 	background: #7777FF;
 }
 

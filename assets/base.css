@@ -115,6 +115,10 @@ table.disassembly [rowspan] {
 	vertical-align: top;
 }
 
+table.topheaders th {
+	vertical-align:top;
+}
+
 td, th {
 	box-shadow: 2px 2px 1px #BBBBDD;
 }
@@ -153,6 +157,12 @@ blockquote {
 	font-style: italic;
 }
 
+blockquote.centerquote {
+	font-style: italic;
+	margin: auto;
+	width: 50%;
+}
+
 blockquote:before,
 blockquote:after {
 	content: "\""
@@ -179,7 +189,7 @@ code.address {
 }
 
 code.label {
-	color: #E828C8;
+	color: #4949D7;
 }
 
 code.number,
@@ -270,6 +280,7 @@ th.header {
 	text-align: center;
 }
 
+.noheaderstripes > tbody > tr > th,
 .nostripes > tbody > tr > th,
 tbody > tr:nth-child(odd):not(.header) th {
 	background: #D0D0FF;
@@ -307,6 +318,11 @@ span.disgusting {
 	font-variant: small-caps;
 	text-decoration: underline;
 	text-decoration-style: wavy;
+}
+
+code.nowrap,
+span.nowrap {
+	white-space: nowrap;
 }
 
 /* Backgrounds */
