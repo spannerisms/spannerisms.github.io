@@ -88,9 +88,9 @@ background: glitchybg
 	<h2>Hammerabi's code</h2>
 	<p>That's so bad it'll work!</p>
 	<p>For our example, we'll be looking into the hammer. But to cover all bases and keep the investigation smooth, let's start by looking at what constitutes a Y press.</p>
-	<p>This is the <code class="routine">CheckYButtonPress</code> routine, disassembled from the JP1.0 ROM:</p>
+	<p>This is the <code class="routine">TestYButton</code> routine, disassembled from the JP1.0 ROM:</p>
 	<div class="snesasm">
-		<span>CheckYButtonPress:</span>
+		<span>TestYButton:</span>
 		<div></div><div addr="$07B05C">BIT $3A</div><div>Check for Y press in bit 6 of $3A</div>
 		<div></div><div addr="$07B05E">BVS fail</div><div>Overflow flag is set as bit 6</div>
 		<div></div><div addr="$07B060">LDA $46</div><div>Check for recoil</div>
@@ -118,7 +118,7 @@ background: glitchybg
 		<div></div><div addr="$079F74">BVS y_was</div><div>If we had pressed Y, continue on</div>
 		<div></div><div addr="$079F76">LDA $6C</div><div>Are we in a door?</div>
 		<div></div><div addr="$079F78">BNE exit_a</div><div>If so, no hammer</div>
-		<div></div><div addr="$079F7A">JSR $B064</div><div>Middle of CheckYButtonPress</div>
+		<div></div><div addr="$079F7A">JSR $B064</div><div>Middle of TestYButton</div>
 		<div></div><div addr="$079F7D">BCS init_hammer</div><div>We pressed Y, so continue</div>
 		<div>exit_a</div><div addr="$079F7F">BRL $9F48</div><div>This coulda just been RTS itself</div>
 		<div>init_hammer</div><div addr="$079F82">LDA $9F68</div><div>First byte of hammer_data ($03)</div>
