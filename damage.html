@@ -20,7 +20,7 @@ background: mechanicsbg
 	<p>That's all there is to understand the basics, but if the basics are all you're after, then you are clearly out of sync with my style of deep-dive learning. The rest of you should strap on your brain snorkels and continue reading, as we will submerge into the inner workings of each of these calculations to understand how they differ and how they all converge into a single routine.</p>
 	<p>Sprites don't just take damage out of nowhere. Specific routines need to be called. There are 3 main ways that sprites can take damage:</p>
 	<ul>
-		<li>From Link's sword or hammer attacks&mdash;in this case, the sprite to take damage is responsible for calling the <code class="routine">Sprite_CheckDamageFromLink</code> routine. Any sprite that doesn't call this routine is more than immune to direct attacks; it completely ignores them.</li>
+		<li>From Link's sword or hammer attacks&mdash;in this case, the sprite to take damage is responsible for calling the <code class="routine">CheckDamageFromLink</code> routine. Any sprite that doesn't call this routine is more than immune to direct attacks; it completely ignores them.</li>
 		<li>From ancillae&mdash;in this case, the ancillae is calling the <code class="routine">Ancilla_CheckDamageToSprite</code> routine. Just like sprites and direct damage, any ancilla that doesn't call this routine will just not do damage, no matter how hard you try.</li>
 		<li>From other sprites&mdash;and in this last case, the sprite <em>doing</em> the damage is calling the <code class="routine">ThrownSprite_CheckDamageToSprites</code> routine. A couple sprites call this routine as part of their normal behavior, but every sprite has access to it when frozen, via the frozen state handler.</li>
 	</ul>
@@ -329,7 +329,7 @@ background: mechanicsbg
 		</tbody>
 	</table>
 	<p>Most people understand the sword's damage mechanics, but it's still worth looking at parts of this routine more indepth, just to understand how exactly the game knows what damage to do.</p>
-	<p>Sword and hammer damage require that the sprite in question calls <code class="routine">Sprite_CheckDamageFromLink</code> as part of its daily regimen. The routine begins by performing various checks to see if damage should even be considered, including how to handle recoil and electrocution. This is also where Ganon's special hammer immunity and the frozen sprite smash prize pack are handled.</p>
+	<p>Sword and hammer damage require that the sprite in question calls <code class="routine">CheckDamageFromLink</code> as part of its daily regimen. The routine begins by performing various checks to see if damage should even be considered, including how to handle recoil and electrocution. This is also where Ganon's special hammer immunity and the frozen sprite smash prize pack are handled.</p>
 	<p>There are several types of sword damages that can be dealt, and most people are familiar with them, but here's exactly how the game sees it:</p>
 	<ul>
 		<li><code class="address">$0E60,X</code> is a bitfield sprite property. Bit 6 of this property is a flag for total immunity to damage.</li>
@@ -752,7 +752,7 @@ background: mechanicsbg
 	<p>Spike damage requires a specific routine to be called as well, but, in this case, it's <code class="routine">Sprite_CheckTileCollision</code>. As part of this routine, if a sprite interacts with a spike block and is currently recoiling, then the ancilla damage routine is hijacked with a damage class of <code class="value">4</code>.</p>
 
 	<h2>The Main Event</h2>
-	<p>Now that we've covered damage class calculation, we can finally examine the <code class="routine">Damage_Application</code> routine.</p>
+	<p>Now that we've covered damage class calculation, we can finally examine the <code class="routine">ApplyDamage</code> routine.</p>
 	<p>This routine has a single parameter, which is a value used later for an iframe timer. Everything else in memory should already be set up for damage to occur.</p>
 	<p>First, 2 checks are performed: bit 6 of <code class="address">$0E60,X</code> is checked for total immunity. Then the sprite ID is checked. IDs of <code class="value">$D8</code> and higher belong to items and a couple other undamageable sprites. So if the ID is in this range, the routine just exits immediately.</p>
 	<p>Next, the sprite's ID and the calculated damage class are used to index the WRAM sprite damage table for the subclass. The subclass is combined with the damage class to index the table in ROM at <code class="address">$0D:B8F1</code> to get the actual damage inflicted.</p>

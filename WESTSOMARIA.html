@@ -8,7 +8,7 @@ background: glitchybg
 	<p>If you've ever seen me talk, you've probably seen me say "west somaria". The basic concept of them is super simple: opening doors. West somarias are nowhere near as damaging as the other directions, but they are way cooler. Except for a couple oddities, the west somaria doesn't do much to break the game. In fact, most of what goes on only requires understanding vanilla routines to explain. Oh boy!</p>
 
 	<h2>Doors 101</h2>
-	<p>West somarias put the game into dungeon submodule <code class="value">$04</code>. This is the submodule used for unlocking key doors. Shutters doors are controlled with a different submodule. All that submodule does is call the routine <code class="routine">Dungeon_AnimateOpeningLockedDoor</code> every frame. Here's what that routine does:</p>
+	<p>West somarias put the game into dungeon submodule <code class="value">$04</code>. This is the submodule used for unlocking key doors. Shutters doors are controlled with a different submodule. All that submodule does is call the routine <code class="routine">UnlockKeyDoor</code> every frame. Here's what that routine does:</p>
 	<ol>
 		<li>Set <code class="register">Y</code> to <code class="value">2</code>. <code class="register">Y</code> will be used later for graphics.</li>
 		<li>Increment address <code class="address">$0690</code>.</li>

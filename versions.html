@@ -13,7 +13,7 @@ background: mechanicsbg
 
 	<h3>Text</h3>
 	<p>English is not as informationally dense as Japanese, so the US version had to expand the allotted space for dialog. Not only that, the entire text system is different. Both languages are coded as a VWF (variable-width font), but only the US version actually makes us of the V. The Japanese text system has a single width for every character.</p>
-	<p>The Japanese versions need to code a lot more characters, including 256 kanji (255 of which are unique (but all of which are graphically unique)). Making this fit required a clever compression algorithm optimized specifically for storing these characters. I believe this algorithm at least partially dictated some of the weird outlines on certain characters, as those extraneous pixels compressed better. The English font, on the other hand, is completely uncompressed. The biggest space saver was not needing kanji. Those savings made room for the raw graphics to fit comfortably in ROM.</p>
+	<p>The Japanese versions need to encode a lot more characters, including 256 kanji (255 of which are unique (but all of which are graphically unique)). Making this fit required a clever compression algorithm optimized specifically for storing these characters. I believe this algorithm at least partially dictated some of the weird outlines on certain characters, as those extraneous pixels compressed better. The English font, on the other hand, is completely uncompressed. The biggest space saver was not needing kanji. Those savings made room for the raw graphics to fit comfortably in ROM.</p>
 	<p>The English text engine introduces two new commands: another choose option, and the bank swap command.</p>
 	<p>The extra choose option came with 2 new control messages to handle the arrow selection display, shifting everything subsequent message ID up by 2. This affected virtually every dialog invocation, but beyond that, no message calls were changed.</p>
 	<p>The bank swap command was necessary to tell the text pointer initialization code to swap from the large bank 1C (where all text is stored for the Japanese versions) to bank 0E (where the extra English text is located). This multi-bank solution required that the pointers generated grow from 16-bit to 24-bit.</p>
@@ -24,7 +24,7 @@ background: mechanicsbg
 	<h3>Menu</h3>
 	<p>Obviously all text needs to be translated, not just the stuff people say. As such, the entire item menu was retiled, but there's a tiny little secret that was deleted at the same time.</p>
 	<p>At <code class="address">$0DF429</code> is the text <span class="nowrap">"てがみ"</span>, which translates to "letter". You may know that there is a map-looking item the shares a slot with the mirror. That's the letter. The letter behaves exactly the same as the mirror, and besides the menu tables and another table related to the upgrade fairies, there's no reference to it anywhere else in the game. In the English version, the text label for the item is entirely empty space; the icon remains.</p>
-	<p>A lesser-known item also shares this item slot. At <code class="address">$0DF5C9</code> is the text <span class="nowrap">"トライ フォース"</span> (the space should be a line break), which translates to "tri force". In the English version, the 32 bytes for this label are completely deleted, but the icon and the fairy upgrade table entry are still there.</p>
+	<p>A lesser-known item also shares this slot. At <code class="address">$0DF5C9</code> is the text <span class="nowrap">"トライ フォース"</span> (the space should be a line break), which translates to "tri force". In the English version, the 32 bytes for this label are completely deleted, but the icon and the fairy upgrade table entry are still there.</p>
 	<p>Unfortunately, the triforce has no real icon. In every version it displays as arrows and bombs, but yellow. This seems to indicate that there were indeed menu graphics for the item at one point, but they were replaced with HUD graphics when it was scrapped.</p>
 	<p>Would you be upset if I told you about something that didn't change? Within the DO menu labels is the text <span class="nowrap">"いのる"</span>, which means "prayer". It can even be seen on the menu if bit 0 of <code class="address">$7EF379</code> is set, though it will be hanging off the border and not inside the menu proper. In the US version, the data for this text is exactly the same. They didn't even bother translating it! Now it just writes 70% of the "UG" from "BUG-CATCHING NET"&mdash;which isn't even visible, since the border writes over it&mdash;and empty space.</p> 
 
@@ -42,7 +42,7 @@ background: mechanicsbg
 
 	<p>File names in the US version are allowed to be longer&mdash;up to a whopping 6 characters! That's a 50% increase! This shifted the save variables that were after the name, but that's only the checksum and the games played counters.</p>
 
-	<p>New palettes were added over unused placeholders for the castle vista during the title card, and the title card's palette itself was changed as well. And, quite intriguingly, the file select interface modified and reused the Eastern Palace palette. Those new colors changed didn't affect anything in the game, as no graphics used them where the palette set was used.</p>
+	<p>New palettes were added over unused placeholders for the castle vista during the title card, and the title card's palette itself was changed as well. And, quite intriguingly, the file select interface modified and reused the Eastern Palace palette. Those new colors didn't affect anything in the game, as no graphics used them where the palette set was used.</p>
 
 
 	<h3>Graphics</h3>
@@ -290,11 +290,11 @@ background: mechanicsbg
 	<p>This change short circuits the swim code if Link lacks flippers, which gives the splash ancilla all the time it needs to kick Link out of the water. It does not, however, remove Link itself. Instead, if he's somehow swimming without flippers, he just can't move.</p>
 
 	<h3>Super Bunny</h3>
-	<p>This <a href="lonk">fan favorite</a> has multiple ways of being activated, but only one of them was fixed. In the routine <code class="label">Link_CheckIfBunny</code> (which is located at <code class="address">$1CFCE2</code> in the Japanese versions and <code class="address">$0FFD22</code> in the US version), a misassembled load instruction reads the low byte of the horizontal camera. The fix is to correct this instruction to read the bunny flag.</p>
+	<p>This <a href="lonk">fan favorite</a> has multiple ways of being activated, but only one of them was fixed. In the routine <code class="label">CheckIfBunny</code> (which is located at <code class="address">$1CFCE2</code> in the Japanese versions and <code class="address">$0FFD22</code> in the US version), a misassembled load instruction reads the low byte of the horizontal camera. The fix is to correct this instruction to read the bunny flag.</p>
 	<p>Unlike the last three, that fix was made in the US version! The bug is still present in JP REV1.</p>
 
 	<h3>Bomb recoil</h3>
-	<p>A glitch in this game that people hate is rare, and this is one of them. Bombs temporarily commandeer the sprite 0 slot to determine the recoil trajectory applied to Link. Infamously, this hiack does not fix the altitude, meaning a floating or otherwise airborne sprite in slot 0 may cause unintuitive explosion knockback.</p>
+	<p>A glitch in this game that people hate is rare, and this is one of them. Bombs temporarily commandeer the sprite 0 slot to determine the recoil trajectory applied to Link. Infamously, this hijack does not fix the altitude, meaning a floating or otherwise airborne sprite in slot 0 may cause unintuitive explosion knockback.</p>
 	<p>The bug is still present in REV1, not being fixed until the US version, but the fix there is still <em>technically</em> buggy. The change caches the slot 0 sprite's altitude then sets it to 0. Really, it should have copied the altitude of the bomb. Knockback is still wrong, but it works in our favor.</p>
 
 	<h3>Removing insult from injury</h3>
@@ -331,7 +331,7 @@ background: mechanicsbg
 	<p>Overworld YBAs are fixed in REV1, possibly on accident. The transition submodule is explicitly set to <code class="value">$01</code> instead of incrementing it from zero. I say it's an accident because this doesn't really fix the glitch, per se. It prevents cool stuff from happening, but there's still an unsolicited menu and a wasted potion. Then there are all the other transition-based glitches that could have been mostly prevented with the same idea. None of them were.</p>
 
 	<h3>Bomb tossing</h3>
-	<p>A less widely-known glitch is that a thrown bomb briefly ignores collision at a specific time when another bomb is being lifted. The US version introduced code to address this:</p>
+	<p>A less widely-known glitch is that a thrown bomb briefly ignores collision at a specific time when another bomb is being lifted. The US version introduced code that seems to address this:</p>
 	<div class="snesasm nolabel noaddress">
 		<div></div><div>TXA</div><div>Get slot</div>
 		<div></div><div>INC A</div><div>Account for offset</div>
@@ -344,7 +344,7 @@ background: mechanicsbg
 	<p>Did they know it didn't work and leave the fix in?</p>
 	<p>Did they mess up the timing and assume the fix worked?</p>
 	<p>Perhaps they were fixing a completely different bug we don't know about?</p>
-	<p>Who knows? All we do know is that there's new code, and it doesn't seem to do anything useful.</p>
+	<p>Who knows? All we do know is that there's new code, and it appears to do nothing useful.</p>
 
 	<h3>Sorry. Wrong world.</h3>
 	<p>A curious change was made to the castle gate warp in REV1: a variable that caches your world during mirror transitions now gets cached here too. Theoretically, if the castle warp caused you to land on collision in JP1.0, it wouldn't always kick you back to the light world. In practice, that's not even possible. This was definitely a bug, but it's a bug that never happened.</p>
@@ -355,6 +355,14 @@ background: mechanicsbg
 
 	<h2>Tiny fixes</h2>
 
+	<h3>A hearty mistake</h3>
+	<p>By sheer coincidence, the chest game is fixed so that it no longer prevents the heart piece from being obtained in the first chest. The reason this happens to begin with is memory shared between the chest game and the decompression routines.</p>
+	<p>The chest game uses the address <code class="address">$C8</code> to track the list item obtained from the chest game in the Village of Outcasts. If the prize chosen by the game is not rupees and is the same as the previous prize, it will nudge itself one prize forward.</p>
+	<p>Every time dialog is shown, the plaques used in the attract sequence are decompressed. There's no reason for this; it only serves to waste 4 frames. It also clobbers <code class="address">$C8</code>. Ultimately, what you need to know is that the final value of <code class="address">$C8</code> after decompression will be the low byte of the address after the final byte of the compressed data.</p>
+	<p>In JP1.0, that happens to be <code class="value">$07</code>, the same as the prize index of the heart piece. When the chest game proctor speaks, his dialog ends up clobbering that value, and the heart piece is impossible to obtain. This can be exacerbated by bringing up the select menu after opening the first chest, setting <code class="address">$C8</code> back to <code class="value">$07</code> and making the heart impossible to obtain on the second chest too.</p>
+	<p>In REV1, this is partially "fixed" on accident. Small graphics changes were made that shifted many sheets into lower addresses. As luck would have it, the location of size of the plaque sheets now sets <code class="address">$C8</code> to <code class="value">$04</code>. The bug is still there, but it prevents the single arrow from being the first prize instead of the heart piece.</p>
+	<p>In the US version, it is completely "fixed" on accident. Again, the bug itself is not even acknowledged, but the value <code class="address">$C8</code> ends up being set to is <code class="value">$0D</code>, which doesn't correspond to any valid prize index. The chest game now behaves as intended, but just by stupid luck. The problem fixed itself without even being discovered by the developers.</p>
+
 	<h3>Fwsh</h3>
 	<p>Slashing a closed door will play the grass-cutting sound effect. If the door is a vine or curtain, the puzzle complete jingle will also play. The closed door slashy part is an oversight that even causes an invisible tile map update to occur&mdash;invisible due to the tiles being changed to what they already are. The US version fixes this by branching further ahead when the door is not a vine or curtain, skipping over half-initialized code that the Japanese versions didn't.</p>
 
@@ -362,19 +370,19 @@ background: mechanicsbg
 	<p>When Link touches a spike, his i-frame timer and the cape flag are checked to determine if he should take damage. Beginning with REV1, the invulnerability timer is also checked.</p>
 
 	<h3>Smoke on the water</h3>
-	<p>An interesting cultural difference between the United States and Japan is that for the latter, explosives placed in shallow water don't seem to disturb the liquid. In America, bombs placed in the water will cause a visible disturbance in the form of animated ripples. In both nations, Somaria blocks sit on water without distubing it.</p>
+	<p>An interesting cultural difference between the United States and Japan is that for the latter, explosives placed in shallow water don't seem to disturb the liquid. In America, bombs placed in the water will cause a visible disturbance in the form of animated ripples. In both nations, Somaria blocks sit on water without disturbing it.</p>
 	<p>Two arrays are introduced to control these ripples: <code class="address">$03D2</code> and <code class="address">$03E1</code>. The latter was previously unused memory, and the former is part of an existing array. The ripples don't draw with an explosion, so a new check is included for that as well.</p>
 	<p>Both of these arrays present new misslotting opportunities for the US version. The array at <code class="address">$03E1</code> is followed by the array of tile type IDs from the last interaction, so this doesn't open any new windows; that variable is updated then used as needed.</p>
 	<p>The interesting one is <code class="address">$03D2</code>. Sort of. It's followed by an ancilla array that flags layer changes for bombs and somaria blocks that are thrown over ledges. That's not too interesting. You can keep a bomb on the upper layer when it shouldn't be. <em>Who cares?</em> But it sits at the end of an existing array beginning at <code class="address">$03CF</code>. This is only used to position the boomerang relative Link as he winds up his throw.</p>
 	<p>The overlap is visible without any misslotting. Just place a bomb on shallow water then throw the boomerang. It sometimes disappears way off screen. If you wait, it will come back. Conversely, you might also witness the bomb's ripple turn into a glitchy mess.</p>
 	<p>The reason the boomerang messes up the graphics is that bombs only expect values of <code class="value">$00</code>, <code class="value">$01</code>, or <code class="value">$02</code>. The boomerang will set its value from the direction Link faces: <code class="value">$00</code> for up, <code class="value">$02</code> for down, <code class="value">$04</code> for left, or <code class="value">$06</code> for right. The bomb can make the boomerang fly off-screen by this same disparity.</p>
 	<p>Being in a lower slot, the bomb will execute its code after the boomerang. Every 3 frames, <code class="address">$03D2,X</code> is incremented by 1 and reset to <code class="value">$00</code> when it reaches <em>exactly</em> <code class="value">$03</code>. Values greater than that are not reset. The graphics can never bug out if Link is facing up or down, since those correspond to lower values, but it should happen every time when facing left or right.</p>
-	<p>The details behind the boomerang's position are a bit more subtle. It uses this value to index a table that tells it where to position itself relative Link during the windup animation. The table expects even indices as it's a collection of 16-bit values. An odd index will have it read misaligned data, and it happens to be that an index of <code class="value">$01</code> results in a Y-offset of <code class="value">$06FF</code>, or 1791 pixels down.</p>
+	<p>The details behind the boomerang's position are a bit more technical. It uses this value to index a table that tells it where to position itself relative Link during the windup animation. The table expects even indices as it's a collection of 16-bit values. An odd index will have it read misaligned data, and it happens to be that an index of <code class="value">$01</code> results in a Y-offset of <code class="value">$06FF</code>, or 1791 pixels down.</p>
 	<p>This can be further corrupted by pausing the game after priming the boomerang while facing left or right. The ripple animation continues to run even while everything else is paused, so that value will keep incrementing until it overflows back to its intended range. Doing this, you can throw the boomerang with any directional offset index. Except for <code class="value">$03</code>.</p>
 
 	<h3>Bush toss</h3>
 	<p>Carried sprites need to stick with Link, and part of that is copying his layer. Link's "layer" is a little overloaded, with it controlling both the physical layer for interactions and the visual priority for display over backgrounds. In REV1, carried sprites now account for this by extracting the least significant bit of Link's "layer" to copy into theirs.</p>
-	<p>Gameplay-wise, this doesn't fix anything anyone would ever notice. Other values such as <code class="value">$02</code> may be used for Link. The effect of that being copied to a sprite is just being unable to collide with other sprites if tossed while Link is landing from a cliff jump. Maybe someone somewhere sometime noticed that they didn't hit a tektite with the rock they threw, but they probably attributed that to hitboxes and not this very specific and subtle oversight.</p>
+	<p>Gameplay-wise, this doesn't fix anything anyone would ever notice. Other values such as <code class="value">$02</code> may be used for Link. The effect of that being copied to a sprite is it being unable to collide with other sprites if tossed while Link is landing from a cliff jump. Maybe someone somewhere sometime noticed that they didn't hit a tektite with the rock they threw, but they probably attributed that to hitboxes and not this very specific and subtle oversight.</p>
 
 	<h3>Caw ca caw</h3>
 	<p>An <code class="instruction">RTS</code> instruction is removed from the cucco bouncing code in REV1. I think removing this short circuit fixes the null lift!</p>
