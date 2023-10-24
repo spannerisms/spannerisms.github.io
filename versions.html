@@ -428,7 +428,7 @@ background: mechanicsbg
 		<li>Link is given a magic consumption upgrade.</li>
 		<li>If player 1 presses A, Link's sword, shield, and mail will be upgraded, wrapping around to fighter, green, fighter, respectively, if they go too high with the latter two capping if the gold sword is selected</li>
 		<li>If player 1 presses B, out of bounds mode will be toggled.</li>
-		<li>If player 1 pressed X, Link's health, magic, bombs, and arrows will be filled; he will be given 255 rupees, with no apparent cap; and his key count will be set to 9, regardless of where he is.</li>
+		<li>If player 1 pressed X, Link's health, magic, bombs, and arrows will be filled; he will be given 255 rupees; and his key count will be set to 9, regardless of where he is.</li>
 	</ul>
 	<p>That's a lot of neat stuff! But you can only have it if FILE1 has a specific name.	In the Japanese versions, that name is <span class="nowrap">"ンルルル"</span> (or NRURURU); in the US version, it's "BAGE" (or <span class="snark" title="I'm not sure what 'BAGE' means, but my best guess is 'Big Awesome Game (ENGLISH)'.">BAGE</span>).</p>
 	<p>There's another difference: the magic consumption upgrade. The US version explicitly sets it to half-magic by loading a value of <code class="value">$01</code>, but in the Japanese versions&mdash;both 1.0 and REV1&mdash;no value is loaded. What gets stored to the address is <code class="value">$0A</code>, the stagnant low byte of the last character in the FILE1 name. For this code to even be run, that character must be "ル", which is encoded as <code class="value">$010A</code>.</p>
