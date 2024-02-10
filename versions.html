@@ -12,7 +12,7 @@ background: mechanicsbg
 	<h2>Huge changes</h2>
 
 	<h3>Text</h3>
-	<p>English is not as informationally dense as Japanese, so the US version had to expand the allotted space for dialog. Not only that, the entire text system is different. Both languages are coded as a VWF (variable-width font), but only the US version actually makes us of the V. The Japanese text system has a single width for every character.</p>
+	<p>English is not as informationally dense as Japanese, so the US version had to expand the allotted space for dialog. Not only that, the entire text system is different. Both languages are coded as a VWF (variable-width font), but only the US version actually makes use of the V. The Japanese text system has a single width for every character.</p>
 	<p>The Japanese versions need to encode a lot more characters, including 256 kanji (255 of which are unique (but all of which are graphically unique)). Making this fit required a clever compression algorithm optimized specifically for storing these characters. I believe this algorithm at least partially dictated some of the weird outlines on certain characters, as those extraneous pixels compressed better. The English font, on the other hand, is completely uncompressed. The biggest space saver was not needing kanji. Those savings made room for the raw graphics to fit comfortably in ROM.</p>
 	<p>The English text engine introduces two new commands: another choose option, and the bank swap command.</p>
 	<p>The extra choose option came with 2 new control messages to handle the arrow selection display, shifting every subsequent message ID up by 2. This affected virtually every dialog invocation, but beyond that, no message calls were changed.</p>
@@ -41,6 +41,8 @@ background: mechanicsbg
 	<p>Minor parameter changes and code refactoring is present at every step in these redesigns. Two new palette filter routines handle the flashy new title card. The Triforce vertical targets are 8 pixels lower. Fairy positions were shifted slightly. The <span class="nowrap">ERASE FILE</span> screen (previously KILL) no longer draws Link.</p>
 
 	<p>File names in the US version are allowed to be longer&mdash;up to a whopping 6 characters! That's a 50% increase! This shifted the save variables that were after the name, but that's only the checksum and the games played counters.</p>
+
+	<p>At <code class="address">$0CFDF9</code>, some file name code from the Japanese versions is left in, but skipped over.</p>
 
 	<p>New palettes were added over unused placeholders for the castle vista during the title card, and the title card's palette itself was changed as well. And, quite intriguingly, the file select interface modified and reused the Eastern Palace palette. Those new colors didn't affect anything in the game, as no graphics used them where the palette set was used.</p>
 
