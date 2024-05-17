@@ -348,6 +348,54 @@ div.smtasm > div.chant {
 }
 
 .smtbg {
-	background-color:black !important;
+	background-color: black !important;
 	background-image: radial-gradient(black 60%, #630063 67%, #2184E7 77%, #630063 81%, black);
 }
+
+
+/* Hitboxes page */
+table.hitboxvisual th.idheader {
+	vertical-align: middle;
+	font-size: 150%;
+	font-family: 'Roboto Mono', consolas, monospace;
+	padding: 0 10px;
+}
+
+table.hitboxvisual .hboxcell {
+	zoom: 200%;
+	width: 200px;
+	padding: 10px;
+}
+
+table.hitboxvisual div.hboxcontainer {
+	position: relative;
+	left: 0px;
+	top: 0px;
+	width: 1px;
+	height: 1px;
+	z-index: 1;
+	margin: 30px 30px 30px;
+}
+
+table.hitboxvisual div.hboxoutline {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 2;
+	width: 16px;
+	height: 16px;
+	outline: 1px solid #FF0000;
+	background-image: url("cucco.png");
+	background-repeat: no-repeat;
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+}
+
+table.hitboxvisual div.hboxbounds {
+	position: relative;
+	float: left;
+	background: rgba(0, 0, 256, .4);
+	z-index: 3;
+}
+
+
