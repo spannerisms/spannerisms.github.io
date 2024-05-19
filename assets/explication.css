@@ -399,3 +399,14 @@ table.hitboxvisual div.hboxbounds {
 }
 
 
+table.hitboxvisual div.hboxbounds:after {
+	display: block;
+	position: relative;
+	left: 1px;
+	top: 1px;
+	content: ' ';
+	width: calc(100% - 2px);
+	height: calc(100% - 2px);
+	outline: 1px solid rgba(0, 0, 256, .6);
+	z-index: 4;
+}
