@@ -3,7 +3,6 @@ layout: default
 title: test
 background: mechanicsbg
 ---
-<div class="contentstuff glitchexp">
 
 # Test
 
@@ -19,5 +18,3 @@ BB
 	}
 ```
 
-
-</div>
