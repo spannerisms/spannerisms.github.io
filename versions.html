@@ -388,7 +388,7 @@ background: mechanicsbg
 	<p>Gameplay-wise, this doesn't fix anything anyone would ever notice. Other values such as <code class="value">$02</code> may be used for Link. The effect of that being copied to a sprite is it being unable to collide with other sprites if tossed while Link is landing from a cliff jump. Maybe someone somewhere sometime noticed that they didn't hit a tektite with the rock they threw, but they probably attributed that to hitboxes and not this very specific and subtle oversight.</p>
 
 	<h3>Caw ca caw</h3>
-	<p>An <code class="instruction">RTS</code> instruction is removed from the cucco bouncing code in REV1. I think removing this short circuit fixes the null lift!</p>
+	<p>An <code class="instruction">RTS</code> instruction is removed from the cucco bouncing code in REV1.</p>
 
 	<h3>Men in uniform are attractive.</h3>
 	<p>There's a small bug with the soldiers during the attract sequence regarding their weapons. In JP1.0 and REV1, the value <code class="value">$10</code> is loaded then stored to a sprite variable to give the guards a shadow. This value is then compared to <code class="value">$39</code>, which will always result in a failure. The comparison is used to pick between sprite IDs <code class="value">$41</code> (sword guard) and <code class="value">$43</code> (spear guard), but because of this oversight, the latter value will always be chosen.</p>

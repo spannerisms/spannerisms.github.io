@@ -1,0 +1,127 @@
+---
+layout: default
+title: ALTTP's Tragic Trajectory Calculation
+background: mechanicsbg
+---
+<div class="contentstuff glitchexp">
+	<h1>ALTTP's Tragic Trajectory Calculation</h1>
+	<p>A lot of people like to call Agahnim 2 a "geometry test", but I don't It's not because I'm being all pedantic and thinking <q>Oh, well, actually, it's trigonometry, not geometry.</q> No, no&mdash;my qualm is that the quote-unquote "geometry" of Agahnim 2 is <em>really</em> bad.</p>
+	<p>I'm not going to campaign against this joke, but I do want to make it known just how bad this math is. If you look at all 360 degrees of a circle, Agahnim gets the correct answer 4 times, only twice as accurate as the proverbial broken clock.</p>
+	<p>The specific calculation I'm talking about is one that takes 2 pairs of coordinates and a base speed to calculate the X- and Y-speeds to move from one location to another in a straight line. This doesn't just affect Agahnim 2; it's used by pretty much everything that needs to move towards or away from an arbitrary point two. This calculation is called from 114 unique places<a footnote href="#footnote-routinecount"></a>, including any action that causes Link or a sprite to recoil.</p>
+
+
+	<h2>Calculation</h2>
+	<p>This routine, which we'll call <code class="routine">ProjectSpeed</code>, looks somewhat like this:</p>
+
+	<div class="snesasm noaddress">
+		<div></div><div>STZ.b $0B</div><div>Clear running total</div>
+		<div></div><div>STZ.b $00</div><div>Clear speedB</div>
+		<div></div><div>LDX.b $01</div><div>Load input speed</div>
+		<div>next</div><div>LDA.b $0B</div><div>Load running total</div>
+		<div></div><div>CLC</div><div></div>
+		<div></div><div>ADC.b $0C</div><div>Add smaller distance</div>
+		<div></div><div>CMP.b $0D</div><div>Compare to bigger distance</div>
+		<div></div><div>BCC no_overflow</div><div></div>
+		<div></div><div>SBC.b $0D</div><div>total mod biggerDistance</div>
+		<div></div><div>INC.b $00</div><div>Accumulate speedB</div>
+		<div>no_overflow</div><div>STA.b $0B</div><div></div>
+		<div></div><div>DEX</div><div></div>
+		<div></div><div>BNE next</div><div></div>
+	</div>
+
+	<p>This disassembly removes all the overhead of transforming coordinates into distances, sorting those distances, etc., and just focuses on the meat of the algorithm.</p>
+	<p>What this code accomplishes isn't immediately clear, but if you analyze it enough, you'll see it's a way to calculate <code class="mathFunc">speed&times;(smaller/bigger)</code>, where <code class="mathFunc">smaller</code> and <code class="mathFunc">bigger</code> are the distances between the current and target coordinates on the X- and Y-axes, respectively by size. This might leave you scratching your head for a moment, but this can also be interpreted as <code class="mathFunc">speed&times;tan(&theta;)</code>, which means we're using a trigonometric function. That's good. But, what this value is used for is less than good.</p>
+	<p>The tantheta value is used as the speed on whichever axis was shorter. The other axis gets the input speed. That's a major error. Irrespective of angle, this creates a floor for the <span class="disgusting">gross</span> speed. The calculation is only correct when one of the distances is 0, with the error increasing proportionally to the smaller distance. In the worst case scenario&mdash;when both distances are the same&mdash;the error is as bad as √2<a footnote href="#footnote-root2"></a>.</p>
+
+	<p>Below is a polar graph illustrating just how wrong this algorithm is. The angle &theta; is, appropriately, the angle between the two points; and the length of the ray is the <span class="disgusting">gross</span> magnitude of the final speed as a ratio to the input speed. The red area shows the output of the algorithm ALTTP uses, and the blue area shows the output of the ideal function, where the ratio between the output and input is exactly 1.</p>
+
+	<div class="center">
+		<img title="The graph is colored in, because it's an infinite number of lines. There are no labels, because I'm lazy." src="/assets/alttpspeedbad.png">
+	</div>
+
+	
+
+	<h2>The Big O</h2>
+	<p>In addition to being completely wrong, this calculation is also incredibly slow. The complexity<a footnote href="#footnote-complexity"></a> of this routine is <i>O(n)</i> for a given speed <i>n</i>&mdash;it runs in linear time. Which, okay, that's not the worst. But it can and should be <i>O(1)</i>.</p>
+
+	<p>On a less powerful system, such as the NES, this would actually be a pretty cute algorithm. It cleverly combines multiplication and division into a single loop, where normally each would need its own. But as soon as you have the ability to multiply and divide without a manual loop, this method is terrible.</p>
+	<p>While the SNES doesn't have any instructions for these operations, it does have dedicated hardware registers. CPU multiplication works with an 8-bit multiplicand and an 8-bit multiplier; division works with a 16-bit dividend and 8-bit divisor. Below is an example implementation of <code class="routine">ProjectSpeed</code> using the arithmetic registers:</p>
+
+	<div class="snesasm noaddress">
+		<div></div><div>LDA.b $01</div><div>Get input speed</div>
+		<div></div><div>STA.w $4202</div><div>Multiplicand</div>
+		<div></div><div>LDA.b $0C</div><div>Smaller distance</div>
+		<div></div><div>STA.w $4203</div><div>Multiplier</div>
+		<div></div><div>REP #$20</div><div>16-bit mode</div>
+		<div></div><div>LDX.b $0D</div><div>Larger distance</div>
+		<div></div><div>LDA.w $4216</div><div>Get smaller * speed</div>
+		<div></div><div>STA.w $4204</div><div>Dividend</div>
+		<div></div><div>STX.w $4206</div><div>Divisor</div>
+		<div></div><div>ORA (1,S),Y</div><div>Waste time for division</div>
+		<div></div><div>NOP</div><div>Waste time for division</div>
+		<div></div><div>SEP #$20</div><div>8-bit mode</div>
+		<div></div><div>LDA.w $4214</div><div>Read quotient</div>
+	</div>
+
+	<p>The only downside to these registers is that they take some time to perform a calculation&mdash;8 cycles for multiplication and 16 for division. In my code above, the wait time for multiplication isn't even a bottleneck though, as we have a little bit of prepwork before we read the result. The division does require waiting though.</p>
+	<p>But even with the wait time, this is still loads faster than the original implementation. The vanilla code requires 22 cycles per loop iteration, or 29 if the <code class="routine">no_overflow</code> branch is not taken. At 51 cycles, the CPU registers implementation only requires an input speed of 3 before it outperforms the loop<a footnote href="#footnote-cyclecount"></a>. Generally, this routine is called with an input speed of at least 16.</p>
+	<p>And remember: this is a one-and-done; this implementation <em>always</em> takes the same amount of time. What I have above isn't even the most efficient it can get. By rewriting (and optimizing) the preparatory calculations, the code can be shortened even further.</p>
+
+	<h3>Still bad</h3>
+	<p>Let's say, for whatever reason, we can't use the CPU arithmetic registers, or we just don't have any. The vanilla code is <em>still</em> inefficient. Compare the snippet below to the original disassembly:</p>
+
+	<div class="snesasm noaddress">
+		<div></div><div>LDA.b #$00</div><div>Running total</div>
+		<div></div><div>LDY.b #$00</div><div>SpeedB</div>
+		<div></div><div>LDX.b $01</div><div>Load input speed</div>
+		<div></div><div>CLC</div><div>Clear carry once</div>
+		<div>next</div><div>ADC.b $0C</div><div>Add smaller distance</div>
+		<div></div><div>CMP.b $0D</div><div>Compare to bigger distance</div>
+		<div></div><div>BCC no_overflow</div><div></div>
+		<div></div><div>SBC.b $0D</div><div>total mod biggerDistance</div>
+		<div></div><div>INY</div><div>Accumulate speedB</div>
+		<div></div><div>CLC</div><div></div>
+		<div>no_overflow</div><div>DEX</div><div></div>
+		<div></div><div>BNE next</div><div></div>
+	</div>
+
+	<p>This rewrite makes several improvements to vastly improve the speed from 22/29 to 14/20 cycles per loop, with the numbers in each pair being the number of cycles for whether the <code class="lable">no_overflow</code> branch was or wasn't taken, respectively.</p>
+	<ul>
+		<li>The A register doesn't need to read and write its value into memory each time. Nothing is clobbering it at any point.</li>
+		<li>Incrementing memory directly is slower than incrementing Y. The original code uses this register to hold the state of something else, but that's easily worked around, and doing so is worth it for the speed gain within the loop.</li>
+		<li>The state of the carry flag is determinate half of the time. If the branch is taken, it was taken because the carry was clear, and it will stay that way on the next iteration. It's only necessary to manually clear the carry before the loop and after subtraction. For some inputs, this is a significant savings. In the worst case scenario, the instruction's contribution to CPU time is equal to that of the original code.</li>
+	</ul>
+
+	<p>At this point, I'm just dunking on the devs.</p>
+
+	<h2>So what?</h2>
+	<p>Okay, but is this routine really that bad? Yes and no.</p>
+	<p>In a lot of cases, this is probably fine. Rounding means that even a geometrically-correct calculation will have non-negligible error. Such a calculation would also come at some cost. The vanilla game already has a table for sine and cosine, but those would require knowing an angle. Getting the arctangent of a number requires a lot of time or an obscenely large lookup table.</p>
+	<p><code class="routine">ProjectSpeed</code> satisfies a balance between speed and accuracy&mdash;or, at least, it tries to. It successfully sends an entity on a straight path towards their target within a pretty decent margin of error. It's just really slow, and I think something could have been done to reduce the rate at which the error grew.</p>
+	<p>I think the most noticeable result of this bad calculation is the red spear guard on the library screen post Agahnim, lovingly known as Usain Bolt. I've heard people say it feels like he runs faster when he comes at you diagonally. Well that's because he does. And now you know why.</p>
+
+	<h2>Summary</h2>
+	<p>The way ALTTP tries to rotate a vector towards a point is mathematically wrong. The more it has to rotate, the more it increases the magnitude of the vector&mdash;up to 41% longer. It's also slow. You probably won't notice the speed boost except in the most extreme cases, but the contribution to lag can get pretty serious.</p>
+	<p>Continue calling Agahnim 2 "geometry class"; I'm fine with that. Just know that this guy failed geometry himself, so he's not going to be the best teacher.</p>
+
+
+<div id="footnoteslist">
+
+<p id="footnote-routinecount"><span class="noteid"></span> There are several distinct variants of this calculation; <code>/JS[RL]&nbsp;(Project(Sprite|Ancilla)|Apply)Speed/</code> finds 118 results, and removing the wrapper routines gives a final count of 114.</p>
+
+<div id="footnote-root2"><span class="noteid"></span> Calculate the gross speed with Pythagoras:
+<pre class="marginless italics">
+	sqrt(speed&sup2; + speed&sup2;)
+	sqrt(2 &times; speed&sup2;)
+	sqrt(2) &times; sqrt(speed&sup2;)
+	sqrt(2) &times; speed
+</pre>
+</div>
+
+<p id="footnote-complexity"><span class="noteid"></span> I'm using "complexity" a bit differently here than normal. The way I'm using it, <i>n</i> takes the value of the input, not the size of the input. Nonetheless, big O notation remains a good way to communicate the point, and I'm still removing constants (the overhead) and ignoring the (sometimes) negligible variation between iterations. And, actually, big theta might be more appropriate, but I think more people are familiar with big O.</p>
+
+<p id="footnote-cyclecount"><span class="noteid"></span> If we want an apples-to-apples comparison, we actually need to take into account CPU access speeds. In the vanilla code, every memory access during the loop takes 8 master cycles, so we can just call that 176/232 master cycles. For the register implementation, we can start with that same multiplier to get 408 master cycles, but we then need to subtract 2 master cycles each time one of the registers is accessed, as they only require 6 master cycles. This gives us 392 (8 register accesses), which is actually equivalent to 49 CPU cycles at 2.68MHz&mdash;2 cycles better than stated.</p>
+
+</div>
+
+</div>
