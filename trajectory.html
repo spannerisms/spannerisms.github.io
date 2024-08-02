@@ -24,12 +24,12 @@ background: mechanicsbg
 		<div></div><div>SBC.b $0D</div><div>total mod bigger distance</div>
 		<div></div><div>INC.b $00</div><div>Accumulate speedB</div>
 		<div>no_overflow</div><div>STA.b $0B</div><div></div>
-		<div></div><div>DEX</div><div></div>
+		<div></div><div>DEX</div><div>Iterate</div>
 		<div></div><div>BNE next</div><div></div>
 	</div>
 
-	<p>This disassembly removes all the overhead of transforming coordinates into distances, sorting those distances, etc., and just focuses on the meat of the algorithm.</p>
-	<p>There are several problems with this algorithm, the most glaring being how one axis is fixed to the input speed. Irrespective of angle, this creates a floor for the <span class="disgusting">gross</span> speed. The calculation is only correct when one of the distances is 0, with the error increasing proportionally to the smaller displacement. In the worst case scenario&mdash;when the distance on each axis is equal&mdash;the error is as bad as 41%<a footnote href="#footnote-root2"></a>.</p>
+	<p>This disassembly removes all the overhead of transforming coordinates into distances, sorting those distances, etc., and just focuses on the meat of the algorithm. One of the speeds (that of the axis with the larger displacement) will be given the input speed while the other axis will be given the accumulated speed calculated with this loop.</p>
+	<p>There are several problems with this algorithm, the most glaring being how one axis is fixed to the input speed. Rather than rotating a line, this is more like pulling and stretching it. Irrespective of angle, the fixed component results in a floor for the <span class="disgusting">gross</span> speed. The calculation is only correct when one of the distances is 0, with the error increasing proportionally to the smaller displacement. In the worst case scenario&mdash;when the displacement on each axis is equal&mdash;the error is as bad as 41%<a footnote href="#footnote-root2"></a>.</p>
 
 	<p>This algorithm is also subject to overflow errors. Everything is limited to 8-bit operations, and the algorithm remains well-behaved for all values below 128, but there's a danger zone above that. As an example, imagine our points are separated by 250 pixels on the X-axis and 230 pixels on the Y-axis. Our first iteration will end with a total of 230&mdash;that's correct&mdash;but when we perform the next iteration, our total is 204. Even though the value overflowed and should have accumulated some speed, it didn't.</p>
 
@@ -118,7 +118,7 @@ background: mechanicsbg
 	<p>I think the most noticeable result of this bad calculation is the red spear guard on the library screen post Agahnim, lovingly known as Usain Bolt. I've heard people say it feels like he runs faster when he comes at you diagonally. Well that's because he does. And now you know why.</p>
 
 	<h2>Summary</h2>
-	<p>The way ALTTP tries to rotate a vector towards a point is mathematically wrong. The more it has to rotate, the more it increases the magnitude of the vector&mdash;up to 41% longer. It's also slow, and large distances behave erratically. But unless you're specifically looking for it, you probably won't notice the speed boost except in the most extreme cases. The contribution to lag can get pretty serious, though.</p>
+	<p>The way ALTTP tries to rotate a vector towards a point is mathematically wrong. The more it has to rotate, the more it increases the magnitude of the vector&mdash;up to 41% longer. It's also slow, and large distances behave erratically. But unless you're specifically looking for it, you likely won't notice the speed boost except in the most extreme cases. The contribution to lag can get pretty serious, though.</p>
 	<p>Continue calling Agahnim 2 "geometry class". Just know that this guy failed geometry himself, so he's not going to be the best teacher.</p>
 
 
@@ -137,9 +137,9 @@ background: mechanicsbg
 
 <p id="footnote-graphs"><span class="noteid"></span> These graphs all used a ported version of the vanilla code with a fixed speed of 256. Using such a high value is moreso displaying the limiting behavior of the algorithm. Any sufficiently high speed (at least 16 or so) will show the same basic pattern, but probably won't produce an identical graph to what's shown here. I'm not analyzing 250-whatever graphs.</p>
 
-<p id="footnote-complexity"><span class="noteid"></span> I'm using "complexity" to mean value of the input, not size. And, actually, big theta might be more appropriate, but I think more people are familiar with big O.</p>
+<p id="footnote-complexity"><span class="noteid"></span> I'm using "complexity" to mean value of the input, not size. And, actually, big theta would probably be more appropriate, but I think more people are familiar with big O.</p>
 
-<p id="footnote-cyclecount"><span class="noteid"></span> If we want an apples-to-apples comparison, we actually need to take CPU access speeds into account. In the vanilla loop, only WRAM and ROM are accessed, each of which takes 8 master cycles. We can just multiply our CPU cycle count by that to get 176/232 master cycles. For the register implementation, we can start with that same multiplier to get 408 master cycles, but we then need to subtract 2 master cycles each time one of the registers is accessed, as they only require 6 master cycles. This gives us 392 (8 register accesses), which is actually equivalent to 49 CPU cycles at 2.68MHz&mdash;2 CPU cycles better than stated.</p>
+<p id="footnote-cyclecount"><span class="noteid"></span> If we want an apples-to-apples comparison, we need to take CPU access speeds into account. In the vanilla loop, only WRAM and ROM are accessed, each of which takes 8 master cycles. We can just multiply our CPU cycle count by that to get 176/232 master cycles. For the register implementation, we can start with that same multiplier to get 408 master cycles, but we then need to subtract 2 master cycles each time one of the registers is accessed, as they only require 6 master cycles. This gives us 392 (8 register accesses), equivalent to 49 CPU cycles at 2.68MHz&mdash;2 CPU cycles better than stated.</p>
 
 </div>
 
