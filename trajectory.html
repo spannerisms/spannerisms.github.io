@@ -7,11 +7,10 @@ background: mechanicsbg
 	<h1>ALTTP's Tragic Trajectory Calculation</h1>
 	<p>A lot of people like to call Agahnim 2 a "geometry test", but I don't. It's not because I'm being all pedantic and thinking <q>Oh, well, actually, it's trigonometry, not geometry.</q> No, no&mdash;my qualm is that the quote-unquote "geometry" of Agahnim 2 is <em>really</em> bad.</p>
 	<p>I'm not going to campaign against this joke, but I do want to make it known just how bad this math is. If you look at all 360 degrees of a circle, Agahnim gets the correct answer 4 times, only twice as accurate as the proverbial broken clock.</p>
-	<p>The specific calculation I'm talking about is one that takes 2 pairs of coordinates and a base speed to calculate the X- and Y-speeds to move from one location to another in a straight line. This doesn't just affect Agahnim 2; it's used by pretty much everything that needs to move towards or away from an arbitrary point two. This calculation is called from 114 unique places<a footnote href="#footnote-routinecount"></a>, including any action that causes Link or a sprite to recoil.</p>
+	<p>The specific calculation I'm talking about is the one that helps entities move from one location to another in a straight line. It isn't just used by Agahnim 2, but by pretty much everything that needs to move towards or away from an arbitrary point. This calculation is called from 114 unique places<a footnote href="#footnote-routinecount"></a>, including any action that causes Link or a sprite to recoil.</p>
 
-
-	<h2>Calculation</h2>
-	<p>This routine, which we'll call <code class="routine">ProjectSpeed</code>, looks somewhat like this:</p>
+	<h2>Projecting</h2>
+	<p>This routine, which we'll call <code class="routine">ProjectSpeed</code>, takes 2 pairs of coordinates along with a base speed and calculates the X- and Y-speeds needed to move from one location to the other in a straight line. This can be thought of as rotating a ray, but the best way to visualize this is to imagine drawing a line segment from your starting point parallel to one axis and then inching towards your target on the other. That code looks somewhat like this:</p>
 
 	<div class="snesasm noaddress">
 		<div></div><div>STZ.b $0B</div><div>Clear running total</div>
@@ -22,7 +21,7 @@ background: mechanicsbg
 		<div></div><div>ADC.b $0C</div><div>Add smaller distance</div>
 		<div></div><div>CMP.b $0D</div><div>Compare to bigger distance</div>
 		<div></div><div>BCC no_overflow</div><div></div>
-		<div></div><div>SBC.b $0D</div><div>total mod biggerDistance</div>
+		<div></div><div>SBC.b $0D</div><div>total mod bigger distance</div>
 		<div></div><div>INC.b $00</div><div>Accumulate speedB</div>
 		<div>no_overflow</div><div>STA.b $0B</div><div></div>
 		<div></div><div>DEX</div><div></div>
@@ -30,22 +29,40 @@ background: mechanicsbg
 	</div>
 
 	<p>This disassembly removes all the overhead of transforming coordinates into distances, sorting those distances, etc., and just focuses on the meat of the algorithm.</p>
-	<p>What this code accomplishes isn't immediately clear, but if you analyze it enough, you'll see it's a way to calculate <code class="mathFunc">speed&times;(smaller/bigger)</code>, where <code class="mathFunc">smaller</code> and <code class="mathFunc">bigger</code> are the distances between the current and target coordinates on the X- and Y-axes, respectively by size. This might leave you scratching your head for a moment, but this can also be interpreted as <code class="mathFunc">speed&times;tan(&theta;)</code>, which means we're using a trigonometric function. That's good. But, what this value is used for is less than good.</p>
-	<p>The tantheta value is used as the speed on whichever axis was shorter. The other axis gets the input speed. That's a major error. Irrespective of angle, this creates a floor for the <span class="disgusting">gross</span> speed. The calculation is only correct when one of the distances is 0, with the error increasing proportionally with the smaller distance. In the worst case scenario&mdash;when the distance on each axis is equal&mdash;the error is as bad as √2<a footnote href="#footnote-root2"></a>.</p>
+	<p>There are several problems with this algorithm, the most glaring being how one axis is fixed to the input speed. Irrespective of angle, this creates a floor for the <span class="disgusting">gross</span> speed. The calculation is only correct when one of the distances is 0, with the error increasing proportionally to the smaller displacement. In the worst case scenario&mdash;when the distance on each axis is equal&mdash;the error is as bad as 41%<a footnote href="#footnote-root2"></a>.</p>
 
-	<p>Below is a polar graph illustrating just how wrong this algorithm is. The angle &theta; is, appropriately, the angle between the two points; and the length of the ray is the <span class="disgusting">gross</span> magnitude of the final speed as a ratio to the input speed. The red area shows the output of the algorithm ALTTP uses, and the blue area shows the output of the ideal function, where the ratio between the output and input is exactly 1.</p>
+	<p>This algorithm is also subject to overflow errors. Everything is limited to 8-bit operations, and the algorithm remains well-behaved for all values below 128, but there's a danger zone above that. As an example, imagine our points are separated by 250 pixels on the X-axis and 230 pixels on the Y-axis. Our first iteration will end with a total of 230&mdash;that's correct&mdash;but when we perform the next iteration, our total is 204. Even though the value overflowed and should have accumulated some speed, it didn't.</p>
 
+	<h2>Art exhibit</h2>
+	<p>To get a better idea of how bad this algorithm gets in practice, we should look at actual results<a footnote href="#footnote-graphs"></a>. Below is a graph that plots every possible pair of points and plots the error at that point. The bluer it is, the wronger.</p>
 	<div class="center">
-		<img title="The graph is colored in, because it's an infinite number of lines. There are no labels, because I'm lazy." src="/assets/alttpspeedbad.png">
+		<img src="/assets/tragicspeeds.png">
 	</div>
 
-	
+	<p>There's an immediately obvious line bisecting the graph. This is the worst-case-scenario line, where the displacement on each axis is equal. The closer a point is to that line, the more speed it has over the input speed, up to that maximum 41%. Ignore the apparent exceptions for just a second.</p>
+	<p>If you stare, you'll notice another line: an anti-diagonal going from the top of the Y-axis to the right end of the X-axis. The area above this line is where overflow errors become increasingly problematic. There's some pretty chaotic behavior in the error, with crystal-esque visuals on either side of the worst-case line. In the upper-right quadrant, where both X and Y are greater-than-or-equal-to 128, the graph reveals its fractal nature.</p>
+
+	<p>However, the graph is a bit misleading. In many of the extreme cases, the error looks really good, but that's just because the secondary axis had no opportunity to build up due to overflow errors. For example, a displacement of (255, 253) shows an error at or near 0. That sounds good, but that speed is entirely on the X-axis. What should be an angle of 44.7&deg; is an angle of 90&deg;.</p>
+
+	<p>To gain a better understanding, we need to look at a plot of the error in the resulting angle.</p>
+	<div class="center">
+		<img src="/assets/tragicangles.png">
+	</div>
+
+	<p>In this graph, we find that the area below the overflow line is very well-behaved. The extremely shallow and extremely steep angles suffer from rounding errors, but it's never worse than 50%&mdash;only a couple of degrees at these angles. Above the overflow line, it's awful.</p>
+	<p>The worst-case-scenario line for speed is actually the best-case line for angle. It's not too hard to understand why. Equal speeds for equal displacements. In fact, the angle and speed errors are almost perfectly complementary. When the angle is wrong, the speed is fine, and vice versa. If we do a combined graph, we can see this delicate, accidental balance. If there were significant overlap, there would be areas of vibrant, opaque purple.</p>
+
+	<div class="center">
+		<img src="/assets/tragictotals.png">
+		<p>In addition to plotting individual errors as color coordinates, the total error is encoded in the alpha channel.</p>
+	</div>
 
 	<h2>The Big O</h2>
 	<p>In addition to being completely wrong, this calculation is also incredibly slow. The complexity<a footnote href="#footnote-complexity"></a> of this routine is <i>O(n)</i> for a given speed <i>n</i>&mdash;it runs in linear time. Which, okay, that's not the worst. But it can and should be <i>O(1)</i>.</p>
 
+	<p>Another way to think of this routine is as the function <code class="mathFunc">speed&times;(smaller/bigger)</code>, where <code class="mathFunc">smaller</code> and <code class="mathFunc">bigger</code> are the distances between the current and target coordinates on the X- and Y-axes, respectively by size. This might leave you scratching your head for a moment, but that can also be interpreted as <code class="mathFunc">speed&times;tan(&theta;)</code>, which means we're using a trigonometric function. That's good. Those things are for angles!</p>
 	<p>On a less powerful system, such as the NES, this would actually be a pretty cute algorithm. It cleverly combines multiplication and division into a single loop, where normally each would need its own. But as soon as you have the ability to multiply and divide without a manual loop, this method is terrible.</p>
-	<p>While the SNES doesn't have any instructions for these operations, it does have dedicated hardware registers. CPU multiplication works with an 8-bit multiplicand and an 8-bit multiplier; division works with a 16-bit dividend and 8-bit divisor. Below is an example implementation of <code class="routine">ProjectSpeed</code> using the arithmetic registers:</p>
+	<p>While the SNES doesn't have any instructions for these operations, it does have dedicated hardware registers. CPU multiplication works with an 8-bit multiplicand and an 8-bit multiplier; and division works with a 16-bit dividend and 8-bit divisor. Below is an example implementation of <code class="routine">ProjectSpeed</code> using the arithmetic registers:</p>
 
 	<div class="snesasm noaddress">
 		<div></div><div>LDA.b $01</div><div>Get input speed</div>
@@ -63,7 +80,7 @@ background: mechanicsbg
 		<div></div><div>LDA.w $4214</div><div>Read quotient</div>
 	</div>
 
-	<p>The only downside to these registers is that they take some time to perform a calculation&mdash;8 cycles for multiplication and 16 for division. In my code above, the wait time for multiplication isn't even a bottleneck though, as we have a little bit of prepwork before we read the result. The division does require waiting though.</p>
+	<p>The only downside to these registers is that they take some time to perform a calculation&mdash;8 cycles for multiplication and 16 for division. In the code above, the wait time for multiplication isn't even a bottleneck, as we have a little bit of prep work before we read the result. The division does require waiting though.</p>
 	<p>But even with the wait time, this is still loads faster than the original implementation. The vanilla code requires 22 cycles per loop iteration, or 29 if the <code class="routine">no_overflow</code> branch is not taken. At 51 cycles, the CPU registers implementation only requires an input speed of 3 before it outperforms the loop<a footnote href="#footnote-cyclecount"></a>. Generally, this routine is called with an input speed of at least 16.</p>
 	<p>And remember: this is a one-and-done; this implementation <em>always</em> takes the same amount of time. What I have above isn't even the most efficient it can get. By rewriting (and optimizing) the preparatory calculations, the code can be shortened even further.</p>
 
@@ -96,20 +113,20 @@ background: mechanicsbg
 
 	<h2>So what?</h2>
 	<p>Okay, but is this routine really that bad? Yes and no.</p>
-	<p>In a lot of cases, this is probably fine. Rounding means that even a geometrically-correct calculation will have non-negligible error. Such a calculation would also come at some cost. The vanilla game already has a table for sine and cosine, but those would require knowing an angle. Getting the arctangent of a number requires a lot of time or an obscenely large lookup table.</p>
+	<p>In a lot of cases, this is probably fine. Rounding means that even a geometrically-correct calculation will have non-negligible error. Such a calculation would also come at some cost. The vanilla game already has a table for sine and cosine, but those would require knowing an angle. Getting the arctangent of a number requires a lot of calculation time or an obscenely large lookup table.</p>
 	<p><code class="routine">ProjectSpeed</code> satisfies a balance between speed and accuracy&mdash;or, at least, it tries to. It successfully sends an entity on a straight path towards their target within a pretty decent margin of error. It's just really slow, and I think something could have been done to reduce the rate at which the error grew.</p>
 	<p>I think the most noticeable result of this bad calculation is the red spear guard on the library screen post Agahnim, lovingly known as Usain Bolt. I've heard people say it feels like he runs faster when he comes at you diagonally. Well that's because he does. And now you know why.</p>
 
 	<h2>Summary</h2>
-	<p>The way ALTTP tries to rotate a vector towards a point is mathematically wrong. The more it has to rotate, the more it increases the magnitude of the vector&mdash;up to 41% longer. It's also slow. You probably won't notice the speed boost except in the most extreme cases, but the contribution to lag can get pretty serious.</p>
-	<p>Continue calling Agahnim 2 "geometry class"; I'm fine with that. Just know that this guy failed geometry himself, so he's not going to be the best teacher.</p>
+	<p>The way ALTTP tries to rotate a vector towards a point is mathematically wrong. The more it has to rotate, the more it increases the magnitude of the vector&mdash;up to 41% longer. It's also slow, and large distances behave erratically. But unless you're specifically looking for it, you probably won't notice the speed boost except in the most extreme cases. The contribution to lag can get pretty serious, though.</p>
+	<p>Continue calling Agahnim 2 "geometry class". Just know that this guy failed geometry himself, so he's not going to be the best teacher.</p>
 
 
 <div id="footnoteslist">
 
 <p id="footnote-routinecount"><span class="noteid"></span> There are several distinct variants of this calculation; <code>/JS[RL]&nbsp;(Project(Sprite|Ancilla)|Apply)Speed/</code> finds 118 results, and removing the wrapper routines gives a final count of 114.</p>
 
-<div id="footnote-root2"><span class="noteid"></span> Calculate the gross speed with Pythagoras:
+<div id="footnote-root2"><span class="noteid"></span> When the displacements are equal, the speeds will be too. That gives a calculated:ideal ratio of √2:1, or 141.4%. Worked out below: 
 <pre class="marginless italics">
 	sqrt(speed&sup2; + speed&sup2;)
 	sqrt(2 &times; speed&sup2;)
@@ -118,9 +135,11 @@ background: mechanicsbg
 </pre>
 </div>
 
-<p id="footnote-complexity"><span class="noteid"></span> I'm using "complexity" a bit differently here than normal. The way I'm using it, <i>n</i> takes the value of the input, not the size of the input. Nonetheless, big O notation remains a good way to communicate the point, and I'm still removing constants (the overhead) and ignoring the (sometimes) negligible variation between iterations. And, actually, big theta might be more appropriate, but I think more people are familiar with big O.</p>
+<p id="footnote-graphs"><span class="noteid"></span> These graphs all used a ported version of the vanilla code with a fixed speed of 256. Using such a high value is moreso displaying the limiting behavior of the algorithm. Any sufficiently high speed (at least 16 or so) will show the same basic pattern, but probably won't produce an identical graph to what's shown here. I'm not analyzing 250-whatever graphs.</p>
 
-<p id="footnote-cyclecount"><span class="noteid"></span> If we want an apples-to-apples comparison, we actually need to take into account CPU access speeds. In the vanilla code, every memory access during the loop takes 8 master cycles, so we can just call that 176/232 master cycles. For the register implementation, we can start with that same multiplier to get 408 master cycles, but we then need to subtract 2 master cycles each time one of the registers is accessed, as they only require 6 master cycles. This gives us 392 (8 register accesses), which is actually equivalent to 49 CPU cycles at 2.68MHz&mdash;2 cycles better than stated.</p>
+<p id="footnote-complexity"><span class="noteid"></span> I'm using "complexity" to mean value of the input, not size. And, actually, big theta might be more appropriate, but I think more people are familiar with big O.</p>
+
+<p id="footnote-cyclecount"><span class="noteid"></span> If we want an apples-to-apples comparison, we actually need to take CPU access speeds into account. In the vanilla loop, only WRAM and ROM are accessed, each of which takes 8 master cycles. We can just multiply our CPU cycle count by that to get 176/232 master cycles. For the register implementation, we can start with that same multiplier to get 408 master cycles, but we then need to subtract 2 master cycles each time one of the registers is accessed, as they only require 6 master cycles. This gives us 392 (8 register accesses), which is actually equivalent to 49 CPU cycles at 2.68MHz&mdash;2 CPU cycles better than stated.</p>
 
 </div>
 

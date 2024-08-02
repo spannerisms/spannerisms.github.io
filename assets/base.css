@@ -236,9 +236,7 @@ code.mathAns {
 }
 
 code.mathFunc {
-	border-radius: 5px;
 	white-space: nowrap;
-	padding: 0 6px;
 }
 
 code.mathVar {
