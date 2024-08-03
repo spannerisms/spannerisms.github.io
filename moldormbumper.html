@@ -28,13 +28,13 @@ background: glitchybg
 	</div>
 
 	<h3>Frame rules</h3>
-	<p>Ahhh, frame rules. One of the most well-known concepts in the game. Bumper-to-sprite interactions are no exception, and they use the standard collision frame rule calculation. Take the sprite slot of the sprite in question and exclusive-OR it with the frame counter. Finally, look at the bottom 2 bits. If they're both 0, then the collision check proceeds. But this one has an efficient twist.</p>
+	<p>Ahhh, frame rules. One of the most well-renowned concepts in the game. Bumper-to-sprite interactions are no exception, and they use the standard collision frame rule calculation. Take the sprite slot of the sprite in question and exclusive-OR it with the frame counter. Finally, look at the bottom 2 bits. If they're both 0, then the collision check proceeds. But this one has an efficient twist.</p>
 
 	<h3>Altitude</h3>
-	<p>Oh altitude, you've become as famous as frame rules in the past couple of years. Bumpers only want to hit sprites flat on the ground. To do this, they take the previous frame rule value and OR in the bits of the sprite height. If those together are nonzero, then the collision check is skipped. This is the same result as checking each separately, but it's more efficient, both space- and cycle-wise. I'm a little surprised.</p>
+	<p>Oh altitude, you've become as famous as frame rules ever since spooky. Bumpers only want to hit sprites flat on the ground. To do this, they take the previous frame rule value and OR in the bits of the sprite's altitude. If those together are nonzero, then the collision check is skipped. This is the same result as checking each separately, but it's more efficient, both space- and cycle-wise. I'm a little impressed.</p>
 
 	<h3>State</h3>
-	<p>The next check is the sprite's state. This value is compared to <code class="value">$9</code>, the value indicating the sprite is active and running its full AI. The check uses the operation <code class="opcode">BCC</code>, which, when used with the preceding <code class="opcode">CMP</code>, behaves as "less than". So this check also allows for sprites in states <code class="value">$A</code> (being carried by player) and <code class="value">$B</code> (frozen or stunned)</code>. All other sprite states&mdash;dead, dying, falling, exploding&mdash;fail and will result in the collision check being skipped.</p>
+	<p>The next check is the sprite's state. This value is compared to <code class="value">$09</code>, the value indicating the sprite is active and running its full AI. The check uses the operation <code class="opcode">BCC</code>, which, when used with the preceding <code class="opcode">CMP</code>, behaves as "less than". So this check also allows for sprites in states <code class="value">$0A</code> (being carried by player) and <code class="value">$0B</code> (frozen or stunned)</code>. All other sprite states&mdash;dead, dying, falling, exploding&mdash;fail and will result in the collision check being skipped.</p>
 
 	<h3>Invulnerability and Statis</h3>
 	<p>Now we're at the stuff that actually matters. These 2 are lumped together in the code, and because invulnerability is straightforward, I've decided to lump them together here. How straightforward is invulnerability? If bit 6 of <code class="address">$0E60,Y</code> is on, then the sprite can't be hurt.</p>

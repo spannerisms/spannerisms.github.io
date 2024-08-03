@@ -7,7 +7,7 @@ background: mechanicsbg
 	<h1>ALTTP's Tragic Trajectory Calculation</h1>
 	<p>A lot of people like to call Agahnim 2 a "geometry test", but I don't. It's not because I'm being all pedantic and thinking <q>Oh, well, actually, it's trigonometry, not geometry.</q> No, no&mdash;my qualm is that the quote-unquote "geometry" of Agahnim 2 is <em>really</em> bad.</p>
 	<p>I'm not going to campaign against this joke, but I do want to make it known just how bad this math is. If you look at all 360 degrees of a circle, Agahnim gets the correct answer 4 times, only twice as accurate as the proverbial broken clock.</p>
-	<p>The specific calculation I'm talking about is the one that helps entities move from one location to another in a straight line. It isn't just used by Agahnim 2, but by pretty much everything that needs to move towards or away from an arbitrary point. This calculation is called from 114 unique places<a footnote href="#footnote-routinecount"></a>, including any action that causes Link or a sprite to recoil.</p>
+	<p>The specific calculation I'm talking about is the one that helps entities move from one location to another in a straight line. It isn't just used by Agahnim 2, but by pretty much everything that needs to move towards or away from an arbitrary point. This calculation is called from 114 unique places<a footnote href="#footnote-routinecount"></a>, including pretty much any action that causes Link or a sprite to recoil<a footnote href="#footnote-recoil"></a>.</p>
 
 	<h2>Projecting</h2>
 	<p>This routine, which we'll call <code class="routine">ProjectSpeed</code>, takes 2 pairs of coordinates along with a base speed and calculates the X- and Y-speeds needed to move from one location to the other in a straight line. This can be thought of as rotating a ray, but the best way to visualize this is to imagine drawing a line segment from your starting point parallel to one axis and then inching towards your target on the other. That code looks somewhat like this:</p>
@@ -20,7 +20,7 @@ background: mechanicsbg
 		<div></div><div>CLC</div><div></div>
 		<div></div><div>ADC.b $0C</div><div>Add smaller distance</div>
 		<div></div><div>CMP.b $0D</div><div>Compare to bigger distance</div>
-		<div></div><div>BCC no_overflow</div><div></div>
+		<div></div><div>BCC no_overflow</div><div>Skip if less than</div>
 		<div></div><div>SBC.b $0D</div><div>total mod bigger distance</div>
 		<div></div><div>INC.b $00</div><div>Accumulate speedB</div>
 		<div>no_overflow</div><div>STA.b $0B</div><div></div>
@@ -29,12 +29,12 @@ background: mechanicsbg
 	</div>
 
 	<p>This disassembly removes all the overhead of transforming coordinates into distances, sorting those distances, etc., and just focuses on the meat of the algorithm. One of the speeds (that of the axis with the larger displacement) will be given the input speed while the other axis will be given the accumulated speed calculated with this loop.</p>
-	<p>There are several problems with this algorithm, the most glaring being how one axis is fixed to the input speed. Rather than rotating a line, this is more like pulling and stretching it. Irrespective of angle, the fixed component results in a floor for the <span class="disgusting">gross</span> speed. The calculation is only correct when one of the distances is 0, with the error increasing proportionally to the smaller displacement. In the worst case scenario&mdash;when the displacement on each axis is equal&mdash;the error is as bad as 41%<a footnote href="#footnote-root2"></a>.</p>
+	<p>There are several problems with this algorithm, the most glaring being how one axis is fixed to the input speed. Rather than rotating a line, this is more like pulling and stretching it. The fixed component results in a floor for the <span class="disgusting">gross</span> speed that is irrespective of angle. This means the calculation is only correct when one of the distances is 0, with the error increasing proportionally to the smaller displacement. In the worst case scenario&mdash;when the displacement on each axis is equal&mdash;the error is as bad as 41%<a footnote href="#footnote-root2"></a>.</p>
 
 	<p>This algorithm is also subject to overflow errors. Everything is limited to 8-bit operations, and the algorithm remains well-behaved for all values below 128, but there's a danger zone above that. As an example, imagine our points are separated by 250 pixels on the X-axis and 230 pixels on the Y-axis. Our first iteration will end with a total of 230&mdash;that's correct&mdash;but when we perform the next iteration, our total is 204. Even though the value overflowed and should have accumulated some speed, it didn't.</p>
 
 	<h2>Art exhibit</h2>
-	<p>To get a better idea of how bad this algorithm gets in practice, we should look at actual results<a footnote href="#footnote-graphs"></a>. Below is a graph that plots every possible pair of points and plots the error at that point. The bluer it is, the wronger.</p>
+	<p>To get a better idea of how bad this algorithm gets in practice, we should look at actual results<a footnote href="#footnote-graphs"></a>. Below is a graph that takes every possible pair of displacements and plots the error in gross magnitude at that point. The bluer it is, the wronger.</p>
 	<div class="center">
 		<img src="/assets/tragicspeeds.png">
 	</div>
@@ -83,6 +83,7 @@ background: mechanicsbg
 	<p>The only downside to these registers is that they take some time to perform a calculation&mdash;8 cycles for multiplication and 16 for division. In the code above, the wait time for multiplication isn't even a bottleneck, as we have a little bit of prep work before we read the result. The division does require waiting though.</p>
 	<p>But even with the wait time, this is still loads faster than the original implementation. The vanilla code requires 22 cycles per loop iteration, or 29 if the <code class="routine">no_overflow</code> branch is not taken. At 51 cycles, the CPU registers implementation only requires an input speed of 3 before it outperforms the loop<a footnote href="#footnote-cyclecount"></a>. Generally, this routine is called with an input speed of at least 16.</p>
 	<p>And remember: this is a one-and-done; this implementation <em>always</em> takes the same amount of time. What I have above isn't even the most efficient it can get. By rewriting (and optimizing) the preparatory calculations, the code can be shortened even further.</p>
+	<p>As an added bonus, this implementation is also not subject to the rounding errors that threw off the angles for larger distances.</p>
 
 	<h3>Still bad</h3>
 	<p>Let's say, for whatever reason, we can't use the CPU arithmetic registers, or we just don't have any. The vanilla code is <em>still</em> inefficient. Compare the snippet below to the original disassembly:</p>
@@ -102,7 +103,7 @@ background: mechanicsbg
 		<div></div><div>BNE next</div><div></div>
 	</div>
 
-	<p>This rewrite makes several improvements to vastly improve the speed from 22/29 to 14/20 cycles per loop, with the numbers in each pair being the number of cycles for whether the <code class="lable">no_overflow</code> branch was or wasn't taken, respectively.</p>
+	<p>This rewrite makes several changes to vastly improve the speed from 22/29 to 14/20 cycles per loop, with the numbers in each pair being the number of cycles for whether the <code class="lable">no_overflow</code> branch was or wasn't taken, respectively.</p>
 	<ul>
 		<li>The A register doesn't need to read and write its value into memory each time. Nothing is clobbering it at any point.</li>
 		<li>Incrementing memory directly is slower than incrementing Y. The original code uses this register to hold the state of something else, but that's easily worked around, and doing so is worth it for the speed gain within the loop.</li>
@@ -125,6 +126,8 @@ background: mechanicsbg
 <div id="footnoteslist">
 
 <p id="footnote-routinecount"><span class="noteid"></span> There are several distinct variants of this calculation; <code>/JS[RL]&nbsp;(Project(Sprite|Ancilla)|Apply)Speed/</code> finds 118 results, and removing the wrapper routines gives a final count of 114.</p>
+
+<p id="footnote-recoil"><span class="noteid"></span> Qirn reminded me that certain sprites&mdash;such as fire bats&mdash;don't use this calculation for knockback. These guys just invert your speed on each axis and call it day.</p>
 
 <div id="footnote-root2"><span class="noteid"></span> When the displacements are equal, the speeds will be too. That gives a calculated:ideal ratio of √2:1, or 141.4%. Worked out below: 
 <pre class="marginless italics">
