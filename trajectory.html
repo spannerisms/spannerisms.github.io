@@ -81,7 +81,7 @@ background: mechanicsbg
 	</div>
 
 	<p>The only downside to these registers is that they take some time to perform a calculation&mdash;8 cycles for multiplication and 16 for division. In the code above, the wait time for multiplication isn't even a bottleneck, as we have a little bit of prep work before we read the result. The division does require waiting though.</p>
-	<p>But even with the wait time, this is still loads faster than the original implementation. The vanilla code requires 22 cycles per loop iteration, or 29 if the <code class="routine">no_overflow</code> branch is not taken. At 51 cycles, the CPU registers implementation only requires an input speed of 3 before it outperforms the loop<a footnote href="#footnote-cyclecount"></a>. Generally, this routine is called with an input speed of at least 16.</p>
+	<p>But even with the wait time, this is still loads faster than the original implementation. The vanilla code requires 23 cycles per loop iteration, or 29 if the <code class="routine">no_overflow</code> branch is not taken, plus 9 cycles overhead. At 51 cycles, the CPU registers implementation only requires an input speed of 2 before it outperforms the loop<a footnote href="#footnote-cyclecount"></a>. Generally, this routine is called with an input speed of at least 16.</p>
 	<p>And remember: this is a one-and-done; this implementation <em>always</em> takes the same amount of time. What I have above isn't even the most efficient it can get. By rewriting (and optimizing) the preparatory calculations, the code can be shortened even further.</p>
 	<p>As an added bonus, this implementation is also not subject to the rounding errors that threw off the angles for larger distances.</p>
 
@@ -103,7 +103,7 @@ background: mechanicsbg
 		<div></div><div>BNE next</div><div></div>
 	</div>
 
-	<p>This rewrite makes several changes to vastly improve the speed from 22/29 to 14/20 cycles per loop, with the numbers in each pair being the number of cycles for whether the <code class="lable">no_overflow</code> branch was or wasn't taken, respectively.</p>
+	<p>This rewrite makes several changes to vastly improve the speed from 23/29 to 14/20 cycles per loop, with the numbers in each pair being the number of cycles for whether the <code class="lable">no_overflow</code> branch was or wasn't taken, respectively.</p>
 	<ul>
 		<li>The A register doesn't need to read and write its value into memory each time. Nothing is clobbering it at any point.</li>
 		<li>Incrementing memory directly is slower than incrementing Y. The original code uses this register to hold the state of something else, but that's easily worked around, and doing so is worth it for the speed gain within the loop.</li>
@@ -142,7 +142,7 @@ background: mechanicsbg
 
 <p id="footnote-complexity"><span class="noteid"></span> I'm using "complexity" to mean value of the input, not size. And, actually, big theta would probably be more appropriate, but I think more people are familiar with big O.</p>
 
-<p id="footnote-cyclecount"><span class="noteid"></span> If we want an apples-to-apples comparison, we need to take CPU access speeds into account. In the vanilla loop, only WRAM and ROM are accessed, each of which takes 8 master cycles. We can just multiply our CPU cycle count by that to get 176/232 master cycles. For the register implementation, we can start with that same multiplier to get 408 master cycles, but we then need to subtract 2 master cycles each time one of the registers is accessed, as they only require 6 master cycles. This gives us 392 (8 register accesses), equivalent to 49 CPU cycles at 2.68MHz&mdash;2 CPU cycles better than stated.</p>
+<p id="footnote-cyclecount"><span class="noteid"></span> If we want an apples-to-apples comparison, we need to take CPU access speeds into account. Start with 6 master cycles per CPU cycle then add 2 cycles for each time that ROM or WRAM is accessed. For the vanilla code, that's 176/224 master cycles with 66 master cycles of overhead (72 master cycles for the init code minus 6 master cycles for the final BNE not taking the branch). The CPU registers are fast access, so we don't need to add 2 cycles for those. Doing the same calculation, we get 378 master cycles for the arithmetic implementation.</p>
 
 </div>
 
