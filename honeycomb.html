@@ -65,8 +65,8 @@ background: glitchybg
 		<div></div><div addr="$9A19">STA.b $E6</div><div></div>
 		<div></div><div addr="$9A1B">LDA.b #$01</div><div>Add 1 coin</div>
 		<div></div><div addr="$9A1D">JSR AddCurrency</div><div></div>
-		<div></div><div addr="$9A20">INC.w $07BD</div><div>Number of coins collected</div>
-		<div></div><div addr="$9A23">BNE .continue</div><div>Jump over honeycomb code</div>
+		<div class="highlight"></div><div addr="$9A20">INC.w $07BD</div><div>Number of coins collected</div>
+		<div class="highlight"></div><div addr="$9A23">BNE .continue</div><div>Jump over honeycomb code</div>
 		<div>.honeycomb</div><div addr="$9A25">JSR PerformCollectionJingle</div><div></div>
 		<div></div><div addr="$9A28">LDA.b $B3</div><div>Get Max HP</div>
 		<div></div><div addr="$9A2A">CLC</div><div></div>
