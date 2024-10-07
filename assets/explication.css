@@ -65,6 +65,7 @@ div.snesasm {
 	font-size: .85em;
 	line-height: 1.3em;
 	background: #F8F8FF;
+	position: relative;
 }
 
 div.snesasm:not(.nolabel) {
@@ -77,18 +78,22 @@ div.snesasm.nolabel {
 
 div.snesasm > div {
 	display: inline-block;
-	padding-left: 5px;
 	overflow-x: visible;
 	white-space: nowrap;
+	background: inherit;
 }
 
 div.snesasm > span {
 	grid-column-start: span 3;
 	display: inline-block;
 	min-height: 1em;
-	padding-left: 5px;
-	text-indent: 20px;
+	text-indent: 10px;
 	background:#E8E8F8;
+}
+
+div.snesasm > div:nth-of-type(3n+1),
+div.snesasm > span {
+	padding-left: 5px;
 }
 
 div.snesasm > div:nth-of-type(3n+1) {
@@ -113,6 +118,24 @@ div.snesasm > span:before {
 	margin: 0;
 }
 
+div.snesasm > div.highlight:after {
+	content:'.';
+	display: inline-block;
+	position: absolute;
+	background: #FFFF00;
+	color: transparent;
+	z-index: 2000000;
+	opacity: .2;
+	left: 0;
+	right: 0;
+}
+
+div.snesasm > div.highlight:before {
+	background-color: #FFFF00;
+	border-right-color: #BBBB00;
+	color: #888800;
+}
+
 div.snesasm > span:before {
 	content: '.';
 	display: block;
@@ -121,7 +144,7 @@ div.snesasm > span:before {
 
 div.snesasm:not(.noaddress) > div:nth-of-type(3n+2):before {
 	content: attr(addr);
-	margin-right: 20px;
+	margin-right: 7px;
 	display: inline-block;
 	padding: 0 3px;
 	background: #DDDDFF;
@@ -142,12 +165,6 @@ div.snesasm > div:nth-of-type(3n+1)[dasm]:after {
 	color: #F9F9F9;
 }
 
-div.snesasm > div:nth-of-type(6n+1):not(:empty) {
-	color: white;
-	background: #4477FF;
-	padding-right: 5px;
-}
-
 div.snesasm > div:nth-of-type(3n+1) {
 	padding-right: 5px;
 }
@@ -157,13 +174,18 @@ div.snesasm > div:nth-of-type(3n+2) {
 }
 
 div.snesasm > div:nth-of-type(3n+3) {
-	color: #339933;
+	color: #229922;
 }
 
 div.snesasm > div:nth-of-type(6n+1),
 div.snesasm > div:nth-of-type(6n+2),
 div.snesasm > div:nth-of-type(6n+3) {
 	background: #F0F0FF;
+}
+
+div.snesasm.labelsep > div:has(+div+div+div:nth-of-type(3n+1):not(:empty)):before {
+	margin-bottom: 5px;
+	height: 100%;
 }
 
 /* tables */
