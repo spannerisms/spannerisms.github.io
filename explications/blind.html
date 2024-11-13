@@ -1,0 +1,145 @@
+---
+permalink: /blind/
+layout: default
+title: Blind the Thief
+background: mechanicsbg
+---
+<div class="contentstuff mechanicsstuff">
+	<h1>Blind the Thief</h1>
+	<p>Everyone knows how to do the Blind fight, but no one knows how the Blind do to the fight.</p>
+	<p>It may surprise you that Blind's erratic behavior, while chaotic, is completely unrandom.</p>
+	<p>It may also surprise you to learn that the kanji for power (力) is duplicated in the text engine. It can be encoded with a kanji ID of either <code class="value">$99</code> or <code class="value">$F4</code>. And no, this is not me confusing it with the similar-looking katakana Ka (カ). That exists too at code point <code class="value">$58</code>! Not only is this kanji duplicated, but the two definitions look different!! The second one has its first stroke 1 pixel higher!!! WOW!!!!</p>
+
+	<h2>Identity crisis</h2>
+	<p>Everything in the Blind fight other than fireballs (and you (and your fireballs (etc.))) is a sprite with an ID of <code class="value">$CE</code>. To determine which Blind to actually be, an identifier is stored in the array at <code class="address">$0D90,X</code>. Negative values (<code class="value">$80</code>&ndash;<code class="value">$FF</code>) indicate a laser. The value <code class="value">$02</code> indicates a detached Blind head. All other values will behave as the Big Cheese. In practice, these values are <code class="value">0</code> (the main fight) and <code class="value">1</code> (moving up after transforming from the maiden).</p>
+
+	<h2>Zzap!</h2>
+	<p>We'll look at the lasers first, since they're the simplest.</p>
+	<p>Lasers can be moving in one of 16 directions (we'll get to how those are set when we cover the main body's AI). This direction is used to determine which object graphics should be used and how they should be flipped. Although, what you're seeing isn't actually the laser sprite&mdash;it's the garnish. A value of 7, 8, 9, or 10 is given to every garnish spawned by the laser, and, for some reason, this value is used as an index into a different table to get the actual character. You might now be wondering what those first 7 entries (0&ndash;6) are. They're nothing. They literally don't exist (abstractly speaking). This character table is indexed starting from 7 bytes before the actual data. The bytes corresponding to these entries are actually part of the code for Trinexx's fire breath:</p>
+
+	<table class="disassembly">
+		<tr>
+			<th>Address</th>
+			<th>Byte</th>
+			<th>Code</th>
+			<th>Graphic</th>
+		</tr>
+		<tr>
+			<td><code class="address">$09B586</code></td>
+			<td><code class="value">$F0</code></td>
+			<td><code class="instruction">AND #$F0</code></td>
+			<td>Unused X</td>
+		</tr>
+		<tr>
+			<td><code class="address">$09B587</code></td>
+			<td><code class="value">$09</code></td>
+			<td rowspan=2><code class="instruction">ORA #$0E</code></td>
+			<td>Jumping stalfos shoulder</td>
+		</tr>
+		<tr>
+			<td><code class="address">$09B588</code></td>
+			<td><code class="value">$0E</code></td>
+			<td>Walking stalfos shoulder</td>
+		</tr>
+		<tr>
+			<td><code class="address">$09B589</code></td>
+			<td><code class="value">$7A</code></td>
+			<td><code class="instruction">PLY</code></td>
+			<td>Mimic foot</td>
+		</tr>
+		<tr>
+			<td><code class="address">$09B58A</code></td>
+			<td><code class="value">$4C</code></td>
+			<td rowspan=3><code class="instruction">JMP $B5D6</code></td>
+			<td>Beamos eyeball</td>
+		</tr>
+		<tr>
+			<td><code class="address">$09B58B</code></td>
+			<td><code class="value">$D6</code></td>
+			<td>Half a laser eye</td>
+		</tr>
+		<tr>
+			<td><code class="address">$09B58C</code></td>
+			<td><code class="value">$B5</code></td>
+			<td>Bottom of Blind's dress</td>
+		</tr>
+	</table>
+
+	<p>These laser garnish do nothing but display themselves. They stay put where the laser was when they spawned, and just disappear after 10 frames. Only the main laser (which is technically invisible!) can damage Link. It has a hitbox of 4-by-4 pixels.</p>
+	<p>Lasers don't stop for anything (except walls). If they hit Link, they'll still keep going. But once they hit a wall (a wall), they'll fade away after 11 frames&mdash;just enough time to spawn at least 1 more garnish.</p>
+
+	<h2>Making my head spin</h2>
+	<p>Blind likes to be on top of things. Literally. That's why his detached heads set their sprite priority to maximum every frame; it lets them always appear on top of backgrounds 1 and 2. Blind's heads then use a generic subroutine to draw a single 16-by-16 object. The object drawn is actually part of Blind's dress, but the heads double back and replace the character and flip with values obtained based on the direction the head is facing (not to be confused with the direction the face is heading).</p>
+	<p>The next part is intriguing, and it's difficult to tell if it's a vestigial feature or a legitimate secret strategy. Blind's heads cheat the recoil timer. When the timer is exactly 14, they drop it down to 8, effectively reducing the duration by 6 frames. But the question remains: why do they bother handling recoil in the first place? Nothing you do can hit Blind's heads. They're only "vulnerable" to the sword damage classes, but this is rendered moot by their general invulnerability.</p>
+	<p>Even more curious is the hardcoded exception for Blind sprites in the recoil subroutine. Most sprites will not be allowed to continue the rest of their AI if they are recoiling, but Blind sprites are.</p>
+	<p>But that's nothing <em>you</em> can do. There is one little buzzer who can do something: the bee. Bees don't care about this invulnerability bit, so they just hit Blind's heads anyway. They deal 0 damage, but it <em>does</em> cause recoil. This means a lucky bee could bully a head off screen, where it can't do anything anymore, effectively removing it from the fight.</p>
+	<p>The nature of this strategy is debatable though. While it almost seems intentionally coded so that only bees can do this, it skimps over the fact that bees prioritize the main body over the detached heads. The bee is also not very good at bullying heads off screen. You may have heard people excitedly tell you about this amazing tech, but if you try it yourself, you'll more than likely be disappointed. You'll need at least 3 bees to get consistent results.</p>
+	<p>Blind's heads turn every 3 frames, completing a full rotation in 48 frames. Every 32 frames, they will attempt to spit a fire ball at Link, with a gross speed of about 2 pixels per frame.</p>
+
+	<h3>Movement</h3>
+	<p>Blind's heads move in a roughly eliptical shape that precesses over time while dilating and contracting. The precise way this works is by defining a 64-by-96 pixel box, whose edges define precise positions for the head to turn around at and accelerate in the other direction. These barely work right under normal conditions. If a head were to move completely orthogonally, it would be stuck teetering back and forth on that axis, and this can sort of happen with some impossible tests that were left in the code.</p>
+	<p>For each axis, <code class="value">0</code> is divided by <code class="value">2</code>, and if that quotient is not equal to <code class="value">0</code>, then all acceleration logic on that axis is skipped. However! If you remember your basic arithmetic, any nonzero number divided into 0 is, in fact, under the axioms used in our everyday life, equal to 0. So these skips never happen. You can make them happen by modifying the tests, but almost any value you substitute in will cause the head to fly off into infinity.</p>
+
+	<h2>The Big Cheese</h2>
+	<p>Here's what everyone was waiting for: the cheese.</p>
+	<p>When Blind spawns, he completes a quick initialization checklist:</p>
+	<ul>
+		<li>Set auxiliary timer C to 96 frames.</li>
+		<li>Set AI mode to 1.</li>
+		<li>Set direction to 2 (down).</li>
+		<li>Set head direction to 4 (down).</li>
+		<li>Set robe animation to 7 (robes).</li>
+		<li>Set headshake timer to 0 (zero).</li>
+	</ul>
+	<p>These tasks accomplish the task of completing their respective task.</p>
+
+	<p>Assuming Blind exists, he will, like his heads (which are him), maximize his draw priority. This is likely a control thing stemming from insecurity.</p>
+
+	<p>The array at <code class="address">$0EA0,X</code> contains the recoil timer for each sprite. Blind's main body doesn't actually call the aforementioned recoil subroutine; instead the Big Cheese just doesn't recoil, and handles the timer manually. This timer mostly serves to flash his palette, but when it is exactly equal to 11, the Big Cheese handles his <em>"I got hit"</em> logic.</p>
+
+	<h3>I got hit!</h3>
+	<p>This section of code resets the Blind Cheese's damage timer and flurry timer. Then, just to be safe, it checks auxiliary timer E. If this timer isn't halted, everything is called off, and we pretend Blind wasn't even hit. This should never happen though, because that timer is only set inside this very routine. To 48 frames. I guess the developers just wanted to be really safe, because they're also setting Blind's Cheese HP to 128 every time a hit is registered.</p>
+	<p>As you should know, Blind's Cheese takes 3 hits to advance to the next phase. If he's not advancing, his flurry timer is set to 96 frames and his flurry spin timer is set to 2 frame. When he does advance phases, these timers are left alone.</p>
+	<p>Should you advance to the next phase of the fight, Blind will immediately spawn a head that spins around for 48 frames before it begins moving. This head will be 23 pixels above the ground.</p>
+	<p>The Big Cheese himself will be collapsed for 256 frames once a hit is registered as advancing to the next phase.</p>
+
+	<h3>Compulsive behavior</h3>
+	<p>Regardless of its AI state, the main body runs some shared maintenance every frame.</p>
+	<p>At <code class="address">$0E80,X</code> is a general use variable that the main body uses as an action timer (we'll call this the action timer). Whenever this timer is an even number (so every other frame), Blind negates that frame's tick of auxiliary timer A. These auxiliary timers are auto-decrementing for all sprites, saving them the labor of doing it themselves.</p>
+	<p>Auxiliary timer B handles Blind's laser shots. If this timer is non zero, Blind won't actually run his secondary AI routine. When the timer is exactly 8, he will shoot a laser in the same direction his head is currently facing. The speed of this laser will be 8 pixels per frame on one axis, and either 0 or 4 pixels per frame on the other.</p>
+	<p>When Blind's laser timer reaches 0, he will attempt to fire a laser if the <em>Fire a laser</em> flag is set. This flag is cleared every frame before the main AI state and while Blind is charging (auxiliary timer B). If the flag is set, the laser timer will be set to 128 ticks, and auxiliary timer B (the laser charging timer) will be set to 16.</p>
+	<p>And finally, just to be safe, Blind copies the high byte of Link's coordinates so that they are always in the same quadrant.</p>
+
+	<h3>OH! That's why he's called Blind!</h3>
+	<p>AI state 0 is completely uninteresting. All it does is display a message and advance Blind to AI state 1. When he makes this transition, he will set auxiliary timer C to 96 frames.</p>
+
+	<h3>Don't go into the light!</h3>
+	<p>This AI state is just as uninteresting. While auxiliary timer C is ticking down, Blind will just sit there. At 64 frames on the timer, Blind will begin moving up at 1 pixel every 2 frames. At 0, blind will advance to AI state 2, set auxiliary timer A to 255 ticks, and remove his invulnerability to projectiles.</p>
+
+	<h3>Flurry</h3>
+	<p>During most phases, Blind can be in flurry mode. This is an extra attack that shoots fireballs in all directions on top of everything else going on. Under normal gameplay, the flurry subroutine enters with the flurry timer's value as a parameter, and he only begins this attack when he takes a hit; however, the unused AI state 5 puts Blind into an infinite flurry, and it always enters with the value of 5. This parameter is only used set Blind's palette during his flurry, so it's responsible for the flash. The unused AI state, which always uses 5 as its parameter, will not flash and instead be stuck using the same sewer water palette used by the Hyrule Castle throne room mantle.</p>
+	<p>Moving on to the actual attack: Blind's head spins at an accelerated rate. When getting hit, his flurry spin timer is set to 2 frames (I already said that!), which means he turns his head every 2 frames. Blind's action timer is then taken modulo 32, and if it's congruent to 0 (in other words, if the timer is perfectly divisible by 32), Blind will increase the length of his flurry spin duration by 1 frame, up to a maximum of 5. The action timer is again checked for divisiblity by 16, to determine whether or not to actually shoot a fireball.</p>
+
+	<h3>Shimmy shimmy</h3>
+	<p>This AI state is probably the most boring, but that's because it's the most interesting, meaning this section will have a lot of text but still no pictures.</p>
+	<p>While the Big Cheese moves back and forth, he is constantly deciding whether or not to switch sides. If the action timer is at 0 or 128, Blind will check to see if Link is behind him, and if that is the case, the Cheese will attempt to switch sides, regardless of auxiliary timer A. In all other cases&mdash;action timer is any other value or Link is in front of Blind&mdash;a switching of sides will only be attempted when auxiliary timer A is 0. The only thing that can possibly change Blind's mind about switching sides is his X-coordinate being 136 or higher.</p>
+	<p>Blind's movement is constrained by borders 88 pixels apart, betwixt X-coordinates <code class="value">$4C</code> and <code class="value">$A4</code>. Whichever direction Blind is currently going, he will accelerate to a maximum speed of 1.5 pixels per frame. This acceleration flips towards the other direction whenever Blind hits one of these boundaries. However, this time, care is taken so that the correct boundary for a direction is looked at, unlike with the heads. Blind's up and down movement is much the same. He accelerates to a maximum speed of 1.125 pixels per frame, but flips direction as soon as he's hit his maximum speed.</p>
+	<p>After moving, if the flurry timer is non-zero, Blind will release a flurry of fireballs. Otherwise, he will fire a probe in the direction he's facing. These are the same probes guards use to "look" for Link while patrolling. For Blind, these probes set the <em>Fire a laser</em> flag. Effectively, Blind tries to shoot you with a laser whenever you're in his direct line of sight. But he has terrible aim.</p>
+
+	<h3>Change of scenery</h3>
+	<p>When Blind decides to change sides, he will wait 48 frames before continuing. During this time, he will also decelerate until his speed reaches 0, at either 4/16 (moving left) or 2/16 (moving right) pixels per frame per frame. No, I don't know why these decelerations are different. In either case, it happens too quickly for us to notice the difference. He will also decelerate on the Y axis with a similarly bizarre difference at either 4/16 (moving down) or 8/16 (moving up) pixels per frame per frame.</p>
+	<p>During these 48 frames, should Blind be in flurry mode, he will act twice per frame. This means his head spins twice as fast, but because the action timer isn't ticked twice, it means 2 fireballs are shot at once! And if his head happens to turn during the first flurry call, the two fireballs will be shot with a small angle between them.</p>
+	<p>For the side switch itself, Blind will accelerate at 2/16 pixels per frame per frame up to a maximum speed of 8 pixels per frame until he reaches his target Y-coordinate at either <code class="value">$50</code> (top) or <code class="value">$90</code> (bottom).</p>
+	<p>If, somehow, the Big Cheese has not yet completely stopped moving on the X-axis, he will decelerate as he did during his 48 frame windup.</p>
+
+	<h3>Reorientation</h3>
+	<p>Once Blind hits his target position from the previous AI state, he still has momentum that needs to be killed off. During this one, AI state 3, he will decelerate on the Y-axis in exactly the same way as he did during the 48 frame wind up from the previous state. Every 8 frames, he will slowly rotate his head.</p>
+
+	<h3>Perversion</h3>
+	<p>AI states 6 and 7 are Blind disrobing and rerobing. Why do you need to know how that works?</p>
+	<p>Gross.</p>
+
+	<h2>Summary</h2>
+	<p>All that said, Blind remains a complex enigma. Even if you understand his code completely, that doesn't change the fact that his behavior is controlled by a veritable salad of variables that no one could be expected to keep track of in real time.</p>
+	<p>Regardless, you might now understand how Blind behaves. But will that improve your fight? Probably not.</p>
+</div>

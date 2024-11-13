@@ -8,7 +8,7 @@ html {
 
 body {
 	margin: 0;
-	height: 100%;
+	height: auto;
 	counter-reset: footnotes footnotesid;
 }
 
@@ -20,16 +20,37 @@ div.content {
 	height: auto;
 }
 
-div.content > div {
+div.content > div.contentstuff,
+div.content > div.widecontent {
 	background: #FCFCFF;
 	padding: 30px 10%;
 	box-shadow: 3px 3px 4px black;
 	border: 1px solid black;
 	border-radius: 20px;
-	max-width: 800px;
-	min-width: 500px;
 	margin: inherit auto;
 }
+
+div.content > div.contentstuff {
+	max-width: 800px;
+	min-width: 500px;
+}
+
+div.content > div.widecontent {
+	max-width: 1100px;
+	min-width: 1100px;
+}
+
+div.content.houlihan404bg > .the404page {
+	color: white;
+	background: inherit;
+	background-color: #080808DD;
+	background-blend-mode: soft-light;
+	padding: 30px 60px;
+	box-shadow: 3px 3px 4px black;
+	border: 2px solid black;
+	border-radius: 20px;
+}
+
 
 a {
 	text-decoration: none;
@@ -349,7 +370,7 @@ div.content {
 }
 
 .glitchybg {
-	background-image: url('bg/vramcorruption.png');
+	background-image: url('/assets/bg/vramcorruption.png');
 	background-blend-mode: color-burn;
 	background-size: contain;
 	image-rendering: crisp-edges;
@@ -357,7 +378,7 @@ div.content {
 }
 
 .mechanicsbg {
-	background-image: url('bg/bank07code.png'), linear-gradient(to bottom, #CCCCFF, #777799);
+	background-image: url('/assets/bg/bank07code.png'), linear-gradient(to bottom, #CCCCFF, #777799);
 	background-repeat: repeat, repeat;
 	image-rendering: crisp-edges;
 	image-rendering: pixelated;
@@ -367,8 +388,15 @@ div.content {
 }
 
 .houlihanbg {
-	background-image: url('bg/houlihanbg.png');
+	background-image: url('/assets/bg/houlihanbg.png');
 	background-blend-mode: hard-light;
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+}
+
+
+.houlihan404bg {
+	background-image: url('/assets/bg/houlihanbg.png');
 	image-rendering: crisp-edges;
 	image-rendering: pixelated;
 }

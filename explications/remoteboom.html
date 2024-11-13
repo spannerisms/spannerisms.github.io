@@ -1,0 +1,33 @@
+---
+permalink: /remoteboom/
+layout: default
+title: Remote Control Boomerang Explication
+background: glitchybg
+---
+<div class="contentstuff glitchexp">
+	<h1>Remote Control Boomerang</h1>
+	<p>What's the scoop? It's easy. Get a boomerang into slot 0 or 1, then get an ice rod shot into slot 3 or 4, respectively. The boomerang stops moving on its own, instead following a weird trajectory as Link moves around.</p>
+
+	<h2>Speed! Glorious speed!</h2>
+	<p>Velocity is pretty easy to understand. Add this number (speed) to that number (coord). Hooray! We moved! Calculating velocity is not always as easy to understand. Sometimes, you need to use trigonometry. In the case of <i>A Link to the Past</i>, you need to use something that poorly mimics trigonometry. For the boomerang, or indeed, ancillae in general, the routine of interest is <code class="routine">ProjectAncillaSpeedTowardsLink</code>. It will be covered more in-depth later; all you need to know right now is that before calling this routine, some value is loaded into the accumulator. This value is the magnitude of the base speed to be manipulated into a 2 dimensional velocity.</p>
+	<p>The boomerang turns around. Otherwise it'd just be a stick. The throw speed and base speed are calculated on initialization. A magnitude of <code class="value">$20</code> or <code class="value">$30</code> is used for cardinal throws, and a value of <code class="value">$18</code> or <code class="value">$28</code> is used for diagonal throws, for the blue and red boomerangs, respectively. If a velocity is for moving up or left, then its value is made negative. Diagonal velocites are put on both axes; obviously, cardinal velocities only go on the relevant axis. Regardless of direction, a positive number&mdash;the absolute value of the speeds used&mdash;is used for the return speed, which is stored in <code class="address">$03C5,X</code>. This value is later used when calling <code class="routine">ProjectAncillaSpeedTowardsLink</code> to create a velocity on each axis every frame.</p>
+	<p>Weird&hellip; why should diagonal throws return slower? Whatever.</p>
+	<p>The boomerang will glide along happily if it was just thrown. It's not until it's reached its maximum distance that it suddenly stops. Something must be setting the return speed to 0.</p>
+	<p>As far as the boomerang is concerned, nothing abnormal is actually happening. It's chugging along and executing all of its code perfect. What a good boy. That doesn't change when this glitch takes place. Clearly, the ice rod is the problem. More specifically, the ancilla it creates.</p>
+
+	<h2>Sharing is erring</h2>
+	<p>We've already got our finger pointed at the ice rod, so let's see what's up. The answer is a bit subtle, but it's a single operation in the ice shot initialization code: <code class="opcode">STZ $03C2,X</code>. In our example, the ice rod is slot 4, so that'd be <code class="address">$03C6</code>. Hmmmmm&hellip; If the boomerang is slot 1, that means&hellip; Aha! The return speed of the boomerang is the first slot of <code class="address">$03C5,X</code>, which is also <code class="address">$03C6</code>. The ice rod is using a shorter space as if it were longer, which causes it to bleed over into memory already allotted for something else. Case closed! And, later on, it uses this value for <em><b>absolutely nothing</b></em>.</p>
+	<p>That's right! That damaging operation had no function whatsoever. If it were removed, ice rod shots would act no differently, but the boomerang wouldn't be subject to this glitch. Or would it&hellip;?</p>
+	<p>The ice rod isn't the only thing that messes with this array. Powder uses it as well. And, for some reason, instead of running the routines itself, the lamp creates a powder ancilla to run collision checks. This is why the lamp is so powerful to set <code class="address">$03C4</code>.</p>
+
+	<h2>RC</h2>
+	<p>So we have that much figured out. Most people would be satisfied with that. Not me. Sure, we know why it stops, but what about how it moves? Why does it sort of move with Link? Why does it seem to move away from him?</p>
+	<p>To answer these questions, we need to understand the <a href="/trajectory">speed projection routine</a>. Our main take-away should be that big numbers cause failures, but it's more nuanced than that.</p>
+	<p>The problem we're interested in, specifically, is how the loop is terminated. And to be precise, we care about when the loop counter is <em>exactly</em> 0. This is fine in most cases. The routine is basically a copy/paste of the sprite version, which does find use for negative values to move sprites away from the player. But in the case of 0, it's acting like a big negative value, but only for the loop.</p>
+	<p>Oh wait, here's a funny thing: the sprite version of this routine does not accept values of 0. Someone must have realized it could be a problem there, so the routine exits immediately.</p>
+	<p>The more displaced axis will always get 0. The other axis will get a speed that locks it onto 1 of 8 lines, which are 45&deg; (&pi;/4 rad) apart, starting from 0. Once the boomerang has reached a point on this line, it will stay there until disturbed. If it has to move, it will favor one of the directions it was thrown in, preferring Y over X when both are equally displaced.</p>
+	<p>In some sense, the boomerang no longer cares about returning to Link. It will return if you can reach it, which is possible if you move towards it along the same line it's obsessed with. The boomerang normally seems to be moving pretty slow with this, but that's only because it doesn't need to move much to stay on the line. If you move closer to it in one direction but not the other during a diagonal throw, it will achieve high instantaneous velocities as it snaps towards a cardinal line.</p>
+
+	<h2>Summary</h2>
+	<p>Data bleed causes the ice rod shot to set the boomerang's return speed to 0 when it's in a slot 3 positions lower. Funky speed math causes the boomerang to snap to and stay on specific lines, which all intersect at Link. This funky math also involves an overflow from the value of 0, resulting in negative numbers that tend to push the boomerang away from Link.</p>
+</div>

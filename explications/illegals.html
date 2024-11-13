@@ -1,0 +1,1091 @@
+---
+permalink: /illegals/
+layout: default
+title: Illegal Ancilla Dossier
+background: glitchybg dossier
+---
+<div class="contentstuff glitchexp">
+	<h1>Illegal Ancilla Dossier</h1>
+	<p>Illegal ancillae are those with IDs greater <code class="value">$43</code>. Through various means, these values can be placed into the ancilla array; however, there is no vector corresponding to these values. As such, they begin executing mostly garbage code.</p>
+	<p>The following section headers will name each entry as <b>IAx##</b>, where <b>IA</b> abbreviates Illegal Ancilla; <b>x</b> indicates a hexadecimal value; <b>##</b> is the hexadecimal ID of the ancilla.</p>
+	<p>The results are fully unpredictable.</p>
+<!---
+	<h2>Glossary</h2>
+	<dl>
+		<dt>Ancilla</dt>
+		<dd>A self-acting entity whose routines and existence are established and controlled from the 10 item array at <code class="address">$0C4A</code>.</dd>
+		<dt>Arbitrary misslot</dt>
+		<dd>Putting an ancilla into an illegal slot (10+). Ancillae in these slot are not executed, but their placement can corrupt memory during their initialization.</dd>
+		<dt>Former slot/Front slot</dt>
+		<dd>The first 5 slots (0&ndash;4) used by ancillae. This is where ancillae with more significant effects are placed. An ancillae designed to be in this section can be declared a <i>front half</i>, etc. ancilla. This may be abbreviated to F-Slot in disassembly comments.</dd>
+		<dt>(General) Misslot</dt>
+		<dd>Placing an ancilla into a slot which it is not designed to be in. This includes bombs (ID: <code class="value">$07</code>) in slots 2+ and front slot ancillae in the latter slots.</dd>
+		<dt>Illegal ancilla/object</dt>
+		<dd>An ancilla with an ID greater than <code class="value">$43</code>. IDs of <code class="value">$44</code> and higher do not have a defined entry in the routine jump table.</dd>
+		<dt>Illegal slot</dt>
+		<dd>An ancilla slot (10&ndash;255) not recognized by the general ancilla execution routine.</dd>
+		<dt>Latter slot/Back slot</dt>
+		<dd>The last 5 slots (5&ndash;9) used by ancillae. Ancillae with less significance usually begin here for placement. This may be abbreviated to L-Slot in disassembly comments.</dd>
+		<dt>Overload</dt>
+		<dd>Causing either the former slots or every slot to be occupied, often intentionally.</dd>
+		<dt>Particle</dt>
+		<dd>One of the three ancillae (IDs: <code class="value">$0A</code>, <code class="value">$13</code>, <code class="value">$3C</code>) that can be overwritten to force the creation of a new ancilla.</dd>
+	</dl>
+
+	<table class="align-right tablefloatright">
+		<caption>Ancilla quota</caption>
+		<thead>
+			<tr>
+				<th colspan="2">Ancilla</th>
+				<th>Quota</th>
+				<th class="divider"></th>
+				<th colspan="2">Ancilla</th>
+				<th>Quota</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="number value">$00</td>
+				<td>Nothing</td>
+				<td class="number value">&mdash;</td>
+
+				<th rowspan="34" class="divider"></th>
+
+				<td class="number value">$22</td>
+				<td>Item get</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$01</td>
+				<td>Somaria missile</td>
+				<td class="number value"></td>
+
+				<td class="number value">$23</td>
+				<td>Poof</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$02</td>
+				<td>Fire rod shot</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$24</td>
+				<td>Overworld gravestone</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$03</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$25</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+			</tr>
+			<tr>
+				<td class="number value">$04</td>
+				<td>Beam wall hit</td>
+				<td class="number value"></td>
+
+				<td class="number value">$26</td>
+				<td>Sword swing sparkle</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$05</td>
+				<td>Boomerang</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$27</td>
+				<td>Duck</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$06</td>
+				<td>Wall hit</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$28</td>
+				<td>Fairy pond toss</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$07</td>
+				<td>Bomb</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$29</td>
+				<td>Falling item get</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$08</td>
+				<td>Door debris</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$2A</td>
+				<td>Spin sparkle</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$09</td>
+				<td>Arrow</td>
+				<td class="number value">3</td>
+
+				<td class="number value">$2B</td>
+				<td>Spin sparkle</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$0A</td>
+				<td>Wall arrow</td>
+				<td class="number value"></td>
+
+				<td class="number value">$2C</td>
+				<td>Somaria block</td>
+				<td class="number value">1*</td>
+			</tr>
+			<tr>
+				<td class="number value">$0B</td>
+				<td>Ice shot</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$2D</td>
+				<td>Somaria block dying</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$0C</td>
+				<td>Sword beam</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$2E</td>
+				<td>Somaria block exploding</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$0D</td>
+				<td>Max charge sparkle</td>
+				<td class="number value"></td>
+
+				<td class="number value">$2F</td>
+				<td>Lamp flame</td>
+				<td class="number value">3</td>
+			</tr>
+			<tr>
+				<td class="number value">$0E</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$30</td>
+				<td>Byrna charge up</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$0F</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$31</td>
+				<td>Byrna spark</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$10</td>
+				<td>Unused</td>
+				<td class="number value"></td>
+
+				<td class="number value">$32</td>
+				<td>Blast wall explosion</td>
+				<td class="number value">&mdash;*</td>
+
+			</tr>
+			<tr>
+				<td class="number value">$11</td>
+				<td>Ice shot wall hit</td>
+				<td class="number value"></td>
+
+				<td class="number value">$33</td>
+				<td>Blast wall explosion</td>
+				<td class="number value">2^</td>
+			</tr>
+			<tr>
+				<td class="number value">$12</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$34</td>
+				<td>Skull Woods fire</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$13</td>
+				<td>Ice shot sparkle</td>
+				<td class="number value"></td>
+
+				<td class="number value">$35</td>
+				<td>Master Sword cutscene</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$14</td>
+				<td>Unused</td>
+				<td class="number value">&mdash;</td>
+
+				<td class="number value">$36</td>
+				<td>Flute from ground</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$15</td>
+				<td>Splash</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$37</td>
+				<td>Flute spot debris</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$16</td>
+				<td>Stars</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$38</td>
+				<td>Flute cutscene bird</td>
+				<td class="number value">1&dagger;</td>
+			</tr>
+			<tr>
+				<td class="number value">$17</td>
+				<td>Dirt</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$39</td>
+				<td>Somaria platform poof</td>
+				<td class="number value">&mdash;</td>
+			</tr>
+			<tr>
+				<td class="number value">$18</td>
+				<td>Ether</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$3A</td>
+				<td>Super Bomb explosion</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$19</td>
+				<td>Bombos</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$3B</td>
+				<td>Sword up sparkle</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$1A</td>
+				<td>Powder</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$3C</td>
+				<td>Sword charge sparkle</td>
+				<td class="number value">&mdash;*</td>
+			</tr>
+			<tr>
+				<td class="number value">$1B</td>
+				<td>Wall poke spark</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$3D</td>
+				<td>Item splash</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$1C</td>
+				<td>Quake</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$3E</td>
+				<td>Crystal rising</td>
+				<td class="number value"></td>
+			</tr>
+			<tr>
+				<td class="number value">$1D</td>
+				<td>Bonk screen shake</td>
+				<td class="number value">2</td>
+
+				<td class="number value">$3F</td>
+				<td>Bush powder poof</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$1E</td>
+				<td>Dash dust</td>
+				<td class="number value">1</td>
+
+				<td class="number value">$40</td>
+				<td>Smithy poof</td>
+				<td class="number value">5</td>
+			</tr>
+			<tr>
+				<td class="number value">$1F</td>
+				<td>Hookshot</td>
+				<td class="number value">4</td>
+
+				<td class="number value">$41</td>
+				<td>Waterfall splash</td>
+				<td class="number value">1</td>
+			</tr>
+			<tr>
+				<td class="number value">$20</td>
+				<td>Link's blanky</td>
+				<td class="number value">&mdash;*</td>
+
+				<td class="number value">$42</td>
+				<td>Upgrade rupees</td>
+				<td class="number value">10</td>
+			</tr>
+			<tr>
+				<td class="number value">$21</td>
+				<td>Link snoring</td>
+				<td class="number value">2/5**</td>
+
+				<td class="number value">$43</td>
+				<td>Ganon's Tower cutscene</td>
+				<td class="number value">1&dagger;</td>
+			</tr>
+		</tbody>
+		<caption class="footnotes">
+			<ul class="footnotes">
+				<li>* Unique initialization routine</li>
+				<li>** Varies depending on routine caller</li>
+				<li>&dagger; Limited to 1 by a different search routine of the first 5 slots</li>
+				<li>^ The blast wall is hardcoded to always be in the first 2 slots</li>
+			</ul>
+		</caption>
+	</table>
+
+	<p>The <code class="routine">FindAncillaSlot</code> routine is extremely similar to another routine, <code class="routine">FindArrowAncillaSlot</code>, which searches for lobbed arrows and removes them if there are no open slots, or if exactly 3 are already present. The table to the right documents the quota of each ancilla, based on the code that creates it.</p>
+	<p>The critical fault that allows for misslotting is the use of <code class="address">$03C4</code> as a search index. This address is only ever written to in 4 locations. 2 of these locations are in <code class="routine">FindArrowAncillaSlot</code>, where it is decremented, or set to 4, similar to the logic at <code class="address">$1CF561</code> in <code class="routine">FindAncillaSlot</code>, the other 2 instances of writing to this address.</p>
+	<p>Both of these routines follow the path of <i>"decrement search index; set it to &lt;value&gt; if it goes negative"</i> (although, the arrows routine is much more aggressive; it won't take no for an answer). In the arrow routine, this value is 4; for the general routine, it is the ancilla-specific quota. The entire purpose of this in the general routine is questionable. All F-slot ancillae use one of these prebuilt routines.</p>
+	<p>At least by design. Both of these search routines assume that this address has been pre-initialized elsewhere, but that is never the case. If, by any means, <code class="address">$03C4</code> already has a value, this will determine where a secondary search begins. If the value is greater than <code class="value">$7F</code> after decrementing, then the ancilla's quota will overwrite it.</p>
+	<p>The foremost curiosity is why the individual initialization routines don't take care of ID and quota themselves. In many cases, these are parameters loaded before the initialization is called.</p>
+	<p>The table here should not be taken at face value, as other factors may limit when, where, and how many of any particular ancilla can spawn.</p>
+--->
+	<h3 id="IAx44">IAx44</h3>
+	<div class="snesasm">
+		<div>IAx44_entry</div><div addr="$080702">BRK #$00</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0702</div><div></div>
+		<div></div><div addr="$000704">BRK #$00</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0702</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The address is seemingly unused, so it will most likely have <code class="value">$0000</code>, which will execute the break vector. This vector jumps to <code class="address">$00FFFF</code>, which has a <code class="opcode">BRL</code> that wraps around and reads <code class="address">$0000</code> as the argument to the opcode, which is a relative distance to branch from the byte after the argument. <code class="address">$0000</code> is expected to have the original illegal pointer, so execution resumes at <code class="address">$000704</code>, more unused space. This begins a long loop of repeated break vectors. Eventually, the stack will overwrite <code class="address">$0000</code>, resulting in unpredictable effects.</p>
+
+	<h3 id="IAx45">IAx45</h3>
+	<div class="snesasm">
+		<div>IAx45_entry</div><div addr="$080106">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0106</div><div></div>
+		<div></div><div addr="$000108">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The low byte of the address is unused, so it will contain the value <code class="value">$00</code>. The next byte is not predictable, but the argument to <code class="opcode">BRK</code> is generally ignorable. The break vector leads to a jump to <code class="address">$000108</code>. From here, the results are not predictable.</p>
+
+	<h3 id="IAx46">IAx46</h3>
+	<div class="snesasm">
+		<div>IAx46_entry</div><div addr="$080701">BRK #$00</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0701</div><div></div>
+		<div></div><div addr="$000703">BRK #$00</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0701</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The high byte of the address is technically used, but always has a value of <code class="value">$00</code>. This leads to a similar <code class="opcode">BRK</code> loop as <a href="#IAx44">IAx44</a>.</p>
+
+	<h3 id="IAx47">IAx47</h3>
+	<div class="snesasm">
+		<div>IAx47_entry</div><div addr="$080107">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
+
+	<h3 id="IAx48">IAx48</h3>
+	<div class="snesasm">
+		<div>IAx48_entry</div><div addr="$080700">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The low byte (which will determine the first opcode used) is technically predictable, as it is determined by Link's coordinates; however, with 7 consecutive <code class="value">$00</code> bytes following, there is not much useful that can be done besides returning from the routine safely with an <code class="opcode">RTS</code> (<code class="value">$60</code>).</p>
+
+	<h3 id="IAx49">IAx49</h3>
+	<div class="snesasm">
+		<div>IAx49_entry</div><div addr="$080108">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
+
+	<h3 id="IAx4A">IAx4A</h3>
+	<div class="snesasm">
+		<div>IAx4A_entry</div><div addr="$080904">????</div><div></div>
+		<span></span>
+		<div>IAx4A_entry</div><div addr="$080904">BRK #$F0</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0904</div><div></div>
+		<div></div><div addr="$000906">BRK #$F0</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0904</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the OAM buffer. The results are fully unpredictable.</p>
+
+	<h3 id="IAx4B">IAx4B</h3>
+	<div class="snesasm">
+		<div dasm="$0B">IAx4B_entry</div><div addr="$08FF04">PHD</div><div>Doctor to stack</div>
+		<div dasm="$FC $0E $FC"></div><div addr="$08FF05">JSR ($FC0E, X)</div><div>X&lt;10</div>
+	</div>
+	<p>This entry points to a location in ROM. Specifically, it is executing data that is part of the quake draw routine's tables. Depending on the slot, different code from another table will be executed. Regardless, the game will crash.</p>
+
+	<h3 id="IAx4C">IAx4C</h3>
+	<div class="snesasm">
+		<div>IAx4C_entry</div><div addr="$080302">BRK ??</div><div></div>
+		<span></span>
+		<div>IAx4C_entry</div><div addr="$080302">ORA (??,X)</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The address <code class="address">$0302</code> only takes on values of <code class="value">$00</code> or <code class="value">$01</code>. In the case of <code class="value">$00</code>, the <code class="opcode">BRK</code> vector will lead to unpredictable results. When <code class="opcode">ORA (dp,X)</code> is executed, the inevitable crash is merely delayed.</p>
+
+	<h3 id="IAx4D">IAx4D</h3>
+	<div class="snesasm">
+		<div>IAx4D_entry</div><div addr="$080708">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
+
+	<h3 id="IAx4E">IAx4E</h3>
+	<div class="snesasm">
+		<div>IAx4E_entry</div><div addr="$080101">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
+
+	<h3 id="IAx4F">IAx4F</h3>
+	<div class="snesasm">
+		<div>IAx4F_entry</div><div addr="$080707">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0707</div><div></div>
+		<div></div><div addr="$000709">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The addresses containing the opcode is unused, resulting in a <code class="opcode">BRK</code>, but it is followed by overworld screen properters, resulting in unpredictable code.</p>
+
+	<h3 id="IAx50">IAx50</h3>
+	<div class="snesasm">
+		<div>IAx50_entry</div><div addr="$080001">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0001</div><div></div>
+		<div></div><div addr="$000003">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM. The high byte of the address will be the opcode (<code class="opcode">BRK</code>); after the break vector, the results are unpredictable.</p>
+
+	<h3 id="IAx51">IAx51</h3>
+	<div class="snesasm">
+		<div>IAx51_entry</div><div addr="$080807">????</div><div></div>
+	</div>
+		<p>This entry points to a location in WRAM, specifically the OAM buffer. The results are fully unpredictable.</p>
+
+	<h3 id="IAx52">IAx52</h3>
+	<div class="snesasm">
+		<div>IAx52_entry</div><div addr="$0804FF">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $04FF</div><div></div>
+		<div></div><div addr="$000501">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the last slot in the torch timer array. This array has 16 slots, but in practice, this slot is never used. A <code class="opcode">BRK</code> will occur, but it will then jump to <code class="address">$0501</code> for execution. The results are fully unpredictable.</p>
+
+	<h3 id="IAx53">IAx53</h3>
+	<div class="snesasm">
+		<div>IAx53_entry</div><div addr="$080409">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0409</div><div></div>
+		<div></div><div addr="$00040B">BRK ??</div><div></div>
+		<div>brk_vector</div><div addr="$00FFFF">BRL $0409</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the high byte of the quadrant visits flag for the current underworld tile. This byte is unused, so it will result in a <code class="opcode">BRK</code>. The address branched to after the <code class="opcode">BRK</code> is also unused, resulting in a <code class="opcode">BRK</code> loop.</p>
+
+	<h3 id="IAx54">IAx54</h3>
+	<h3 id="IAx55">IAx55</h3>
+	<div class="snesasm">
+		<div dasm="$52 $88">IAx54_entry</div><div addr="$088383">EOR ($88)</div><div></div>
+		<div dasm="$19 $8D $FC"></div><div addr="$088385">ORA $FC8D, Y</div><div>Y=$A6 so [$08FD33]:$C4</div>
+		<div dasm="$90 $E8"></div><div addr="$088388">BCC &minus;24</div><div>Carry will be cleared</div>
+		<div dasm="$BC $68 $0C"></div><div addr="$088366">LDY $0C86, X</div><div>We've been here before</div>
+	</div>
+	<p>IAx54 and IAx55 share the same entry point.</p>
+	<p>This entry points to a location in ROM. Funnily enough, it is pointing straight to another pointer from the jump table we just used, specifically the pointer for the unused ancilla with an ID of <code class="value">$03</code>. Quite quickly, this routine converges into actual code; in fact, it's the code just run to find out which ancilla subroutine to execute. Unfortunately, this returns to a point in the code after a stack push was meant to occur. When a value assumed to be the ancilla ID is recovered from the stack, it will rip off the low byte of our return address (<code class="value">$37</code>). This results in it executing the routine for the ancilla with ID <code class="value">$02</code>, the fire rod shot. When it's finished, the unbalanced stack will eventually cause the game to crash. Forever.</p>
+
+	<h3 id="IAx56">IAx56</h3>
+	<h3 id="IAx57">IAx57</h3>
+	<div class="snesasm">
+		<div dasm="$00 $22">IAx56_entry</div><div addr="$0880B6">BRK #$22</div><div></div>
+		<div dasm="$82 $B6 $80"></div><div addr="$00FFFF">BRL $80B6</div><div></div>
+		<div dasm="$61 $80"></div><div addr="$0080B8">ADC ($80, X)</div><div></div>
+		<div dasm="$85 $03"></div><div addr="$0080BA">STA $03</div><div></div>
+		<div dasm="$B9 $7D $80"></div><div addr="$0080BC">LDA $807D, Y</div><div>Y=$AA; so [$8127]:$8D</div>
+		<div dasm="$85 $04"></div><div addr="$0080BF">STA $04</div><div></div>
+		<div dasm="$B9 $99 $80"></div><div addr="$0080C1">LDA $8099, Y</div><div>Y=$AA; so [$8143]:$83</div>
+		<div dasm="$85 $05"></div><div addr="$0080C4">STA $05</div><div></div>
+		<div dasm="$DC $03 $00"></div><div addr="$0080C6">JMP [$0003]</div><div></div>
+	</div>
+	<p>IAx56 and IAx57 share the same entry point.</p>
+	<p>This entry points to a location in ROM, specifically the routine <code class="routine">AncillaAdd_FireRodShot</code>; however, its entry point does not align with the code, and it treats the parameter of an <code class="opcode">STA dp</code> as the opcode, resulting in a <code class="opcode">BRK</code> being executed. The break vector leads to the middle of the topmost subroutine, <code class="routine">RunModule</code>. The entry point does not align with the code, but it recovers after one instruction. From here, the result is mostly unpredictable.</p>
+	<p>However, <code class="address">$80</code> is in the middle of some unused RAM. If this illegal ancilla is in slots 0, 1, or 2, then the <code class="opcode">ADC</code> will look at the word in addresses <code class="address">$80</code>, <code class="address">$81</code>, or <code class="address">$82</code>, respectively, all of which contain the value <code class="value">$0000</code>. In these cases, the accumulator, which currently contains the high byte of our pointer, will have the value of <code class="address">$0000</code> added to it, which contains the low byte of our pointer. The carry is always clear, so we know that we will get <code class="value">$36</code> as our result, with the carry flag set. This results in a jump to a known address in bank83, of which bank03 is a mirror. This bank is filled entirely with overworld tile32 data, so, needless to say, the results are garbage. But we can follow along for a bit:</p>
+
+	<div class="snesasm">
+		<div dasm="$01 $00"></div><div addr="$838D36">ORA ($00, X)</div><div></div>
+		<div dasm="$D5 $2D"></div><div addr="$838D38">CMP ($2D, X)</div><div></div>
+		<div dasm="$0A $0C"></div><div addr="$838D3A">LDY #$0C</div><div></div>
+		<div dasm="$21 $00"></div><div addr="$838D3C">AND ($00, X)</div><div></div>
+		<div dasm="$7E $2D 1D"></div><div addr="$838D3E">ROR $122D, X</div><div></div>
+		<div dasm="$CC $01 $02"></div><div addr="$838D41">CPY $0201</div><div></div>
+		<div dasm="$CC $CC $4C"></div><div addr="$838D44">CPY $4CCC</div><div>Open bus</div>
+		<div dasm="$4E $22 $44"></div><div addr="$838D47">LSR $4422</div><div>More open bus</div>
+		<div dasm="$4F $4E $4D $51"></div><div addr="$838D4A">EOR $514D4E</div><div></div>
+		<div dasm="$44 $44 $FF"></div><div addr="$838D4E">MVP $FF, $44</div><div>Nice</div>
+		<div dasm="$A2 $57"></div><div addr="$838D51">LDX #$57</div><div></div>
+		<div dasm="$59 $23 $44"></div><div addr="$838D53">EOR $4423, Y</div><div>Speed 5: Open Bus</div>
+		<div dasm="$59 $5B $5D"></div><div addr="$838D56">EOR $5D5B, Y</div><div></div>
+		<div dasm="$59 $44 $44"></div><div addr="$838D59">EOR $4444</div><div></div>
+		<div dasm="$5F $58 $60 $37"></div><div addr="$838D5C">EOR $376058, X</div><div></div>
+		<div dasm="$44 $42 $37"></div><div addr="$838D60">MVP $37, $42</div><div></div>
+		<div dasm="$A8"></div><div addr="$838D63">TAY</div><div></div>
+		<div dasm="$6B"></div><div addr="$838D64">RTL</div><div></div>
+	</div>
+	<p>The game crashes because the stack is unbalanced after this <code class="opcode">RTL</code>.</p>
+	<p>For all other indices, the results are fully unpredictable.</p>
+
+	<h3 id="IAx58">IAx58</h3>
+	<h3 id="IAx59">IAx59</h3>
+	<h3 id="IAx5A">IAx5A</h3>
+	<h3 id="IAx5B">IAx5B</h3>
+	<div class="snesasm">
+		<div>IAx58_entry</div><div addr="$08B6B7">RTS</div><div></div>
+	</div>
+	<p>IAx58, IAx59, IAx5A, and IAx5B all share the same entry point.</p>
+	<p>This entry points to a location in ROM, specifically one of the exit points of <code class="routine">Ancilla_QuakeSpell</code>. The entry point aligns perfectly with the code, an <code class="opcode">RTS</code> that allows the ancilla to exit safely, without doing anything.</p>
+
+	<h3 id="IAx5C">IAx5C</h3>
+	<div class="snesasm">
+		<div dasm="$68">IAx5C_entry</div><div addr="$0868BD">PLA</div><div></div>
+		<div dasm="$37 $37"></div><div addr="$0868BE">AND [$37],Y</div><div></div>
+		<div dasm="$00 $00"></div><div addr="$0868BF">BRK #$00</div><div></div>
+		<div dasm="$82 $BD $68"></div><div addr="$00FFFF">BRL $68BD</div><div></div>
+		<div dasm="$68"></div><div addr="$0068BF">PLA</div><div></div>
+		<div dasm="$32 $32"></div><div addr="$0068C0">AND ($32)</div><div></div>
+	</div>
+	<p>This entry points to a location in open bus. The results are fully unpredictable.</p>
+
+	<h3 id="IAx5D">IAx5D</h3>
+	<div class="snesasm">
+		<div>IAx5D_entry</div><div addr="$08D00C">BNE $13</div><div>Z=0 because we last loaded $D0</div>
+		<div></div><div addr="$08D021">JSR $F6B6</div><div>Ancilla_PrepAdjustedOamCoord</div>
+		<span></span>
+		<div>Adjust_OAM</div><div addr="$08F6B6">LDY $0C7C, X</div><div></div>
+		<div></div><div addr="$08F6B9">LDA $F67F, Y</div><div>Y=$B8; [$08F737]:$05</div>
+		<div></div><div addr="$08F6BC">STA $65</div><div>Expected legal values: $10, $20, $30</div>
+		<div></div><div addr="$08F6BE">STZ $64</div><div></div>
+		<div></div><div addr="$08F6C0">LDA $0BFA, X</div><div>All values of X when this code runs</div>
+		<div></div><div addr="$08F6C3">STA $00</div><div>should be &lt;10</div>
+		<div></div><div addr="$08F6C5">LDA $0C0E, X</div><div>So I wouldn't expect any corruption</div>
+		<div></div><div addr="$08F6C8">STA $01</div><div></div>
+		<div></div><div addr="$08F6CA">LDA $0C04, X</div><div></div>
+		<div></div><div addr="$08F6CD">STA $02</div><div></div>
+		<div></div><div addr="$08F6CF">LDA $0C18, X</div><div></div>
+		<div></div><div addr="$08F6D2">STA $03</div><div></div>
+		<div></div><div addr="$08F6D4">REP #$20</div><div></div>
+		<div></div><div addr="$08F6D6">LDA $00</div><div></div>
+		<div></div><div addr="$08F6D8">SEC</div><div></div>
+		<div></div><div addr="$08F6D9">SBC $0122</div><div></div>
+		<div></div><div addr="$08F6DC">STA $00</div><div></div>
+		<div></div><div addr="$08F6DE">LDA $02</div><div></div>
+		<div></div><div addr="$08F6E0">SEC</div><div></div>
+		<div></div><div addr="$08F6E1">SBC $011E</div><div></div>
+		<div></div><div addr="$08F6E4">STA $02</div><div></div>
+		<div></div><div addr="$08F6E6">STA $04</div><div></div>
+		<div></div><div addr="$08F6E8">SEP #$20</div><div></div>
+		<div></div><div addr="$08F6EA">RTS</div><div></div>
+	</div>
+	<p>This entry points to a location in ROM, specifically part of the flute ancilla's consumption code. The entry point aligns perfectly with the code. The branch is always taken, as the <code class="register">Z</code> flag will always be unset from reading the high byte of the pointer.</p>
+	<p>This creates a glitchy object (often the item get sprite) on screen, but beyond that, it does not appear to have any interesting consequences in and of itself. If the object ends up being off screen, it will just delete itself from the array.</p>
+
+	<h3 id="IAx5E">IAx5E</h3>
+	<div class="snesasm">
+		<div dasm="$15 $78"></div><div addr="$009E05">ORA $78, X</div><div></div>
+		<div dasm="$15 $79"></div><div addr="$009E07">ORA $79, X</div><div></div>
+		<div dasm="$15 $76"></div><div addr="$009E09">ORA $76, X</div><div></div>
+		<div dasm="$15 $77"></div><div addr="$009E0B">ORA $77, X</div><div></div>
+		<div dasm="$15 $76"></div><div addr="$009E0D">ORA $76, X</div><div></div>
+		<div dasm="$15 $77"></div><div addr="$009E0F">ORA $77, X</div><div></div>
+		<div dasm="$15 $78"></div><div addr="$009E11">ORA $78, X</div><div></div>
+		<div dasm="$15 $79"></div><div addr="$009E13">ORA $79, X</div><div></div>
+		<div dasm="$15 $78"></div><div addr="$009E15">ORA $78, X</div><div></div>
+		<div dasm="$15 $79"></div><div addr="$009E17">ORA $79, X</div><div></div>
+		<div dasm="$15 $92"></div><div addr="$009E19">ORA $92, X</div><div></div>
+		<div dasm="$08"></div><div addr="$009E1B">PHP</div><div></div>
+		<div dasm="$98"></div><div addr="$009E1C">TYA</div><div></div>
+		<div dasm="$08"></div><div addr="$009E1D">PHP</div><div></div>
+		<div dasm="$A4 $08"></div><div addr="$009E1E">LDY $08</div><div></div>
+		<div dasm="$AD $0C $93"></div><div addr="$009E20">LDA $930C</div><div>DB is still $08</div>
+		<div dasm="$08"></div><div addr="$009E23">PHP</div><div></div>
+		<div dasm="$99 $08 $A5"></div><div addr="$009E24">STA $A508, Y</div><div>This does nothing</div>
+		<div dasm="$08"></div><div addr="$009E27">PHP</div><div></div>
+		<div dasm="$AD $8C $AD"></div><div addr="$009E28">LDA $AD8C</div><div></div>
+		<div dasm="$4C $A4 $48"></div><div addr="$009E2B">JMP $48A4</div><div>Open bus</div>
+		<div dasm="$48"></div><div addr="$0048A4">PHA</div><div></div>
+		<div dasm="$64 $64"></div><div addr="$0048A5">STZ $64</div><div></div>
+		<div dasm="$00 $00"></div><div addr="$0048A7">BRK #$00</div><div></div>
+		<div dasm="$82 $0E $9E">brk_vector</div><div addr="$00FFFF">BRL $9E03</div><div></div>
+		<span></span>
+	</div>
+	<p>This entry points to a location in ROM, specifically part of the bomb draw routine's data table. The first instruction is a <code class="opcode">BRK</code>. Eventually, this leads to open bus, making the results crashdictable.</p>
+
+	<h3 id="IAx5F">IAx5F</h3>
+	<div class="snesasm">
+		<div>IAx5F_entry</div><div addr="$080C4A">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the start of the ancilla ID array. This array is easily manipulable; it can, and has, been used for arbitrary code execution.</p>
+
+	<h3 id="IAx60">IAx60</h3>
+	<div class="snesasm">
+		<div>IAx60_entry</div><div addr="$0811A5">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically a general purpose DMA buffer. The results are fully unpredictable.</p>
+
+	<h3 id="IAx61">IAx61</h3>
+	<div class="snesasm">
+		<div>IAx61_entry</div><div addr="$0806D0">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically an array of shutter door location values. Results will vary based on the position and order of doors, but most of the results are fully unpredictable..</p>
+
+	<h3 id="IAx62">IAx62</h3>
+	<div class="snesasm">
+		<div>IAx62_entry</div><div addr="$088020">JSR $8035</div><div>Ancilla_SetSfxPan</div>
+		<span></span>
+		<div></div><div addr="$088023">STA $012D</div><div></div>
+		<div></div><div addr="$088026">RTS</div><div></div>
+	</div>
+	<p>This entry points to a location in ROM, specifically the <code class="routine">Ancilla_SFX1_Pan</code> routine. The entry point aligns with the code perfectly and results in a stable return. Because the sound effect attempted is <code class="value">$80</code>, this will only cause the ambient sound effect (if any) to fade away, as negative values flag this behavior for those sound effects specifically.</p>
+
+	<h3 id="IAx63">IAx63</h3>
+	<div class="snesasm">
+		<div dasm="$20 $20 $20">IAx63_entry</div><div addr="$082090">JSR $2020</div><div>Open bus</div>
+		<div dasm="$92 $92"></div><div addr="$082020">STA.b ($92)</div><div></div>
+		<div dasm="$20 $20 $20"></div><div addr="$082022">JSR $2020</div><div></div>
+		<div dasm="$24 $24"></div><div addr="$082020">BIT.b $24</div><div></div>
+		<div></div><div addr="$082022">???</div><div></div>
+	</div>
+	<p>This entry points to a location in open bus. The results are fully unpredictable. And then some.</p>
+
+	<h3 id="IAx64">IAx64</h3>
+	<div class="snesasm">
+		<div>IAx64_entry</div><div addr="$08908B">LDA $0C22, X</div><div>Ancilla_Move_Y</div>
+	</div>
+	<p>This entry points to a location in ROM, specifically the <code class="routine">Ancilla_Move_Y</code> routine. The entry point is exactly the beginning of the routine, so the code runs perfectly and without fault. Thus, this ancilla will be in a constant state of vertical movement. Every array used by this routine is 10 entries long, so there is no potential for corruption.</p>
+
+	<h3 id="IAx65">IAx65</h3>
+	<div class="snesasm">
+		<div>IAx65_entry</div><div addr="$082A20">ROL A</div><div></div>
+		<div></div><div addr="$082A21">ROL A</div><div></div>
+		<div></div><div addr="$082A22">ROL A</div><div></div>
+		<div></div><div addr="$082A23">ROL A</div><div>Let's skip ahead</div>
+		<span></span>
+		<div></div><div addr="$082A59">SED</div><div></div>
+		<div></div><div addr="$082A5A">SED</div><div></div>
+		<div></div><div addr="$082A5B">SED</div><div></div>
+		<div></div><div addr="$082A5C">SED</div><div>Let's skip ahead again&hellip;</div>
+		<span></span>
+		<div></div><div addr="$0833B6">SED</div><div></div>
+		<div></div><div addr="$0833B7">SED</div><div></div>
+		<div></div><div addr="$0833B8">SED</div><div>Just a little more&hellip;</div>
+		<span></span>
+		<div></div><div addr="$084014">SED</div><div></div>
+		<div></div><div addr="$084015">SED</div><div></div>
+		<div></div><div addr="$084016">????</div><div></div>
+	</div>
+	<p>This entry points to a location in open bus. In general, the results are fully unpredictable.</p>
+	<p>In many cases, the same instructions are used <i>ad nauseum</i>, but eventually, execution lands on the controller ports, allowing for full control arbitrary code execution in a TAS. This can make this illegal ancilla predictable and usable; however, other CPU operations will clobber the value in open bus.</p>
+
+	<h3 id="IAx66">IAx66</h3>
+	<div class="snesasm">
+		<div dasm="$60">IAx66_entry</div><div addr="$08A086">RTS</div><div></div>
+	</div>
+	<p>This entry points to a location in ROM, specifically part of the door debris draw routine's data table. It just so happens to land on the value <code class="value">$60</code>, which is the opcode <code class="opcode">RTS</code>, causing the ancilla's routine to exit immediately.</p>
+
+	<h3 id="IAx67">IAx67</h3>
+	<div class="snesasm">
+		<div dasm="$92 $FA">IAx67_entry</div><div addr="$08A904">STA ($FA)</div><div>A=$A9</div>
+		<div dasm="$60"></div><div addr="$08A906">RTS</div><div></div>
+	</div>
+	<p>This entry points to a location in ROM, specifically the end of the jump splash draw routine. The entry point does not align perfectly with the code, but it recovers quickly. This code takes the value of the accumulator, which currently holds the high byte of the pointer (<code class="value">$A9</code>), and stores it with an indirect write to the 16-bit address present in <code class="address">$FA</code>. This address holds the player 1 joypad input from the previous frame: <code class="value">AXLR....</code>. <code class="address">$FB</code> is the same for player 2, but the code for writing it is unreachable; thus, the high byte of the indirect address is always <code class="value">$00</code>.</p>
+	<p>Effectively, this means we can write <code class="value">$A9</code> to 16 different addresses using a standard SNES controller; within the address range <code class="address">$00</code>&ndash;<code class="address">$F0</code>, for low nibbles of <code class="address">$0</code>. The bottom nibble is the controller's signature, which is <code class="value">%0000</code> for a regular controller.</p>
+	<table class="centertable align3right">
+		<tr class="header">
+			<th colspan="2">Controller input</th>
+			<th colspan="2">Address</th>
+			<th>Effect</th>
+		</tr>
+		<tr>
+			<td><code class="value">%0000</code></td>
+			<td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+			<td><code class="address">$00</code></td>
+			<td>Scratch space</td>
+			<td>Useless</td>
+		</tr>
+		<tr>
+			<td><code class="value">%0001</code></td>
+			<td><code>&nbsp;&nbsp;&nbsp;R</code></td>
+			<td><code class="address">$10</code></td>
+			<td>Game module</td>
+			<td>Crash</td>
+		</tr>
+		<tr>
+			<td><code class="value">%0010</code></td>
+			<td><code>&nbsp;&nbsp;L&nbsp;</code></td>
+			<td><code class="address">$20</code></td>
+			<td>Link's Y-coordinate low byte</td>
+			<td>Funny teleport</td>
+		</tr>
+		<tr>
+			<td><code class="value">%0011</code></td>
+			<td><code>&nbsp;&nbsp;LR</code></td>
+			<td><code class="address">$30</code></td>
+			<td>Link's Y velocity</td>
+			<td>Nothing; overwritten before used</td>
+		</tr>
+		<tr>
+			<td><code class="value">%0100</code></td>
+			<td><code>&nbsp;X&nbsp;&nbsp;</code></td>
+			<td><code class="address">$40</code></td>
+			<td>Temp variable for coordinates</td>
+			<td>Nothing; overwritten before used</td>
+		</tr>
+		<tr>
+			<td><code class="value">%0101</code></td>
+			<td><code>&nbsp;X&nbsp;R</code></td>
+			<td><code class="address">$50</code></td>
+			<td>Change direction flag</td>
+			<td>Link cannot turn anymore</td>
+		</tr>
+		<tr>
+			<td><code class="value">%0110</code></td>
+			<td><code>&nbsp;XL&nbsp;</code></td>
+			<td><code class="address">$60</code></td>
+			<td>Attract mode sequence counter</td>
+			<td>Nothing; zeroed every frame as collateral damage</td>
+		</tr>
+		<tr>
+			<td><code class="value">%0111</code></td>
+			<td><code>&nbsp;XLR</code></td>
+			<td><code class="address">$70</code></td>
+			<td>Free RAM</td>
+			<td>Nothing</td>
+		</tr>
+		<tr>
+			<td><code class="value">%1000</code></td>
+			<td><code>A&nbsp;&nbsp;&nbsp;</code></td>
+			<td><code class="address">$80</code></td>
+			<td>Free RAM</td>
+			<td>Nothing</td>
+		</tr>
+		<tr>
+			<td><code class="value">%1001</code></td>
+			<td><code>A&nbsp;&nbsp;R</code></td>
+			<td><code class="address">$90</code></td>
+			<td>OAM buffer location pointer</td>
+			<td>Seemingly nothing; at worst, broken graphics for 1 frame</td>
+		</tr>
+		<tr>
+			<td><code class="value">%1010</code></td>
+			<td><code>A&nbsp;L&nbsp;</code></td>
+			<td><code class="address">$A0</code></td>
+			<td>Room ID</td>
+			<td>Repointed to EP big chest room or a nonexistent room<br/>ID <code class="value">$01A9</code> corresponds to cape and mirror in SRAM</td>
+		</tr>
+		<tr>
+			<td><code class="value">%1011</code></td>
+			<td><code>A&nbsp;LR</code></td>
+			<td><code class="address">$B0</code></td>
+			<td>Subsubmodule</td>
+			<td>Game will crash during transitions</td>
+		</tr>
+		<tr>
+			<td><code class="value">%1100</code></td>
+			<td><code>AX&nbsp;&nbsp;</code></td>
+			<td><code class="address">$C0</code></td>
+			<td>Tilemap buffer pointer</td>
+			<td>Nothing?</td>
+		</tr>
+		<tr>
+			<td><code class="value">%1101</code></td>
+			<td><code>AX&nbsp;R</code></td>
+			<td><code class="address">$D0</code></td>
+			<td>Room load pointers</td>
+			<td>No effect; overwritten when required by the CPU</td>
+		</tr>
+		<tr>
+			<td><code class="value">%1110</code></td>
+			<td><code>AXL&nbsp;</code></td>
+			<td><code class="address">$E0</code></td>
+			<td>BG1 horizontal scroll low byte</td>
+			<td>Seemingly nothing; fixed every frame</td>
+		</tr>
+		<tr>
+			<td><code class="value">%1111</code></td>
+			<td><code>AXLR</code></td>
+			<td><code class="address">$F0</code></td>
+			<td>Joypad 1 inputs</td>
+			<td>Changes input for joypad 1 to B+Select+Up+Right</td>
+		</tr>
+	</table>
+
+	<h3 id="IAx68">IAx68</h3>
+	<div class="snesasm">
+		<div>IAx68_entry</div><div addr="$08D90B">STA $0C0E, X</div><div>A=$D9</div>
+		<div></div><div addr="$08D90E">LDA $02</div><div>Could be anything</div>
+		<div></div><div addr="$08D910">STA $0C04, X</div><div></div>
+		<div></div><div addr="$08D913">LDA $03</div><div></div>
+		<div></div><div addr="$08D915">STA $0C18, X</div><div></div>
+		<div></div><div addr="$08D918">BRA +7</div><div>Ancilla_SpinSpark</div>
+	</div>
+	<p>This entry points to a location in ROM, specifically the end of a routine that transmutes ancilla <code class="value">$2A</code> into ancilla <code class="value">$2B</code>. The low byte of the Y-coordinate will remain at its current value, and the high byte will take the value <code class="value">$D9</code>. The low and high bytes of the X-coordinate will be garbage data.</p>
+	<p>After the coordinates are set each frame, this illegal ancilla will behave like a <a href="#Ax2B">normal spin spark</a>. The ID rewrite of the routine is not performed, so this ancilla will remain with the illegal ID.</p>
+
+	<h3 id="IAx69">IAx69</h3>
+	<p>This illegal ancilla shares the same pointer and effect as <a href="#IAx5F">IAx5F</a>.</p>
+
+	<h3 id="IAx6A">IAx6A</h3>
+	<div class="snesasm">
+		<div>IAx6A_entry</div><div addr="$0803F0">????</div><div></div>
+	</div>
+	<p>This entry points to a location in location in WRAM, specifically the flute cooldown timer. This results in fully unpredictable results or a <code class="opcode">BRK</code> (followed by fully unpredictable results).</p>
+
+	<h3 id="IAx6B">IAx6B</h3>
+	<div class="snesasm">
+		<div>IAx6B_entry</div><div addr="$081088"></div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the arbitrary DMA buffer. The results are fully unpredictable.</p>
+
+	<h3 id="IAx6C">IAx6C</h3>
+	<div class="snesasm">
+		<div dasm="$01 $00">IAx6C_entry</div><div addr="$08B9F8">ORA ($00, X)</div><div></div>
+		<div dasm="$FA"></div><div addr="$08B9FA">PLX</div><div></div>
+		<div dasm="$FF $FA $FF $F4"></div><div addr="$08B9FB">SBC $F4FFFA, X</div><div></div>
+		<div dasm="$FF $01 $00 $FA"></div><div addr="$08B9FF">SBC $FA0001, X</div><div></div>
+		<div dasm="$FF $FA $FF $F4"></div><div addr="$08B903">SBC $F4FFFA, X</div><div></div>
+		<div dasm="$FF $01 $00 $FA"></div><div addr="$08B907">SBC $FA0001, X</div><div></div>
+		<div dasm="$FF $FA $FF $F4"></div><div addr="$08B90B">SBC $F4FFFA, X</div><div></div>
+		<div dasm="$FF $01 $00 $FA"></div><div addr="$08B90F">SBC $FA0001, X</div><div></div>
+		<span>boring&hellip;</span>
+		<div dasm="$FF FD FF F3"></div><div addr="$08BA53">SBC $F3FFFD, X</div><div></div>
+		<div dasm="$FF FF FF F8"></div><div addr="$08BA57">SBC $F8FFFF, X</div><div></div>
+		<div dasm="$FF 09 00 0F"></div><div addr="$08BA5B">SBC $0F0009, X</div><div></div>
+		<div dasm="$00 $06"></div><div addr="$08BA5F">BRK #$06</div><div></div>
+		<div dasm="$82 $F8 $B9">brk_vector</div><div addr="$00FFFF">BRL $B9F8</div><div></div>
+		<div dasm="$61 $71"></div><div addr="$00B9FA">ADC ($71, X)</div><div></div>
+		<div dasm="$AA"></div><div addr="$00B9FC">TAX</div><div></div>
+		<div dasm="$71 $EC"></div><div addr="$00B9FD">ADC ($EC), Y</div><div></div>
+		<div dasm="$01 $EC"></div><div addr="$00B9FF">ORA ($EC, X)</div><div></div>
+		<div dasm="$01 $70"></div><div addr="$00BA01">ORA ($70, X)</div><div></div>
+		<div dasm="$31 $71"></div><div addr="$00BA03">AND ($71), Y</div><div></div>
+		<div dasm="$31 $72"></div><div addr="$00BA05">AND ($72), Y</div><div></div>
+		<div dasm="$31 $7E"></div><div addr="$00BA07">AND ($7E), Y</div><div></div>
+		<span>Not worth looking at&hellip;</span>
+		<div dasm="$71 $AB"></div><div addr="$00BA87">ADC ($AB), Y</div><div></div>
+		<div dasm="$71 $AA"></div><div addr="$00BA89">ADC ($AA), Y</div><div></div>
+		<div dasm="$71 $CF"></div><div addr="$00BA8B">ADC ($CF), Y</div><div></div>
+		<div dasm="$0D $CF $8D"></div><div addr="$00BA8D">ORA $8DCF</div><div></div>
+		<div dasm="$CF $4D $CF $CD"></div><div addr="$00BA90">CMP $CDCF4D</div><div></div>
+		<div dasm="$1F $0D $1F $8D"></div><div addr="$00BA94">ORA $8D1F0D, X</div><div></div>
+		<div dasm="$1F $4D $1F $CD"></div><div addr="$00BA98">ORA $CD1F4D, X</div><div></div>
+		<div dasm="$01 $0D"></div><div addr="$00BA9C">ORA ($0D, X)</div><div></div>
+		<div dasm="$01 $8D"></div><div addr="$00BA9E">ORA ($8D, X)</div><div></div>
+		<div dasm="$01 $4D"></div><div addr="$00BAA0">ORA ($4D, X)</div><div></div>
+		<div dasm="$01 $CD"></div><div addr="$00BAA2">ORA ($CD, X)</div><div></div>
+		<div dasm="$D0 $19"></div><div addr="$00BAA4">BNE +25</div><div></div>
+	</div>
+	<p>This entry points to a location in ROM, specifically part of the magic powder draw routine's table. After doing a bunch of subtraction, a <code class="opcode">BRK</code> is hit and execution resumes in the middle of a large data table. Given the onslaught of indirect addressing, results are fully unpredictable. A number of branch instructions can potentially occur, but overall almost all outcomes will be a crash.</p>
+
+	<h3 id="IAx6D">IAx6D</h3>
+	<div class="snesasm">
+		<div>IAx6D_entry</div><div addr="$080280">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically an array of ancillae OAM priority values. Results are, you guessed it, fully unpredictable.</p>
+
+	<h3 id="IAx6E">IAx6E</h3>
+	<div class="snesasm">
+		<div>IAx6E_entry</div><div addr="$0804F0">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the torch timer array. Unlike <a href="IAx52">IAx52</a>, this points to the beginning of the array, which is actually used in practice. Unfortunately, this still results in unpredictable code or a <code class="opcode">BRK</code>.</p>
+
+	<h3 id="IAx6F">IAx6F</h3>
+	<div class="snesasm">
+		<div dasm="$3030">IAx6F_entry</div><div addr="$0830A9">BMI $30DB</div><div></div>
+		<div dasm="$3030">IAx6F_entry</div><div addr="$0830AB">BMI $30DF</div><div></div>
+		<div dasm="$3030">IAx6F_entry</div><div addr="$0830AD">BMI $30E1</div><div></div>
+		<div dasm="$3030">IAx6F_entry</div><div addr="$0830AF">BMI $30E3</div><div></div>
+	</div>
+	<p>This entry points to a location in open bus. It will constantly not branch on negatives until it reaches CPU registers. Afterwards, the results are fully unpredictable.</p>
+
+	<h3 id="IAx70">IAx70</h3>
+	<div class="snesasm">
+		<div>IAx70_entry</div><div addr="$080485">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the last byte in an array that counts the number spiral staircases. The results are fully unpredictable.</p>
+
+	<h3 id="IAx71">IAx71</h3>
+	<div class="snesasm">
+		<div>IAx71_entry</div><div addr="$0810A9">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically part of the arbitrary DMA buffer. The results are fully unpredictable.</p>
+
+	<h3 id="IAx72">IAx72</h3>
+	<div class="snesasm">
+		<div></div><div addr="$08B3A4">PHX</div><div>Code before entry for reference</div>
+		<div></div><div addr="$08B3A5">LDA $7F5810, X</div><div></div>
+		<div></div><div addr="$08B3A9">CMP #$0D</div><div></div>
+		<div></div><div addr="$08B3AB">BEQ +118</div><div>Does not align with below</div>
+		<span></span>
+		<div dasm="$76 $0A">IAx72_entry</div><div addr="$08B3AC">ROR $0A, X</div><div></div>
+		<div></div><div addr="$08B3AE">CLC</div><div></div>
+		<div></div><div addr="$08B3AF">ADC $7F5810, X</div><div></div>
+		<div></div><div addr="$08B3B3">CLC</div><div></div>
+		<div></div><div addr="$08B3B4">ADC #$02</div><div></div>
+		<span></span>
+	</div>
+	<p>This entry points to a location in ROM, specifically part of the bombos spell draw routine. The entry point does not align perfectly with the code, but it recovers after one instruction. Unfortunately, the entry is after where a stack push was meant to occur, so at the end of this routine, the stack will become unbalanced, resulting in a crash. I mean... The results are fully unpredictable.</p>
+
+	<h3 id="IAx73">IAx73</h3>
+	<div class="snesasm">
+		<div dasm="$E2 $85">IAx73_entry</div><div addr="$08F00F">SEP #$85</div><div></div>
+		<div dasm="$00 $E2"></div><div addr="$08F011">BRK #$E2</div><div></div>
+		<div dasm="$82 $0F $F0">brk_vector</div><div addr="$00FFFF">BRL $F00F</div><div></div>
+		<div dasm="$C5 $7E"></div><div addr="$00F011">CMP $7E</div><div></div>
+		<div dasm="$A8"></div><div addr="$00F013">TAY</div><div></div>
+		<div dasm="$29 $E0"></div><div addr="$00F014">AND #$E0</div><div></div>
+		<div dasm="$03 $F0"></div><div addr="$00F016">ORA $F0, S</div><div></div>
+		<div dasm="$06 $98"></div><div addr="$00F018">ASL $98</div><div></div>
+		<div dasm="$38"></div><div addr="$00F01A">SEC</div><div></div>
+		<div dasm="$E9 $20"></div><div addr="$00F01B">SBC #$20</div><div></div>
+		<div dasm="$00 $A8"></div><div addr="$00F01D">BRK #$A8</div><div></div>
+		<div dasm="$82 $0F $F0">brk_vector</div><div addr="$00FFFF">BRL $F00F</div><div></div>
+
+	</div>
+	<p>This entry points to a location in ROM, specifically part of the Skull Woods flame routine. The entry point does not align with the code and ends up executing a <code class="opcode">BRK</code>. Interestingly, the <code class="opcode">SEP</code> instruction sets the interrupt-disable flag; however, this flag has no effect on a software interrupt.</p>
+	<p>The location branched to does not align perfectly with the code. It recovers after 1 instruction; however, the routine entered expects both the accumulator and index registers to be in 16-bit mode. Having entered with both in 8-bit mode, the CPU fails to stay aligned with the intended code. This is irrelevant, as the code eventually enters a <code class="opcode">BRK</code> loop.</p>
+
+	<h3 id="IAx74">IAx74</h3>
+	<div class="snesasm">
+		<div dasm="$00 $99">IAx74_entry</div><div addr="$08BC11">BRK #$99</div><div></div>
+		<div dasm="$82 $11 $BC">brk_vector</div><div addr="$00FFFF">BRL $BC11</div><div></div>
+		<div dasm="$51 $85"></div><div addr="$00BC13">EOR ($85), Y</div><div></div>
+		<span><i>etc.</i></span>
+	</div>
+	<p>This entry points to a location in ROM, specifically the end of the dash tremor code. The break vector hit leads to a data table, where endless direct page instructions are executed. They're not worth documenting, and I hope the game eventually crashes.</p>
+
+	<h3 id="IAx75">IAx75</h3>
+	<div class="snesasm">
+		<div>IAx75_entry</div><div addr="$080C7C">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the ancilla layer array. Without using other misslots to write different values here, only <code class="value">$00</code> or <code class="value">$01</code> will be present. The results are fully unpredictable.</p>
+
+	<h3 id="IAx76">IAx76</h3>
+	<p>This illegal ancilla shares the same pointer and effect as <a href="#IAx61">IAx61</a>.</p>
+
+	<h3 id="IAx77">IAx77</h3>
+	<div class="snesasm">
+		<div>IAx77_entry</div><div addr="$088C22">STA $0C0E, X</div><div></div>
+		<div></div><div addr="$088C25">PLA</div><div></div>
+		<div></div><div addr="$088C26">STA $0BFA, X</div><div></div>
+		<div></div><div addr="$088C29">PLA</div><div></div>
+		<div></div><div addr="$088C2A">STA $0C18, X</div><div></div>
+		<div></div><div addr="$088C2D">PLA</div><div></div>
+		<div></div><div addr="$088C2E">STA $0C04, X</div><div></div>
+		<div></div><div addr="$088C"></div><div></div>
+		<div></div><div addr="$088C"></div><div></div>
+		<div></div><div addr="$088C"></div><div></div>
+	</div>
+	<p>This entry points to a location in ROM, specifically part of an ancilla hitbox routine. The entry point aligns perfectly with the code; however, it skips over several stack pushes that were meant to occur. This leaves the stack unbalanced, causing the game to eventually crash.</p>
+
+	<h3 id="IAx78">IAx78</h3>
+	<div class="snesasm">
+		<div>IAx78_entry</div><div addr="$080DBA">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically a general purpose property of sprites. Predictably, the results are fully unpredictable.</p>
+
+	<h3 id="IAx79">IAx79</h3>
+	<div class="snesasm">
+		<div>IAx79_entry</div><div addr="$080A80">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically part of the OAM buffer. The results are fully unpredictable.</p>
+
+	<h3 id="IAx7A">IAx7A</h3>
+	<div class="snesasm">
+		<div dasm="$0C $91 $90">IAx7A_entry</div><div addr="$089022">TSB $9091</div><div>Write to ROM ignored</div>
+		<div></div><div addr="$089025">LDA $01</div><div></div>
+		<div></div><div addr="$089027">SEC</div><div></div>
+		<div></div><div addr="$089028">SBC #$04</div><div></div>
+		<span></span>
+		<div></div><div addr="$08905A">LDX $0FAC</div><div></div>
+		<div></div><div addr="$08905D">LDA $8F82, X</div><div></div>
+		<div></div><div addr="$089060">LDY #$02</div><div></div>
+		<span></span>
+		<div></div><div addr="$08907F">RTS</div><div></div>
+	</div>
+	<p>This entry points to a location in ROM, specifically the repulse spark draw routine. The entry point does not align perfectly with the code, but it recovers after 1 instruction. Eventually the routine returns cleanly.</p>
+	<p>Of particular interest is the instruction at <code class="address">$08:905A</code>, which loads the <code class="register">X</code> register with the value of <code class="address">$0FAC</code>. The repulse spark is not a slotted ancilla, so it does not have any recovery of slot after this. Thus, this instruction will determine the next slot executed &minus;1. Normally, this address only takes on values from <code class="value">0</code>&ndash;</code class="value">5</code>; however, if we found a way to modify this address, we could execute ancillae in the illegal slots from <code class="value">$0A</code>&ndash;<code class="value">$7F</code>.</p>
+	<p>This also comes with the potential to hardlock the game in an infinite loop. For example, if IAx7A is in slot 0 and <code class="address">$0FAC</code> has a value of <code class="value">$02</code>, then the next ancilla executed will be slot 1, followed by slot 0 again. This will repeat <i>ad infinitum</i>.</p>
+	<p>Less interestingly, this illegal ancilla should also result in some broken objects on screen.</p>
+
+	<h3 id="IAx7B">IAx7B</h3>
+	<p>This illegal ancilla shares the same pointer and effect as <a href="#IAx78">IAx78</a>.</p>
+
+	<h3 id="IAx7C">IAx7C</h3>
+	<div class="snesasm">
+		<div>IAx7C_entry</div><div addr="$080480">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the an array that counts the number spiral staircases. The results are fully unpredictable.</p>
+
+	<h3 id="IAx7D">IAx7D</h3>
+	<div class="snesasm">
+		<div dasm="$80 $8D">IAx7D_entry</div><div addr="$088022">BRA $7FB1</div><div></div>
+		<div dasm="$8D $8D $8D"></div><div addr="$087FB1">STA $8D8D</div><div></div>
+		<div dasm="$80 $80"></div><div addr="$087FB3">BRA $7F36</div><div></div>
+		<div dasm="$80 $80"></div><div addr="$087F36">BRA $7EB8</div><div></div>
+	</div>
+	<p>This entry points to a location in ROM, specifically an ancilla sound effects routine. The entry point does not align with code, causing it to branch to open bus. It will keep branching backwards until it reaches CPU registers or the A bus is clobbered. These results are fully unpredictable.</p>
+	<p>Under most circumstances, HDMA will indeed clobber the A register, and the CPU should eventually reach <code class="address">$08:8000</code>, where it will put a broken sound effect into SFX set 1 and allow this ancilla to recover cleanly.</p>
+
+	<h3 id="IAx7E">IAx7E</h3>
+	<p>This illegal ancilla shares the same pointer and effect as <a href="#IAx78">IAx78</a>.</p>
+
+	<h3 id="IAx7F">IAx7F</h3>
+	<div class="snesasm">
+		<div>IAx7F_entry</div><div addr="$0800A0">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically the current underworld room ID. The top byte located in <code class="address">$A1</code> an only ever contain <code class="value">$00</code> or <code class="value">$01</code>. These results are fully unpredictable, though being in room <code class="value">$60</code> can return safely.</p>
+
+	<h3 id="IAx80">IAx80</h3>
+	<div class="snesasm">
+		<div>IAx80_entry</div><div addr="$0803A9">????</div><div></div>
+	</div>
+	<p>This entry points to a location in WRAM, specifically a general purpose property of F-slot ancillae. The results are fully unpredictable.</p>
+
+	<h2>Further illegal ancilla</h3>
+	<p>Due to the left shift when calculating the index into the pointer table, illegal ancillae with an ID of <code class="value">$81</code> and higher will behave as the ancilla with an ID <code class="value">$80</code> lower. This is because the top bit is discarded after decrementing, resulting in the same index.</p>
+
+	<h2>The results are fully unpredictable.</h2>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+	<p>The results are fully unpredictable.</p>
+</div>

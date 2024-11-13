@@ -407,7 +407,7 @@ table.hitboxvisual div.hboxoutline {
 	width: 16px;
 	height: 16px;
 	outline: 1px solid #FF0000;
-	background-image: url("cucco.png");
+	background-image: url("/assets/cucco.png");
 	background-repeat: no-repeat;
 	image-rendering: crisp-edges;
 	image-rendering: pixelated;

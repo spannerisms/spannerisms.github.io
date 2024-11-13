@@ -1,0 +1,198 @@
+---
+permalink: /bunnypocket/
+layout: default
+title: Bunny Pocket
+background: glitchybg
+---
+<div class="contentstuff glitchexp">
+	<h1>Bunny Pocket</h1>
+
+	<h2>Freedom of the press</h2>
+	
+	<p>Here's the exact code of the <code class="routine">HandleYItem</code> routine, with comments to understand it.</p>
+	<div class="snesasm">
+		<div></div><div addr="$079AFE">LDA $3C</div><div>Check B button</div>
+		<div></div><div addr="$079B00">BEQ no_b_button</div><div>B button not held</div>
+		<div></div><div addr="$079B02">CMP #$09</div><div>How long has B been held?</div>
+		<div></div><div addr="$079B04">BCC exit_b</div><div>&lt;9 frames; so exit; leads to an RTS</div>
+		<div>no_b_button</div><div addr="$079B06">LDA $02E0</div><div>Check bunny status</div>
+		<div></div><div addr="$079B09">BEQ not_bunny</div><div>0=not bunny graphics</div>
+		<div></div><div addr="$079B0B">LDA $0303</div><div>Which Y-item is equipped?</div>
+		<div></div><div addr="$079B0E">CMP #$0B</div><div>Is it a bottle?</div>
+		<div></div><div addr="$079B10">BEQ not_bunny</div><div>We can use it</div>
+		<div></div><div addr="$079B12">CMP #$14</div><div>Is it the mirror?</div>
+		<div></div><div addr="$079B14">BEQ not_bunny</div><div>We can use it</div>
+		<div></div><div addr="$079B16">RTS</div><div>Exit; we can't use an item</div>
+		<div>not_bunny</div><div addr="$079B17">LDY $03FC</div><div>Do we have a forced item override?</div>
+		<div></div><div addr="$079B1A">BEQ no_forced_item</div><div>No override</div>
+		<div></div><div addr="$079B1C">LDA $02E0</div><div>Check bunny graphics</div>
+		<div></div><div addr="$079B1F">BNE no_forced_item</div><div>Bunny can't use overrides</div>
+		<div></div><div addr="$079B21">CPY #$02</div><div>Is the override for bow?</div>
+		<div></div><div addr="$079B23">BEQ forced_bow</div><div>If bow, use bow</div>
+		<div></div><div addr="$079B25">BRL $A31C</div><div>Otherwise, go to shovel routine</div>
+		<div>forced_bow</div><div addr="$079B28">BRL $9FF6</div><div>Go to bow routine</div>
+		<div>no_forced_item</div><div addr="$079B2B">LDY $0304</div><div>Check our actively used item</div>
+		<div></div><div addr="$079B2E">CPY $0303</div><div>Compare it to our equipped item</div>
+		<div></div><div addr="$079B31">BEQ items_match</div><div>It's the same, so move on</div>
+		<div></div><div addr="$079B33">LDA $0304</div><div>Why use A? Y has this value</div>
+		<div></div><div addr="$079B36">CMP #$08</div><div>Are we using the shovel/flute?</div>
+		<div></div><div addr="$079B38">BNE check_cape</div><div>If not, just carry on</div>
+		<div></div><div addr="$079B3A">LDA $7EF34C</div><div>Check what flute slot item we have</div>
+		<div></div><div addr="$079B3E">AND #$02</div><div>Look a bit 1, is it 0?</div>
+		<div></div><div addr="$079B40">BEQ check_cape</div><div>In theory, that means shovel</div>
+		<div></div><div addr="$079B42">LDA $3A</div><div>Check B/Y presses</div>
+		<div></div><div addr="$079B44">AND #$BF</div><div>This clears the Y button flag</div>
+		<div></div><div addr="$079B46">STA $3A</div><div>I would have used TRB myself</div>
+		<div>check_cape</div><div addr="$079B48">LDA $0304</div><div>Again, why are we using A?</div>
+		<div></div><div addr="$079B4B">CMP #$13</div><div>Are we using cape?</div>
+		<div></div><div addr="$079B4D">BNE items_match</div><div>If not, skip ahead</div>
+		<div></div><div addr="$079B4F">LDA $55</div><div>Check the cape flag</div>
+		<div></div><div addr="$079B51">BEQ items_match</div><div>If it's 0, do nothing</div>
+		<div></div><div addr="$079B53">JSR $AE30</div><div>This subroutine adds the poof</div>
+		<div>items_match</div><div addr="$079B56">LDA $0301</div><div>Check the held item bitfield</div>
+		<div></div><div addr="$079B59">ORA $037A</div><div>Add in its complement</div>
+		<div></div><div addr="$079B5C">BNE check_rods</div><div>We're using an item; skip ahead</div>
+		<div></div><div addr="$079B5E">LDY $0303</div><div>If we're not using an item then</div>
+		<div></div><div addr="$079B61">STY $0304</div><div>Make our held and active item match</div>
+		<div>check_rods</div><div addr="$079B64">BEQ $9B81</div><div>Seems to handle no items</div>
+		<div></div><div addr="$079B66">CPY #$05</div><div>Are we using fire rod?</div>
+		<div></div><div addr="$079B68">BEQ using_rod</div><div>We are!!!</div>
+		<div></div><div addr="$079B6A">CPY #$06</div><div>What about ice rod?</div>
+		<div></div><div addr="$079B6C">BNE handle_item</div><div>We're not :(</div>
+		<div>using_rod</div><div addr="$079B6E">LDA $0304</div><div>Setting up a flag for which rod</div>
+		<div></div><div addr="$079B71">SEC</div><div>Where 1=fire; 2=ice</div>
+		<div></div><div addr="$079B72">SBC #$05</div><div>This should have been SBC #$04</div>
+		<div></div><div addr="$079B74">INC A</div><div>And this should not have been</div>
+		<div></div><div addr="$079B75">STA $0307</div><div>Save the flag</div>
+		<div>handle_item</div><div addr="$079B78">DEY</div><div>Prep for a jump table</div>
+		<div></div><div addr="$079B79">BMI exit</div><div>If Y was 0, just exit</div>
+		<div></div><div addr="$079B7B">TYA</div><div>Standard stuff to double</div>
+		<div></div><div addr="$079B7C">ASL A</div><div>Since we're indexing a table of words</div>
+		<div></div><div addr="$079B7D">TAX</div><div>Okay here we gooooo</div>
+		<div></div><div addr="$079B7E">JMP ($9AD6, X)</div><div>JUMP!</div>
+		<div>exit</div><div addr="$079B81">RTS</div><div>Leave</div>
+	</div>
+	<p>We have a few particular values of interest here to explain our item storage:</p>
+	<ul>
+		<li><code class="address">$0301</code> and <code class="address">$037A</code> - bitfields when using an item</li>
+		<li><code class="address">$0303</code> - item currently equipped</li>
+		<li><code class="address">$0304</code> - item currently being used</li>
+	</ul>
+	<p>When either of the bitfields has anything flagged, it skips code that syncs our equipped and used items. When we use a Y-item, the value of the <code class="register">Y</code> register (heh) is what's used to create the index into the jump table. Within this routine, there are 3 places where <code class="register">Y</code>.</p>
+	<p>The first instance is at <code class="address">$079B17</code>, where it is used to check whether or not we have an item override, such as the shovel during the digging game. If we do have an override (or if we're a bunny), then the remainder of the routine is skipped, and the item's routine is executed immediately.</p>
+	<p>The next instance is at <code class="address">$079B2B</code>, where <code class="register">Y</code> loads <code class="address">$0304</code>, our currently used item, and compares it to <code class="address">$0303</code>, our currently equipped item.</p>
+	<p>The last instance is at <code class="address">$079B5E</code>, where <code class="register">Y</code> is used to sync the used and active items, by loading <code class="address">$0303</code> and writing it to <code class="address">$0304</code>. This only occurs when both of the bitfields are unflagged; this condition is important to keep in mind as we delve further.</p>
+	<p>Take note that none of this code actually checks for a press of the Y button. That check is, for whatever reason, left to the individual items' routines. We'll be taking a look at one of those next, to find more clues about what causes this glitch.</p>
+	<h2><del>Hammer time</del></h2>
+	<p>Nah. That's such a cliché. Okay. Stab me in the eye, and I'll stab you back.</p>
+
+	<h2>Hammerabi's code</h2>
+	<p>That's so bad it'll work!</p>
+	<p>For our example, we'll be looking into the hammer. But to cover all bases and keep the investigation smooth, let's start by looking at what constitutes a Y press.</p>
+	<p>This is the <code class="routine">TestYButton</code> routine, disassembled from the JP1.0 ROM:</p>
+	<div class="snesasm">
+		<span>TestYButton:</span>
+		<div></div><div addr="$07B05C">BIT $3A</div><div>Check for Y press in bit 6 of $3A</div>
+		<div></div><div addr="$07B05E">BVS fail</div><div>Overflow flag is set as bit 6</div>
+		<div></div><div addr="$07B060">LDA $46</div><div>Check for recoil</div>
+		<div></div><div addr="$07B062">BNE fail</div><div>Ignore input when recoiling</div>
+		<div></div><div addr="$07B064">LDA $F4</div><div>Read player 1 joypad input</div>
+		<div></div><div addr="$07B066">AND #$40</div><div>Get bit 6 for Y</div>
+		<div></div><div addr="$07B068">BEQ fail</div><div>No bit means no press</div>
+		<div></div><div addr="$07B06A">TSB $3A</div><div>Set bit 6 here</div>
+		<div></div><div addr="$07B06C">SEC</div><div>Set carry flag to indicate success</div>
+		<div></div><div addr="$07B06D">RTS</div><div></div>
+		<div>fail</div><div addr="$07B06E">CLC</div><div>Clear carry to indicate failure</div>
+		<div></div><div addr="$07B06F">RTS</div><div></div>
+	</div>
+
+	<p>And with that, here's the routine for using the hammer:</p>
+	<div class="snesasm">
+		<div>hammer_data</div><div addr="$079F68">db 3</div><div>Just some data used by the routine</div>
+		<div></div><div addr="$079F69">db 3</div><div></div>
+		<div></div><div addr="$079F6A">db 16</div><div></div>
+		<span></span>
+		<div>LinkItem_Hammer</div><div addr="$079F6B">LDA $0301</div><div>Check used item bitfield</div>
+		<div></div><div addr="$079F6E">AND #$10</div><div>This checks for the bow, but why?</div>
+		<div></div><div addr="$079F70">BNE exit_a</div><div>Exit if using bow</div>
+		<div></div><div addr="$079F72">BIT $3A</div><div>Check for Y press</div>
+		<div></div><div addr="$079F74">BVS y_was</div><div>If we had pressed Y, continue on</div>
+		<div></div><div addr="$079F76">LDA $6C</div><div>Are we in a door?</div>
+		<div></div><div addr="$079F78">BNE exit_a</div><div>If so, no hammer</div>
+		<div></div><div addr="$079F7A">JSR $B064</div><div>Middle of TestYButton</div>
+		<div></div><div addr="$079F7D">BCS init_hammer</div><div>We pressed Y, so continue</div>
+		<div>exit_a</div><div addr="$079F7F">BRL $9F48</div><div>This coulda just been RTS itself</div>
+		<div>init_hammer</div><div addr="$079F82">LDA $9F68</div><div>First byte of hammer_data ($03)</div>
+		<div></div><div addr="$079F85">STA $3D</div><div>Save that as first animation step length</div>
+		<div></div><div addr="$079F87">LDA #$01</div><div>Set bit 0 of $50</div>
+		<div></div><div addr="$079F89">TSB $50</div><div>Which indicates Link cannot turn</div>
+		<div></div><div addr="$079F8B">STZ $2E</div><div>Reset animation step counter (not used for hammer)</div>
+		<div></div><div addr="$079F8D">LDA $0301</div><div>What a waste of cycles</div>
+		<div></div><div addr="$079F90">AND #$00</div><div>This zeros the loaded value</div>
+		<div></div><div addr="$079F92">ORA #$02</div><div>And this could have just been LDA #$02</div>
+		<div></div><div addr="$079F94">STA $0301</div><div>But it does set the hammer flag in this field</div>
+		<div></div><div addr="$079F97">STZ $0300</div><div>At least they got this right (clear animation step)</div>
+		<div>y_was</div><div addr="$079F9A">JSR $AE4E</div><div>This routine handles tile interaction for attacks</div>
+		<div></div><div addr="$079F9D">LDA $67</div><div>This takes the "direction moving" bitfield</div>
+		<div></div><div addr="$079F9F">AND #$F0</div><div>And clears the bottom 4 bytes</div>
+		<div></div><div addr="$079FA1">STA $67</div><div>I don't think the top nibble is used at all though&hellip;</div>
+		<div></div><div addr="$079FA3">DEC $3D</div><div>Decrement the animation step counter</div>
+		<div></div><div addr="$079FA5">BPL exit_b</div><div>If the animation is still running, stop</div>
+		<div></div><div addr="$079FA7">LDA $0300</div><div>More bad code</div>
+		<div></div><div addr="$079FAA">INC A</div><div>Could have just done INC $0300</div>
+		<div></div><div addr="$079FAB">STA $0300</div><div>And then</div>
+		<div></div><div addr="$079FAE">TAX</div><div>LDX $0300</div>
+		<div></div><div addr="$079FAF">LDA $9F68, X</div><div>Use animation step for next duration</div>
+		<div></div><div addr="$079FB2">STA $3D</div><div>And then save it here</div>
+		<div></div><div addr="$079FB4">CPX #$01</div><div>Are we on the second animation step?</div>
+		<div></div><div addr="$079FB6">BNE skip_stars</div><div></div>
+		<div></div><div addr="$079FB8">PHX</div><div>Save the step</div>
+		<div></div><div addr="$079FB9">LDY #$03</div><div>Hammer ID for tile interaction</div>
+		<div></div><div addr="$079FBB">JSR $D060</div><div>Perform some tile interaction</div>
+		<div></div><div addr="$079FBE">LDY #$00</div><div>0 means 1 star is allowed to exist</div>
+		<div></div><div addr="$079FC0">LDA #$16</div><div>Ancilla ID of the stars</div>
+		<div></div><div addr="$079FC2">JSL $098024</div><div>Creates the ancillae, including sound effects</div>
+		<div></div><div addr="$079FC6">PLX</div><div>Recover the step</div>
+		<div></div><div addr="$079FC7">LDA $012E</div><div>See if a sound effect is playing</div>
+		<div></div><div addr="$079FCA">BNE skip_stars</div><div>If one already is, skip</div>
+		<div></div><div addr="$079FCC">LDA #$10</div><div>Load SFX 16</div>
+		<div></div><div addr="$079FCE">JSR $8028</div><div>Queue it up for SFX set 2</div>
+		<div></div><div addr="$079FD1">JSL $1AFF3C</div><div>Adds a water splash, if necessary</div>
+		<div>skip_stars</div><div addr="$079FD5">CPX #$03</div><div>Are we on step 3?</div>
+		<div></div><div addr="$079FD7">BNE exit_b</div><div>Nope, so just leave</div>
+		<div></div><div addr="$079FD9">STZ $0300</div><div>Step 3 is actually too far</div>
+		<div></div><div addr="$079FDC">STZ $3D</div><div>So the rest of this code is just clean up</div>
+		<div></div><div addr="$079FDE">LDA $3A</div><div></div>
+		<div></div><div addr="$079FE0">AND #$BF</div><div></div>
+		<div></div><div addr="$079FE2">STA $3A</div><div></div>
+		<div></div><div addr="$079FE4">LDA $50</div><div></div>
+		<div></div><div addr="$079FE6">AND #$FE</div><div></div>
+		<div></div><div addr="$079FE8">STA $50</div><div></div>
+		<div></div><div addr="$079FEA">LDA $0301</div><div></div>
+		<div></div><div addr="$079FED">AND #$FD</div><div></div>
+		<div></div><div addr="$079FEF">STA $0301</div><div></div>
+		<div>exit_b</div><div addr="$079FF2">RTS</div><div></div>
+	</div>
+
+	<h2>Connect the dots</h2>
+	<p>So now that we have every piece of information we need, let's piece this together step by step. Imagine we want to arm our pockets with the hammer. Once outside, as a bunny, we switch to the mirror and press Y. Here's how that plays out:</p>
+	<ol>First, the arming:
+	</ol>
+	<ol>Now the item usage:
+		<li>We're not using the B-button, so that doesn't matter.</li>
+		<li>We are a bunny, so we need to check what item we have equipped at <code class="address">$0303</code>.</li>
+		<li>Since we have the mirror equipped, we pass, and can continue.</li>
+		<li>Now our item override is checked.</li>
+		<li>It's nothing, so we continue on.</li>
+		<li>Check our active item at <code class="address">$0304</code>. It's <code class="value">$04</code> for the hammer.</li>
+		<li>Compare that to our equipped item at <code class="address">$0303</code>. That value is currently <code class="value">$14</code>, for the mirror</li>
+		<li>These do not match, so we need to perform a couple additional checks.</li>
+		<li>Our active item is not the flute (<code class="value">$08</code>), so we can skip that section.</li>
+		<li>Nor is it the cape (<code class="value">$13</code>), so we can skip that too.</li>
+		<li>We look at both bitfields. We'll find that <code class="address">$0301</code> has a value of <code class="value">$02</code>, the bit for the hammer, while <code class="address">$037A</code> has a value of <code class="value">$00</code>.</li>
+		<li>Logically ORing these two together gives us <code class="value">$02</code>, a nonzero value, so we skip ahead to the next set of checks.</li>
+		<li>We're not using either rod, so both of those checks fail.</li>
+		<li>Our final item index we have in <code class="register">Y</code> is <code class="value">$04</code>, which we read from our actively used item.</li>
+		<li>After converting this value into a table index, we end up executing the hammer routine.</li>
+	</ol>
+</div>

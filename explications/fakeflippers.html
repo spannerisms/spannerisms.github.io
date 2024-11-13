@@ -1,0 +1,46 @@
+---
+permalink: /fakeflippers/
+layout: default
+title: Fake Flippers Explication
+background: glitchybg
+---
+
+<div class="contentstuff glitchexp">
+	<h1>Fake Flippers</h1>
+	<p>Fake flippers is a popular glitch that allows Link to swim in deep water without having the flippers.</p>
+	<p>The most well-known method is lining up with a screen transition, jumping into the water, and then triggering the transition before splashing out. The common explanation for this is as follows: <q class="wrong">When Link hits the water, the game takes 1 frame to know if you have the flippers, which lets you trigger the transition. After the transition, flippers aren't checked for, because you're already swimming.</q></p>
+	<p>Close, but not quite. There's a pretty big mistake there: <strong class="wrong">fake flippers is not a 1 frame trick.</strong> That explanation sort of gives the impression that the developers couldn't figure out how to check for flippers on the same frame that Link hits the water. Give them some credit, guys. I think the actual explanation is much more bizarre. Don't worry, you'll still get a bad impression of the developers.</p>
+
+	<h2>How it really works</h2>
+	<p>A handful of things happen when Link comes into contact with water. For the record, the game actually checks for flippers before on the frame you are about to contact the water. Just poking around, I saw it check upwards of 4 times per frame. How it proceeds when you do or don't have flippers depends on the context, but when you don't have flippers, there is one thing that <em>always</em> happens: Link creates a splash ancilla in the water.</p>
+
+	<p>From the name, I'm sure you can guess what it does. The splash ancilla (ID: <code class="value">$15</code>) is responsible for drawing and animating the little plops of water you see when you hit the water. That much is obvious. What's less obvious is its other responsibility: kicking Link out of the water if he doesn't have flippers.</p>
+
+	<p>The splash has a pretty short lifespan. For the first 2 frames it's on screen, it just sits there looking pretty. Afterwards, it accelerates on the Y-axis from <code class="number">0</code> to <code class="number">&minus;24</code> pixels per frame, changing by <code class="number">&minus;4</code> px/f/f. When its Y velocity has <em>exceeded</em> <code class="number">&minus;24</code>, the splash will remove itself from the list of ancillae. If you do the math (I'll do it for you), the splash is around for 8 frames before disappearing.</p>
+
+	<p>That's not the end of its existence though. This removal will not take effect until the next frame, so it can continue executing code. There are a few more lines that perform the standard "Can Link Swim?" checks. Might I add that it's a bit redundant? It checks if you're a bunny twice. If it didn't do that extra check, it would actually prevent you from superbunny swimming. The code directly responsible for removing Link from the water is the routine <code class="routine">CheckAbilityToSwim</code>, which does exactly what it sounds like it does. This routine is only called from 2 places: the splash ancilla, and the mirroring between worlds code. Since I'm not really in the mood to figure out if there are any other water removal routines, I'm going to assume that everything except for mirroring hinges on the creation of the splash.</p>
+
+	<h2>We're lucky it even does work</h2>
+	<p>This splash ancilla is the crux of the glitch. The game does in fact know whether or not you have the flippers right away. In some cases, it's checked before you even hit the water. The problem is both that the removal from the water is delayed and that it is offloaded to an ancilla. Just speaking from a practical standpoint, if a routine is part of how Link behaves, it should be part of <em>his</em> code. However, this game is anything but practical.</p>
+
+	<p>The reason the most well-known method of fake flippering even works is due to an amazing coincidence. When in the water, Link does not move the same way he does on flat ground. His movement is acceleration based, rather than a fixed-pattern velocity. He does not move right away, and it takes a short bit to reach a velocity that moves him at all. By this happy coincidence, it takes <em>exactly</em> 8 frames to reach a velocity of 1 px/f swimming east; this is the same length of time as the lifespan of the splash ancilla. Y'know, the one that would have kicked you out of the water. When moving west, you actually have 1 more frame of leniency, due to subpixel magic. In a TAS, you have an even larger window, due to the power of swim wobbling.</p>
+
+	<p>When you transition, the splash ancilla is deleted. That's because it only ever tries to spawn in the first 5 slots, and those 5 slots are cleared when you transition on the overworld. The other 5 slots <em>aren't</em> cleared on overworld transitions. That's another lucky thing in our favor, as a latter-slotted splash would end up kicking us out of the water on the next screen, producing the same result as the infamous fake flippers "softlock".</p>
+
+	<h2>What else can we do?</h2>
+	<p>So what would happen if you prevented the splash from spawning? Well, as you'd expect, if the thing that runs the code isn't there, the code won't be run. Preventing the splash from spawning is not difficult, and doing so will give you a quick and working fake flippers without a screen transition.</p>
+
+	<h2>Fairy revival, <i>et al.</i></h2>
+	<p>If you don't like long-winded explanations, then, first off, you disappoint me. Fortunately for you, this one is short. When you are revived by a fairy, the first thing that gets checked after fully healing is whether you are over deep water. If you are, the game assumes you were already swimming and puts you back to swimming. That's it. No flippers check, no bunny check. If you were over deep water, you <em>must</em> have been swimming. It's a bad assumption, and it doesn't seem to be fixed in later releases either.</p>
+
+	<h2>Why does Swamp suck?</h2>
+	<p>Rooms like the Swamp Palace lobby use layers to split collision between swimming and walking the same way other rooms split collision for different heights. The layer swap happens when you hit the water, but only if you have the flippers. These rooms are also what we call "Weak EG", so regular exploration glitch triggers won't affect your layer. If you enter the room already on the lower layer, collision is, in most places, unnavigable.</p>
+
+	<h2>JP1.0</h2>
+	<p>Everything I said about fake flippers above is true for every release of the game. There's just one little difference: versions later than JP1.0 check for the flippers every frame. If you don't have them, then it just skips all swimming logic. This fixes the transition method of fake flippering, but it creates problems for others. There's no further code to do anything about you being in the water; it still relies entirely on the ancilla to do that. The ancilla overload method will work on a US cart. You'll land in the water, but that's it. You're stuck. You can save-and-quit or wait for an enemy to kill you, but you won't be swimming anywhere.</p>
+
+	<h2>Summary</h2>
+	<p>When Link hits the water, a splash ancilla is created to make a splash graphic. This ancilla is also responsible for removing Link from the water if he doesn't have the flippers. The splash is around for 8 frames, and it runs the removal code on the 9th frame when it terminates execution. This is just enough time for Link to gain the acceleration swimming to move 1 pixel and transition. The transition removes the splash ancilla, preventing the code from ever running. Once swimming, in JP1.0, the game doesn't check for flippers.</p>
+	<p>It is possible to prevent the ancilla from spawning by filling the first 5 ancilla slots before hitting the water. In this scenario, Link is immediately free to swim around. This is possible on later versions, but because they check for flippers while swimming, Link cannot move.</p>
+	<p>When being revived by a fairy over deep water, the game just assumes that Link was swimming, so it places him back in that state.</p>
+</div>

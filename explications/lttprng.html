@@ -1,0 +1,100 @@
+---
+permalink: /lttprng/
+layout: default
+title: Random Number Generation Explication
+background: mechanicsbg
+---
+<div class="contentstuff glitchexp">
+	<h1>Random Number Generation</h1>
+	<p>Let's start by being pedantic and then get even more pedantic. Generally, computers are not capable of actually being random. The only truly random things in the universe are at the quantum scale. These are possible to utilize through hardware, but such devices aren't that widespread (as of time of writing). Non-quantum hardware can provide nearly-but-not-literally-impossible to predict noise that is very useful when generating random numbers. <a href="https://random.org">Random.org</a> uses atmospheric noise as its source. Don't believe the claim that it "offers <em>true</em> random numbers" (their emphasis), as Laplace's demon would be able to predict the results every time.</p>
+	<p>If special hardware is not an option, then you are stuck with software-generated random number generation, or, more correctly, <em>pseudo-random number generation</em> (PRNG). The prefix <i>pseudo-</i> means "fake". Software-based generation is pseudo because, like Laplace with non-quantum noise, the results are 100% deterministic if you know the starting conditions. But, in this case, knowing the starting conditions isn't as unfathomable as knowing the precise location and energy of 10<sup>40</sup>-something molecules. The starting conditions are safe because they're kept secret and rely on large calculations that would take billions of years to brute force.</p>
+	<p>Obviously, computers have only gotten better over the years. As has our knowledge of and ability to create increasingly convincing PRNG. But that's not what we're here to discuss. Let's go back to the '90s and see what sort of stuff they had.</p>
+
+	<h2>Algorithms</h2>
+	<p>The Super Nintendo did not have any sort of built-in random number generator; such routines were left to the game developers. Nor was there any standard. This meant the method varied between developers, and even games. <a class="youtube" href="https://www.youtube.com/watch?v=q15yNrJHOak">Retro Game Mechanics Explained</a> goes into great detail about the function used in <i class="gameName">Super Mario World</i>. If you pay any bit of attention to the video, you'll learn that the output is, unsurprisingly, 100% predictable.</p>
+
+	<h2>The short straw we got</h2>
+	<p>Here's the <code class="routine">GetRandomInt</code> routine used in <i class="gameName">A Link to the Past</i> in its full, uncensored glory:</p>
+	<div class="snesasm nolabel">
+		<div></div><div addr="$0DBA71">LDA $2137</div><div>software latch to update ppu counters</div>
+		<div></div><div addr="$0DBA74">LDA $213C</div><div>ppu hcount</div>
+		<div></div><div addr="$0DBA77">ADC $1A</div><div>+frame counter</div>
+		<div></div><div addr="$0DBA79">ADC $0FA1</div><div>+previous value</div>
+		<div></div><div addr="$0DBA7C">STA $0FA1</div><div>save result</div>
+		<div></div><div addr="$0DBA7F">RTL</div><div>exit</div>
+	</div>
+
+	<p>The comments should be helpful enough, but let's get real specific about what's going on here.</p>
+	<h3>hcount</h3>
+	<p>During the Super Nintendo's era, Cathode Ray Tubes (CRT) were <em>the</em> television. I won't cover these in detail, because there are plenty of videos on the subject, but know this one fact: each part of the screen was not controlled by an individual pixel that worked at the same rate as every other pixel. Images were drawn line-by-line, with only one very tiny point of light visible at any instant. This all just happened so fast that it looks like a single, coherent image to our puny, mortal eyeballs.</p>
+	<p>Instead of "pixels", you may want to look at CRT televisions as having scanlines and dots. Dots are just the individual phosphor blobs that glow when electrons hit them. Scanlines are the horizontal stripes that the beam swipes through to light up those dots. Whatever the case, the word "pixel" existed long before our modern day concept of nanorectangles. Call these phosphor groups whatever you want.</p>
+	<p>On the other hand, if anyone tells you that the SNES does not have pixels, they are wrong. You should warn them not to parrot pedantry so mindlessly. The Picture Processing Unit (PPU) of the console absolutely divided its images into small, discrete squares. When it is passed to the tube, the CRT may see it as a purely analog signal rather than an image composed of individual square pixels, but everything done before hand is entirely digital.</p>
+	<p>I'm not an expert on CRTs, but I'm like 90% sure that different sets could have different numbers of dots. Unfortunately, I can't find anything that even acknowledges the concept of "dots per scanline" in a manner that can answer my question one way or another. Irrespective of that, the PPU assumes 262 scanlines (ranging from 0 to 261, a value which <em>is</em> standardized, regulated, and well documented), and 340 dots per scanline (ranging from 0 to 339).</p>
+	<p>No one cares about PAL, sorry.</p>
+	<p>This isn't exactly what's drawn on screen, because it is tracking the electron beam itself. Of these values, for LTTP specifically (I don't want to get into additional graphics modes), 224 scanlines (1&ndash;224) and 256 dots-per-scanline (22&ndash;277) constitute the actual image. That's a nice 1:1 correspondence with the <u>pixel</u> image produced, but the way overscan and blanking is merged into these registers makes me wary about calling these "pixels" that are being counted.</p>
+	<p>The PPU tracks the electron gun's position in real time, but it does not share this information automatically. The address <code class="address">$2137</code> is a software latch, which means it's used by the software to trigger an update by the hardware. In this case, the PPU will be triggered to update <code class="address">$213C</code> and <code class="address">$213D</code> with the current horizontal and vertical position of the beam at that instant, respectively. Even as the beam progresses, these addresses will not change until an update is requested again, via <code class="address">$2137</code>, <code class="address">$4201</code>, or polling controller 2 input.</p>
+	<p>The values stored are actually 9 bits, but the addresses themselves only hold 8 bits. Reading the address once will provide the lower 8 bits of the value. Reading it again will provide the most significant bit. We can consider this strike 1. Even if CRTs operated by randomly ordering every position fired, there would be a bias towards smaller numbers, as the most significant bit is discarded.</p>
+	<p>But wait! There's more! Hahaha that line never gets old.</p>
+	<p>The SNES CPU is not 100% dedicated to running game code. While graphics and sound are handled by coprocessors, there's still a lot of work that needs to be done by the main CPU. WRAM refresh occurs every scanline about halfway through, making certain values pretty much impossible to see in the hcount. If HDMA is enabled, it will also pause the CPU at the "end" of each scanline to perform its updates, which may or may not cause certain other values to be unproducible.</p>
+	<h3>1! ahaha! 2! ahaha!</h3>
+	<p>Contrary to above, the frame counter is about as simple as it gets. For every frame that the game is not lagging, <code class="address">$1A</code> will be incremented by 1. When it gets incremented at <code class="value">$FF</code>, it will overflow to <code class="value">$00</code>. When the game boots up, this counter is initialized to 0, and nothing else changes it besides the increment.</p>
+	<h3>Another easy one</h3>
+	<p>RNG values are collected in <code class="address">$0FA1</code>. Technically, this means the output can be reused or manipulated further, but, in practice, that never happens. Certain routines do reuse RNG values, but they do so by caching the original result in either scratch space or the stack.</p>
+	<h3>Addition and the unsung component</h3>
+	<p>These operations are all performed in 8-bit mode. They don't have to be, but every instance is. When 2 numbers are added together, if the result cannot be represented with 8 bits, then the most significant bit is put into the carry flag. For example, <code class="value">$45</code>+<code class="value">$C4</code> is <code class="value">$109</code>. That's too big. The accumulator will have <code class="value">$09</code>, and the carry flag will be set; that is, it will be <code class="value">1</code>.</p>
+	<p>When adding numbers, the carry flag is used to <em>carry</em> that most significant bit into the next calculation. This makes it possible to add numbers composed of an arbitrary number of bits, even though only 8 or 16 can be handled at a time. So if we continue from our previous example and add the value <code class="value">$15</code>, we get <code class="value">$1E</code> to start, but then we also include +1 for the carry, leaving us with <code class="value">$1F</code>. When we use the carry flag like this, it is set back to <code class="value">0</code>, as we've already accounted for the bit it was saving.</p>
+	<p>Subtly, the carry flag adds an extra bit of entropy to the function. It is not set or unset directly before any calculation occurs in this routine. It may enter on or off, depending on what exactly happened before the call. And then it may be on or off again, depending on whether or not the first addition overflowed.</p>
+	<h2>Critique</h2>
+	<p>Straight to the point: this is not a good method of generating random numbers. Well, for the most part. You see, the actual SNES is a physical object, with electronic circuitry prone to certain quantum effects, and minute discrepencies that chaotically snowball to massive differences. The hardware is not deterministic. Even if every input is done exactly the same, 2 consoles run at the same time will, surprisingly quickly, produce different results. Nay. The same machine will probably never produce the exact same output twice in a human lifetime.</p>
+	<p>Even on emulators, which are 100% deterministic (for now), this function uses suitably obfuscated information to produce unpredictable results. But it's only obfuscated by the fact that we can't think fast enough to track the electron beam ourselves, nor can we reliably probe our console to sync such superhuman counting.</p>
+	<p>But does that make it good?</p>
+	<p>A while back, I created <a href="https://docs.google.com/spreadsheets/d/1Eh3LR3gR7Xi_JeZNIV8vSaOpJIxpRiXVDoGibEBon5s/edit#gid=0">this document</a>. It contains 6,560 outputs of the RNG function that were obtained by running a script as I replayed the <a href="http://tasvideos.org/3874M.html">100% TAS I created with Yuzuhara</a>. I created a table of frequency for each value and plotted those frequences in descending order to create a rough visualization of the output. It looks kind of bad, but let's not be foolish.</p>
+	<p>I then generated 6,560 values using a quick Java program. Java's <code class="routine">Math.random()</code> is a linear congruential generator. It's not the best possible algorithm, but, for non cryptography purposes, it is fast and reliable, tried and true.</p>
+	<p>And, somewhat surprisingly, the shape of the frequency graph is roughly the same. I ran multiple samples of the same size in Java, since it took a few seconds and not over an hour, but the shape didn't really change. The numbers that were the most frequent changed, but that's to be expected. The document linked above contains only the last sample, as the plot was counting each result.</p>
+	<p>So it's looking pretty good, huh?</p>
+	<p>No.</p>
+	<p>No matter how good this routine or its results look, it still suffers from a major flaw: values are too interdependent. To demonstrate this, let's push this to the extreme:</p>
+	<div class="snesasm nolabel noaddress">
+		<div></div><div>CLC</div><div>Clear the carry flag</div>
+		<div></div><div>JSL $0DBA71</div><div>Call GetRandomInt</div>
+		<div></div><div>CLC</div><div>Clear again</div>
+		<div></div><div>JSL $0DBA71</div><div>Call GetRandomInt again</div>
+	</div>
+	<p>Imagine that at the first call, the frame counter is at <code class="value">$00</code>. To simplify the example, let's remove the complexities of the CPU with exact values. These values are not perfectly correct, but they are close enough for the example, and the system is consistent enough for these short time periods.</p>
+	<ul>Our simplifications:
+		<li>1 CPU cycle = 2 dots</li>
+		<li><code class="address">$213C</code> produces the value on the dot it is read.</li>
+	</ul>
+	<p>Now let's run through the example above, and say that it starts at dot 0. Just as well, <code class="address">$0FA1</code> has a value of <code class="value">$00</code>, and our frame count at <code class="address">$1A</code> is <code class="value">$00</code>.</p>
+	<code class="snesasm">
+		Opcode         Cycles   Dot
+		CLC            2          0
+		JSL $0DBA71    8          4
+		LDA $2137      4         20
+		LDA $213C      4         28    We will read $1C from $213C
+		ADC $1A        3         36    +0, no carry
+		ADC $0FA1      4         42    +0, no carry
+		STA $0FA1      4         50    Store $1C to $0FA1
+		RTL            6         58
+		CLC            2         72    Clear carry again
+		JSL $0DBA71    8         76
+		LDA $2137      4         92
+		LDA $213C      4        100    We will read $64 from $213C
+		ADC $1A        3        108    +0, no carry, this is still the same frame
+		ADC $0FA1      4        114    +$1C, still no carry
+		STA $0FA1      4        122    Store $80 to $0FA1
+		RTL            6        130
+	</code>
+	<p>In reality, those hardware registers take slightly longer to read than the WRAM mirrors, but they will be consistently longer. Normalizing everything to 2 dots per cycle just makes things easier to follow. These routine calls are consecutive with no branching logic, so the number of cycles between each reading of the hcount is the same. In the simplification, it will <em>always</em> be 32 cycles between the 2 reads, and thus always 64 dots. Cute coincidence that we used dot 100 for the second read, giving us hex <code class="value">$64</code>.</p>
+	<p>Now let's change just 1 parameter. Start the hcount at 20. Now each value we read will be 20 higher, <code class="value">$30</code> and <code class="value">$94</code>. The difference between values is higher, but without an overflow, the 2nd value will always be higher. With an overflow, it will always be lower. As you build up more samples, this fault may hide itself, but, remember, statistically speaking, ignoring the top bit means lower values are favored for hcount.</p>
+	<p>That wasn't volatile enough to prove our point. Let's set the hcount back to 0 and have the frame counter start at <code class="value">$01</code>. Since it's added twice, the difference it provides will always be a multiple of 2. In our simplified example, most values for the frame count will have the same parity between these consecutive calls. The rest of the time, they're guaranteed to be opposite parity. Again, this is masked because we can't track the frame counter, but it's too predictable when you can.</p>
+	<p>An actual system may give different parity when actually running this example, but the frame counter will result in no parity change more than half of the time.</p>
+	<p>Still not convinced? Well, we have one more address we can mess with: the previous RNG value. This is cumulative, unlike the frame counter, as it builds up between calls, but that build up is consistent. If it starts at <code class="value">$01</code>, the first value we produce is increased to <code class="value">$1D</code>, but that increase doesn't grow more in the next call, because it only exists in the address which accumulates these values. So we still have the same frame counter (+0 now) and hcount (<code class="value">$64</code>). Add <code class="value">$1D</code> and we get <code class="value">$81</code>, only 1 higher than when we use <code class="value">$00</code>.</p>
+	<p>This fault will carry into nearly half of the possible starting values. That's really bad. Even half-baked pseudo-randomness should produce more unpredictable results for small changes in input.</p>
+	<p>Was it fair to push the routine to this extreme? Sure. Why not? If you're stress testing something, you want it doing its job for all possibilities. That's the point. If we can get such predictable results as we push limits, then this method of random number generation fails at being unpredictable.</p>
+	<h2>Every last one</h2>
+	<p>If you'd like to know every possible use of the RNG, I wasted my time creating <a href="/everyrng">an exhaustive list that documents every distinct routine call</a>.</p>
+
+	<h2>Summary</h2>
+	<p>The PRNG used by <i class="gameName">A Link to the Past</i>, is not good, but it does get the job done. The distribution of numbers it produces closely resembles more reliable PRNG functions, but close analysis reveals many faults. Its implementation makes it impossible to predict in real time, and even more impossible to actually manipulate.</p>
+</div>

@@ -1,0 +1,105 @@
+---
+permalink: /smtreset/
+layout: default
+title: Shin Megami Tensei Intro
+background: smtbg
+---
+<div class="contentstuff glitchexp">
+	<h1>Shin Megami Tensei Intro</h1>
+	<p>Shin Megami Tensei for the SNES has a really cool intro sequence. I'm not talking about the spinning ATLUS letters or the the mode 7 hexagram. I'm not even talking about the creepy and foreboding scenes that interrupt the typing. I'm talking about the code.</p>
+	<p>The game's intro sequence shows a terminal-like display with seemingly random letters being typed. To the average person, these would appear as just random letters, but they're actually 65c816 mnemonics. This is SNES code being typed out. And it's not just any SNES code, it's Shin Megami Tensei's own reset routine.</p>
+
+	<div class="center">
+		<img src="/assets/explication/smtreset.png" class="screenshot">
+	</div>
+	<h2>What's a reset routine?</h2>
+	<p>The reset routine is, well, the routine run when the game is reset. For every SNES game in existence, there's a 16-bit address at <code class="address">$00:FFFC</code> that tells the CPU where to go whenever the system is reset, including power on.</p>
+	<p>There's nothing particularly special about this reset routine. It's actually pretty simple compared to another <em title="Crayon Shin-chan - Arashi wo yobu Enji">Shin</em> game I've looked at. I just personally think it's really cool that these guys decided to expose some of the actual code used in the game for the intro.</p>
+	<p>Almost.</p>
+	<p>It's not quite the exact same code. But it's pretty close.</p>
+
+	<h2>The vector itself</h2>
+	<p>Below is the reset code shown in the intro sequence (left) compared to the actual code the game runs (right).</p>
+	<div class="smtasm">
+		<div class="label">RESET:</div><div class="label">Reset:</div>
+		<div>SEI</div><div>SEI</div>
+		<div>CLC</div><div>CLC</div>
+		<div>XCE</div><div>XCE</div>
+		<div>CLD</div><div>CLD</div>
+		<div class="sep"></div>
+		<div>X16</div><div>REP #$10</div>
+		<div>M8</div><div>SEP #$20</div>
+		<div class="sep"></div>
+		<div>LDX #1FFFH</div><div>LDX #$1FFF</div>
+		<div>TXS</div><div>TXS</div>
+		<div class="sep"></div>
+		<div></div><div>LDA #$00</div>
+		<div>STZ NMITIME</div><div>STA $4200</div>
+		<div>LDA #BLANKING</div><div>LDA #$80</div>
+		<div>STA INIDSP</div><div>STA $2100</div>
+		<div class="sep"></div>
+		<div></div><div>LDA #$00</div>
+		<div></div><div>STA $7EFFFE</div>
+		<div></div><div>STA $7EFFFF</div>
+		<div class="sep"></div>
+		<div></div><div>LDX #$0000</div>
+		<div></div><div class="label">Loop:</div>
+		<div></div><div>LDA $008773,X</div>
+		<div></div><div>CMP $7EFFE0,X</div>
+		<div></div><div>BNE Logo</div>
+		<div></div><div>INX</div>
+		<div></div><div>CPX #$0014</div>
+		<div></div><div>BCC Loop</div>
+		<div></div><div>BCS SoftReset</div>
+		<div class="sep"></div>
+		<div></div><div class="label">Logo:</div>
+		<div>BJSR ATLUS</div><div>JSL $06E04D</div>
+		<div class="sep"></div>
+		<div class="chant">'EL ELOHIM ELOHO ELOHIM SEBAOTH'</div>
+		<div class="chant">'ELION EIECH ADIER EIECH ADONAI'</div>
+		<div class="chant">'JAH SADAI TETRAGRAMMATON SADAI'</div>
+		<div class="chant">'AGIOS O THEOS ISCHIROS ATHANATOS'</div>
+		<div class="chant">'AGLA AMEN' </div>
+	</div>
+
+	<h3>A great start</h3>
+	<p>The very first line is the word "RESET" followed by a colon (:). This is used to define a label in assemblers, but, when the code is assembled, labels and their names don't actually get in. I personally have this label named "Reset", in sentence case, but that's okay! There's no wrong answer here! I'll give them the point.</p>
+	<p>Following that are 4 instructions that are exactly correct:</p>
+	<p><code class="opcode">SEI</code> means <code><b>SE</b>t <b>I</b>nterrupt flag</code>. This tells the CPU to not respond to any interrupt request from the IRQ line.</p>
+	<p><code class="opcode">CLC</code> means <code><b>CL</b>ear <b>C</b>arry flag</code>. This clears the carry flag, exactly as the name implies.</p>
+	<p><code class="opcode">XCE</code> means <code>e<b>X</b>change <b>C</b>arry and <b>E</b>mulation flags</code>. Emulation? Yes. Technically, the SNES is an emulator. An emulator for what you ask? Why, the 6502 of course! When the Western Design Center created the 65c816 (the chip the SNES Ricoh 5A22 is based on), they wanted it to be backwards compatible enough that you were meant to <em title="Yes, literally. While literally screaming 'AAAAAAAAAAAAARRRRRRRRRRRGGGGGGGGGGGG!!!!!!!!!!!!!!!!!!'">literally</em> just rip out the 6502 from whatever machine you were using and put a next-gen processor in its socket.<p>
+	<p>The newer chip has more advanced capabilities and modes of operation, but requiring configuration before it can behave as the lesser chip would make it an unsuitable replacement. So, by design, whenever a reset is triggered, the 65c816 and its variants <em>always</em> start in 6502 emulation mode. The processor status register only has 8 bits visible to the programmer; the 9th bit, the emulation flag, is hidden. The only way to affect the flag is to swap it with the carry flag.</p>
+	<p><code class="opcode">CLD</code> means <code><b>CL</b>ear <b>D</b>ecimal flag</code>. The 6500 series is able to perform arithmetic with a more human-friendly system called "Binary Coded Decimal". Since this mode is immediately disabled, I'm not going to explain it.</p>
+
+	<h3>Technically correct</h3>
+	<p><code class="opcode">X16</code> isn't a valid instruction.</p>
+	<p>Or is it? 🤨</p>
+	<p>This is almost certainly an assembler-specific mnemonic for exactly what I have on the right: <code class="opcode">REP #$10</code>, which means <code><b>R</b>es<b>E</b>t <b>P</b>rocessor flags</code>. In this case, the only flag being reset is bit 4, the index register flag also known as <code class="register">X</code>. When this flag is reset, the index registers will be in 16-bit mode.</p>
+	<p><code class="opcode">M8</code> is in the same situation as above. It's not an official mnemonic, but there's no doubt that it corresponds to <code class="opcode">SEP #$20</code>, which means <code><b>SE</b>t <b>P</b>rocessor flags</code>. This time, the 5th bit (the <code class="register">M</code> flag) is being set, which puts the accumulator in 8-bit mode.</p>
+
+	<h3 joke="tasteless" title="Because she is stacked.">I call her LIFO</h3>
+	<p><code class="opcode">LDX #1FFFH</code> means <code><b>L</b>oa<b>D</b> <b>X</b> register</code>, and the <code>#</code> means immediate addressing; i.e. it will use the operand as a literal value instead of an address. In this case, that value is <code class="value">#1FFFH</code>. In our demonic computer, the suffix <code>H</code> is used to indicate that a value is to be interpreted as hexadecimal. This wasn't unheard of for assemblers of the time, but it is inferior to the <code>$</code> prefix. At least if you ask me. By reading this blog, you are hereby asking me.</p>
+	<p><code class="opcode">TXS</code> means <code><b>T</b>ransfer <b>X</b> to <b>S</b>tack pointer</code>. The value we just loaded is what's being transfered here. This means that the top of the stack is now pointing to that location in memory (<code class="value">$1FFF</code>).</p>
+
+	<h3>Divergence</h3>
+	<p><code class="opcode">STZ</code> means <code><b>ST</b>ore <b>Z</b>ero to</code>, and it's writing to some address that has been named <code class="label">NMITIME</code>. This is one letter off of <code class="label">NMITIMEN</code>, the official name given by the SNES Developers' Manual to <code class="address">$4200</code>. This address is the interrupt enable hardware register. Setting it to 0 disables NMI, tells IRQ to never trigger, and disables the auto joypad read.</p>
+	<p>But what's this? The actual instruction the game uses is an <code class="opcode">STA</code>, <code><b>ST</b>ore <b>A</b>ccumulator to</code>, after using <code class="opcode">LDA #$00</code>, to <code><b>L</b>oa<b>D</b> <b>A</b>ccumulator with</code> <code class="value">0</code>.</p>
+	<p>What gives? They made their real code take more time and space than the code in their intro sequence. While it's completely inconsequential, it's still confounding. Someone was clearly aware of this slightly better code, but apparently someone else (or maybe the same guy) wanted to be a contrarian?</p>
+
+	<h3>Back on track</h3>
+	<p><code class="opcode">LDA</code> was just described, so we won't describe it again. <code class="label">BLANKING</code> isn't something we have the definition for, but, like the mysteries we encountered earlier, we pretty much have the answer. The value is definitely <code class="value">$80</code>, and I am willing to bet my life on it. Why? See below.</p>
+	<p>Again, you need to pay attention. <code class="opcode">STA</code> was just explained. <code class="label">INIDSP</code> is another register just 1 letter off of its official name in the SNES Developer Manual. So we know this is meant to be <code class="address">$2100</code>. Thus, we know that <code class="label">BLANKING</code> is the value <code class="value">$80</code>, because this would set bit 7 of <code class="label">INIDISP</code> which puts the PPU into force <em>blank</em> so that its registers can be accessed by the CPU without conflict.<p>
+
+	<h3>WTF</h3>
+	<p>Now, out of nowhere, we have a huge chunk of code that's completely missing from the intro. Maybe it was omitted because it was boring, or maybe it wasn't written yet. This code sets some flags and reads RAM for a signature that the game uses to check for a soft reset. RAM decays, but if it only lacks power for a short period of time, it will stay in tact. So here, the game is looking for the phrase <code>programming by cozy!</code> in Work RAM, and, if it finds it, it will skip the animated logo.</p>
+
+	<h3>Even more wtf</h3>
+	<p><code class="opcode">BJSR</code> is something I have absolutely no clue about. This is not a standard mnemonic, nor can I find anything about any assembler that uses it. Above all, it's a 4 letter mnemonic, when every other mnemonic in the 6500 family is only 3. My only guess is that this means something like <code><b>B</b>ig <b>J</b>ump to <b>S</b>ub<b>R</b>outine</code>, which would be a jump to code specified by a 24-bit address. The actual letters normal people use are <code class="opcode">JSL</code> for <code><b>J</b>ump to <b>S</b>ubroutine <b>L</b>ong</code>.</p>
+	<p>The routine in game is something named <code class="routine">ATLUS</code>. Appropriately enough, the routine at <code class="address">$06:E04D</code> is a subroutine that animates the spinning ATLUS letters when you first boot up the game.</p>
+	<p>I think it's safe to assume they're the same thing.</p>
+
+	<h3>God is Good</h3>
+	<p>The chant at the bottom seems like complete gibberish, as if someone were speaking in tongues, but it has an actual traceable source! The <i>Grimoire of Armadel</i> is a book by some French guy in the 1600s, and it contains this text on <a href="https://www.google.com/books/edition/The_Grimoire_of_Armadel/xZbeyQM7Z8kC?hl=en&gbpv=1&dq=EL+ELOHIM+ELOHO+ELOHIM+SEBAOTH&pg=PA19&printsec=frontcover">page 19</a>. The linked printing of the text contains a translation of the text, and while it isn't gibberish, it doesn't really mean anything.</p>
+	<p>Most of the words are actually Hebrew names for God. The latter lines contain Greek describing God as powerful. The <em>agla</em> in the final line is a Hebrew acronym meaning "God is strong forever!"</p>
+	<p>Unfortunately, no matter how hard I try, I cannot get this chant to assemble into a ROM.</p>
+</div>
