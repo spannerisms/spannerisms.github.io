@@ -1,4 +1,5 @@
 ---
+permalink: /honeycomb/
 layout: default
 title: Milon's Secret Honeycomb
 background: glitchybg
@@ -97,7 +98,7 @@ background: glitchybg
 
 	<p>This trick is used in a couple places in this game, such as in the umbrella collection code at <code class="address">$D150</code>. It was also used in the code above&mdash;the coin collection code&mdash;at <code class="address">$9A23</code>.</p>
 
-	<p>The developers did not intend to reward a player for collecting 256 coins; in fact, they assumed no one would. That or they assumed this counter would reset often enough to never reach that high. In either case, it's almost certain that this <code class="instruction">BNE</code> was an optimization. Their thinking was likely that, being a counter, this value will <em>never</em> be zero, which makes it the perfect candidate to save a byte by using a determinated flag to branch over another segment of code. As you've probably already guessed, this was not a good assumption.</p>
+	<p>The developers did not intend to reward a player for collecting 256 coins; in fact, they assumed no one would bother collecting that many. That or they assumed this counter would reset often enough to never reach that high. In either case, it's almost certain that this <code class="instruction">BNE</code> was an optimization. Their thinking was likely that, being a counter, this value will <em>never</em> be zero, which makes it the perfect candidate to save a byte by using a determinated flag to branch over another segment of code. As you've probably already guessed, this was not a good assumption.</p>
 	<p>Or maybe it was. We can also pin the blame on shops for not resetting the coin counter upon exit<a footnote href="#footnote-counterreset"></a>. Perhaps when this code was written, it was the case that the counter got reset. The only way to bring the coins back is to reload the room, and doing so by exiting to the overworld will also reset the coin counter. It's likely that shops don't reset this counter because it could result in a softlock were you to collect every coin then load a shop before grabbing the key<a footnote href="#footnote-keynote"></a><a footnote href="#footnote-whyfireplace"></a>.</p>
 	<p>It's also likely that the developers just never considered the implications of repeatedly reloading a room for coins. They may have even added the respawning coins as a last minute thing and didn't have time to revisit other coin-related code.</p>
 	<p>I can speculate a dozen more scenarios for why this is the way it is, but I think we've satisfyingly answered our original question.</p>
