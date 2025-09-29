@@ -5,7 +5,7 @@ title: Fake Flippers Explication
 background: glitchybg
 ---
 
-<div class="contentstuff glitchexp">
+
 	<h1>Fake Flippers</h1>
 	<p>Fake flippers is a popular glitch that allows Link to swim in deep water without having the flippers.</p>
 	<p>The most well-known method is lining up with a screen transition, jumping into the water, and then triggering the transition before splashing out. The common explanation for this is as follows: <q class="wrong">When Link hits the water, the game takes 1 frame to know if you have the flippers, which lets you trigger the transition. After the transition, flippers aren't checked for, because you're already swimming.</q></p>
@@ -43,4 +43,3 @@ background: glitchybg
 	<p>When Link hits the water, a splash ancilla is created to make a splash graphic. This ancilla is also responsible for removing Link from the water if he doesn't have the flippers. The splash is around for 8 frames, and it runs the removal code on the 9th frame when it terminates execution. This is just enough time for Link to gain the acceleration swimming to move 1 pixel and transition. The transition removes the splash ancilla, preventing the code from ever running. Once swimming, in JP1.0, the game doesn't check for flippers.</p>
 	<p>It is possible to prevent the ancilla from spawning by filling the first 5 ancilla slots before hitting the water. In this scenario, Link is immediately free to swim around. This is possible on later versions, but because they check for flippers while swimming, Link cannot move.</p>
 	<p>When being revived by a fairy over deep water, the game just assumes that Link was swimming, so it places him back in that state.</p>
-</div>

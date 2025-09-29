@@ -4,7 +4,7 @@ layout: default
 title: Random Number Generation Explication
 background: mechanicsbg
 ---
-<div class="contentstuff glitchexp">
+
 	<h1>Random Number Generation</h1>
 	<p>Let's start by being pedantic and then get even more pedantic. Generally, computers are not capable of actually being random. The only truly random things in the universe are at the quantum scale. These are possible to utilize through hardware, but such devices aren't that widespread (as of time of writing). Non-quantum hardware can provide nearly-but-not-literally-impossible to predict noise that is very useful when generating random numbers. <a href="https://random.org">Random.org</a> uses atmospheric noise as its source. Don't believe the claim that it "offers <em>true</em> random numbers" (their emphasis), as Laplace's demon would be able to predict the results every time.</p>
 	<p>If special hardware is not an option, then you are stuck with software-generated random number generation, or, more correctly, <em>pseudo-random number generation</em> (PRNG). The prefix <i>pseudo-</i> means "fake". Software-based generation is pseudo because, like Laplace with non-quantum noise, the results are 100% deterministic if you know the starting conditions. But, in this case, knowing the starting conditions isn't as unfathomable as knowing the precise location and energy of 10<sup>40</sup>-something molecules. The starting conditions are safe because they're kept secret and rely on large calculations that would take billions of years to brute force.</p>
@@ -97,4 +97,3 @@ background: mechanicsbg
 
 	<h2>Summary</h2>
 	<p>The PRNG used by <i class="gameName">A Link to the Past</i>, is not good, but it does get the job done. The distribution of numbers it produces closely resembles more reliable PRNG functions, but close analysis reveals many faults. Its implementation makes it impossible to predict in real time, and even more impossible to actually manipulate.</p>
-</div>

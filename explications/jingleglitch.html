@@ -5,7 +5,7 @@ title: Jingle Glitch Explication
 background: glitchybg
 ---
 
-<div class="contentstuff glitchexp">
+
 	<h1>Jingle Glitch</h1>
 	<p>There are a lot of jingles in the game, and there are also a lot of glitches, but a particular intersection of these disciplines intrigues many and arouses all.</p>
 	<p>This is one of a large class of glitches that exists because two actions occurred on the same frame. Naïvely, this might lead one to surmise that something with the shutter doors prevents something with the stairs from happening, but it's actually the opposite. Something with the shutter doors causes something with the stairs to happen <em>twice</em>!</p>
@@ -27,4 +27,3 @@ background: glitchybg
 	<p>As it so happens, shutter doors themselves are animated with a submodule too. Once the animation is complete, the submodule is reset back to the default one. The game makes a pretty fair assumption that shutter doors can only be triggered from the default submodule, so there's no reason to change to anything but when finished.</p>
 	<p>Interroom stairs are where this assumption doesn't work. On the next frame after the shutters fully close, room tags&mdash;and thus staircase detection&mdash;will be run again. Movement on stairs is checked for with <code class="label">WALKDIR</code> (at <code class="address">$67</code>), and that says Link is still moving.</p>
 	<p><em>Quoth the staircase, "Triggered more."</em></p>
-</div>

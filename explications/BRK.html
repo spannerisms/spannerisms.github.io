@@ -4,7 +4,7 @@ layout: default
 title: BRK Explication
 background: glitchybg
 ---
-<div class="contentstuff glitchexp">
+
 	<h1>BRK</h1>
 	<p><code class="opcode">BRK</code> is an instruction in the 65xx family of processors that triggers a software interrupt designed for debugging. An interrupt is a signal sent to the CPU that tells it to stop whatever it's doing and run a specific routine, determined by what the interrupt was. It may seem a bit unintuitive that an interrupt can be triggered by an operation the CPU performs. At least to me. After all, if an instruction is written to a specific place, it may seem more like an intended subroutine rather than an interrupt, which has a connotation of spontaneity. But, the intended functionality lumps it in pretty well with the other interrupts.</p>
 
@@ -115,4 +115,3 @@ background: glitchybg
 
 	<h2>SNES Test ROM</h2>
 	<p>Another one pointing to open bus, this time to <code class="address">$4000</code>. Interestingly, <code class="value">$40</code> is the opcode for <code class="opcode">RTI</code>, and since the top byte will be in the A bus, this vector will behave more like <i>Whizz</i> than <i>Kirby Super Star</i>.</p>
-</div>

@@ -4,7 +4,7 @@ layout: default
 title: Unused Room Effects
 background: mechanicsbg
 ---
-<div class="contentstuff glitchexp">
+
 	<h1>Unused room effects</h1>
 	<p>Whenever you have to kill or push something to open a door or reveal a chest, that's being handled by a room effect. These effects are decided when the room is loaded, with the tag for that effect being held in the room's header. Not every room has an effect tag, but some have a tag that they never even use.</p>
 	<p>A lot of unused rooms share headers as a means of saving ROM space, which technically results in unused effects. The most infamous consequence of this is that room 002D shares a header with room 002E, giving it the "kill enemies to spawn a chest" effect. But this room has no chest, so the game just crashes.</p>
@@ -27,4 +27,3 @@ background: mechanicsbg
 
 	<h3>Rooms 0128 through 013F</h3>
 	<p>This post wouldn't be complete if I didn't mention that these unused rooms all point to null data filled with <code class="value">$FF</code>. That value is not a valid room tag, and when it's used to find an effect routine, the game reads code as a vector that takes it to open bus, crashing the game.</p>
-</div>

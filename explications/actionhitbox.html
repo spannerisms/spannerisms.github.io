@@ -4,7 +4,7 @@ layout: default
 title: Action Hitbox
 background: mechanicsbg
 ---
-<div class="contentstuff mechanicsstuff">
+
 	<h1>Action Hitbox</h1>
 	<p>The action hitbox, like all abstract mechanical concepts, is a name given to us by MathOnNapkins in his US disassembly. This hitbox describes the current size and location of Link's sword and hammer attacks. Its routine begins at <code class="address">$06F5E6</code>, and is surprisingly simple.</p>
 
@@ -588,4 +588,3 @@ background: mechanicsbg
 	<p>It turns out to be even dumber.</p>
 	<p>When you hit King Helma with the hammer while outmaneuvering him, the game calls a subroutine to calculate the velocity of Link's recoil. In doing so, some leftovers are put into scratch space. And for some got dang reason, right after doing that, those same leftovers are used for the coordinates of the tink.</p>
 	<p>I think what they were going for is using the leftovers of the action hitbox routine for these coordinates, but, yeah&hellip;</p>
-</div>

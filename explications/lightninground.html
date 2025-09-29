@@ -4,7 +4,7 @@ layout: default
 title: Short Explications
 background: glitchybg
 ---
-<div class="contentstuff glitchexp">
+
 	<h1>Bite-sized Explications</h1>
 	<p>Some glitches are so simple that they can be explained in just a couple of sentences. Actually, I could probably explain any glitch in under 10 sentences. But I don't want to! I want to examine glitches in as much detail as possible. Some just don't have that many details, so I'll stick them here. And for these glitches only, I'll include a 1-sentence explanation that explains it perfectly as well.</p>
 
@@ -27,4 +27,3 @@ background: glitchybg
 	<h2 id="agarecoil">Recoil-free Agahnim damage<a href="#agarecoil" class="headerLink">(permalink)</a></h2>
 	<p>To determine damage, there's a single address that holds the last damage class calculated for. The value is used near the middle of the routine to determine the actual damage, and then again at the end to determine if the sprite should recoil. If the damage class is that of a medallion, the sprite does not recoil. When energy shots hit Agahnim, they preload some values then jump into the damage routine <em>after</em> the first use of damage class. Damage class is not used for their calculation, so the value is left alone; as such, the last damage class calculated before the fight will be used in the recoil check. If an enemy took damage from a medallion and no other enemy was directly attacked since, then that will be used for the calculation, and Agahnim will not recoil.</p>
 	<p class="supershort">An uncleaned shared value will tell the damage routine to not apply recoil to Agahnim.</p>
-</div>

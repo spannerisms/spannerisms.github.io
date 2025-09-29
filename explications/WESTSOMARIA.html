@@ -4,7 +4,7 @@ layout: default
 title: West Somaria Explication
 background: glitchybg
 ---
-<div class="contentstuff glitchexp">
+
 	<h1>West Somarias</h1>
 	<p>If you've ever seen me talk, you've probably seen me say "west somaria". The basic concept of them is super simple: opening doors. West somarias are nowhere near as damaging as the other directions, but they are way cooler. Except for a couple oddities, the west somaria doesn't do much to break the game. In fact, most of what goes on only requires understanding vanilla routines to explain. Oh boy!</p>
 
@@ -87,4 +87,3 @@ background: glitchybg
 	<h2>Summary</h2>
 	<p>West somarias corrupt the game submodule to 4, which is used when opening a key door. The parameters to this submodule's routines are meant to be set on the previous frame, usually via intended methods such as touching a key door with a key. The parameters are changed in very predictable and manipulable ways, such as slashing a door or transitioning. This makes opening specific doors with a west somaria fairly easy, at least in theory.</p>
 	<p>Shutter doors will remain open because they are actually assigned door numbers that do indeed correspond to bits in SRAM. Because code is shared for this, they will use those bits to determine what to do when the room is loaded.</p>
-</div>

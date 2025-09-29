@@ -4,7 +4,7 @@ layout: default
 title: Tree Warp Explication
 background: glitchybg
 ---
-<div class="contentstuff glitchexp">
+
 	<h1>Tree Warp</h1>
 	<p>Tree warp, or Dynamic Sprite Spawn Overflow (DSSO) for the glitch in general, is a strong contender for the coolest glitch. I've explained it before using the Agahnim 2 stal, but for this explanation, I'll be focusing on tree warp.</p>
 
@@ -73,4 +73,3 @@ background: glitchybg
 	<h2>Summary</h2>
 	<p>For some stupid reason, the talking tree is composed of 3 permanently active sprites&mdash;1 mouth, 2 eyes. The eyes are spawned dynamically by the mouth. When spawning sprites dynamically, the caller of the routine is left with the responsibility for adding a failsafe when all slots are full. Trees don't.</p>
 	<p>If the mouth spawns into the last available sprite slot, the eyes will end up in slot <code class="value">$FF</code>. Part of these invalid writes loads a value from scratch space to use for the X-coordinate. The value it loads ends up being part of the tree's spawn routine address (<code class="value">$90</code>), and it gets written to the last slot in sprite ID. This is the ID for a wallmaster, which ends up inheriting the properties of whatever sprite was in that slot. In the consistent set ups, this sprite is part of the other talking tree in Village of Outcasts, so the wallmaster is always active. And by sheer coincidence, it spawns immediately in the "grabbed player" mode.</p>
-</div>
