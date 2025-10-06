@@ -159,11 +159,11 @@ Without custom changes, there are only 3 valid locations for song banks:
 
 | Location | Size (main,aux) | Contains
 |:---:|:---:|:---|
-| `$1A9EF5` | (0x2DAE, $0688) | Overworld songs |
+| `$1A9EF5` | (0x2DAE, 0x0688) | Overworld songs |
 | `$1B8000` | (0x2CBF, 0x50C) | Underworld songs |
 | `$1AD380` | (0x1060, 0x1038) | Credits songs |
 
-The main song banks should never 0x2F00 (12,032) bytes, and auxiliary song banks should never 0x1300 (4,864) bytes. Breaking either of these limits will break the engine. You will also need to take care not to exceed the total length of the banks in ROM unless you are moving song data yourself.
+The main song banks should never exceed 0x2F00 (12,032) bytes, and auxiliary song banks should never exceed 0x1300 (4,864) bytes. Breaking either of these limits will break the engine. You will also need to take care not to exceed the total length of the banks in ROM unless you are moving song data yourself.
 
 The fairy theme (song 0B) is a special case. This song is always loaded and sits in a song bank of its own. To replace the fairy theme by itself, use the single song transfer method. When building custom banks, use the `skipsong` macro to avoid overwriting song 0B.
 
@@ -574,7 +574,7 @@ Panning allows a track to change the volume ratio between the left and right cha
     db !pan, <level [0-20]>
 ```
 
-The default pan level is `10`, giving both channels equal volumes. Lower values pan towards the right, with `0` producing sound out of only the right channel. Higher values pan towards the left, with `20` producing sount out of only the left channel. The defines `!pan0`, `!panR`, and `!panL` are provided for these values, respectively.
+The default pan level is `10`, giving both channels equal volumes. Lower values pan towards the right, with `0` producing sound out of only the right channel. Higher values pan towards the left, with `20` producing sound out of only the left channel. The defines `!pan0`, `!panR`, and `!panL` are provided for these values, respectively.
 
 Panning can be changed gradually as well:
 
@@ -633,7 +633,7 @@ A single C4 note can be played with a specific sample with one command. This is 
     db !perc00 ; plays sample 3 (0+3)
     db !perc0B ; plays sample 14 (11+3)
     db !setpbase, 0
-    db !perc0B ; plays sample 11 (11+0
+    db !perc0B ; plays sample 11 (11+0)
 ```
 
 The sample changed to by a percussion hit will apply until instrument is changed again with another percussive hit or the `!instr` command.
@@ -851,6 +851,6 @@ Improvements:
 
 ## Custom instruments
 
-Custom instruments are difficult to add because ALTTP likes having all of its instruments loaded at the same time, leaving little room for swapping samples out. For those brave enough to attempt this, I offer <a href="/assets/asmmusic/add_instruments.bin">this template</a> and <a href="https://github.com/spannerisms/BRRSuiteGUI">BRRSuiteGUI</a>. The latter is a custom tool for creating and previewing SNES sound samples in a more comfortable environment.
+Custom instruments are difficult to add because ALTTP likes having all of its instruments loaded at the same time, leaving little room for swapping samples out. For those brave enough to attempt this, I offer <a href="/assets/asmmusic/add_instruments.asm">this template</a> and <a href="https://github.com/spannerisms/BRRSuiteGUI">BRRSuiteGUI</a>. The latter is a custom tool for creating and previewing SNES sound samples in a more comfortable environment.
 
 I may expand this section in the future&hellip;
