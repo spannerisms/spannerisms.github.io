@@ -409,40 +409,33 @@ div.hackTitle {
 	background-position: 20% center;
 }
 
-.rupeegreen {
-	background: repeating-linear-gradient(to bottom, #489030 24%, #98D070 37%, #489030 42%);
-	background-blend-mode: luminosity
-}
-
-div.hackTitle.rupeegreentitle {
-	background-image: url('/assets/bg/rupeegreen.png'), linear-gradient(to right, transparent 5%, #489030 8%, #489030 60%, transparent);
-	border-radius: 0px 30px 30px 0px;
-}
 
 /* Header */
 nav.sitenav {
-	position: fixed;
-	box-shadow: 0 0 20px;
-	z-index: 9999999;
+	border-bottom: 2px solid #222266;
+	top: 0;
+
 }
 
 footer {
-	box-shadow: 0 0 20px;
-	z-index: 9999999;
+	border-top: 1px solid #222266;
+	bottom: 0;
+	margin-top: auto;
 }
 
-nav.sitenav,
-footer {
+footer,
+nav.sitenav {
 	display: block;
 	background: #CCCCFF;
 	height: 30px;
 	padding: 10px 40px 0 40px;
 	left: 0;
 	right: 0;
-	top: 0;
 	font-weight: bold;
 	font-family: tahoma, geneva, sans-serif;
 	overflow: hidden;
+	position: fixed;
+	z-index: 9999999;
 }
 
 nav > div {
