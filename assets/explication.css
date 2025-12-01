@@ -437,7 +437,7 @@ table.hitboxvisual div.hboxbounds:after {
 
 
 div.chestrock {
-	background-image: url("/assets/chest_rocks.png");
+	background-image: url("/assets/explication/chest_rocks.png");
 	width: 16px;
 	height: 16px;
 	background-repeat: no-repeat;
