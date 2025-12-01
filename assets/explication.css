@@ -432,3 +432,16 @@ table.hitboxvisual div.hboxbounds:after {
 	outline: 1px solid rgba(0, 0, 256, .6);
 	z-index: 4;
 }
+
+
+
+
+div.chestrock {
+	background-image: url("/assets/chest_rocks.png");
+	width: 16px;
+	height: 16px;
+	background-repeat: no-repeat;
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+	zoom: 200%;
+}

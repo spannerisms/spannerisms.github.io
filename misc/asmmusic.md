@@ -10,6 +10,8 @@ Before getting into this, I want to stress something: **finish your hack**. ALTT
 
 If your hack is nearly or already finished or you're someone who wants to make standalone songs for others, then continue reading. Oh, and get comfortable, because this is not a simple process.
 
+To follow this guide, you will need to be familiar with basic asm patching using Asar.
+
 ---
 
 ## Legend
@@ -541,7 +543,7 @@ The `!slide_to` command will begin on the note specified then slide to the note 
     db G5 ; slides B5 to G5
 ```
 
-The `!slide_to` and `!slide_from` commands apply until slide is set by either of them is used again to change the pitch slide properties or until disabled with the `!disable_slide` command.
+The `!slide_to` and `!slide_from` commands apply until another slide command is used to change the pitch slide properties or until disabled with the `!disable_slide` command.
 
 A single pitch slide can be performed with the `!slide_once` command:
 
@@ -636,7 +638,7 @@ A single C4 note can be played with a specific sample with one command. This is 
     db !perc0B ; plays sample 11 (11+0)
 ```
 
-The sample changed to by a percussion hit will apply until instrument is changed again with another percussive hit or the `!instr` command.
+The sample changed to by a percussion hit will persist until it is changed again with another percussive hit or the `!instr` command.
 
 ---
 

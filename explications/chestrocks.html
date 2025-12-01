@@ -1,0 +1,150 @@
+---
+permalink: /chestrocks/
+layout: default
+title: Some Overworld Rocks Are Chests Explication
+background: mechanicsbg
+---
+
+<h1>Some Overworld Rocks Are Chests</h1>
+
+<p>No. Really. Some rocks on the overworld do, in fact, behave like chests. The caveat is that they only behave like chests for the hammer and guard search probes. What is going on?</p>
+
+<h2>Overworld collision</h2>
+
+<p>First, we need to understand how underworld collision works. In the underworld, one room is loaded at a time and its tilemap exists in its entirety in memory at <code class="address">$7E2000</code> through to <code class="address">$7E5FFF</code>. Each tile is a 16-bit word with a 10-bit tile name that dictates its graphics. That 10-bit tile name is used to look up a tile type in a dynamic table stored in WRAM at <code class="address">$7EFE00</code> and then stored in a collision map held in memory at <code class="address">$7F2000</code> through to <code class="address">$7F3FFF</code>.</p>
+
+<p>The underworld's tilemap and collision loading is simple, because only two 64-by-64 maps are loaded at a time&mdash;the upper and lower layers. That works out to 4096 tiles&mdash;<code class="value">$1000</code> in hexadecimal&mdash;the exact size of your collision map buffers.</p>
+
+<p>The overworld, however, loads 8 times as many tiles! The smaller overworld screens are already 64-by-64, and four of those are loaded at once, even when loading a small screen. How does it have space for that?</p>
+
+<p>Compression.</p>
+
+<p>Instead of storing tilemaps directly, overworld screens instead are built with metatiles of 2-by-2 tiles which we will call "map16 objects". On the overworld, the memory at <code class="address">$7E2000</code> is repurposed to hold 8128 of these objects. There are 3744 defined map16 objects stored in a table at <code class="address">$0F8000</code>. Each entry consists of four 16-bit words which constitute the tilemap value of each of the tiles within the map16 object. This table is referenced whenever the overworld needs drawing ot updating, or whenever Link, or a sprite, or whatever needs to handle collision.</p>
+
+<p>So which of these definitions works as a chest?</p>
+
+<p>None of them.</p>
+
+<h2>Another table</h2>
+
+<p>While it is true that the vast majority of things look deeper into a map16 object to obtain the tile or tiles it needs, there are several exceptions to this:</p>
+
+<p>First, any interaction that manipulates the overworld, such as cutting bushes or grass, hammering a peg, or bonking a pile of rocks, has a map16 object ID hardcoded into the test logic. For example, the code below is how the shovel checks for diggability:</p>
+
+<div class="snesasm nolabel">
+	<div></div><div addr="$1BBDF4">CMP.w #$0034</div><div></div>
+	<div></div><div addr="$1BBDF7">BEQ diggable</div><div></div>
+	<div></div><div addr="$1BBDF9">CMP.w #$0071</div><div></div>
+	<div></div><div addr="$1BBDFC">BEQ diggable</div><div></div>
+	<div></div><div addr="$1BBDFE">CMP.w #$0035</div><div></div>
+	<div></div><div addr="$1BBE01">BEQ diggable</div><div></div>
+	<div></div><div addr="$1BBE03">CMP.w #$010D</div><div></div>
+	<div></div><div addr="$1BBE06">BEQ diggable</div><div></div>
+	<div></div><div addr="$1BBE08">CMP.w #$010F</div><div></div>
+	<div></div><div addr="$1BBE0B">BEQ diggable</div><div></div>
+	<div></div><div addr="$1BBE0D">CMP.w #$00E1</div><div></div>
+	<div></div><div addr="$1BBE10">BEQ diggable</div><div></div>
+	<div></div><div addr="$1BBE12">CMP.w #$00E2</div><div></div>
+	<div></div><div addr="$1BBE15">BEQ diggable</div><div></div>
+	<div></div><div addr="$1BBE17">CMP.w #$00DA</div><div></div>
+	<div></div><div addr="$1BBE1A">BEQ diggable</div><div></div>
+	<div></div><div addr="$1BBE1C">CMP.w #$00F8</div><div></div>
+	<div></div><div addr="$1BBE1F">BEQ diggable</div><div></div>
+	<div></div><div addr="$1BBE21">CMP.w #$010E</div><div></div>
+	<div></div><div addr="$1BBE24">BEQ diggable</div><div></div>
+</div>
+
+<p>The next exception is entrances, where tables at <code class="address">$1BB8BF</code> list all the map16 objects that can be used as a valid entrance tile. Without them, entrances cannot even be used. Additionally, the closed door objects that can be opened by touching them are hardcoded as map16 object IDs in the entrance logic routine; although, maybe that falls under the previous category.</p>
+
+<p>The final exception&mdash;and this is the oddball&mdash;is the routine <code class="routine">ReadOverworldTileType</code>, which uses the gigantic <code class="routine">OverworldTileTypeTable</code> at <code class="address">$1BF110</code>. This table contains a single byte for every map16 object that dictates a behavior for the entire metatile.<p>
+
+<h2>Now I'm annoyed</h2>
+
+<p>First off, why do the manipulability checks not use this table? Bushes, rocks, and diggable ground, and actually every interaction that has a hardcoded check already has an existing tile interaction type. Except doors, but those could easily be given one! This could have been much cleaner and expandable.</p>
+
+<p>Next, why does this table exist? It is only used by two things: the hammer for spawning a splash, and search probes for detecting collision. This table embodies an extremely odd and heavy hitting solution to these problems. Search probes could use the existing overworld tile checks that every other sprite uses. They already use the same routines as everything else for underworld tiles. Why are they different here? As for the hammer, it'd be slightly less efficient, but there's no reason it can't just check 4 tiles at once for being water. Why does it need to check map16 objects specifically.</p>
+
+<h2>But it wasn't a rock...</h2>
+
+<table class="float-right">
+	<tr class="header">
+		<th>Map16 ID</th>
+		<th>Image</th>
+	</tr>
+	<tr>
+		<td>$02BA</td>
+		<td><div class="chestrock" style="background-position-y:0px"></div></td>
+	</tr>
+	<tr>
+		<td>$02C0</td>
+		<td><div class="chestrock" style="background-position-y:-16px"></div></td>
+	</tr>
+	<tr>
+		<td>$02F8</td>
+		<td><div class="chestrock" style="background-position-y:-32px"></div></td>
+	</tr>
+	<tr>
+		<td>$02FA</td>
+		<td><div class="chestrock" style="background-position-y:-48px"></div></td>
+	</tr>
+	<tr>
+		<td>$0309</td>
+		<td><div class="chestrock" style="background-position-y:-64px"></div></td>
+	</tr>
+	<tr>
+		<td>$0310</td>
+		<td><div class="chestrock" style="background-position-y:-80px"></div></td>
+	</tr>
+	<tr>
+		<td>$0502</td>
+		<td><div class="chestrock" style="background-position-y:-96px"></div></td>
+	</tr>
+	<tr>
+		<td>$069E</td>
+		<td><div class="chestrock" style="background-position-y:-112px"></div></td>
+	</tr>
+	<tr>
+		<td>$0D0E</td>
+		<td><div class="chestrock" style="background-position-y:-128px"></div></td>
+	</tr>
+	<tr>
+		<td>$0D17</td>
+		<td><div class="chestrock" style="background-position-y:-144px"></div></td>
+	</tr>
+	<tr>
+		<td>$0D21</td>
+		<td><div class="chestrock" style="background-position-y:-160px"></div></td>
+	</tr>
+</table>
+
+<p>For some reason, inside <code class="routine">OverworldTileTypeTable</code>, there are 11 map16 objects that are given the value of <code class="value">$5C</code>, which corresponds to chest #4. Hammers then test this value for equality to <code class="value">$08</code> (deep water) and <code class="value">$09</code> (shallow water), and search probes use it to index a table at <code class="address">$0DB971</code>, which in turn gives the value <code class="value">$00</code>. Really, that value should be <code class="value">$01</code> for collision, or <code class="value">$02</code> for short collision, if we're being generous.</p>
+
+<p>So, unfortunately, we can't actually open any chest rocks in the overworld, because they're never considered a chest in that context. But they really are considered chests by the hammer. It just means nothing; they might as well be a wall.</p>
+
+<p>Why is the table like this? I have no clue. I'm not even going to try to guess. I also don't know if there are any other oddities. No other blatantly nonsense values exist in the table, but it could very well be the case that a handful of IDs are associated with something contradicting their graphics. There are just too many to check for me to care.</p>
+
+<div class="center clear">
+	<img src="/assets/explication/ai-generated_chest_game.png" class="screenshot">
+	<div class="imagecaption">Haters will say this is AI.</div>
+</div>
+
+<h2>The culprits</h2>
+
+<p>So what if you wanna hit your own chest rock? Well you can! I have gone ahead and annotated the chest rocks on every screen they appear. Enjoy!</p>
+
+<ul>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-0F.png">Screen 0F</a></li>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-2D.png">Screen 2D</a></li>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-33.png">Screen 33</a></li>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-37.png">Screen 37</a></li>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-3F.png">Screen 3F</a></li>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-4F.png">Screen 4F</a></li>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-77.png">Screen 77</a></li>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-7F.png">Screen 7F</a></li>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-80.png">Screen 80</a></li>
+	<li><a href="/assets/explication/chestrockscreens/chestrocks-81.png">Screen 81</a></li>
+</ul>
+
+
+
+

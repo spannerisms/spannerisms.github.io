@@ -301,6 +301,10 @@ table.align6right tr > td:nth-child(6) {
 	text-align: right;
 }
 
+table.aligncenter tr > td {
+	text-align: center;
+}
+
 td {
 	padding: 2px 5px;
 }
