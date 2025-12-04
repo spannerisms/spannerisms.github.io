@@ -19,7 +19,7 @@ background: mechanicsbg
 
 <p>Compression.</p>
 
-<p>Instead of storing tilemaps directly, overworld screens instead are built with metatiles of 2-by-2 tiles which we will call "map16 objects". On the overworld, the memory at <code class="address">$7E2000</code> is repurposed to hold 8128 of these objects. There are 3744 defined map16 objects stored in a table at <code class="address">$0F8000</code>. Each entry consists of four 16-bit words which constitute the tilemap value of each of the tiles within the map16 object. This table is referenced whenever the overworld needs drawing or updating, or whenever Link, or a sprite, or whatever needs to handle collision.</p>
+<p>Instead of storing tilemaps directly, overworld screens are built with metatiles of 2-by-2 tiles which we will call "map16 objects". On the overworld, the memory at <code class="address">$7E2000</code> is repurposed to hold 8128 of these objects. There are 3744 defined map16 objects stored in a table at <code class="address">$0F8000</code>. Each entry consists of four 16-bit words which constitute the tilemap value of each of the tiles within the map16 object. This table is referenced whenever the overworld needs drawing or updating, or whenever Link, or a sprite, or whatever needs to handle collision.</p>
 
 <p>So which of these definitions works as a chest?</p>
 
@@ -62,7 +62,7 @@ background: mechanicsbg
 
 <p>First off, why do the manipulability checks not use this table? Bushes, rocks, and diggable ground, and actually every interaction that has a hardcoded check already has an existing tile interaction type. Except doors, but those could easily be given one! This could have been much cleaner and more expandable.</p>
 
-<p>Next, why does this table exist? It is only used by two things: the hammer for spawning a splash, and search probes for detecting collision. This table embodies an extremely odd and heavy hitting solution to these problems. Search probes could use the existing overworld tile checks that every other sprite uses. They already use the same routines as everything else for underworld tiles. Why are they different here? As for the hammer, it'd be slightly less efficient, but there's no reason it can't just check 4 tiles at once for being water. Why does it need to check map16 objects specifically.</p>
+<p>Next, why does this table exist? It is only used by two things: the hammer for spawning a splash, and search probes for detecting collision. This table embodies an extremely odd and heavy hitting solution to these problems. Search probes could use the existing overworld tile checks that every other sprite uses. They already use the same routines as everything else for underworld tiles. Why are they different here? As for the hammer, it'd be slightly less efficient, but there's no reason it can't just check 4 tiles at once for being water. Why does it need to check map16 objects specifically?</p>
 
 <h2>But it wasn't a rock...</h2>
 
@@ -144,7 +144,3 @@ background: mechanicsbg
 	<li><a href="/assets/explication/chestrockscreens/chestrocks-80.png">Screen 80</a></li>
 	<li><a href="/assets/explication/chestrockscreens/chestrocks-81.png">Screen 81</a></li>
 </ul>
-
-
-
-

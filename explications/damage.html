@@ -673,7 +673,7 @@ background: mechanicsbg
 	<ul>
 		<li>If the damage is class <code class="value">$6</code> (arrows), check for silver arrows. If we do have silver arrows, change the damage class to <code class="value">$9</code>. This is also where an explicit check for silver-vulnerable Ganon is performed; if it's him, his damage timer is set to 32 frames.</li>
 		<li>If the damage class is <code class="value">$F</code> (quake), check the target and make sure it isn't airborne. If it is, the routine exits and no damage is done.</li>
-		<li>If the damage class is either <code class="value">$0</code> (boomerang) or <code class="value">$7</code> (hookshot), then a repulse spark ancilla is added after the damage routine.</li>
+		<li>If the damage class is either <code class="value">$0</code> (boomerang) or <code class="value">$7</code> (hookshot), then a tink spark is added after the damage routine.</li>
 		<li>If the damage class is <code class="value">$8</code> (bombs), then <code class="value">53</code> will be used as the iframe timer parameter for the damage routine. Otherwise, <code class="value">32</code> is used.</li>
 	</ul>
 
