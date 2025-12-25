@@ -11,15 +11,15 @@ background: mechanicsbg
 
 <h2>Overworld collision</h2>
 
-<p>First, we need to understand how underworld collision works. In the underworld, one room is loaded at a time and its tilemap exists in its entirety in memory at <code class="address">$7E2000</code> through to <code class="address">$7E5FFF</code>. Each tile is a 16-bit word with a 10-bit tile name that dictates its graphics. That 10-bit tile name is used to look up a tile type in a dynamic table stored in WRAM at <code class="address">$7EFE00</code> and then stored in a collision map held in memory at <code class="address">$7F2000</code> through to <code class="address">$7F3FFF</code>.</p>
+<p>First, we need to understand how underworld collision works. In the underworld, one room is loaded at a time and its tilemap exists in its entirety in memory at <addr>$7E2000</addr> through to <addr>$7E5FFF</addr>. Each tile is a 16-bit word with a 10-bit tile name that dictates its graphics. That 10-bit tile name is used to look up a tile type in a dynamic table stored in WRAM at <addr>$7EFE00</addr> and then stored in a collision map held in memory at <addr>$7F2000</addr> through to <addr>$7F3FFF</addr>.</p>
 
-<p>The underworld's tilemap and collision loading is simple, because only two 64-by-64 maps are loaded at a time&mdash;the upper and lower layers. That works out to 4096 tiles&mdash;<code class="value">$1000</code> in hexadecimal&mdash;the exact size of each collision map buffer.</p>
+<p>The underworld's tilemap and collision loading is simple, because only two 64-by-64 maps are loaded at a time&mdash;the upper and lower layers. That works out to 4096 tiles&mdash;<asmval>$1000</asmval> in hexadecimal&mdash;the exact size of each collision map buffer.</p>
 
 <p>The overworld, however, loads 8 times as many tiles! The smaller overworld screens are already 64-by-64, and four of those are loaded at once, even when loading a small screen. How does it have space for that?</p>
 
 <p>Compression.</p>
 
-<p>Instead of storing tilemaps directly, overworld screens are built with metatiles of 2-by-2 tiles which we will call "map16 objects". On the overworld, the memory at <code class="address">$7E2000</code> is repurposed to hold 8128 of these objects. There are 3744 defined map16 objects stored in a table at <code class="address">$0F8000</code>. Each entry consists of four 16-bit words which constitute the tilemap value of each of the tiles within the map16 object. This table is referenced whenever the overworld needs drawing or updating, or whenever Link, or a sprite, or whatever needs to handle collision.</p>
+<p>Instead of storing tilemaps directly, overworld screens are built with metatiles of 2-by-2 tiles which we will call "map16 objects". On the overworld, the memory at <addr>$7E2000</addr> is repurposed to hold 8128 of these objects. There are 3744 defined map16 objects stored in a table at <addr>$0F8000</addr>. Each entry consists of four 16-bit words which constitute the tilemap value of each of the tiles within the map16 object. This table is referenced whenever the overworld needs drawing or updating, or whenever Link, or a sprite, or whatever needs to handle collision.</p>
 
 <p>So which of these definitions works as a chest?</p>
 
@@ -54,9 +54,9 @@ background: mechanicsbg
 	<div></div><div addr="$1BBE24">BEQ diggable</div><div></div>
 </div>
 
-<p>The next exception is entrances, where tables at <code class="address">$1BB8BF</code> list all the map16 objects that can be used as a valid entrance tile. Without them, entrances cannot even be used. Additionally, the closed door objects that can be opened by touching them are hardcoded as map16 object IDs in the entrance logic routine; although, maybe that falls under the previous category.</p>
+<p>The next exception is entrances, where tables at <addr>$1BB8BF</addr> list all the map16 objects that can be used as a valid entrance tile. Without them, entrances cannot even be used. Additionally, the closed door objects that can be opened by touching them are hardcoded as map16 object IDs in the entrance logic routine; although, maybe that falls under the previous category.</p>
 
-<p>The final exception&mdash;and this is the oddball&mdash;is the routine <code class="routine">ReadOverworldTileType</code>, which uses the gigantic <code class="routine">OverworldTileTypeTable</code> at <code class="address">$1BF110</code>. This table contains a single byte for every map16 object that dictates a behavior for the entire metatile.<p>
+<p>The final exception&mdash;and this is the oddball&mdash;is the routine <asmfunc>ReadOverworldTileType</asmfunc>, which uses the gigantic <asmfunc>OverworldTileTypeTable</asmfunc> at <addr>$1BF110</addr>. This table contains a single byte for every map16 object that dictates a behavior for the entire metatile.<p>
 
 <h2>Now I'm annoyed</h2>
 
@@ -117,7 +117,7 @@ background: mechanicsbg
 	</tr>
 </table>
 
-<p>For some reason, inside <code class="routine">OverworldTileTypeTable</code>, there are 11 map16 objects that are given the value of <code class="value">$5C</code>, which corresponds to chest #4. Hammers then test this value for equality to <code class="value">$08</code> (deep water) and <code class="value">$09</code> (shallow water), and search probes use it to index a table at <code class="address">$0DB971</code>, which in turn gives the value <code class="value">$00</code>. Really, that value should be <code class="value">$01</code> for collision, or <code class="value">$02</code> for short collision, if we're being generous.</p>
+<p>For some reason, inside <asmfunc>OverworldTileTypeTable</asmfunc>, there are 11 map16 objects that are given the value of <asmval>$5C</asmval>, which corresponds to chest #4. Hammers then test this value for equality to <asmval>$08</asmval> (deep water) and <asmval>$09</asmval> (shallow water), and search probes use it to index a table at <addr>$0DB971</addr>, which in turn gives the value <asmval>$00</asmval>. Really, that value should be <asmval>$01</asmval> for collision, or <asmval>$02</asmval> for short collision, if we're being generous.</p>
 
 <p>So, unfortunately, we can't actually open any chest rocks in the overworld, because they're never considered a chest in that context. But they really are considered chests by the hammer. It just means nothing; they might as well be a wall.</p>
 

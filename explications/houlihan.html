@@ -12,7 +12,7 @@ background: houlihanbg
 	<p>To start, I'd like to clear up the second biggest misconception, which is that <span class="wrong">triggering Houlihan is the result of a messed up camera</span>. That's not exactly really true. The camera matters, but only indirectly. What really matters is your X-coordinate, Y-coordinate, and screen ID.</p>
 
 	<h3>Screen ID</h3>
-	<p>This is the easiest to explain. It's your screen's&hellip; ID&hellip; Basically "which screen are you on?" Except instead of saying <em>"Oh, I'm in Kakariko."</em>, it's the CPU reading address <code class="address">$8A</code> and saying <em>"Oh, you're on screen <code class="value">$0018</code>."</em></p>
+	<p>This is the easiest to explain. It's your screen's&hellip; ID&hellip; Basically "which screen are you on?" Except instead of saying <em>"Oh, I'm in Kakariko."</em>, it's the CPU reading address <addr>$8A</addr> and saying <em>"Oh, you're on screen <asmval>$0018</asmval>."</em></p>
 
 	<h3>Coordinates</h3>
 	<p>Your coordinates together are used to calculate a location in the Map16 tile buffer (which, to keep it brief, is how overworld tiles are stored in groups of 4 to keep them, their graphics, and their behaviors "easy" to control. There are more tiles on an overworld screen than in an underworld room, but they have the same buffer size, so concessions must be made). This index is then used in part of the search for where the hole goes.</p>

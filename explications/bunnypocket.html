@@ -9,7 +9,7 @@ background: glitchybg
 
 	<h2>Freedom of the press</h2>
 	
-	<p>Here's the exact code of the <code class="routine">HandleYItem</code> routine, with comments to understand it.</p>
+	<p>Here's the exact code of the <asmfunc>HandleYItem</asmfunc> routine, with comments to understand it.</p>
 	<div class="snesasm">
 		<div></div><div addr="$079AFE">LDA $3C</div><div>Check B button</div>
 		<div></div><div addr="$079B00">BEQ no_b_button</div><div>B button not held</div>
@@ -74,14 +74,14 @@ background: glitchybg
 	</div>
 	<p>We have a few particular values of interest here to explain our item storage:</p>
 	<ul>
-		<li><code class="address">$0301</code> and <code class="address">$037A</code> - bitfields when using an item</li>
-		<li><code class="address">$0303</code> - item currently equipped</li>
-		<li><code class="address">$0304</code> - item currently being used</li>
+		<li><addr>$0301</addr> and <addr>$037A</addr> - bitfields when using an item</li>
+		<li><addr>$0303</addr> - item currently equipped</li>
+		<li><addr>$0304</addr> - item currently being used</li>
 	</ul>
-	<p>When either of the bitfields has anything flagged, it skips code that syncs our equipped and used items. When we use a Y-item, the value of the <code class="register">Y</code> register (heh) is what's used to create the index into the jump table. Within this routine, there are 3 places where <code class="register">Y</code>.</p>
-	<p>The first instance is at <code class="address">$079B17</code>, where it is used to check whether or not we have an item override, such as the shovel during the digging game. If we do have an override (or if we're a bunny), then the remainder of the routine is skipped, and the item's routine is executed immediately.</p>
-	<p>The next instance is at <code class="address">$079B2B</code>, where <code class="register">Y</code> loads <code class="address">$0304</code>, our currently used item, and compares it to <code class="address">$0303</code>, our currently equipped item.</p>
-	<p>The last instance is at <code class="address">$079B5E</code>, where <code class="register">Y</code> is used to sync the used and active items, by loading <code class="address">$0303</code> and writing it to <code class="address">$0304</code>. This only occurs when both of the bitfields are unflagged; this condition is important to keep in mind as we delve further.</p>
+	<p>When either of the bitfields has anything flagged, it skips code that syncs our equipped and used items. When we use a Y-item, the value of the <asmreg>Y</asmreg> register (heh) is what's used to create the index into the jump table. Within this routine, there are 3 places where <asmreg>Y</asmreg>.</p>
+	<p>The first instance is at <addr>$079B17</addr>, where it is used to check whether or not we have an item override, such as the shovel during the digging game. If we do have an override (or if we're a bunny), then the remainder of the routine is skipped, and the item's routine is executed immediately.</p>
+	<p>The next instance is at <addr>$079B2B</addr>, where <asmreg>Y</asmreg> loads <addr>$0304</addr>, our currently used item, and compares it to <addr>$0303</addr>, our currently equipped item.</p>
+	<p>The last instance is at <addr>$079B5E</addr>, where <asmreg>Y</asmreg> is used to sync the used and active items, by loading <addr>$0303</addr> and writing it to <addr>$0304</addr>. This only occurs when both of the bitfields are unflagged; this condition is important to keep in mind as we delve further.</p>
 	<p>Take note that none of this code actually checks for a press of the Y button. That check is, for whatever reason, left to the individual items' routines. We'll be taking a look at one of those next, to find more clues about what causes this glitch.</p>
 	<h2><del>Hammer time</del></h2>
 	<p>Nah. That's such a cliché. Okay. Stab me in the eye, and I'll stab you back.</p>
@@ -89,7 +89,7 @@ background: glitchybg
 	<h2>Hammerabi's code</h2>
 	<p>That's so bad it'll work!</p>
 	<p>For our example, we'll be looking into the hammer. But to cover all bases and keep the investigation smooth, let's start by looking at what constitutes a Y press.</p>
-	<p>This is the <code class="routine">TestYButton</code> routine, disassembled from the JP1.0 ROM:</p>
+	<p>This is the <asmfunc>TestYButton</asmfunc> routine, disassembled from the JP1.0 ROM:</p>
 	<div class="snesasm">
 		<span>TestYButton:</span>
 		<div></div><div addr="$07B05C">BIT $3A</div><div>Check for Y press in bit 6 of $3A</div>
@@ -180,18 +180,18 @@ background: glitchybg
 	</ol>
 	<ol>Now the item usage:
 		<li>We're not using the B-button, so that doesn't matter.</li>
-		<li>We are a bunny, so we need to check what item we have equipped at <code class="address">$0303</code>.</li>
+		<li>We are a bunny, so we need to check what item we have equipped at <addr>$0303</addr>.</li>
 		<li>Since we have the mirror equipped, we pass, and can continue.</li>
 		<li>Now our item override is checked.</li>
 		<li>It's nothing, so we continue on.</li>
-		<li>Check our active item at <code class="address">$0304</code>. It's <code class="value">$04</code> for the hammer.</li>
-		<li>Compare that to our equipped item at <code class="address">$0303</code>. That value is currently <code class="value">$14</code>, for the mirror</li>
+		<li>Check our active item at <addr>$0304</addr>. It's <asmval>$04</asmval> for the hammer.</li>
+		<li>Compare that to our equipped item at <addr>$0303</addr>. That value is currently <asmval>$14</asmval>, for the mirror</li>
 		<li>These do not match, so we need to perform a couple additional checks.</li>
-		<li>Our active item is not the flute (<code class="value">$08</code>), so we can skip that section.</li>
-		<li>Nor is it the cape (<code class="value">$13</code>), so we can skip that too.</li>
-		<li>We look at both bitfields. We'll find that <code class="address">$0301</code> has a value of <code class="value">$02</code>, the bit for the hammer, while <code class="address">$037A</code> has a value of <code class="value">$00</code>.</li>
-		<li>Logically ORing these two together gives us <code class="value">$02</code>, a nonzero value, so we skip ahead to the next set of checks.</li>
+		<li>Our active item is not the flute (<asmval>$08</asmval>), so we can skip that section.</li>
+		<li>Nor is it the cape (<asmval>$13</asmval>), so we can skip that too.</li>
+		<li>We look at both bitfields. We'll find that <addr>$0301</addr> has a value of <asmval>$02</asmval>, the bit for the hammer, while <addr>$037A</addr> has a value of <asmval>$00</asmval>.</li>
+		<li>Logically ORing these two together gives us <asmval>$02</asmval>, a nonzero value, so we skip ahead to the next set of checks.</li>
 		<li>We're not using either rod, so both of those checks fail.</li>
-		<li>Our final item index we have in <code class="register">Y</code> is <code class="value">$04</code>, which we read from our actively used item.</li>
+		<li>Our final item index we have in <asmreg>Y</asmreg> is <asmval>$04</asmval>, which we read from our actively used item.</li>
 		<li>After converting this value into a table index, we end up executing the hammer routine.</li>
 	</ol>

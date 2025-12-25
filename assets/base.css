@@ -205,42 +205,35 @@ blockquote:after {
 }
 
 /* hack formatting */
-code {
+code,
+addr, asmop, asmvar, asmfunc, asmreg, asmval {
 	font-family: 'Roboto Mono', consolas, monospace;
 	font-size: 91%;
-	line-height: 0;
+	line-height: 90%;
 }
 
-code.instruction,
-code.opcode {
+asmop {
 	color: #0000CC;
 }
 
-code.address {
+addr {
 	color: #C93858;
 }
 
-code.label {
+asmvar {
 	color: #4949D7;
 }
 
-code.number,
-code.value {
+asmval {
 	color: #444499;
 }
 
-code.register {
+asmreg {
 	color: #0C9200;
 }
 
-code.routine {
+asmfunc {
 	color: #6E1BBB;
-}
-
-code.addrsize {
-	font-size: 85%;
-	color: #444444;
-	vertical-align: bottom;
 }
 
 code.mathVar,
@@ -374,13 +367,12 @@ div.content {
 }
 
 .mechanicsbg {
-	background-image: url('/assets/bg/bank07code.png'), linear-gradient(to bottom, #CCCCFF, #777799);
+	background-image: url('/assets/bg/bank07code.png'), linear-gradient(to bottom, #C7B6F9, #756A96);
 	background-repeat: repeat, repeat;
 	image-rendering: crisp-edges;
 	image-rendering: pixelated;
 	background-attachment: fixed, scroll !important;
 	background-position: left, center;
-	background-blend-mode: multiply;
 }
 
 .houlihanbg {

@@ -26,4 +26,4 @@ background: mechanicsbg
 	<p>These two rooms constitute the old lady's house in the north of Kakariko, and they're the weirdest ones, because they don't have tags to call their own. Their data stops before those values are defined, which means the room effects are bleeding in from the next header. These are the only rooms where this happens (and they share the same header), but it results in them having a nothing tag, and a north-east kill door tag.</p>
 
 	<h3>Rooms 0128 through 013F</h3>
-	<p>This post wouldn't be complete if I didn't mention that these unused rooms all point to null data filled with <code class="value">$FF</code>. That value is not a valid room tag, and when it's used to find an effect routine, the game reads code as a vector that takes it to open bus, crashing the game.</p>
+	<p>This post wouldn't be complete if I didn't mention that these unused rooms all point to null data filled with <asmval>$FF</asmval>. That value is not a valid room tag, and when it's used to find an effect routine, the game reads code as a vector that takes it to open bus, crashing the game.</p>

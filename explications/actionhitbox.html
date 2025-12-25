@@ -6,7 +6,7 @@ background: mechanicsbg
 ---
 
 	<h1>Action Hitbox</h1>
-	<p>The action hitbox, like all abstract mechanical concepts, is a name given to us by MathOnNapkins in his US disassembly. This hitbox describes the current size and location of Link's sword and hammer attacks. Its routine begins at <code class="address">$06F5E6</code>, and is surprisingly simple.</p>
+	<p>The action hitbox, like all abstract mechanical concepts, is a name given to us by MathOnNapkins in his US disassembly. This hitbox describes the current size and location of Link's sword and hammer attacks. Its routine begins at <addr>$06F5E6</addr>, and is surprisingly simple.</p>
 
 	<h2>What even is a hitbox?</h2>
 	<p>Hitboxes are very simple shapes. In fact, they're rectangles defined by 4 parameters:</p>
@@ -76,10 +76,10 @@ background: mechanicsbg
 		</tbody>
 	</table>
 
-	<p>The dashing hitbox is used whenever the dashing flag at <code class="address">$0372</code> is nonzero. The direction Link is facing is used to index tables just before the routine to determine the relative offsets of the top-left corner. Regardless of Link's direction, the dash hitbox always extends 16 pixels right and 16 pixels down.</p>
+	<p>The dashing hitbox is used whenever the dashing flag at <addr>$0372</addr> is nonzero. The direction Link is facing is used to index tables just before the routine to determine the relative offsets of the top-left corner. Regardless of Link's direction, the dash hitbox always extends 16 pixels right and 16 pixels down.</p>
 
 	<h3>Brashing I guess</h3>
-	<p>The spin hitbox is next, because it's dead simple, and because the next two sets need to be discussed together. This hitbox is used when bit7 of <code class="address">$3C</code>, an address for sword control, is set.</p>
+	<p>The spin hitbox is next, because it's dead simple, and because the next two sets need to be discussed together. This hitbox is used when bit7 of <addr>$3C</addr>, an address for sword control, is set.</p>
 	<p>Link's direction is completely irrelevant for the spin hitbox. This hitbox will always be 14 pixels up, 10 pixels left, and extend 44 pixels right and 45 pixels down.</p>
 
 	<h3>Smashing and Caching and Slashing</h3>
@@ -149,9 +149,9 @@ background: mechanicsbg
 				<td>spin</td>
 		</tbody>
 	</table>
-	<p>The hammer and net hitboxes point to the same branch, which is taken when the hammer is flagged (bit 1 or unused bit 3 of <code class="address">$0301</code>) or the net is flagged (bit 4 of <code class="address">$037A</code>). This routine shares code with slashing and poking, but there's a key difference. Believe it or not, the direction Link is facing is not taken into account.</p>
-	<p>The sword control address <code class="address">$3C</code> handles spin attacks, but it also handles whether or not a hitbox should even be calculated for other sword attacks. In this case, when the value is non-negative, it indexes a table (shown to the right), for this decision. For the hammer and net, the value here is irrelevant.</p>
-	<p>The parameters of the hitbox are indexed from various tables using the <code class="register">X</code> register. For the hammer and net, this index is always 0, but for sword attacks, it is a function of Link's direction and the current animation step of the attack, which is held in <code class="address">$3C</code>. Once this index is calculated, both branches merge, and the rest of the routine is the same.</p>
+	<p>The hammer and net hitboxes point to the same branch, which is taken when the hammer is flagged (bit 1 or unused bit 3 of <addr>$0301</addr>) or the net is flagged (bit 4 of <addr>$037A</addr>). This routine shares code with slashing and poking, but there's a key difference. Believe it or not, the direction Link is facing is not taken into account.</p>
+	<p>The sword control address <addr>$3C</addr> handles spin attacks, but it also handles whether or not a hitbox should even be calculated for other sword attacks. In this case, when the value is non-negative, it indexes a table (shown to the right), for this decision. For the hammer and net, the value here is irrelevant.</p>
+	<p>The parameters of the hitbox are indexed from various tables using the <asmreg>X</asmreg> register. For the hammer and net, this index is always 0, but for sword attacks, it is a function of Link's direction and the current animation step of the attack, which is held in <addr>$3C</addr>. Once this index is calculated, both branches merge, and the rest of the routine is the same.</p>
 	<p>If direction is irrelevant for the hammer and net, how are their hitboxes actually different?</p>
 	<p>This is where two more variables come into play. They're pretty much an additional offset to <code class="mathVar">x</code> and <code class="mathVar">y</code>, so we'll call them <code class="mathVar">O<sub>x</sub></code> and <code class="mathVar">O<sub>y</sub></code>.</p>
 	<p>These offsets are constantly being recalculated, and they depend mostly on Link's current action and the direction he's facing. So I kinda lied. Direction does matter for the hammer and net, but it's done indepedently in an entirely separate part of the code. Furthermore, this means direction matters <em>twice</em> for slash and poke attacks.</p>
@@ -579,8 +579,8 @@ background: mechanicsbg
 	</table>
 
 	<h3>Oddities</h3>
-	<p>Interestingly, I didn't make any mention of how exactly a hitbox is cancelled. That's because, they kind of aren't. In the case where everything else fails the scratch space values are mostly left alone. The only one that isn't is the high byte of the x-coordinate, which will take on the value <code class="value">0x80</code>. This means the existing values will be used for the size and vertical position of the hitbox, but the horizontal position will be anywhere from &minus;32513 to &minus;32768 pixels away.</p>
-	<p>What about the offsets for the hammer? Most of the time, these extra offsets are <code class="value">0x80</code>. They are only set to proper values for a single frame. But, nothing actually prevents the hitbox from being created. Instead, it will just use that default value. Unfortunately, everything that requests an action hitbox also checks <code class="mathVar">O<sub>y</sub></code> beforehand, skipping the request and subsequent hitbox code if the value is exactly <code class="value">0x80</code>.</p>
+	<p>Interestingly, I didn't make any mention of how exactly a hitbox is cancelled. That's because, they kind of aren't. In the case where everything else fails the scratch space values are mostly left alone. The only one that isn't is the high byte of the x-coordinate, which will take on the value <asmval>0x80</asmval>. This means the existing values will be used for the size and vertical position of the hitbox, but the horizontal position will be anywhere from &minus;32513 to &minus;32768 pixels away.</p>
+	<p>What about the offsets for the hammer? Most of the time, these extra offsets are <asmval>0x80</asmval>. They are only set to proper values for a single frame. But, nothing actually prevents the hitbox from being created. Instead, it will just use that default value. Unfortunately, everything that requests an action hitbox also checks <code class="mathVar">O<sub>y</sub></code> beforehand, skipping the request and subsequent hitbox code if the value is exactly <asmval>0x80</asmval>.</p>
 
 	<h2>Tiny glitch</h2>
 	<p>And as one last thing: ya know that thing where you hit King Helma and then he clinks you and you see the clink at the bottom. What's that about?</p>

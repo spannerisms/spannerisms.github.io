@@ -17,7 +17,7 @@ background: glitchybg
 
 	<p>Our first question should be why the fireplace room coins can be recollected in the first place.</p>
 
-	<p>Normally, coins are collectible only once. Collection is handled by the routine <code class="routine">HandleMoneyHoneyCollection</code>, which (as the nomenclature implies) also handles the collection of honeycombs. The end of this routine calls <code class="routine">FlagObjectAsCollected</code>, which manipulates the object's tilemap coordinates to flag a single bit in a table held in RAM at <code class="address">$0722</code>, which we'll call <code class="label">TILEFLAG</code>.</p>
+	<p>Normally, coins are collectible only once. Collection is handled by the routine <asmfunc>HandleMoneyHoneyCollection</asmfunc>, which (as the nomenclature implies) also handles the collection of honeycombs. The end of this routine calls <asmfunc>FlagObjectAsCollected</asmfunc>, which manipulates the object's tilemap coordinates to flag a single bit in a table held in RAM at <addr>$0722</addr>, which we'll call <asmvar>TILEFLAG</asmvar>.</p>
 
 	<p>If you're wondering where room ID comes into the equation: it doesn't. Object collection is tracked only by position within the room. If that sounds like it can lead to conflicts, it can and does! There are multiple examples of coin pairs that conflict with each other, making them mutually exclusive in a given playthrough.</p>
 
@@ -28,14 +28,14 @@ background: glitchybg
 
 	<p>That one's for the collection. For the reveal, we need to understand another mechanic.</p>
 
-	<p>Indoor screens have 32 different object types, with IDs from <code class="value">$00</code> up through <code class="value">$1F</code>. The coin is object1E and the honeycomb is object1F. Objects 1C and 1D are flagged as breakable with the bubble, and they contain a coin and honeycomb, respectively. When object1C is destroyed, it transforms into object1E; likewise with objects 1D and 1F.</p>
-	<p>This transformation also requires that the object at this position not be flagged as collected in the <code class="label">TILEFLAG</code> table. If its position is flagged, as determined by the <code class="routine">CheckIfObjectIsCollected</code> routine, the ID of the transformation tile is changed to <code class="value">$00</code>, that of an empty space.</p>
+	<p>Indoor screens have 32 different object types, with IDs from <asmval>$00</asmval> up through <asmval>$1F</asmval>. The coin is object1E and the honeycomb is object1F. Objects 1C and 1D are flagged as breakable with the bubble, and they contain a coin and honeycomb, respectively. When object1C is destroyed, it transforms into object1E; likewise with objects 1D and 1F.</p>
+	<p>This transformation also requires that the object at this position not be flagged as collected in the <asmvar>TILEFLAG</asmvar> table. If its position is flagged, as determined by the <asmfunc>CheckIfObjectIsCollected</asmfunc> routine, the ID of the transformation tile is changed to <asmval>$00</asmval>, that of an empty space.</p>
 
-	<p>There are four other breakable blocks, with IDs <code class="value">$18</code>, <code class="value">$19</code>, <code class="value">$1A</code>, and <code class="value">$1B</code>. These are dynamic destructibles which have different transformations depending on the current room, and, importantly, they do not call <code class="routine">CheckIfObjectIsCollected</code>. For this discussion, we only need to look at the definition of object1B in room 08 (the fireplace room), which is <code class="value">$1E</code>; this block turns into a coin. It does, in fact, become a real coin, and it still gets flagged as collected when grabbed. The only difference is that object1B doesn't bother checking if it's been previously collected; it will always transform into a coin (in the fireplace room).</p>
+	<p>There are four other breakable blocks, with IDs <asmval>$18</asmval>, <asmval>$19</asmval>, <asmval>$1A</asmval>, and <asmval>$1B</asmval>. These are dynamic destructibles which have different transformations depending on the current room, and, importantly, they do not call <asmfunc>CheckIfObjectIsCollected</asmfunc>. For this discussion, we only need to look at the definition of object1B in room 08 (the fireplace room), which is <asmval>$1E</asmval>; this block turns into a coin. It does, in fact, become a real coin, and it still gets flagged as collected when grabbed. The only difference is that object1B doesn't bother checking if it's been previously collected; it will always transform into a coin (in the fireplace room).</p>
 
 	<p>Is this an oversight, or was it intentional? We can't really know for sure, but it does seem pretty intentional. It was likely done as a safeguard to prevent players from spending all their money on health refills and being unable to purchase required progression items.</p>
 
-	<p>The coins in room 1 are also unique. They're placed directly in the tilemap, and while they do flag collection like any other coin, they can be collected 3 times. Address <code class="value">$BC</code> is a counter for how many times the door next to these coins is entered. If this value is 3 or greater, then any floating coin&mdash;one not hiding in a block&mdash;on the tilemap will be removed.</p>
+	<p>The coins in room 1 are also unique. They're placed directly in the tilemap, and while they do flag collection like any other coin, they can be collected 3 times. Address <asmval>$BC</asmval> is a counter for how many times the door next to these coins is entered. If this value is 3 or greater, then any floating coin&mdash;one not hiding in a block&mdash;on the tilemap will be removed.</p>
 	<p>This comes with two caveats, both of which allow these coins to be collected more than the intended 3 times.</p>
 	<p>First, the counter is incremented upon entering the adjacent door, which means if you exit the room via some other means, such as dying, it won't get incremented.</p>
 	<p>Second, this is an 8-bit counter with no bounds checking, so entering the shop 256 times will overflow the counter back to 0, allowing the coins to spawn again.</p>
@@ -44,7 +44,7 @@ background: glitchybg
 
 	<h2>Optimization problems</h2>
 
-	<p>As previously discussed, a single routine handles the collection of all objects. Objects with IDs from <code class="value">$00</code> through <code class="value">$1D</code> immediately exit the routine. ID <code class="value">$1E</code> is treated as a coin, and everything else is a honeycomb.</p>
+	<p>As previously discussed, a single routine handles the collection of all objects. Objects with IDs from <asmval>$00</asmval> through <asmval>$1D</asmval> immediately exit the routine. ID <asmval>$1E</asmval> is treated as a coin, and everything else is a honeycomb.</p>
 	<p>The logic of this routine is in 3 segments: coins, honeycomb, and cleanup, in that order. Here's the routine, in full:</p>
 
 	<div class="snesasm labelsep">
@@ -86,7 +86,7 @@ background: glitchybg
 		<div>.exit</div><div addr="$9A44">RTS</div><div></div>
 	</div>
 
-	<p>Our focus is the highlighted code at <code class="address">$9A20</code>, which increments a counter that tracks how many coins have been collected in a room then uses the <code class="instruction">BNE</code> instruction to jump to the cleanup portion of the code. This instruction looks at the last operation performed, and, if that resulted in any value other than <code class="value">$00</code>, jumps ahead to the location specified in its operand.</p>
+	<p>Our focus is the highlighted code at <addr>$9A20</addr>, which increments a counter that tracks how many coins have been collected in a room then uses the <asmop>BNE</asmop> instruction to jump to the cleanup portion of the code. This instruction looks at the last operation performed, and, if that resulted in any value other than <asmval>$00</asmval>, jumps ahead to the location specified in its operand.</p>
 
 	<p>Like the shop visit counter, this coin counter is an 8-bit value that will overflow at 256, resetting the counter to 0. That might make it sound like this could be an intentional secret! Can you think of any other reason why they would even check for zero here?</p>
 
@@ -94,11 +94,11 @@ background: glitchybg
 
 	<p>Space on the NES is very limited and thus valuable. The mapper used by this game only gives 32&nbsp;kilobytes of code plus some swappable graphics banks. When all was said and done, <i>Milon's Secret Castle</i> only had 5 spare bytes (that's ignoring any unused data or bloated code). Every byte mattered, and by this point, developers had a few tricks up their sleeve.</p>
 
-	<p>The standard way to move from one location in code to another is with the <code class="instruction">JMP</code> instruction. This instruction has a 1-byte opcode and a 2-byte operand&mdash;the location to jump to. This amounts to 3 bytes, which isn't bad, but developers had realized that if they knew for certain the state of the CPU, they could save 1 byte by replacing jump instructions with branch instructions.</p>
+	<p>The standard way to move from one location in code to another is with the <asmop>JMP</asmop> instruction. This instruction has a 1-byte opcode and a 2-byte operand&mdash;the location to jump to. This amounts to 3 bytes, which isn't bad, but developers had realized that if they knew for certain the state of the CPU, they could save 1 byte by replacing jump instructions with branch instructions.</p>
 
-	<p>This trick is used in a couple places in this game, such as in the umbrella collection code at <code class="address">$D150</code>. It was also used in the code above&mdash;the coin collection code&mdash;at <code class="address">$9A23</code>.</p>
+	<p>This trick is used in a couple places in this game, such as in the umbrella collection code at <addr>$D150</addr>. It was also used in the code above&mdash;the coin collection code&mdash;at <addr>$9A23</addr>.</p>
 
-	<p>The developers did not intend to reward a player for collecting 256 coins; in fact, they assumed no one would bother collecting that many. That or they assumed this counter would reset often enough to never reach that high. In either case, it's almost certain that this <code class="instruction">BNE</code> was an optimization. Their thinking was likely that, being a counter, this value will <em>never</em> be zero, which makes it the perfect candidate to save a byte by using a determinated flag to branch over another segment of code. As you've probably already guessed, this was not a good assumption.</p>
+	<p>The developers did not intend to reward a player for collecting 256 coins; in fact, they assumed no one would bother collecting that many. That or they assumed this counter would reset often enough to never reach that high. In either case, it's almost certain that this <asmop>BNE</asmop> was an optimization. Their thinking was likely that, being a counter, this value will <em>never</em> be zero, which makes it the perfect candidate to save a byte by using a determinated flag to branch over another segment of code. As you've probably already guessed, this was not a good assumption.</p>
 	<p>Or maybe it was. We can also pin the blame on shops for not resetting the coin counter upon exit<a footnote href="#footnote-counterreset"></a>. Perhaps when this code was written, it was the case that the counter got reset. The only way to bring the coins back is to reload the room, and doing so by exiting to the overworld will also reset the coin counter. It's likely that shops don't reset this counter because it could result in a softlock were you to collect every coin then load a shop before grabbing the key<a footnote href="#footnote-keynote"></a><a footnote href="#footnote-whyfireplace"></a>.</p>
 	<p>It's also likely that the developers just never considered the implications of repeatedly reloading a room for coins. They may have even added the respawning coins as a last minute thing and didn't have time to revisit other coin-related code.</p>
 	<p>I can speculate a dozen more scenarios for why this is the way it is, but I think we've satisfyingly answered our original question.</p>

@@ -8,10 +8,10 @@ background: mechanicsbg
 	<h1>Blind the Thief</h1>
 	<p>Everyone knows how to do the Blind fight, but no one knows how the Blind do to the fight.</p>
 	<p>It may surprise you that Blind's erratic behavior, while chaotic, is completely unrandom.</p>
-	<p>It may also surprise you to learn that the kanji for power (力) is duplicated in the text engine. It can be encoded with a kanji ID of either <code class="value">$99</code> or <code class="value">$F4</code>. And no, this is not me confusing it with the similar-looking katakana Ka (カ). That exists too at code point <code class="value">$58</code>! Not only is this kanji duplicated, but the two definitions look different!! The second one has its first stroke 1 pixel higher!!! WOW!!!!</p>
+	<p>It may also surprise you to learn that the kanji for power (力) is duplicated in the text engine. It can be encoded with a kanji ID of either <asmval>$99</asmval> or <asmval>$F4</asmval>. And no, this is not me confusing it with the similar-looking katakana Ka (カ). That exists too at code point <asmval>$58</asmval>! Not only is this kanji duplicated, but the two definitions look different!! The second one has its first stroke 1 pixel higher!!! WOW!!!!</p>
 
 	<h2>Identity crisis</h2>
-	<p>Everything in the Blind fight other than fireballs (and you (and your fireballs (etc.))) is a sprite with an ID of <code class="value">$CE</code>. To determine which Blind to actually be, an identifier is stored in the array at <code class="address">$0D90,X</code>. Negative values (<code class="value">$80</code>&ndash;<code class="value">$FF</code>) indicate a laser. The value <code class="value">$02</code> indicates a detached Blind head. All other values will behave as the Big Cheese. In practice, these values are <code class="value">0</code> (the main fight) and <code class="value">1</code> (moving up after transforming from the maiden).</p>
+	<p>Everything in the Blind fight other than fireballs (and you (and your fireballs (etc.))) is a sprite with an ID of <asmval>$CE</asmval>. To determine which Blind to actually be, an identifier is stored in the array at <addr>$0D90,X</addr>. Negative values (<asmval>$80</asmval>&ndash;<asmval>$FF</asmval>) indicate a laser. The value <asmval>$02</asmval> indicates a detached Blind head. All other values will behave as the Big Cheese. In practice, these values are <asmval>0</asmval> (the main fight) and <asmval>1</asmval> (moving up after transforming from the maiden).</p>
 
 	<h2>Zzap!</h2>
 	<p>We'll look at the lasers first, since they're the simplest.</p>
@@ -25,42 +25,42 @@ background: mechanicsbg
 			<th>Graphic</th>
 		</tr>
 		<tr>
-			<td><code class="address">$09B586</code></td>
-			<td><code class="value">$F0</code></td>
-			<td><code class="instruction">AND #$F0</code></td>
+			<td><addr>$09B586</addr></td>
+			<td><asmval>$F0</asmval></td>
+			<td><asmop>AND #$F0</asmop></td>
 			<td>Unused X</td>
 		</tr>
 		<tr>
-			<td><code class="address">$09B587</code></td>
-			<td><code class="value">$09</code></td>
-			<td rowspan=2><code class="instruction">ORA #$0E</code></td>
+			<td><addr>$09B587</addr></td>
+			<td><asmval>$09</asmval></td>
+			<td rowspan=2><asmop>ORA #$0E</asmop></td>
 			<td>Jumping stalfos shoulder</td>
 		</tr>
 		<tr>
-			<td><code class="address">$09B588</code></td>
-			<td><code class="value">$0E</code></td>
+			<td><addr>$09B588</addr></td>
+			<td><asmval>$0E</asmval></td>
 			<td>Walking stalfos shoulder</td>
 		</tr>
 		<tr>
-			<td><code class="address">$09B589</code></td>
-			<td><code class="value">$7A</code></td>
-			<td><code class="instruction">PLY</code></td>
+			<td><addr>$09B589</addr></td>
+			<td><asmval>$7A</asmval></td>
+			<td><asmop>PLY</asmop></td>
 			<td>Mimic foot</td>
 		</tr>
 		<tr>
-			<td><code class="address">$09B58A</code></td>
-			<td><code class="value">$4C</code></td>
-			<td rowspan=3><code class="instruction">JMP $B5D6</code></td>
+			<td><addr>$09B58A</addr></td>
+			<td><asmval>$4C</asmval></td>
+			<td rowspan=3><asmop>JMP $B5D6</asmop></td>
 			<td>Beamos eyeball</td>
 		</tr>
 		<tr>
-			<td><code class="address">$09B58B</code></td>
-			<td><code class="value">$D6</code></td>
+			<td><addr>$09B58B</addr></td>
+			<td><asmval>$D6</asmval></td>
 			<td>Half a laser eye</td>
 		</tr>
 		<tr>
-			<td><code class="address">$09B58C</code></td>
-			<td><code class="value">$B5</code></td>
+			<td><addr>$09B58C</addr></td>
+			<td><asmval>$B5</asmval></td>
 			<td>Bottom of Blind's dress</td>
 		</tr>
 	</table>
@@ -78,7 +78,7 @@ background: mechanicsbg
 
 	<h3>Movement</h3>
 	<p>Blind's heads move in a roughly eliptical shape that precesses over time while dilating and contracting. The precise way this works is by defining a 64-by-96 pixel box, whose edges define precise positions for the head to turn around at and accelerate in the other direction. These barely work right under normal conditions. If a head were to move completely orthogonally, it would be stuck teetering back and forth on that axis, and this can sort of happen with some impossible tests that were left in the code.</p>
-	<p>For each axis, <code class="value">0</code> is divided by <code class="value">2</code>, and if that quotient is not equal to <code class="value">0</code>, then all acceleration logic on that axis is skipped. However! If you remember your basic arithmetic, any nonzero number divided into 0 is, in fact, under the axioms used in our everyday life, equal to 0. So these skips never happen. You can make them happen by modifying the tests, but almost any value you substitute in will cause the head to fly off into infinity.</p>
+	<p>For each axis, <asmval>0</asmval> is divided by <asmval>2</asmval>, and if that quotient is not equal to <asmval>0</asmval>, then all acceleration logic on that axis is skipped. However! If you remember your basic arithmetic, any nonzero number divided into 0 is, in fact, under the axioms used in our everyday life, equal to 0. So these skips never happen. You can make them happen by modifying the tests, but almost any value you substitute in will cause the head to fly off into infinity.</p>
 
 	<h2>The Big Cheese</h2>
 	<p>Here's what everyone was waiting for: the cheese.</p>
@@ -95,7 +95,7 @@ background: mechanicsbg
 
 	<p>Assuming Blind exists, he will, like his heads (which are him), maximize his draw priority. This is likely a control thing stemming from insecurity.</p>
 
-	<p>The array at <code class="address">$0EA0,X</code> contains the recoil timer for each sprite. Blind's main body doesn't actually call the aforementioned recoil subroutine; instead the Big Cheese just doesn't recoil, and handles the timer manually. This timer mostly serves to flash his palette, but when it is exactly equal to 11, the Big Cheese handles his <em>"I got hit"</em> logic.</p>
+	<p>The array at <addr>$0EA0,X</addr> contains the recoil timer for each sprite. Blind's main body doesn't actually call the aforementioned recoil subroutine; instead the Big Cheese just doesn't recoil, and handles the timer manually. This timer mostly serves to flash his palette, but when it is exactly equal to 11, the Big Cheese handles his <em>"I got hit"</em> logic.</p>
 
 	<h3>I got hit!</h3>
 	<p>This section of code resets the Blind Cheese's damage timer and flurry timer. Then, just to be safe, it checks auxiliary timer E. If this timer isn't halted, everything is called off, and we pretend Blind wasn't even hit. This should never happen though, because that timer is only set inside this very routine. To 48 frames. I guess the developers just wanted to be really safe, because they're also setting Blind's Cheese HP to 128 every time a hit is registered.</p>
@@ -105,7 +105,7 @@ background: mechanicsbg
 
 	<h3>Compulsive behavior</h3>
 	<p>Regardless of its AI state, the main body runs some shared maintenance every frame.</p>
-	<p>At <code class="address">$0E80,X</code> is a general use variable that the main body uses as an action timer (we'll call this the action timer). Whenever this timer is an even number (so every other frame), Blind negates that frame's tick of auxiliary timer A. These auxiliary timers are auto-decrementing for all sprites, saving them the labor of doing it themselves.</p>
+	<p>At <addr>$0E80,X</addr> is a general use variable that the main body uses as an action timer (we'll call this the action timer). Whenever this timer is an even number (so every other frame), Blind negates that frame's tick of auxiliary timer A. These auxiliary timers are auto-decrementing for all sprites, saving them the labor of doing it themselves.</p>
 	<p>Auxiliary timer B handles Blind's laser shots. If this timer is non zero, Blind won't actually run his secondary AI routine. When the timer is exactly 8, he will shoot a laser in the same direction his head is currently facing. The speed of this laser will be 8 pixels per frame on one axis, and either 0 or 4 pixels per frame on the other.</p>
 	<p>When Blind's laser timer reaches 0, he will attempt to fire a laser if the <em>Fire a laser</em> flag is set. This flag is cleared every frame before the main AI state and while Blind is charging (auxiliary timer B). If the flag is set, the laser timer will be set to 128 ticks, and auxiliary timer B (the laser charging timer) will be set to 16.</p>
 	<p>And finally, just to be safe, Blind copies the high byte of Link's coordinates so that they are always in the same quadrant.</p>
@@ -123,13 +123,13 @@ background: mechanicsbg
 	<h3>Shimmy shimmy</h3>
 	<p>This AI state is probably the most boring, but that's because it's the most interesting, meaning this section will have a lot of text but still no pictures.</p>
 	<p>While the Big Cheese moves back and forth, he is constantly deciding whether or not to switch sides. If the action timer is at 0 or 128, Blind will check to see if Link is behind him, and if that is the case, the Cheese will attempt to switch sides, regardless of auxiliary timer A. In all other cases&mdash;action timer is any other value or Link is in front of Blind&mdash;a switching of sides will only be attempted when auxiliary timer A is 0. The only thing that can possibly change Blind's mind about switching sides is his X-coordinate being 136 or higher.</p>
-	<p>Blind's movement is constrained by borders 88 pixels apart, betwixt X-coordinates <code class="value">$4C</code> and <code class="value">$A4</code>. Whichever direction Blind is currently going, he will accelerate to a maximum speed of 1.5 pixels per frame. This acceleration flips towards the other direction whenever Blind hits one of these boundaries. However, this time, care is taken so that the correct boundary for a direction is looked at, unlike with the heads. Blind's up and down movement is much the same. He accelerates to a maximum speed of 1.125 pixels per frame, but flips direction as soon as he's hit his maximum speed.</p>
+	<p>Blind's movement is constrained by borders 88 pixels apart, betwixt X-coordinates <asmval>$4C</asmval> and <asmval>$A4</asmval>. Whichever direction Blind is currently going, he will accelerate to a maximum speed of 1.5 pixels per frame. This acceleration flips towards the other direction whenever Blind hits one of these boundaries. However, this time, care is taken so that the correct boundary for a direction is looked at, unlike with the heads. Blind's up and down movement is much the same. He accelerates to a maximum speed of 1.125 pixels per frame, but flips direction as soon as he's hit his maximum speed.</p>
 	<p>After moving, if the flurry timer is non-zero, Blind will release a flurry of fireballs. Otherwise, he will fire a probe in the direction he's facing. These are the same probes guards use to "look" for Link while patrolling. For Blind, these probes set the <em>Fire a laser</em> flag. Effectively, Blind tries to shoot you with a laser whenever you're in his direct line of sight. But he has terrible aim.</p>
 
 	<h3>Change of scenery</h3>
 	<p>When Blind decides to change sides, he will wait 48 frames before continuing. During this time, he will also decelerate until his speed reaches 0, at either 4/16 (moving left) or 2/16 (moving right) pixels per frame per frame. No, I don't know why these decelerations are different. In either case, it happens too quickly for us to notice the difference. He will also decelerate on the Y axis with a similarly bizarre difference at either 4/16 (moving down) or 8/16 (moving up) pixels per frame per frame.</p>
 	<p>During these 48 frames, should Blind be in flurry mode, he will act twice per frame. This means his head spins twice as fast, but because the action timer isn't ticked twice, it means 2 fireballs are shot at once! And if his head happens to turn during the first flurry call, the two fireballs will be shot with a small angle between them.</p>
-	<p>For the side switch itself, Blind will accelerate at 2/16 pixels per frame per frame up to a maximum speed of 8 pixels per frame until he reaches his target Y-coordinate at either <code class="value">$50</code> (top) or <code class="value">$90</code> (bottom).</p>
+	<p>For the side switch itself, Blind will accelerate at 2/16 pixels per frame per frame up to a maximum speed of 8 pixels per frame until he reaches his target Y-coordinate at either <asmval>$50</asmval> (top) or <asmval>$90</asmval> (bottom).</p>
 	<p>If, somehow, the Big Cheese has not yet completely stopped moving on the X-axis, he will decelerate as he did during his 48 frame windup.</p>
 
 	<h3>Reorientation</h3>
