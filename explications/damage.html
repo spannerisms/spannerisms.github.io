@@ -680,7 +680,7 @@ background: mechanicsbg
 	<h2>Thrown sprites</h2>
 	<p>You'd think these would be simple, right? In a way, they are, but there's some curious logic I'd like to point out. As mentioned, a small handful of sprites explicitly call the routine <code class="routine">ThrownSprite_CheckDamageToSinglePeer</code>, but every sprite has access to it when in the frozen state, via the frozen sprite AI handler.</p>
 	<p>Every sprite thrown, regardless of what it is, is given an 8x8 hitbox, and that is matched against the hitbox of the target.</p>
-	<p>Then, for some reason, there's an explicit check for the target's sprite ID to see if it's <code class="value">$3F</code>, a tutorial guard from the beginning of the game. If it is one of those guards, then the damage application is completely skipped. These guards do have non-zero damage class data, but that could have just been removed, since they are immune through sprite properties already. Anyways, I fixed those sprite properties by editing them in RAM and then killed the guards.</p>
+	<p>Then, for some reason, there's an explicit check for the target's sprite ID to see if it's <code class="value">$3F</code>, a tutorial guard from the beginning of the game. If it is one of those guards, then the damage application is completely skipped. These guards do have non-zero damage class data, but that could have just been removed, since they are immune through sprite properties already. Angered by this absurdity, I decided to hack those sprite properties and kill a tutorial guard with a bush.</p>
 
 	<table class="float-right">
 		<caption>Throw subtypes (<code class="address">$0DB0,X</code>)</caption>

@@ -6,7 +6,7 @@ background: smtbg
 ---
 
 	<h1>Shin Megami Tensei Intro</h1>
-	<p>Shin Megami Tensei for the SNES has a really cool intro sequence. I'm not talking about the spinning ATLUS letters or the the mode 7 hexagram. I'm not even talking about the creepy and foreboding scenes that interrupt the typing. I'm talking about the code.</p>
+	<p>Shin Megami Tensei for the SNES has a really cool intro sequence. I'm not talking about the spinning ATLUS letters or the mode 7 hexagram. I'm not even talking about the creepy and foreboding scenes that interrupt the typing. I'm talking about the code.</p>
 	<p>The game's intro sequence shows a terminal-like display with seemingly random letters being typed. To the average person, these would appear as just random letters, but they're actually 65c816 mnemonics. This is SNES code being typed out. And it's not just any SNES code, it's Shin Megami Tensei's own reset routine.</p>
 
 	<div class="center">
@@ -78,7 +78,7 @@ background: smtbg
 	<p><code class="opcode">M8</code> is in the same situation as above. It's not an official mnemonic, but there's no doubt that it corresponds to <code class="opcode">SEP #$20</code>, which means <code><b>SE</b>t <b>P</b>rocessor flags</code>. This time, the 5th bit (the <code class="register">M</code> flag) is being set, which puts the accumulator in 8-bit mode.</p>
 
 	<h3 joke="tasteless" title="Because she is stacked.">I call her LIFO</h3>
-	<p><code class="opcode">LDX #1FFFH</code> means <code><b>L</b>oa<b>D</b> <b>X</b> register</code>, and the <code>#</code> means immediate addressing; i.e. it will use the operand as a literal value instead of an address. In this case, that value is <code class="value">#1FFFH</code>. In our demonic computer, the suffix <code>H</code> is used to indicate that a value is to be interpreted as hexadecimal. This wasn't unheard of for assemblers of the time, but it is inferior to the <code>$</code> prefix. At least if you ask me. By reading this blog, you are hereby asking me.</p>
+	<p><code class="opcode">LDX #1FFFH</code> means <code><b>L</b>oa<b>D</b> <b>X</b> register</code>, and the <code>#</code> means immediate addressing; i.e. it will use the operand as a literal value instead of an address. In this case, that value is <code class="value">1FFFH</code>. In our demonic computer, the suffix <code>H</code> is used to indicate that a value is to be interpreted as hexadecimal. This wasn't unheard of for assemblers of the time, but it is inferior to the <code>$</code> prefix. At least if you ask me. By reading this blog, you are hereby asking me.</p>
 	<p><code class="opcode">TXS</code> means <code><b>T</b>ransfer <b>X</b> to <b>S</b>tack pointer</code>. The value we just loaded is what's being transfered here. This means that the top of the stack is now pointing to that location in memory (<code class="value">$1FFF</code>).</p>
 
 	<h3>Divergence</h3>

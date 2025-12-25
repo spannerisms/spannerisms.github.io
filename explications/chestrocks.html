@@ -13,7 +13,7 @@ background: mechanicsbg
 
 <p>First, we need to understand how underworld collision works. In the underworld, one room is loaded at a time and its tilemap exists in its entirety in memory at <code class="address">$7E2000</code> through to <code class="address">$7E5FFF</code>. Each tile is a 16-bit word with a 10-bit tile name that dictates its graphics. That 10-bit tile name is used to look up a tile type in a dynamic table stored in WRAM at <code class="address">$7EFE00</code> and then stored in a collision map held in memory at <code class="address">$7F2000</code> through to <code class="address">$7F3FFF</code>.</p>
 
-<p>The underworld's tilemap and collision loading is simple, because only two 64-by-64 maps are loaded at a time&mdash;the upper and lower layers. That works out to 4096 tiles&mdash;<code class="value">$1000</code> in hexadecimal&mdash;the exact size of your collision map buffers.</p>
+<p>The underworld's tilemap and collision loading is simple, because only two 64-by-64 maps are loaded at a time&mdash;the upper and lower layers. That works out to 4096 tiles&mdash;<code class="value">$1000</code> in hexadecimal&mdash;the exact size of each collision map buffer.</p>
 
 <p>The overworld, however, loads 8 times as many tiles! The smaller overworld screens are already 64-by-64, and four of those are loaded at once, even when loading a small screen. How does it have space for that?</p>
 

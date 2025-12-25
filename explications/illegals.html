@@ -739,14 +739,14 @@ background: glitchybg dossier
 			<td><code>&nbsp;&nbsp;LR</code></td>
 			<td><code class="address">$30</code></td>
 			<td>Link's Y velocity</td>
-			<td>Nothing; overwritten before used</td>
+			<td>Nothing; overwritten before use</td>
 		</tr>
 		<tr>
 			<td><code class="value">%0100</code></td>
 			<td><code>&nbsp;X&nbsp;&nbsp;</code></td>
 			<td><code class="address">$40</code></td>
 			<td>Temp variable for coordinates</td>
-			<td>Nothing; overwritten before used</td>
+			<td>Nothing; overwritten before use</td>
 		</tr>
 		<tr>
 			<td><code class="value">%0101</code></td>
@@ -781,7 +781,7 @@ background: glitchybg dossier
 			<td><code>A&nbsp;&nbsp;R</code></td>
 			<td><code class="address">$90</code></td>
 			<td>OAM buffer location pointer</td>
-			<td>Seemingly nothing; at worst, broken graphics for 1 frame</td>
+			<td>Nothing; overwritten before use</td>
 		</tr>
 		<tr>
 			<td><code class="value">%1010</code></td>
@@ -802,21 +802,21 @@ background: glitchybg dossier
 			<td><code>AX&nbsp;&nbsp;</code></td>
 			<td><code class="address">$C0</code></td>
 			<td>Tilemap buffer pointer</td>
-			<td>Nothing?</td>
+			<td>Nothing; overwritten before use</td>
 		</tr>
 		<tr>
 			<td><code class="value">%1101</code></td>
 			<td><code>AX&nbsp;R</code></td>
 			<td><code class="address">$D0</code></td>
 			<td>Room load pointers</td>
-			<td>No effect; overwritten when required by the CPU</td>
+			<td>Nothing; overwritten before use</td>
 		</tr>
 		<tr>
 			<td><code class="value">%1110</code></td>
 			<td><code>AXL&nbsp;</code></td>
 			<td><code class="address">$E0</code></td>
 			<td>BG1 horizontal scroll low byte</td>
-			<td>Seemingly nothing; fixed every frame</td>
+			<td>Nothing; corrected every frame</td>
 		</tr>
 		<tr>
 			<td><code class="value">%1111</code></td>
