@@ -10,7 +10,7 @@ background: glitchybg
 <p>Despite their complexity, these consequences are actually very intuitive, and it was a single bad value that propagated into this mess.</p>
 
 <h2>Stars in his eyes</h2>
-<p>The reason for the holes will make you say "Well, obviously!" once you know that this all begins with a single write of <asmval>$03</asmval> to the dungeon submodule ID. The default submodule where the player has full control is submodule <asmval>$00</asmval>. Submodule <asmval>$01</asmval> is for intraroom transitions and <asmval>$02</asmval> for interroom transitions. The key piece of information we need to know about these transition submodules is that they are set by incrementing the current submodule once or twice, respectively. The assumption is that a transition can only be triggered when the player has control, so the current submodule should be <asmval>$00</asmval>, but, surprise!, we can trigger these increments with a nonzero submodule. The short answer to why this is happens is that some reckless redundancy allows us to double trigger a transition.</p>
+<p>The reason for the holes will make you say "Well, obviously!" once you know that this all begins with a single write of <asmval>$03</asmval> to the dungeon submodule ID. The default submodule where the player has full control is submodule <asmval>$00</asmval>. Submodule <asmval>$01</asmval> is for intraroom transitions and <asmval>$02</asmval> for interroom transitions. The key piece of information we need to know about these transition submodules is that they are set by incrementing the current submodule once or twice, respectively. The assumption is that a transition can only be triggered when the player has control, so the current submodule should be <asmval>$00</asmval>, but, surprise!, we can trigger these increments with a nonzero submodule. The short answer to why this is happens is that some reckless redundancy allows us to double trigger a transition. If you want the full details, check out my <a href="/WESTSOMARIA">WEST SOMARIA Explication</a>.</p>
 <p>The glitch we're discussing here is a consequence of triggering both transitions at once, which gives you either 0+1+2 or 0+2+1. Either way you get a value of <asmval>$03</asmval> (the order of the operands can matter, but it's not relevant to this discussion). Which submodule is that?</p>
 <p>Star tiles!</p>
 <p>Or, more precisely, it's the hole overlay submodule that is mostly triggered by stepping on active star tiles, as well as by certain chests to create trap hazards upon opening.</p>
@@ -42,13 +42,13 @@ background: glitchybg
 
 <h2>Faded Encounter</h2>
 <p>The caveat to the information above is that not every room is boring and unspecial. The most common exception is a faded transition. Stairs, falling, and dark rooms all fade the screen in software by manually manipulating palette data. In doing so, <asmvar>RMOBJPTR</asmvar> is clobbered, as it is reused for a pointer to a table of bitmasks used by the fade algorithm. In the end, it will settle at <addr>$E8BC</addr>. This routine only uses this variable for a 16-bit pointer, and it never touches <asmvar>RDOBJX</asmvar>. For boring rooms, that means reading starts from <addr>$E9DC</addr> (<asmval>$0120</asmval> bytes further) in the room's data bank, while rooms with lightable torches will start somewhere earlier.</p>
-<p>Faded transitions can thus be split into three broad categories for overlay corruption based on which ROM bank the current room is in. The rooms in bank&nbsp;1F are the most stable, because this entire bank is just room data, but banks 03 and 0A are very likely to cause serious issues, because they point at&hellip;other stuff&hellip; In bank&nbsp;03, <asmval>$E8BC</asmval> is in the middle of a precalculated sine table, and <asmval>$E9DC</asmval> is part of hobo draw data. In bank&nbsp;0A, this entire range is dungeon map code.</p>
+<p>Faded transitions can thus be split into three broad categories for overlay corruption based on which ROM bank the current room is in. The rooms in bank&nbsp;1F are the most stable, because this entire bank is just room data, but banks 03 and 0A are very likely to cause serious issues, because they point at&hellip;other stuff&hellip; In bank&nbsp;03, <addr>$E8BC</addr> is in the middle of a precalculated sine table, and <addr>$E9DC</addr> is part of hobo draw data. In bank&nbsp;0A, this entire range is dungeon map code.</p>
 <p>Bank&nbsp;03 has four consecutive <asmval>$FF</asmval> bytes at <addr>$03EBD1</addr>, 789 bytes further ahead. In between, there are no consecutive <asmval>$FF</asmval> bytes, which means all fade corruptions read this far.</p>
 <p>Bank&nbsp;0A has four consecutive <asmval>$FF</asmval> bytes at <addr>$0AEE6D</addr>, 1457 bytes further, and no sentinels in between, so bank&nbsp;0A fades will all read to this same point.</p>
 <p>Remember these numbers.</p>
 
 <h2>Dam it!</h2>
-<p>Pulling the switch in the dam to release the floodwater will perform a tilemap buffer update that reuses the pointer and index variables; <asmvar>RMOBJPTR</asmvar> gets set to <asmval>$04EEAD</asmval>, and <asmvar>RDOBJX</asmvar> finishes with <asmval>$000F</asmval>. This is another list of objects, but the end result is that these values are now pointing to a sentinel, so no erroneous object changes are made.</p>
+<p>Pulling the switch in the dam to release the floodwater will perform a tilemap buffer update that reuses the pointer and index variables; <asmvar>RMOBJPTR</asmvar> gets set to <addr>$04EEAD</addr>, and <asmvar>RDOBJX</asmvar> finishes with <asmval>$000F</asmval>. This is another list of objects, but the end result is that these values are now pointing to a sentinel, so no erroneous object changes are made.</p>
 <p>And who can forget the reason this all exists in the first place? Star tiles! What happens when you do a proper overlay followed by a corrupted one? Well, like pulling the dam switch, the pointer and index are reused to draw the overlays (this was kinda already mentioned). After a successful, glitch-less overlay, these variables will be looking at a sentinel from the previous operation.</p>
 <p>For both of these, there's still a tiny bit of corruption though! The buffer is still capped off as normal, and the flag to flush it is set.</p>
 
@@ -119,11 +119,11 @@ background: glitchybg
 
 <div id="footnoteslist">
 
-<p id="footnote-apuio"><span class="noteid"></span> There are actually 64 APU I/O addresses, but the latter 60 are just mirrors of the first 4.</p>
+<p id="footnote-apuio">There are actually 64 APU I/O addresses, but the latter 60 are just mirrors of the first 4.</p>
 
-<p id="footnote-ntsc"><span class="noteid"></span> NTSC reference?!?!?</p>
+<p id="footnote-ntsc">NTSC reference?!?!?</p>
 
-<p id="footnote-vramfine"><span class="noteid"></span> Actually, VRAM might be mostly fine. The CPU can only write to it during V- or F-blank, and that isn't necessarily enabled. It probably gets to corrupt stuff during V- blank but not the entire frame.</p>
+<p id="footnote-vramfine">Actually, VRAM might be mostly fine. The CPU can only write to it during V- or F-blank, and that isn't necessarily enabled. It probably gets to corrupt stuff during V- blank but not the entire frame.</p>
 
 </div>
 

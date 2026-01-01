@@ -64,7 +64,7 @@ background: mechanicsbg
 
 <p>Next, why does this table exist? It is only used by two things: the hammer for spawning a splash, and search probes for detecting collision. This table embodies an extremely odd and heavy hitting solution to these problems. Search probes could use the existing overworld tile checks that every other sprite uses. They already use the same routines as everything else for underworld tiles. Why are they different here? As for the hammer, it'd be slightly less efficient, but there's no reason it can't just check 4 tiles at once for being water. Why does it need to check map16 objects specifically?</p>
 
-<h2>But it wasn't a rock...</h2>
+<h2>It wasn't a rock...</h2>
 
 <table class="float-right aligncenter shrunktable">
 	<tr class="header">

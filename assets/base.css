@@ -152,6 +152,20 @@ td, th {
 	box-shadow: 2px 2px 1px #BBBBDD;
 }
 
+tr.center > td,
+tr.center > th {
+	text-align: center;
+}
+
+tr.darkrow > th,
+th.darkheader {
+	background: #7474C8 !important;
+}
+
+tr.mediumrow > th,
+th.mediumheader {
+	background: #8F8FE8 !important;
+}
 
 div.content h1, 
 div.content h2, 
@@ -578,12 +592,13 @@ div.metaLinks a {
 	background: #FFDD0030;
 }
 
-[id^="footnote"]:not([footid]) > span.noteid:before {
+#footnoteslist > p:before:not([^footid]),
+#footnoteslist > div:before:not([^footid]) {
 	counter-increment: footnotesid;
 	content: counter(footnotesid) '.';
 }
 
-a[footnote]{
+a[footnote] {
 	vertical-align: super;
 	font-size: 75%;
 	counter-increment: footnotes;

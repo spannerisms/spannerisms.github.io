@@ -14,10 +14,11 @@ function addNotes() {
 		var backlinks = j + ". ";
 	   
 	  	for (var k = 0; k < footRefs.length; k++) {
+			var fanchor = "fn-" + j + "-" + "k"
 			footRefs[k].setAttribute("footid", j);
 			footRefs[k].innerHTML = "[" + j + "]";
-			footRefs[k].setAttribute("id", "fnx-" + j + k);
-			backlinks += '<a href="#fnx-'+ j + k + '">&crarr;</a> '
+			footRefs[k].setAttribute("id", fanchor);
+			backlinks += '<a href="#' + fanchor + '">&crarr;</a> '
 		}
 
 		footnoteX.innerHTML = backlinks + footnoteX.innerHTML;

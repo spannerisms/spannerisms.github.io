@@ -1,0 +1,5862 @@
+---
+permalink: /twofoldstc/
+layout: default
+title: Table of Twofold Corrupted West Somarias
+background: glitchybg
+---
+
+<p>This table supplements the <a href="/WESTSOMARIA">WEST SOMARIA Explication</a> with documentation of all the twofold-corruption candidate rooms jsd found. I've simply included everything interesting that might potentially be corrupted. I have not verified anything, but I have removed the following rooms:</p>
+
+<ul>
+	<li>Room 029 - Mothula's arena: has no doors</li>
+	<li>Room 089 - Eastern Palace fairies: has no doors</li>
+	<li>Room 0A6 - Moldorm 2 fall: has no doors</li>
+	<li>Room 121 - Blacksmith's: has no suitable doors</li>
+</ul>
+
+<p>Being listed here doesn't necessarily mean it's possible to do both flavors of somaria transition corruption required. Nor does it mean it's possible to set up the WEST SOMARIA variables to make use of any particular entry.</p>
+
+<p>Each write is 16-bit, so every base-offset pair can hit 2 addresses. If you notice some values that don't seem to add up, that's because <asmvar>TMAPX</asmvar> gets bit masked in some of the routines.</p>
+
+
+<table class="nostripes">
+	<tr class="center darkrow">
+		<th colspan="6">Room 01F</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="16"><b>8</b></td>
+		<th rowspan="16">Door 0 partner</td>
+		<td rowspan="16"><asmval>$9DA6</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6F14</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6F15</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6F54</addr></td>
+		<td>Sprite $F5 (Undefined) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6F55</addr></td>
+		<td>Sprite $F5 (Undefined) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6F16</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6F17</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6F18</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6F19</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6F1A</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6F1B</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F6F56</addr></td>
+		<td>Sprite $F5 (Undefined) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F6F57</addr></td>
+		<td>Sprite $F5 (Undefined) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F6F58</addr></td>
+		<td>Sprite $F5 (Undefined) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F6F59</addr></td>
+		<td>Sprite $F5 (Undefined) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F6F5A</addr></td>
+		<td>Sprite $F5 (Undefined) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F6F5B</addr></td>
+		<td>Sprite $F5 (Undefined) - fire rod damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>A</b></td>
+		<th rowspan="24">Door 2 partner</td>
+		<td rowspan="24"><asmval>$9DA6</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6F14</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6F15</addr></td>
+		<td>Sprite $F1 (Unused somaria platform) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6F54</addr></td>
+		<td>Sprite $F5 (Undefined) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6F55</addr></td>
+		<td>Sprite $F5 (Undefined) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6814</addr></td>
+		<td>Sprite $81 (Hover) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6815</addr></td>
+		<td>Sprite $81 (Hover) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6854</addr></td>
+		<td>Sprite $85 (Yellow stalfos) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6855</addr></td>
+		<td>Sprite $85 (Yellow stalfos) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6894</addr></td>
+		<td>Sprite $89 (Mothula beam) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6895</addr></td>
+		<td>Sprite $89 (Mothula beam) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F68D4</addr></td>
+		<td>Sprite $8D (Arrghi) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F68D5</addr></td>
+		<td>Sprite $8D (Arrghi) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6914</addr></td>
+		<td>Sprite $91 (Stalfos knight) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6915</addr></td>
+		<td>Sprite $91 (Stalfos knight) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6954</addr></td>
+		<td>Sprite $95 (Laser eye (left)) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6955</addr></td>
+		<td>Sprite $95 (Laser eye (left)) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6994</addr></td>
+		<td>Sprite $99 (Pengator) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6995</addr></td>
+		<td>Sprite $99 (Pengator) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F69D4</addr></td>
+		<td>Sprite $9D (Babasu) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F69D5</addr></td>
+		<td>Sprite $9D (Babasu) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6A14</addr></td>
+		<td>Sprite $A1 (Freezor) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6A15</addr></td>
+		<td>Sprite $A1 (Freezor) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6A54</addr></td>
+		<td>Sprite $A5 (Blue zazak) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6A55</addr></td>
+		<td>Sprite $A5 (Blue zazak) - sword 5 damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 035</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="24"><b>4</b></td>
+		<th rowspan="24">Door 4 main</td>
+		<td rowspan="24"><asmval>$8851</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6469</addr></td>
+		<td>Sprite $46 (Blue archer) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F646A</addr></td>
+		<td>Sprite $46 (Blue archer) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64A9</addr></td>
+		<td>Sprite $4A (Bomb guard) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64AA</addr></td>
+		<td>Sprite $4A (Bomb guard) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6029</addr></td>
+		<td>Sprite $02 (Stalfos head) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F602A</addr></td>
+		<td>Sprite $02 (Stalfos head) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6069</addr></td>
+		<td>Sprite $06 (Wrong pull switch (down)) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F606A</addr></td>
+		<td>Sprite $06 (Wrong pull switch (down)) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F60A9</addr></td>
+		<td>Sprite $0A (Octorok (4-way)) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F60AA</addr></td>
+		<td>Sprite $0A (Octorok (4-way)) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60E9</addr></td>
+		<td>Sprite $0E (Snapdragon) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60EA</addr></td>
+		<td>Sprite $0E (Snapdragon) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6129</addr></td>
+		<td>Sprite $12 (Moblin) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F612A</addr></td>
+		<td>Sprite $12 (Moblin) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6169</addr></td>
+		<td>Sprite $16 (Sahasrahla / Aginah) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F616A</addr></td>
+		<td>Sprite $16 (Sahasrahla / Aginah) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F61A9</addr></td>
+		<td>Sprite $1A (Smithy) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F61AA</addr></td>
+		<td>Sprite $1A (Smithy) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61E9</addr></td>
+		<td>Sprite $1E (Crystal switch) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61EA</addr></td>
+		<td>Sprite $1E (Crystal switch) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6229</addr></td>
+		<td>Sprite $22 (Ropa) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F622A</addr></td>
+		<td>Sprite $22 (Ropa) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6269</addr></td>
+		<td>Sprite $26 (Hardhat beetle) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F626A</addr></td>
+		<td>Sprite $26 (Hardhat beetle) - powder damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>5</b></td>
+		<th rowspan="16">Door 5 main</td>
+		<td rowspan="16"><asmval>$8850</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6469</addr></td>
+		<td>Sprite $46 (Blue archer) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F646A</addr></td>
+		<td>Sprite $46 (Blue archer) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64A9</addr></td>
+		<td>Sprite $4A (Bomb guard) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64AA</addr></td>
+		<td>Sprite $4A (Bomb guard) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64E9</addr></td>
+		<td>Sprite $4E (Popo) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64EA</addr></td>
+		<td>Sprite $4E (Popo) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6529</addr></td>
+		<td>Sprite $52 (King Zora) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F652A</addr></td>
+		<td>Sprite $52 (King Zora) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6569</addr></td>
+		<td>Sprite $56 (Walking zora) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F656A</addr></td>
+		<td>Sprite $56 (Walking zora) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65A9</addr></td>
+		<td>Sprite $5A (Lost Woods squirrel) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65AA</addr></td>
+		<td>Sprite $5A (Lost Woods squirrel) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F65E9</addr></td>
+		<td>Sprite $5E (Roller (vertical, up first)) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F65EA</addr></td>
+		<td>Sprite $5E (Roller (vertical, up first)) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6629</addr></td>
+		<td>Sprite $62 (Mastersword) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F662A</addr></td>
+		<td>Sprite $62 (Mastersword) - powder damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>A</b></td>
+		<th rowspan="16">Door 2 partner</td>
+		<td rowspan="16"><asmval>$88A2</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6512</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6513</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6552</addr></td>
+		<td>Sprite $55 (Zora) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6553</addr></td>
+		<td>Sprite $55 (Zora) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6592</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6593</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D2</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D3</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6612</addr></td>
+		<td>Sprite $61 (Beamos) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6613</addr></td>
+		<td>Sprite $61 (Beamos) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6652</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6653</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>B</b></td>
+		<th rowspan="16">Door 3 partner</td>
+		<td rowspan="16"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6512</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6513</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6552</addr></td>
+		<td>Sprite $55 (Zora) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6553</addr></td>
+		<td>Sprite $55 (Zora) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6592</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6593</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D2</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D3</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6612</addr></td>
+		<td>Sprite $61 (Beamos) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6613</addr></td>
+		<td>Sprite $61 (Beamos) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6652</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6653</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 3 damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 064</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="24"><b>9</b></td>
+		<th rowspan="24">Door 1 partner</td>
+		<td rowspan="24"><asmval>$8CAC</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6697</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6698</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D7</addr></td>
+		<td>Sprite $6D (Rat / cricket) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D8</addr></td>
+		<td>Sprite $6D (Rat / cricket) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6017</addr></td>
+		<td>Sprite $01 (Vulture) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6018</addr></td>
+		<td>Sprite $01 (Vulture) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6057</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6058</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6097</addr></td>
+		<td>Sprite $09 (Moldorm) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6098</addr></td>
+		<td>Sprite $09 (Moldorm) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D7</addr></td>
+		<td>Sprite $0D (Buzzblob) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D8</addr></td>
+		<td>Sprite $0D (Buzzblob) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6117</addr></td>
+		<td>Sprite $11 (Hinox) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6118</addr></td>
+		<td>Sprite $11 (Hinox) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6157</addr></td>
+		<td>Sprite $15 (Antifairy) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6158</addr></td>
+		<td>Sprite $15 (Antifairy) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6197</addr></td>
+		<td>Sprite $19 (Poe) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6198</addr></td>
+		<td>Sprite $19 (Poe) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D7</addr></td>
+		<td>Sprite $1D (Flute quest) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D8</addr></td>
+		<td>Sprite $1D (Flute quest) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6217</addr></td>
+		<td>Sprite $21 (Water switch) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6218</addr></td>
+		<td>Sprite $21 (Water switch) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6257</addr></td>
+		<td>Sprite $25 (Talking tree) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6258</addr></td>
+		<td>Sprite $25 (Talking tree) - bomb damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>B</b></td>
+		<th rowspan="24">Door 3 partner</td>
+		<td rowspan="24"><asmval>$8CAC</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6697</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6698</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D7</addr></td>
+		<td>Sprite $6D (Rat / cricket) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D8</addr></td>
+		<td>Sprite $6D (Rat / cricket) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6017</addr></td>
+		<td>Sprite $01 (Vulture) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6018</addr></td>
+		<td>Sprite $01 (Vulture) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6057</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6058</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6097</addr></td>
+		<td>Sprite $09 (Moldorm) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6098</addr></td>
+		<td>Sprite $09 (Moldorm) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D7</addr></td>
+		<td>Sprite $0D (Buzzblob) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D8</addr></td>
+		<td>Sprite $0D (Buzzblob) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6117</addr></td>
+		<td>Sprite $11 (Hinox) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6118</addr></td>
+		<td>Sprite $11 (Hinox) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6157</addr></td>
+		<td>Sprite $15 (Antifairy) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6158</addr></td>
+		<td>Sprite $15 (Antifairy) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6197</addr></td>
+		<td>Sprite $19 (Poe) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6198</addr></td>
+		<td>Sprite $19 (Poe) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D7</addr></td>
+		<td>Sprite $1D (Flute quest) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D8</addr></td>
+		<td>Sprite $1D (Flute quest) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6217</addr></td>
+		<td>Sprite $21 (Water switch) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6218</addr></td>
+		<td>Sprite $21 (Water switch) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6257</addr></td>
+		<td>Sprite $25 (Talking tree) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6258</addr></td>
+		<td>Sprite $25 (Talking tree) - bomb damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>E</b></td>
+		<th rowspan="16">Door 6 partner</td>
+		<td rowspan="16"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6494</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6495</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6496</addr></td>
+		<td>Sprite $49 (Red bush guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6497</addr></td>
+		<td>Sprite $49 (Red bush guard) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6498</addr></td>
+		<td>Sprite $49 (Red bush guard) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6499</addr></td>
+		<td>Sprite $49 (Red bush guard) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64D4</addr></td>
+		<td>Sprite $4D (Toppo) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64D5</addr></td>
+		<td>Sprite $4D (Toppo) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64D6</addr></td>
+		<td>Sprite $4D (Toppo) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64D7</addr></td>
+		<td>Sprite $4D (Toppo) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64D8</addr></td>
+		<td>Sprite $4D (Toppo) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64D9</addr></td>
+		<td>Sprite $4D (Toppo) - silver arrow damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>F</b></td>
+		<th rowspan="24">Door 7 partner</td>
+		<td rowspan="24"><asmval>$88A2</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6012</addr></td>
+		<td>Sprite $01 (Vulture) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6013</addr></td>
+		<td>Sprite $01 (Vulture) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6052</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6053</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6092</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6093</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D2</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D3</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6112</addr></td>
+		<td>Sprite $11 (Hinox) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6113</addr></td>
+		<td>Sprite $11 (Hinox) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6152</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6153</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6192</addr></td>
+		<td>Sprite $19 (Poe) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6193</addr></td>
+		<td>Sprite $19 (Poe) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D2</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D3</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6212</addr></td>
+		<td>Sprite $21 (Water switch) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6213</addr></td>
+		<td>Sprite $21 (Water switch) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6252</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6253</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 3 damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 068</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="16"><b>2</b></td>
+		<th rowspan="16">Door 2 main</td>
+		<td rowspan="16"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6494</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6495</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6496</addr></td>
+		<td>Sprite $49 (Red bush guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6497</addr></td>
+		<td>Sprite $49 (Red bush guard) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6498</addr></td>
+		<td>Sprite $49 (Red bush guard) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6499</addr></td>
+		<td>Sprite $49 (Red bush guard) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64D4</addr></td>
+		<td>Sprite $4D (Toppo) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64D5</addr></td>
+		<td>Sprite $4D (Toppo) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64D6</addr></td>
+		<td>Sprite $4D (Toppo) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64D7</addr></td>
+		<td>Sprite $4D (Toppo) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64D8</addr></td>
+		<td>Sprite $4D (Toppo) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64D9</addr></td>
+		<td>Sprite $4D (Toppo) - silver arrow damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>3</b></td>
+		<th rowspan="24">Door 3 main</td>
+		<td rowspan="24"><asmval>$88A2</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6012</addr></td>
+		<td>Sprite $01 (Vulture) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6013</addr></td>
+		<td>Sprite $01 (Vulture) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6052</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6053</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6092</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6093</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D2</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D3</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6112</addr></td>
+		<td>Sprite $11 (Hinox) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6113</addr></td>
+		<td>Sprite $11 (Hinox) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6152</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6153</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6192</addr></td>
+		<td>Sprite $19 (Poe) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6193</addr></td>
+		<td>Sprite $19 (Poe) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D2</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D3</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6212</addr></td>
+		<td>Sprite $21 (Water switch) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6213</addr></td>
+		<td>Sprite $21 (Water switch) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6252</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6253</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>4</b></td>
+		<th rowspan="16">Door 4 main</td>
+		<td rowspan="16"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6512</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6513</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6552</addr></td>
+		<td>Sprite $55 (Zora) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6553</addr></td>
+		<td>Sprite $55 (Zora) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6592</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6593</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D2</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D3</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6612</addr></td>
+		<td>Sprite $61 (Beamos) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6613</addr></td>
+		<td>Sprite $61 (Beamos) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6652</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6653</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="20"><b>5</b></td>
+		<th rowspan="20">Door 5 main</td>
+		<td rowspan="20"><asmval>$88A7</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6494</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6495</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D4</addr></td>
+		<td>Sprite $4D (Toppo) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D5</addr></td>
+		<td>Sprite $4D (Toppo) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6480</addr></td>
+		<td>Sprite $48 (Red javelin guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6481</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6482</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6483</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6484</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6485</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6486</addr></td>
+		<td>Sprite $48 (Red javelin guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6487</addr></td>
+		<td>Sprite $48 (Red javelin guard) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C0</addr></td>
+		<td>Sprite $4C (Geldman) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C1</addr></td>
+		<td>Sprite $4C (Geldman) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C2</addr></td>
+		<td>Sprite $4C (Geldman) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C3</addr></td>
+		<td>Sprite $4C (Geldman) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C4</addr></td>
+		<td>Sprite $4C (Geldman) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C5</addr></td>
+		<td>Sprite $4C (Geldman) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C6</addr></td>
+		<td>Sprite $4C (Geldman) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C7</addr></td>
+		<td>Sprite $4C (Geldman) - hookshot damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>8</b></td>
+		<th rowspan="16">Door 0 partner</td>
+		<td rowspan="16"><asmval>$8897</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F648E</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F648F</addr></td>
+		<td>Sprite $48 (Red javelin guard) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6490</addr></td>
+		<td>Sprite $49 (Red bush guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6491</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64CE</addr></td>
+		<td>Sprite $4C (Geldman) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64CF</addr></td>
+		<td>Sprite $4C (Geldman) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64D0</addr></td>
+		<td>Sprite $4D (Toppo) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64D1</addr></td>
+		<td>Sprite $4D (Toppo) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>9</b></td>
+		<th rowspan="24">Door 1 partner</td>
+		<td rowspan="24"><asmval>$8896</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600C</addr></td>
+		<td>Sprite $00 (Raven) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600D</addr></td>
+		<td>Sprite $00 (Raven) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604C</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604D</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608C</addr></td>
+		<td>Sprite $08 (Octorok) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608D</addr></td>
+		<td>Sprite $08 (Octorok) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CC</addr></td>
+		<td>Sprite $0C (Octorok stone) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CD</addr></td>
+		<td>Sprite $0C (Octorok stone) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610C</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610D</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614C</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614D</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618C</addr></td>
+		<td>Sprite $18 (Mini moldorm) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618D</addr></td>
+		<td>Sprite $18 (Mini moldorm) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CC</addr></td>
+		<td>Sprite $1C (Statue) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CD</addr></td>
+		<td>Sprite $1C (Statue) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620C</addr></td>
+		<td>Sprite $20 (Sluggula) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620D</addr></td>
+		<td>Sprite $20 (Sluggula) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624C</addr></td>
+		<td>Sprite $24 (Blue bari) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624D</addr></td>
+		<td>Sprite $24 (Blue bari) - bombos damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>A</b></td>
+		<th rowspan="16">Door 2 partner</td>
+		<td rowspan="16"><asmval>$889F</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6490</addr></td>
+		<td>Sprite $49 (Red bush guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6491</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D0</addr></td>
+		<td>Sprite $4D (Toppo) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D1</addr></td>
+		<td>Sprite $4D (Toppo) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6510</addr></td>
+		<td>Sprite $51 (Armos statue) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6511</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6550</addr></td>
+		<td>Sprite $55 (Zora) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6551</addr></td>
+		<td>Sprite $55 (Zora) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6590</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6591</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D0</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D1</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6610</addr></td>
+		<td>Sprite $61 (Beamos) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6611</addr></td>
+		<td>Sprite $61 (Beamos) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6650</addr></td>
+		<td>Sprite $65 (Archery guy) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6651</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 1 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>E</b></td>
+		<th rowspan="16">Door 6 partner</td>
+		<td rowspan="16"><asmval>$8891</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6489</addr></td>
+		<td>Sprite $48 (Red javelin guard) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648A</addr></td>
+		<td>Sprite $48 (Red javelin guard) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64C9</addr></td>
+		<td>Sprite $4C (Geldman) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CA</addr></td>
+		<td>Sprite $4C (Geldman) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F648B</addr></td>
+		<td>Sprite $48 (Red javelin guard) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F648E</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F648F</addr></td>
+		<td>Sprite $48 (Red javelin guard) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6490</addr></td>
+		<td>Sprite $49 (Red bush guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64CB</addr></td>
+		<td>Sprite $4C (Geldman) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64CE</addr></td>
+		<td>Sprite $4C (Geldman) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64CF</addr></td>
+		<td>Sprite $4C (Geldman) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64D0</addr></td>
+		<td>Sprite $4D (Toppo) - boomerang damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>F</b></td>
+		<th rowspan="24">Door 7 partner</td>
+		<td rowspan="24"><asmval>$8895</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648B</addr></td>
+		<td>Sprite $48 (Red javelin guard) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CB</addr></td>
+		<td>Sprite $4C (Geldman) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600B</addr></td>
+		<td>Sprite $00 (Raven) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600C</addr></td>
+		<td>Sprite $00 (Raven) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604B</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604C</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608B</addr></td>
+		<td>Sprite $08 (Octorok) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608C</addr></td>
+		<td>Sprite $08 (Octorok) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CB</addr></td>
+		<td>Sprite $0C (Octorok stone) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CC</addr></td>
+		<td>Sprite $0C (Octorok stone) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610B</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610C</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614B</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614C</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618B</addr></td>
+		<td>Sprite $18 (Mini moldorm) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618C</addr></td>
+		<td>Sprite $18 (Mini moldorm) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CB</addr></td>
+		<td>Sprite $1C (Statue) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CC</addr></td>
+		<td>Sprite $1C (Statue) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620B</addr></td>
+		<td>Sprite $20 (Sluggula) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620C</addr></td>
+		<td>Sprite $20 (Sluggula) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624B</addr></td>
+		<td>Sprite $24 (Blue bari) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624C</addr></td>
+		<td>Sprite $24 (Blue bari) - ice rod damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 067</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="4"><b>4</b></td>
+		<th rowspan="4">Door 4 main</td>
+		<td rowspan="4"><asmval>$A88A</asmval></td>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F7486</addr></td>
+		<td>Message $163 (Light World shop) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F7487</addr></td>
+		<td>Message $163 (Light World shop) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F74C6</addr></td>
+		<td>Message $183 (3 spawn selection) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F74C7</addr></td>
+		<td>Message $183 (3 spawn selection) pointer</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>5</b></td>
+		<th rowspan="16">Door 5 main</td>
+		<td rowspan="16"><asmval>$8809</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6445</addr></td>
+		<td>Sprite $44 (Fast blue guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6446</addr></td>
+		<td>Sprite $44 (Fast blue guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6485</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6486</addr></td>
+		<td>Sprite $48 (Red javelin guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64C5</addr></td>
+		<td>Sprite $4C (Geldman) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64C6</addr></td>
+		<td>Sprite $4C (Geldman) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6505</addr></td>
+		<td>Sprite $50 (Cannonball) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6506</addr></td>
+		<td>Sprite $50 (Cannonball) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6545</addr></td>
+		<td>Sprite $54 (Lanmolas) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6546</addr></td>
+		<td>Sprite $54 (Lanmolas) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6585</addr></td>
+		<td>Sprite $58 (Crab) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6586</addr></td>
+		<td>Sprite $58 (Crab) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F65C5</addr></td>
+		<td>Sprite $5C (Spark (counterclockwise)) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F65C6</addr></td>
+		<td>Sprite $5C (Spark (counterclockwise)) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6605</addr></td>
+		<td>Sprite $60 (Roller (horizontal, left first)) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6606</addr></td>
+		<td>Sprite $60 (Roller (horizontal, left first)) - arrow damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 084</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="24"><b>9</b></td>
+		<th rowspan="24">Door 1 partner</td>
+		<td rowspan="24"><asmval>$8CAD</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6697</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6698</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D7</addr></td>
+		<td>Sprite $6D (Rat / cricket) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D8</addr></td>
+		<td>Sprite $6D (Rat / cricket) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6017</addr></td>
+		<td>Sprite $01 (Vulture) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6018</addr></td>
+		<td>Sprite $01 (Vulture) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6057</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6058</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6097</addr></td>
+		<td>Sprite $09 (Moldorm) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6098</addr></td>
+		<td>Sprite $09 (Moldorm) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D7</addr></td>
+		<td>Sprite $0D (Buzzblob) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D8</addr></td>
+		<td>Sprite $0D (Buzzblob) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6117</addr></td>
+		<td>Sprite $11 (Hinox) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6118</addr></td>
+		<td>Sprite $11 (Hinox) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6157</addr></td>
+		<td>Sprite $15 (Antifairy) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6158</addr></td>
+		<td>Sprite $15 (Antifairy) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6197</addr></td>
+		<td>Sprite $19 (Poe) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6198</addr></td>
+		<td>Sprite $19 (Poe) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D7</addr></td>
+		<td>Sprite $1D (Flute quest) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D8</addr></td>
+		<td>Sprite $1D (Flute quest) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6217</addr></td>
+		<td>Sprite $21 (Water switch) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6218</addr></td>
+		<td>Sprite $21 (Water switch) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6257</addr></td>
+		<td>Sprite $25 (Talking tree) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6258</addr></td>
+		<td>Sprite $25 (Talking tree) - bomb damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 089</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="16"><b>B</b></td>
+		<th rowspan="16">Door 3 partner</td>
+		<td rowspan="16"><asmval>$889E</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6490</addr></td>
+		<td>Sprite $49 (Red bush guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6491</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D0</addr></td>
+		<td>Sprite $4D (Toppo) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D1</addr></td>
+		<td>Sprite $4D (Toppo) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6510</addr></td>
+		<td>Sprite $51 (Armos statue) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6511</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6550</addr></td>
+		<td>Sprite $55 (Zora) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6551</addr></td>
+		<td>Sprite $55 (Zora) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6590</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6591</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D0</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D1</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6610</addr></td>
+		<td>Sprite $61 (Beamos) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6611</addr></td>
+		<td>Sprite $61 (Beamos) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6650</addr></td>
+		<td>Sprite $65 (Archery guy) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6651</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 1 damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 07D</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="24"><b>8</b></td>
+		<th rowspan="24">Door 0 partner</td>
+		<td rowspan="24"><asmval>$88A2</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6012</addr></td>
+		<td>Sprite $01 (Vulture) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6013</addr></td>
+		<td>Sprite $01 (Vulture) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6052</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6053</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6092</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6093</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D2</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D3</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6112</addr></td>
+		<td>Sprite $11 (Hinox) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6113</addr></td>
+		<td>Sprite $11 (Hinox) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6152</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6153</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6192</addr></td>
+		<td>Sprite $19 (Poe) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6193</addr></td>
+		<td>Sprite $19 (Poe) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D2</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D3</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6212</addr></td>
+		<td>Sprite $21 (Water switch) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6213</addr></td>
+		<td>Sprite $21 (Water switch) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6252</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6253</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>9</b></td>
+		<th rowspan="24">Door 1 partner</td>
+		<td rowspan="24"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6012</addr></td>
+		<td>Sprite $01 (Vulture) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6013</addr></td>
+		<td>Sprite $01 (Vulture) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6052</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6053</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6092</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6093</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D2</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D3</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6112</addr></td>
+		<td>Sprite $11 (Hinox) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6113</addr></td>
+		<td>Sprite $11 (Hinox) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6152</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6153</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6192</addr></td>
+		<td>Sprite $19 (Poe) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6193</addr></td>
+		<td>Sprite $19 (Poe) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D2</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D3</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6212</addr></td>
+		<td>Sprite $21 (Water switch) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6213</addr></td>
+		<td>Sprite $21 (Water switch) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6252</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6253</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>A</b></td>
+		<th rowspan="16">Door 2 partner</td>
+		<td rowspan="16"><asmval>$88A2</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6512</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6513</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6552</addr></td>
+		<td>Sprite $55 (Zora) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6553</addr></td>
+		<td>Sprite $55 (Zora) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6592</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6593</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D2</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D3</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6612</addr></td>
+		<td>Sprite $61 (Beamos) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6613</addr></td>
+		<td>Sprite $61 (Beamos) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6652</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6653</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>B</b></td>
+		<th rowspan="16">Door 3 partner</td>
+		<td rowspan="16"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6512</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6513</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6552</addr></td>
+		<td>Sprite $55 (Zora) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6553</addr></td>
+		<td>Sprite $55 (Zora) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6592</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6593</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D2</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D3</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6612</addr></td>
+		<td>Sprite $61 (Beamos) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6613</addr></td>
+		<td>Sprite $61 (Beamos) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6652</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6653</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>E</b></td>
+		<th rowspan="24">Door 6 partner</td>
+		<td rowspan="24"><asmval>$8896</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600C</addr></td>
+		<td>Sprite $00 (Raven) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600D</addr></td>
+		<td>Sprite $00 (Raven) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604C</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604D</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608C</addr></td>
+		<td>Sprite $08 (Octorok) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608D</addr></td>
+		<td>Sprite $08 (Octorok) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CC</addr></td>
+		<td>Sprite $0C (Octorok stone) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CD</addr></td>
+		<td>Sprite $0C (Octorok stone) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610C</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610D</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614C</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614D</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618C</addr></td>
+		<td>Sprite $18 (Mini moldorm) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618D</addr></td>
+		<td>Sprite $18 (Mini moldorm) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CC</addr></td>
+		<td>Sprite $1C (Statue) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CD</addr></td>
+		<td>Sprite $1C (Statue) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620C</addr></td>
+		<td>Sprite $20 (Sluggula) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620D</addr></td>
+		<td>Sprite $20 (Sluggula) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624C</addr></td>
+		<td>Sprite $24 (Blue bari) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624D</addr></td>
+		<td>Sprite $24 (Blue bari) - bombos damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>F</b></td>
+		<th rowspan="24">Door 7 partner</td>
+		<td rowspan="24"><asmval>$8897</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600C</addr></td>
+		<td>Sprite $00 (Raven) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600D</addr></td>
+		<td>Sprite $00 (Raven) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604C</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604D</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608C</addr></td>
+		<td>Sprite $08 (Octorok) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608D</addr></td>
+		<td>Sprite $08 (Octorok) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CC</addr></td>
+		<td>Sprite $0C (Octorok stone) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CD</addr></td>
+		<td>Sprite $0C (Octorok stone) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610C</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610D</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614C</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614D</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618C</addr></td>
+		<td>Sprite $18 (Mini moldorm) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618D</addr></td>
+		<td>Sprite $18 (Mini moldorm) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CC</addr></td>
+		<td>Sprite $1C (Statue) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CD</addr></td>
+		<td>Sprite $1C (Statue) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620C</addr></td>
+		<td>Sprite $20 (Sluggula) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620D</addr></td>
+		<td>Sprite $20 (Sluggula) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624C</addr></td>
+		<td>Sprite $24 (Blue bari) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624D</addr></td>
+		<td>Sprite $24 (Blue bari) - bombos damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 0BB</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="16"><b>2</b></td>
+		<th rowspan="16">Door 2 main</td>
+		<td rowspan="16"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6512</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6513</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6552</addr></td>
+		<td>Sprite $55 (Zora) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6553</addr></td>
+		<td>Sprite $55 (Zora) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6592</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6593</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D2</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D3</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6612</addr></td>
+		<td>Sprite $61 (Beamos) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6613</addr></td>
+		<td>Sprite $61 (Beamos) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6652</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6653</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>3</b></td>
+		<th rowspan="24">Door 3 main</td>
+		<td rowspan="24"><asmval>$8818</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F644D</addr></td>
+		<td>Sprite $44 (Fast blue guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F644E</addr></td>
+		<td>Sprite $44 (Fast blue guard) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F648E</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600D</addr></td>
+		<td>Sprite $00 (Raven) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600E</addr></td>
+		<td>Sprite $00 (Raven) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604D</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604E</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608D</addr></td>
+		<td>Sprite $08 (Octorok) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608E</addr></td>
+		<td>Sprite $08 (Octorok) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CD</addr></td>
+		<td>Sprite $0C (Octorok stone) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CE</addr></td>
+		<td>Sprite $0C (Octorok stone) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610D</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610E</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614D</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614E</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618D</addr></td>
+		<td>Sprite $18 (Mini moldorm) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618E</addr></td>
+		<td>Sprite $18 (Mini moldorm) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CD</addr></td>
+		<td>Sprite $1C (Statue) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CE</addr></td>
+		<td>Sprite $1C (Statue) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620D</addr></td>
+		<td>Sprite $20 (Sluggula) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620E</addr></td>
+		<td>Sprite $20 (Sluggula) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624D</addr></td>
+		<td>Sprite $24 (Blue bari) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624E</addr></td>
+		<td>Sprite $24 (Blue bari) - ether damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>4</b></td>
+		<th rowspan="16">Door 4 main</td>
+		<td rowspan="16"><asmval>$8878</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F647D</addr></td>
+		<td>Sprite $47 (Green bush guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F647E</addr></td>
+		<td>Sprite $47 (Green bush guard) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64BD</addr></td>
+		<td>Sprite $4B (Green knife guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64BE</addr></td>
+		<td>Sprite $4B (Green knife guard) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64FD</addr></td>
+		<td>Sprite $4F (Popo (fast)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64FE</addr></td>
+		<td>Sprite $4F (Popo (fast)) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F653D</addr></td>
+		<td>Sprite $53 (Armos Knight) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F653E</addr></td>
+		<td>Sprite $53 (Armos Knight) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F657D</addr></td>
+		<td>Sprite $57 (Desert statue) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F657E</addr></td>
+		<td>Sprite $57 (Desert statue) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65BD</addr></td>
+		<td>Sprite $5B (Spark (clockwise)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65BE</addr></td>
+		<td>Sprite $5B (Spark (clockwise)) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F65FD</addr></td>
+		<td>Sprite $5F (Roller (horizontal, right first)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F65FE</addr></td>
+		<td>Sprite $5F (Roller (horizontal, right first)) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F663D</addr></td>
+		<td>Sprite $63 (Debirando pit) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F663E</addr></td>
+		<td>Sprite $63 (Debirando pit) - ether damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>5</b></td>
+		<th rowspan="16">Door 5 main</td>
+		<td rowspan="16"><asmval>$8878</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F647D</addr></td>
+		<td>Sprite $47 (Green bush guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F647E</addr></td>
+		<td>Sprite $47 (Green bush guard) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64BD</addr></td>
+		<td>Sprite $4B (Green knife guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64BE</addr></td>
+		<td>Sprite $4B (Green knife guard) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64FD</addr></td>
+		<td>Sprite $4F (Popo (fast)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64FE</addr></td>
+		<td>Sprite $4F (Popo (fast)) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F653D</addr></td>
+		<td>Sprite $53 (Armos Knight) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F653E</addr></td>
+		<td>Sprite $53 (Armos Knight) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F657D</addr></td>
+		<td>Sprite $57 (Desert statue) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F657E</addr></td>
+		<td>Sprite $57 (Desert statue) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65BD</addr></td>
+		<td>Sprite $5B (Spark (clockwise)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65BE</addr></td>
+		<td>Sprite $5B (Spark (clockwise)) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F65FD</addr></td>
+		<td>Sprite $5F (Roller (horizontal, right first)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F65FE</addr></td>
+		<td>Sprite $5F (Roller (horizontal, right first)) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F663D</addr></td>
+		<td>Sprite $63 (Debirando pit) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F663E</addr></td>
+		<td>Sprite $63 (Debirando pit) - ether damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="20"><b>8</b></td>
+		<th rowspan="20">Door 0 partner</td>
+		<td rowspan="20"><asmval>$8897</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6480</addr></td>
+		<td>Sprite $48 (Red javelin guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6481</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6482</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6483</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6484</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6485</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6486</addr></td>
+		<td>Sprite $48 (Red javelin guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6487</addr></td>
+		<td>Sprite $48 (Red javelin guard) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C0</addr></td>
+		<td>Sprite $4C (Geldman) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C1</addr></td>
+		<td>Sprite $4C (Geldman) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C2</addr></td>
+		<td>Sprite $4C (Geldman) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C3</addr></td>
+		<td>Sprite $4C (Geldman) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C4</addr></td>
+		<td>Sprite $4C (Geldman) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C5</addr></td>
+		<td>Sprite $4C (Geldman) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C6</addr></td>
+		<td>Sprite $4C (Geldman) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C7</addr></td>
+		<td>Sprite $4C (Geldman) - hookshot damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>9</b></td>
+		<th rowspan="24">Door 1 partner</td>
+		<td rowspan="24"><asmval>$8808</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6445</addr></td>
+		<td>Sprite $44 (Fast blue guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6446</addr></td>
+		<td>Sprite $44 (Fast blue guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6485</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6486</addr></td>
+		<td>Sprite $48 (Red javelin guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6005</addr></td>
+		<td>Sprite $00 (Raven) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6006</addr></td>
+		<td>Sprite $00 (Raven) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6045</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6046</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6085</addr></td>
+		<td>Sprite $08 (Octorok) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6086</addr></td>
+		<td>Sprite $08 (Octorok) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60C5</addr></td>
+		<td>Sprite $0C (Octorok stone) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60C6</addr></td>
+		<td>Sprite $0C (Octorok stone) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6105</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6106</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6145</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6146</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6185</addr></td>
+		<td>Sprite $18 (Mini moldorm) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6186</addr></td>
+		<td>Sprite $18 (Mini moldorm) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61C5</addr></td>
+		<td>Sprite $1C (Statue) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61C6</addr></td>
+		<td>Sprite $1C (Statue) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6205</addr></td>
+		<td>Sprite $20 (Sluggula) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6206</addr></td>
+		<td>Sprite $20 (Sluggula) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6245</addr></td>
+		<td>Sprite $24 (Blue bari) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6246</addr></td>
+		<td>Sprite $24 (Blue bari) - arrow damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="20"><b>E</b></td>
+		<th rowspan="20">Door 6 partner</td>
+		<td rowspan="20"><asmval>$8891</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6489</addr></td>
+		<td>Sprite $48 (Red javelin guard) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648A</addr></td>
+		<td>Sprite $48 (Red javelin guard) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64C9</addr></td>
+		<td>Sprite $4C (Geldman) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CA</addr></td>
+		<td>Sprite $4C (Geldman) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6480</addr></td>
+		<td>Sprite $48 (Red javelin guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6481</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6482</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6483</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6484</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6485</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6486</addr></td>
+		<td>Sprite $48 (Red javelin guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6487</addr></td>
+		<td>Sprite $48 (Red javelin guard) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C0</addr></td>
+		<td>Sprite $4C (Geldman) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C1</addr></td>
+		<td>Sprite $4C (Geldman) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C2</addr></td>
+		<td>Sprite $4C (Geldman) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C3</addr></td>
+		<td>Sprite $4C (Geldman) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C4</addr></td>
+		<td>Sprite $4C (Geldman) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C5</addr></td>
+		<td>Sprite $4C (Geldman) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C6</addr></td>
+		<td>Sprite $4C (Geldman) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C7</addr></td>
+		<td>Sprite $4C (Geldman) - hookshot damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="10"><b>F</b></td>
+		<th rowspan="10">Door 7 partner</td>
+		<td rowspan="10"><asmval>$A888</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F7485</addr></td>
+		<td>Message $162 (chest game) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F7486</addr></td>
+		<td>Message $163 (Light World shop) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F74C5</addr></td>
+		<td>Message $182 (2 spawn selection) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F74C6</addr></td>
+		<td>Message $183 (3 spawn selection) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F71C5</addr></td>
+		<td>Message $002 (selection arrow) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F71C6</addr></td>
+		<td>Message $003 (death options) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F7205</addr></td>
+		<td>Message $022 (prison Zelda) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F7206</addr></td>
+		<td>Message $023 (Zelda prison story) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F7245</addr></td>
+		<td>Message $042 (Magic Shop signpost) pointer</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F7246</addr></td>
+		<td>Message $043 (Eastern/Castle signpost) pointer</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 0A8</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="16"><b>A</b></td>
+		<th rowspan="16">Door 2 partner</td>
+		<td rowspan="16"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6512</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6513</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6552</addr></td>
+		<td>Sprite $55 (Zora) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6553</addr></td>
+		<td>Sprite $55 (Zora) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6592</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6593</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D2</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D3</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6612</addr></td>
+		<td>Sprite $61 (Beamos) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6613</addr></td>
+		<td>Sprite $61 (Beamos) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6652</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6653</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>B</b></td>
+		<th rowspan="16">Door 3 partner</td>
+		<td rowspan="16"><asmval>$88A2</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6512</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6513</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6552</addr></td>
+		<td>Sprite $55 (Zora) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6553</addr></td>
+		<td>Sprite $55 (Zora) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6592</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6593</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D2</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D3</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6612</addr></td>
+		<td>Sprite $61 (Beamos) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6613</addr></td>
+		<td>Sprite $61 (Beamos) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6652</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6653</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>E</b></td>
+		<th rowspan="24">Door 6 partner</td>
+		<td rowspan="24"><asmval>$8897</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600C</addr></td>
+		<td>Sprite $00 (Raven) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600D</addr></td>
+		<td>Sprite $00 (Raven) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604C</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604D</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608C</addr></td>
+		<td>Sprite $08 (Octorok) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608D</addr></td>
+		<td>Sprite $08 (Octorok) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CC</addr></td>
+		<td>Sprite $0C (Octorok stone) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CD</addr></td>
+		<td>Sprite $0C (Octorok stone) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610C</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610D</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614C</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614D</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618C</addr></td>
+		<td>Sprite $18 (Mini moldorm) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618D</addr></td>
+		<td>Sprite $18 (Mini moldorm) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CC</addr></td>
+		<td>Sprite $1C (Statue) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CD</addr></td>
+		<td>Sprite $1C (Statue) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620C</addr></td>
+		<td>Sprite $20 (Sluggula) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620D</addr></td>
+		<td>Sprite $20 (Sluggula) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624C</addr></td>
+		<td>Sprite $24 (Blue bari) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624D</addr></td>
+		<td>Sprite $24 (Blue bari) - bombos damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>F</b></td>
+		<th rowspan="16">Door 7 partner</td>
+		<td rowspan="16"><asmval>$8896</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F650C</addr></td>
+		<td>Sprite $50 (Cannonball) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F650D</addr></td>
+		<td>Sprite $50 (Cannonball) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F654C</addr></td>
+		<td>Sprite $54 (Lanmolas) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F654D</addr></td>
+		<td>Sprite $54 (Lanmolas) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F658C</addr></td>
+		<td>Sprite $58 (Crab) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F658D</addr></td>
+		<td>Sprite $58 (Crab) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65CC</addr></td>
+		<td>Sprite $5C (Spark (counterclockwise)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65CD</addr></td>
+		<td>Sprite $5C (Spark (counterclockwise)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F660C</addr></td>
+		<td>Sprite $60 (Roller (horizontal, left first)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F660D</addr></td>
+		<td>Sprite $60 (Roller (horizontal, left first)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F664C</addr></td>
+		<td>Sprite $64 (Debirando) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F664D</addr></td>
+		<td>Sprite $64 (Debirando) - bombos damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 0A9</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="16"><b>2</b></td>
+		<th rowspan="16">Door 2 main</td>
+		<td rowspan="16"><asmval>$8CAE</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6698</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6699</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D8</addr></td>
+		<td>Sprite $6D (Rat / cricket) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D9</addr></td>
+		<td>Sprite $6D (Rat / cricket) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6718</addr></td>
+		<td>Sprite $71 (Leever) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6719</addr></td>
+		<td>Sprite $71 (Leever) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6758</addr></td>
+		<td>Sprite $75 (Bottle merchant) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6759</addr></td>
+		<td>Sprite $75 (Bottle merchant) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6798</addr></td>
+		<td>Sprite $79 (Bee) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6799</addr></td>
+		<td>Sprite $79 (Bee) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F67D8</addr></td>
+		<td>Sprite $7D (Big spike) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F67D9</addr></td>
+		<td>Sprite $7D (Big spike) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6818</addr></td>
+		<td>Sprite $81 (Hover) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6819</addr></td>
+		<td>Sprite $81 (Hover) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6858</addr></td>
+		<td>Sprite $85 (Yellow stalfos) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6859</addr></td>
+		<td>Sprite $85 (Yellow stalfos) - silver arrow damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>3</b></td>
+		<th rowspan="24">Door 3 main</td>
+		<td rowspan="24"><asmval>$8CAC</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6697</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6698</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D7</addr></td>
+		<td>Sprite $6D (Rat / cricket) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D8</addr></td>
+		<td>Sprite $6D (Rat / cricket) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6017</addr></td>
+		<td>Sprite $01 (Vulture) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6018</addr></td>
+		<td>Sprite $01 (Vulture) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6057</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6058</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6097</addr></td>
+		<td>Sprite $09 (Moldorm) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6098</addr></td>
+		<td>Sprite $09 (Moldorm) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D7</addr></td>
+		<td>Sprite $0D (Buzzblob) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D8</addr></td>
+		<td>Sprite $0D (Buzzblob) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6117</addr></td>
+		<td>Sprite $11 (Hinox) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6118</addr></td>
+		<td>Sprite $11 (Hinox) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6157</addr></td>
+		<td>Sprite $15 (Antifairy) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6158</addr></td>
+		<td>Sprite $15 (Antifairy) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6197</addr></td>
+		<td>Sprite $19 (Poe) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6198</addr></td>
+		<td>Sprite $19 (Poe) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D7</addr></td>
+		<td>Sprite $1D (Flute quest) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D8</addr></td>
+		<td>Sprite $1D (Flute quest) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6217</addr></td>
+		<td>Sprite $21 (Water switch) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6218</addr></td>
+		<td>Sprite $21 (Water switch) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6257</addr></td>
+		<td>Sprite $25 (Talking tree) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6258</addr></td>
+		<td>Sprite $25 (Talking tree) - bomb damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>5</b></td>
+		<th rowspan="24">Door 5 main</td>
+		<td rowspan="24"><asmval>$8CAC</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6697</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6698</addr></td>
+		<td>Sprite $69 (Wall cannon (horizontal, bottom)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D7</addr></td>
+		<td>Sprite $6D (Rat / cricket) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F66D8</addr></td>
+		<td>Sprite $6D (Rat / cricket) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6017</addr></td>
+		<td>Sprite $01 (Vulture) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6018</addr></td>
+		<td>Sprite $01 (Vulture) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6057</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6058</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6097</addr></td>
+		<td>Sprite $09 (Moldorm) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6098</addr></td>
+		<td>Sprite $09 (Moldorm) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D7</addr></td>
+		<td>Sprite $0D (Buzzblob) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D8</addr></td>
+		<td>Sprite $0D (Buzzblob) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6117</addr></td>
+		<td>Sprite $11 (Hinox) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6118</addr></td>
+		<td>Sprite $11 (Hinox) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6157</addr></td>
+		<td>Sprite $15 (Antifairy) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6158</addr></td>
+		<td>Sprite $15 (Antifairy) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6197</addr></td>
+		<td>Sprite $19 (Poe) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6198</addr></td>
+		<td>Sprite $19 (Poe) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D7</addr></td>
+		<td>Sprite $1D (Flute quest) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D8</addr></td>
+		<td>Sprite $1D (Flute quest) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6217</addr></td>
+		<td>Sprite $21 (Water switch) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6218</addr></td>
+		<td>Sprite $21 (Water switch) - bomb damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6257</addr></td>
+		<td>Sprite $25 (Talking tree) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6258</addr></td>
+		<td>Sprite $25 (Talking tree) - bomb damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>8</b></td>
+		<th rowspan="16">Door 0 partner</td>
+		<td rowspan="16"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6512</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6513</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6552</addr></td>
+		<td>Sprite $55 (Zora) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6553</addr></td>
+		<td>Sprite $55 (Zora) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6592</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6593</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D2</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D3</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6612</addr></td>
+		<td>Sprite $61 (Beamos) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6613</addr></td>
+		<td>Sprite $61 (Beamos) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6652</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6653</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>9</b></td>
+		<th rowspan="24">Door 1 partner</td>
+		<td rowspan="24"><asmval>$88A2</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6012</addr></td>
+		<td>Sprite $01 (Vulture) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6013</addr></td>
+		<td>Sprite $01 (Vulture) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6052</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6053</addr></td>
+		<td>Sprite $05 (Correct pull switch (up)) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6092</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6093</addr></td>
+		<td>Sprite $09 (Moldorm) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D2</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60D3</addr></td>
+		<td>Sprite $0D (Buzzblob) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6112</addr></td>
+		<td>Sprite $11 (Hinox) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6113</addr></td>
+		<td>Sprite $11 (Hinox) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6152</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6153</addr></td>
+		<td>Sprite $15 (Antifairy) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6192</addr></td>
+		<td>Sprite $19 (Poe) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6193</addr></td>
+		<td>Sprite $19 (Poe) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D2</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61D3</addr></td>
+		<td>Sprite $1D (Flute quest) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6212</addr></td>
+		<td>Sprite $21 (Water switch) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6213</addr></td>
+		<td>Sprite $21 (Water switch) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6252</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6253</addr></td>
+		<td>Sprite $25 (Talking tree) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>A</b></td>
+		<th rowspan="16">Door 2 partner</td>
+		<td rowspan="16"><asmval>$88A3</asmval></td>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6480</addr></td>
+		<td>Sprite $48 (Red javelin guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6481</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6482</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6483</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6484</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6485</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6486</addr></td>
+		<td>Sprite $48 (Red javelin guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6487</addr></td>
+		<td>Sprite $48 (Red javelin guard) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C0</addr></td>
+		<td>Sprite $4C (Geldman) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C1</addr></td>
+		<td>Sprite $4C (Geldman) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C2</addr></td>
+		<td>Sprite $4C (Geldman) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C3</addr></td>
+		<td>Sprite $4C (Geldman) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C4</addr></td>
+		<td>Sprite $4C (Geldman) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C5</addr></td>
+		<td>Sprite $4C (Geldman) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C6</addr></td>
+		<td>Sprite $4C (Geldman) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C7</addr></td>
+		<td>Sprite $4C (Geldman) - hookshot damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="20"><b>B</b></td>
+		<th rowspan="20">Door 3 partner</td>
+		<td rowspan="20"><asmval>$88A2</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6480</addr></td>
+		<td>Sprite $48 (Red javelin guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2040</addr></td>
+		<td><addr>$7F6481</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6482</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6483</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6484</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6485</addr></td>
+		<td>Sprite $48 (Red javelin guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6486</addr></td>
+		<td>Sprite $48 (Red javelin guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6487</addr></td>
+		<td>Sprite $48 (Red javelin guard) - hookshot damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C0</addr></td>
+		<td>Sprite $4C (Geldman) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2080</addr></td>
+		<td><addr>$7F64C1</addr></td>
+		<td>Sprite $4C (Geldman) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C2</addr></td>
+		<td>Sprite $4C (Geldman) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64C3</addr></td>
+		<td>Sprite $4C (Geldman) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C4</addr></td>
+		<td>Sprite $4C (Geldman) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64C5</addr></td>
+		<td>Sprite $4C (Geldman) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C6</addr></td>
+		<td>Sprite $4C (Geldman) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64C7</addr></td>
+		<td>Sprite $4C (Geldman) - hookshot damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>E</b></td>
+		<th rowspan="16">Door 6 partner</td>
+		<td rowspan="16"><asmval>$8897</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F650C</addr></td>
+		<td>Sprite $50 (Cannonball) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F650D</addr></td>
+		<td>Sprite $50 (Cannonball) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F654C</addr></td>
+		<td>Sprite $54 (Lanmolas) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F654D</addr></td>
+		<td>Sprite $54 (Lanmolas) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F658C</addr></td>
+		<td>Sprite $58 (Crab) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F658D</addr></td>
+		<td>Sprite $58 (Crab) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65CC</addr></td>
+		<td>Sprite $5C (Spark (counterclockwise)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65CD</addr></td>
+		<td>Sprite $5C (Spark (counterclockwise)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F660C</addr></td>
+		<td>Sprite $60 (Roller (horizontal, left first)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F660D</addr></td>
+		<td>Sprite $60 (Roller (horizontal, left first)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F664C</addr></td>
+		<td>Sprite $64 (Debirando) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F664D</addr></td>
+		<td>Sprite $64 (Debirando) - bombos damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>F</b></td>
+		<th rowspan="24">Door 7 partner</td>
+		<td rowspan="24"><asmval>$8896</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600C</addr></td>
+		<td>Sprite $00 (Raven) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600D</addr></td>
+		<td>Sprite $00 (Raven) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604C</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604D</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608C</addr></td>
+		<td>Sprite $08 (Octorok) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608D</addr></td>
+		<td>Sprite $08 (Octorok) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CC</addr></td>
+		<td>Sprite $0C (Octorok stone) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CD</addr></td>
+		<td>Sprite $0C (Octorok stone) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610C</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610D</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614C</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614D</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618C</addr></td>
+		<td>Sprite $18 (Mini moldorm) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618D</addr></td>
+		<td>Sprite $18 (Mini moldorm) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CC</addr></td>
+		<td>Sprite $1C (Statue) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CD</addr></td>
+		<td>Sprite $1C (Statue) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620C</addr></td>
+		<td>Sprite $20 (Sluggula) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620D</addr></td>
+		<td>Sprite $20 (Sluggula) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624C</addr></td>
+		<td>Sprite $24 (Blue bari) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624D</addr></td>
+		<td>Sprite $24 (Blue bari) - bombos damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 0E4</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="16"><b>2</b></td>
+		<th rowspan="16">Door 2 main</td>
+		<td rowspan="16"><asmval>$8897</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F648E</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F648F</addr></td>
+		<td>Sprite $48 (Red javelin guard) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6490</addr></td>
+		<td>Sprite $49 (Red bush guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6491</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6492</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6493</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64CE</addr></td>
+		<td>Sprite $4C (Geldman) - ether damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64CF</addr></td>
+		<td>Sprite $4C (Geldman) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64D0</addr></td>
+		<td>Sprite $4D (Toppo) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64D1</addr></td>
+		<td>Sprite $4D (Toppo) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64D2</addr></td>
+		<td>Sprite $4D (Toppo) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64D3</addr></td>
+		<td>Sprite $4D (Toppo) - sword 3 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>3</b></td>
+		<th rowspan="24">Door 3 main</td>
+		<td rowspan="24"><asmval>$8896</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648D</addr></td>
+		<td>Sprite $48 (Red javelin guard) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CD</addr></td>
+		<td>Sprite $4C (Geldman) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600C</addr></td>
+		<td>Sprite $00 (Raven) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600D</addr></td>
+		<td>Sprite $00 (Raven) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604C</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604D</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608C</addr></td>
+		<td>Sprite $08 (Octorok) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608D</addr></td>
+		<td>Sprite $08 (Octorok) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CC</addr></td>
+		<td>Sprite $0C (Octorok stone) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CD</addr></td>
+		<td>Sprite $0C (Octorok stone) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610C</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610D</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614C</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614D</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618C</addr></td>
+		<td>Sprite $18 (Mini moldorm) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618D</addr></td>
+		<td>Sprite $18 (Mini moldorm) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CC</addr></td>
+		<td>Sprite $1C (Statue) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CD</addr></td>
+		<td>Sprite $1C (Statue) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620C</addr></td>
+		<td>Sprite $20 (Sluggula) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620D</addr></td>
+		<td>Sprite $20 (Sluggula) - bombos damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624C</addr></td>
+		<td>Sprite $24 (Blue bari) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624D</addr></td>
+		<td>Sprite $24 (Blue bari) - bombos damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>4</b></td>
+		<th rowspan="16">Door 4 main</td>
+		<td rowspan="16"><asmval>$889F</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6490</addr></td>
+		<td>Sprite $49 (Red bush guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6491</addr></td>
+		<td>Sprite $49 (Red bush guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D0</addr></td>
+		<td>Sprite $4D (Toppo) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64D1</addr></td>
+		<td>Sprite $4D (Toppo) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6510</addr></td>
+		<td>Sprite $51 (Armos statue) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6511</addr></td>
+		<td>Sprite $51 (Armos statue) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6550</addr></td>
+		<td>Sprite $55 (Zora) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6551</addr></td>
+		<td>Sprite $55 (Zora) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6590</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6591</addr></td>
+		<td>Sprite $59 (Lost Woods bird) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D0</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65D1</addr></td>
+		<td>Sprite $5D (Roller (vertical, down first)) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6610</addr></td>
+		<td>Sprite $61 (Beamos) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6611</addr></td>
+		<td>Sprite $61 (Beamos) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6650</addr></td>
+		<td>Sprite $65 (Archery guy) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6651</addr></td>
+		<td>Sprite $65 (Archery guy) - sword 1 damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="16"><b>8</b></td>
+		<th rowspan="16">Door 0 partner</td>
+		<td rowspan="16"><asmval>$8891</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6489</addr></td>
+		<td>Sprite $48 (Red javelin guard) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648A</addr></td>
+		<td>Sprite $48 (Red javelin guard) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64C9</addr></td>
+		<td>Sprite $4C (Geldman) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CA</addr></td>
+		<td>Sprite $4C (Geldman) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F6509</addr></td>
+		<td>Sprite $50 (Cannonball) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F650A</addr></td>
+		<td>Sprite $50 (Cannonball) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F6549</addr></td>
+		<td>Sprite $54 (Lanmolas) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F654A</addr></td>
+		<td>Sprite $54 (Lanmolas) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6589</addr></td>
+		<td>Sprite $58 (Crab) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F658A</addr></td>
+		<td>Sprite $58 (Crab) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65C9</addr></td>
+		<td>Sprite $5C (Spark (counterclockwise)) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F65CA</addr></td>
+		<td>Sprite $5C (Spark (counterclockwise)) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F6609</addr></td>
+		<td>Sprite $60 (Roller (horizontal, left first)) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F660A</addr></td>
+		<td>Sprite $60 (Roller (horizontal, left first)) - powder damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F6649</addr></td>
+		<td>Sprite $64 (Debirando) - silver arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F664A</addr></td>
+		<td>Sprite $64 (Debirando) - powder damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>9</b></td>
+		<th rowspan="24">Door 1 partner</td>
+		<td rowspan="24"><asmval>$8895</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648B</addr></td>
+		<td>Sprite $48 (Red javelin guard) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F648C</addr></td>
+		<td>Sprite $48 (Red javelin guard) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CB</addr></td>
+		<td>Sprite $4C (Geldman) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64CC</addr></td>
+		<td>Sprite $4C (Geldman) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600B</addr></td>
+		<td>Sprite $00 (Raven) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F600C</addr></td>
+		<td>Sprite $00 (Raven) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604B</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F604C</addr></td>
+		<td>Sprite $04 (Correct pull switch (down)) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608B</addr></td>
+		<td>Sprite $08 (Octorok) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F608C</addr></td>
+		<td>Sprite $08 (Octorok) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CB</addr></td>
+		<td>Sprite $0C (Octorok stone) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60CC</addr></td>
+		<td>Sprite $0C (Octorok stone) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610B</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F610C</addr></td>
+		<td>Sprite $10 (Octoballoon baby) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614B</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F614C</addr></td>
+		<td>Sprite $14 (Thieves' Town grate) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618B</addr></td>
+		<td>Sprite $18 (Mini moldorm) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F618C</addr></td>
+		<td>Sprite $18 (Mini moldorm) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CB</addr></td>
+		<td>Sprite $1C (Statue) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61CC</addr></td>
+		<td>Sprite $1C (Statue) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620B</addr></td>
+		<td>Sprite $20 (Sluggula) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F620C</addr></td>
+		<td>Sprite $20 (Sluggula) - ice rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624B</addr></td>
+		<td>Sprite $24 (Blue bari) - fire rod damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F624C</addr></td>
+		<td>Sprite $24 (Blue bari) - ice rod damage</td>
+	</tr>
+
+
+	<tr class="center darkrow">
+		<th colspan="6">Room 0DC</th>
+	</tr>
+	<tr class="center mediumrow">
+		<th colspan="2">Door</th>
+		<th>TMAPX</th>
+		<th>Base</th>
+		<th>Address</th>
+		<th>Affected data</th>
+	</tr>
+	<tr>
+		<th rowspan="16"><b>5</b></td>
+		<th rowspan="16">Door 5 main</td>
+		<td rowspan="16"><asmval>$885C</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F646F</addr></td>
+		<td>Sprite $46 (Blue archer) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6470</addr></td>
+		<td>Sprite $47 (Green bush guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64AF</addr></td>
+		<td>Sprite $4A (Bomb guard) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64B0</addr></td>
+		<td>Sprite $4B (Green knife guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6471</addr></td>
+		<td>Sprite $47 (Green bush guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2042</addr></td>
+		<td><addr>$7F6472</addr></td>
+		<td>Sprite $47 (Green bush guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6473</addr></td>
+		<td>Sprite $47 (Green bush guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2044</addr></td>
+		<td><addr>$7F6474</addr></td>
+		<td>Sprite $47 (Green bush guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6475</addr></td>
+		<td>Sprite $47 (Green bush guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2046</addr></td>
+		<td><addr>$7F6476</addr></td>
+		<td>Sprite $47 (Green bush guard) - arrow damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64B1</addr></td>
+		<td>Sprite $4B (Green knife guard) - sword 1 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2082</addr></td>
+		<td><addr>$7F64B2</addr></td>
+		<td>Sprite $4B (Green knife guard) - sword 2 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64B3</addr></td>
+		<td>Sprite $4B (Green knife guard) - sword 3 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2084</addr></td>
+		<td><addr>$7F64B4</addr></td>
+		<td>Sprite $4B (Green knife guard) - sword 4 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64B5</addr></td>
+		<td>Sprite $4B (Green knife guard) - sword 5 damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2086</addr></td>
+		<td><addr>$7F64B6</addr></td>
+		<td>Sprite $4B (Green knife guard) - arrow damage</td>
+	</tr>
+
+	<tr>
+		<th rowspan="24"><b>B</b></td>
+		<th rowspan="24">Door 3 partner</td>
+		<td rowspan="24"><asmval>$885C</asmval></td>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F646F</addr></td>
+		<td>Sprite $46 (Blue archer) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6470</addr></td>
+		<td>Sprite $47 (Green bush guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64AF</addr></td>
+		<td>Sprite $4A (Bomb guard) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F64B0</addr></td>
+		<td>Sprite $4B (Green knife guard) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F602F</addr></td>
+		<td>Sprite $02 (Stalfos head) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2001</addr></td>
+		<td><addr>$7F6030</addr></td>
+		<td>Sprite $03 (Null) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F606F</addr></td>
+		<td>Sprite $06 (Wrong pull switch (down)) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2041</addr></td>
+		<td><addr>$7F6070</addr></td>
+		<td>Sprite $07 (Wrong pull switch (up)) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F60AF</addr></td>
+		<td>Sprite $0A (Octorok (4-way)) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2081</addr></td>
+		<td><addr>$7F60B0</addr></td>
+		<td>Sprite $0B (Cucco) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60EF</addr></td>
+		<td>Sprite $0E (Snapdragon) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F20C1</addr></td>
+		<td><addr>$7F60F0</addr></td>
+		<td>Sprite $0F (Octoballoon) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F612F</addr></td>
+		<td>Sprite $12 (Moblin) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2101</addr></td>
+		<td><addr>$7F6130</addr></td>
+		<td>Sprite $13 (Mini helmasaur) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F616F</addr></td>
+		<td>Sprite $16 (Sahasrahla / Aginah) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2141</addr></td>
+		<td><addr>$7F6170</addr></td>
+		<td>Sprite $17 (Bush hoarder) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F61AF</addr></td>
+		<td>Sprite $1A (Smithy) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2181</addr></td>
+		<td><addr>$7F61B0</addr></td>
+		<td>Sprite $1B (Arrow) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61EF</addr></td>
+		<td>Sprite $1E (Crystal switch) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F21C1</addr></td>
+		<td><addr>$7F61F0</addr></td>
+		<td>Sprite $1F (Sick kid) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F622F</addr></td>
+		<td>Sprite $22 (Ropa) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2201</addr></td>
+		<td><addr>$7F6230</addr></td>
+		<td>Sprite $23 (Red bari) - boomerang damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F626F</addr></td>
+		<td>Sprite $26 (Hardhat beetle) - quake damage</td>
+	</tr>
+	<tr>
+		<td><addr>$7F2241</addr></td>
+		<td><addr>$7F6270</addr></td>
+		<td>Sprite $27 (Deadrock) - boomerang damage</td>
+	</tr>
+</table>
