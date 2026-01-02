@@ -66,7 +66,7 @@ background: glitchybg
 
 <h2>I sword of understand</h2>
 
-<p>The location of the door to animate is found with by following a collision map position stored in <asmvar>DOORPOS</asmvar>. Any action that might cause a door to change appearance will use this variable at some point. The easiest method is slashing a closed door. Doing so will cache its location just in case it was a vine door.</p>
+<p>The location of the door to animate is found by following a collision map position stored in <asmvar>DOORPOS</asmvar>. Any action that might cause a door to change appearance will use this variable at some point. The easiest method of setting <asmvar>DOORPOS</asmvar> is slashing a closed door. Doing so will cache its location just in case it was a vine door.</p>
 
 <ul>Ways to set <asmvar>DOORPOS</asmvar>:
 	<li>Slashing a closed door.</li>
@@ -83,7 +83,7 @@ background: glitchybg
 
 <p>Almost invariably, <asmval>$0016</asmval> points to a tile that behaves as solid collision. In fact, only three rooms <em>don't</em> have solid collision there: Desert Palace lobby, Eastern Palace fairies, and the Hyrule Castle Dungeon catwalk. Solid collision is tile type <asmval>$01</asmval>, so basically every room will&mdash;if you have <asmval>$0016</asmval> in <asmvar>DOORPOS</asmvar>&mdash;look at door index 1. Desert Palace Lobby will use door 0, its entrance; the fairies will use door 4. The castle dungeon catwalk will also use door 4, but that door doesn't exist. This room has no doors; you can't even west somaria here<a footnote href="#footnote-stupid"></a>.</p>
 
-<p>The locations array is cleared every time a room is loaded, so if <asmvar>DOORPOS</asmvar> somehow holds an index for an invalid door, the game will determine it's a northwards door at the top-left of the room. Funnily though, there is also a list of valid exit doors in an array at <addr>$19E2</addr>, with each entry holding a tilemap location. Doors compare their location to each of these entries to determine whether or not they are an exit. At least one of these four entries will be <asmval>$0000</asmval>, because no room has more than 2 exits. Thus, this misplaced door is determined to be an exit, and it will behave as one. In a room with a real exit, said exit will be found and used; but, if there isn't one, the game just hardlocks in an infinite loop.</p>
+<p>The locations array is cleared every time a room is loaded, so if <asmvar>DOORPOS</asmvar> somehow finds an index for an invalid door, the game will determine it's a northwards door at the top-left of the room. Funnily though, there is also a list of valid exit doors in an array at <addr>$19E2</addr>, with each entry holding a tilemap location. Doors compare their location to each of these entries to determine whether or not they are an exit. At least one of these four entries will be <asmval>$0000</asmval>, because no room has more than 2 exits. Thus, this misplaced door is determined to be an exit, and it will behave as one. In a room with a real exit, said exit will be found and used; but, if there isn't one, the game just hardlocks in an infinite loop.</p>
 
 <h2>Tick Tock</h2>
 
@@ -103,13 +103,14 @@ background: glitchybg
 	<li>Intraroom transitions will end with a timer of 4. Unless there are any shutters in the room.</li>
 	<li>A shutter operation that fails to find any shutter doors to animate<a footnote href="#footnote-shutterless"></a> will end with a timer of 4.</li>
 	<li>Touching a big key door without the big key will set the timer to 0.</li>
-	<li>Mirroring on the same frame that a key door is touched will set the timer to 0. The key will also not be used.</li>
+	<li>Mirroring on the same frame that a key door is touched with a key will set the timer to 0. The key will also not be used.</li>
+	<li>Setting off an exploding wall will set the timer to 0.</li>
 	<li>Opening the big doors to Hyrule Castle or Sanctuary will end with a timer of 3.</li>
 	<li>On the overworld, lifting big rocks or breaking bonk rocks will increment the timer by 1.</li>
 	<li>Opening the grave to sewers or king's tomb or solving the hammer pegs puzzle for the first time will increment the timer by 1.</li>
 </ul>
 
-<p>I don't know why those last two points are a thing. They never do anything with the value. Just be cautious to not break a bunch of rocks when manipulating this timer.</p>
+<p>Those last two items share some code with the big overworld doors, which is why they increment the timer. They never do anything with the value, though. Just be cautious to not break a bunch of rocks when manipulating this timer.</p>
 
 <h2>Locked and loaded</h2>
 
@@ -117,7 +118,7 @@ background: glitchybg
 
 <p>First, no door in index 4 or higher can be permanently opened. Door opening is temporarily marked in the variable <asmvar>OPENED</asmvar> at <addr>$068C</addr> and permanently in <asmvar>UNLOCKED</asmvar> at <addr>$0401</addr>. While it is possible to flag any door in either of these, only 4 bits from <asmvar>UNLOCKED</asmvar> get copied to or from the save file.</p>
 
-<p>If the variable <asmvar>SHUTTER</asmvar> at address <addr>$0468</addr> is set, the room load routines will not allow any double-sided shutter to open. Single-sided shutters are not checked for. Presumably, this is because the logic is intended for interroom transitions, all of which use double-shutters on the far walls. And this is how you <em>can</em> get a double-sided shutter open: enter the room via scrolling transition from a wall that has a shutter. This will clear <asmvar>SHUTTER</asmvar>, preopening every shutter door so that they can be animated closed together.</p>
+<p>If the variable <asmvar>SHUTTER</asmvar> at address <addr>$0468</addr> is set, the room load routines will not allow any double-sided shutter to open. Single-sided shutters are not checked for. Presumably, this is because the logic is intended for interroom transitions, and all interroom shutter doors are double-shutters by ID (the partner door for these positions is just discarded). And this is how you <em>can</em> get a double-sided shutter open: enter the room via scrolling transition from a wall that has a shutter. This will clear <asmvar>SHUTTER</asmvar>, preopening every shutter door so that they can be animated closed together.</p>
 
 <p>The <asmfunc>OperateShutterDoors</asmfunc> routine includes a check to ignore any door flagged in <asmvar>OPENED</asmvar>; although, this only works once. Once is usually enough to reach the shutter door while it's opened, but the next time a global shutter door operation occurs, even permanently opened shutters will comply. They'll stay permanently open, though; if the room is reloaded, the beginning of this paragraph will apply again. <asmvar>UNLOCKED</asmvar> is never modified by shutter operations.</p>
 
@@ -129,7 +130,7 @@ background: glitchybg
 
 <h2>Collaboration</h2>
 
-<p>In theory, we can use overlay corruption to put arbitrary tilemap positions into the <asmvar>DOORXTMAP</asmvar> array allowing us to index the tilemap out of bounds with a west somaria. This needs to all occur in the same room, and that room needs to naturally have far-reaching corruption. Even when you've found such a room, it needs to have specific room objects to do anything. Every entry of <asmvar>DOORXTMAP</asmvar> will all be populated by tile values from the current tilemap, which puts specific limits on where they can potentially write.</p>
+<p>In theory, we can use overlay corruption to put arbitrary tilemap positions into the <asmvar>DOORXTMAP</asmvar> array allowing us to index the tilemap out of bounds with a west somaria. This needs to all occur in the same room, and that room needs to naturally have far-reaching corruption. Even when you've found such a room, it needs to have specific room objects to do anything. Every entry of <asmvar>DOORXTMAP</asmvar> will be populated by tile values from the current tilemap, which puts specific limits on where they can potentially write.</p>
 
 <p>The tilemap's base address is <addr>$7E2000</addr>, and it occupies <asmval>$4000</asmval> bytes in memory. Following that is a decompression buffer that occupies <asmval>$3000</asmval> bytes and then decompressed graphics for another <asmval>$3000</asmval> bytes. The first interesting address is the room warp destination at <addr>$7EC000</addr>; hitting this would require a tilemap value of <asmval>$A000</asmval>. That's not a value you will ever find in the tilemap. How do I know? Because I can just look at this gigantic table in ROM that contains every tilemap value used by any object in the underworld.</p>
 
@@ -151,9 +152,9 @@ background: glitchybg
 
 <p>Instead of struggling to make things happen, let's go back to theory. We'll assume all of these candidate doors are easily twofold-corrupted and just look at what's theoretically possible. There's still not much of interest to talk about.</p>
 
-<p>The enemies affected are whatever. There are some odd sprites like somaria platforms or wall cannons that get affected, but they can't even be damaged, so it's irrelevant. Well, maybe you can kill a cannon with arrows. I haven't checked, and I'm not gonna.</p>
+<p>The enemies whose damages get changed are whatever. There are some odd sprites like somaria platforms or wall cannons that can be affected, but they can't even be damaged, so it's irrelevant. Well, maybe you can kill a cannon with arrows. I haven't checked, and I'm not gonna.</p>
 
-<p>There's also the problem that we mostly get door-related tile types for the damage table writes. The damage subclass lookup exists at <addr>$0DB8F1</addr> in ROM and is followed by a 256-byte table dictating how projectiles should behave. This table only contains values up to <asmval>$04</asmval>, which means out of bounds damage classes will have very low damages, and mostly 0. The indexed-door tile types of <asmval>$Fx</asmval> also dominate the calculation when treated as a subclass due to how the index is found, and all of them but one will fetch a damage of <asmval>$00</asmval>.</p>
+<p>There's also the problem that we mostly get door-related tile types for the damage table writes. The damage subclass lookup exists at <addr>$0DB8F1</addr> in ROM and is followed by a 256-byte table dictating how projectiles should behave; this table only contains values up to <asmval>$04</asmval>, which means out-of-bounds damage table indices will return very low damages or zero. The indexed-door tile types of <asmval>$Fx</asmval> also dominate the calculation when treated as a subclass due to how the index is found, and all but one of them will fetch a damage of <asmval>$00</asmval>.</p>
 
 <p>Illegal door types derived from the corruption in other arrays might result in some more exotic tile types being written, but none of the candidates are interesting enough to investigate further.</p>
 
@@ -165,7 +166,7 @@ background: glitchybg
 
 <p>Ideally, Ganon or Agahnim could have been modified to take more serious damage, possibly from a different weapon. Being able to set Ganon on fire with the boomerang would have been cool and maybe even redefine the swordless category.</p>
 
-<p>With the message pointers, we were be crossing our fingers to hit one of the crystal maiden messages. It could have potentially cut minutes off of glitched speedruns by turning their blabbering into short gibberish. Unfortunately, very few messages are hit. We can change the spawn point selection to say "集めるのです。", which is funny, but not funny enough to justify. Especially in a speedrun.</p>
+<p>With the message pointers, we were crossing our fingers to hit one of the crystal maiden messages. It could have potentially cut minutes off of glitched speedruns by turning their blabbering into short gibberish. Unfortunately, very few messages are hit. We can change the spawn point selection to say "集めるのです。", which is funny, but not funny enough to justify. Especially in a speedrun.</p>
 
 <p>These were small targets, so the chances of something useful were low to begin with, but, like, could you imagine if?</p>
 
