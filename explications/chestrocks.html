@@ -1,8 +1,9 @@
 ---
 permalink: /chestrocks/
 layout: default
-title: Some Overworld Rocks Are Chests Explication
+title: "Some Overworld Rocks Are Chests Explication"
 background: mechanicsbg
+ogdesc: "Seriously! There are chests on the overworld! It's just that they're ephemeral and cannot be opened."
 ---
 
 <h1>Some Overworld Rocks Are Chests</h1>
@@ -58,7 +59,7 @@ background: mechanicsbg
 
 <p>The final exception&mdash;and this is the oddball&mdash;is the routine <asmfunc>ReadOverworldTileType</asmfunc>, which uses the gigantic <asmfunc>OverworldTileTypeTable</asmfunc> at <addr>$1BF110</addr>. This table contains a single byte for every map16 object that dictates a behavior for the entire metatile.<p>
 
-<h2>Now I'm annoyed</h2>
+<h2>Shooting sparrows a cannon</h2>
 
 <p>First off, why do the manipulability checks not use this table? Bushes, rocks, and diggable ground, and actually every interaction that has a hardcoded check already has an existing tile interaction type. Except doors, but those could easily be given one! This could have been much cleaner and more expandable.</p>
 

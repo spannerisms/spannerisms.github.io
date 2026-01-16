@@ -1,7 +1,8 @@
 ---
 permalink: asmmusic
 layout: default
-title: Making ALTTP Music with Assembly
+title: "Making ALTTP Music with Assembly"
+ogdesc: "A basic tutorial on how to write Zelda 3 N-SPC music using Asar."
 ---
 
 ## Preface

@@ -1,13 +1,14 @@
 ---
 permalink: /honeycomb/
 layout: default
-title: Milon's Secret Honeycomb
+title: "Milon's Secret Honeycomb"
 background: glitchybg
+ogdesc: "If you collect 256 coins in a single room, you'll be awarded with extra health, but this is not an intended mechanic."
 ---
 
 <h1>Milon's Secret Honeycomb</h1>
 
-<p>Some games like adding Easter eggs or bonuses for players who waste their time on monotonous tasks<a footnote href="#footnote-epicburn"></a>. Knowing that, some absolutely brilliant trolls like making up time-wasting tasks and promoting them as legitimate, because just the very idea of someone attempting such a task for nothing is hilarious. Both practices are prevalant enough that it can be difficult to discern real from fake, an unfortunate boon to the latter group.</p>
+<p>Some games like adding Easter eggs or bonuses for players who waste their time on monotonous tasks{% include footnote.html content="Some games even make this their sole objective and call it \"leveling up\"." %}. Knowing that, some absolutely brilliant trolls like making up time-wasting tasks and promoting them as legitimate, because just the very idea of someone attempting such a task for nothing is hilarious. Both practices are prevalant enough that it can be difficult to discern real from fake, an unfortunate boon to the latter group.</p>
 
 <p>One such alleged bonus is that in <i>Milon's Secret Castle</i>, collecting 256 coins in the fireplace room will award bonus health.</p>
 
@@ -99,24 +100,10 @@ background: glitchybg
 <p>This trick is used in a couple places in this game, such as in the umbrella collection code at <addr>$D150</addr>. It was also used in the code above&mdash;the coin collection code&mdash;at <addr>$9A23</addr>.</p>
 
 <p>The developers did not intend to reward a player for collecting 256 coins; in fact, they assumed no one would bother collecting that many. That or they assumed this counter would reset often enough to never reach that high. In either case, it's almost certain that this <asmop>BNE</asmop> was an optimization. Their thinking was likely that, being a counter, this value will <em>never</em> be zero, which makes it the perfect candidate to save a byte by using a determinated flag to branch over another segment of code. As you've probably already guessed, this was not a good assumption.</p>
-<p>Or maybe it was. We can also pin the blame on shops for not resetting the coin counter upon exit<a footnote href="#footnote-counterreset"></a>. Perhaps when this code was written, it was the case that the counter got reset. The only way to bring the coins back is to reload the room, and doing so by exiting to the overworld will also reset the coin counter. It's likely that shops don't reset this counter because it could result in a softlock were you to collect every coin then load a shop before grabbing the key<a footnote href="#footnote-keynote"></a><a footnote href="#footnote-whyfireplace"></a>.</p>
+<p>Or maybe it was. We can also pin the blame on shops for not resetting the coin counter upon exit{% include footnote.html content="Music boxes don't reset the counter when returning you to the room either, but they're not repeatable, unlike shops." %}. Perhaps when this code was written, it was the case that the counter got reset. The only way to bring the coins back is to reload the room, and doing so by exiting to the overworld will also reset the coin counter. It's likely that shops don't reset this counter because it could result in a softlock were you to collect every coin then load a shop before grabbing the key{% include footnote.html content="Keys don't spawn until you have collected 4 coins and have done one of either 15 blocks destroyed or 5 enemies killed. Also, I think this mechanic is good evidence that the honeycomb is unintentional. The overflow would affect key spawns too (obviously; they're the only reason this counter exists). It would be confusing if you knew that keys required 4 coins, but you were unable to spawn one despite collecting 256 coins." %}{% include footnote.html content="You may now be wondering why only the fireplace room has respawning coins or why it needs to have them if shops don't reset the counter. That's probably because the fireplace room is unique in that you can exit to the overworld via the boss without ever collecting the key. So, if they didn't respawn, you could exhaust the coins, leave to the overworld, then return and the coin counter would be zero. Of course that then raises the question of why the extra softlock prevention is needed. A locked door is the only way to exit the other puzzle rooms, but if you can exit this room via other means, does the locked door even need to exist? This is ignoring our earlier assumption that coins respawn to prevent players from running out of money. I guess these had to go somewhere, and the fireplace room was as good a choice as any; letting them replenish here serves double duty." %}.</p>
 <p>It's also likely that the developers just never considered the implications of repeatedly reloading a room for coins. They may have even added the respawning coins as a last minute thing and didn't have time to revisit other coin-related code.</p>
 <p>I can speculate a dozen more scenarios for why this is the way it is, but I think we've satisfyingly answered our original question.</p>
 <p>Over all, I'm pretty confident in saying this wasn't intended.</p>
 
 <h2>Summary</h2>
 <p>As ridiculous as it sounds, it's possible to gain unintended health upgrades by repeatedly reloading a single room and grabbing coins until you've collected 256. Being able to get the coin counter that high is a joint consequence of two different softlock prevention measures, and granting the health on the overflow appears to be the result of a common optimization gone wrong.</p>
-
-<div id="footnoteslist">
-
-<p id="footnote-epicburn">Some games even make this the entire point of playing and call it "leveling up".</p>
-
-<p id="footnote-counterreset">Music boxes don't reset the counter when returning you to the room either, but they're not repeatable, unlike shops.</p>
-
-<p id="footnote-keynote">Keys don't spawn until you have collected 4 coins and have done one of either 15 blocks destroyed or 5 enemies killed. Also, I think this mechanic is good evidence that the honeycomb is unintentional. The overflow would affect key spawns too (obviously; they're the only reason this counter exists). It would be confusing if you knew that keys required 4 coins, but you were unable to spawn one despite collecting 256 coins.</p>
-
-<p id="footnote-whyfireplace">You may now be wondering why only the fireplace room has respawning coins or why it needs to have them if shops don't reset the counter. That's probably because the fireplace room is unique in that you can exit to the overworld via the boss without ever collecting the key. So, if they didn't respawn, you could exhaust the coins, leave to the overworld, then return and the coin counter would be zero. Of course that then raises the question of why the extra softlock prevention is needed. A locked door is the only way to exit the other puzzle rooms, but if you can exit this room via other means, does the locked door even need to exist? This is ignoring our earlier assumption that coins respawn to prevent players from running out of money. I guess these had to go somewhere, and the fireplace room was as good a choice as any; letting them replenish here serves double duty.</p>
-
-</div>
-
-

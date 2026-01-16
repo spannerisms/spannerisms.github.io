@@ -1,586 +1,587 @@
 ---
 permalink: /versions/
 layout: default
-title: Version Differences
+title: "Version Differences"
 background: mechanicsbg
+ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP1.1, and US versions of The Legend of Zelda: A Link to the Past."
 ---
 
-	<h1>Version Differences</h1>
-	<p>I recently completed a full disassembly of the US version of the game. I went about it by getting a mostly complete disassembly of the US version and comparing it to a mostly complete disassembly of JP1.0. I used a file comparer to weed out the superficial changes and a sloppy C# tool to copy the fully annotated JP1.0 disassembly's source and modify it as required to represent the US version. In doing so, I made sure to take note of all the interesting changes, then realized that once I had those, I could look at JP revision 1 and see what changes came from in between.</p>
+<h1>Version Differences</h1>
+<p>I recently completed a full disassembly of the US version of the game. I went about it by getting a mostly complete disassembly of the US version and comparing it to a mostly complete disassembly of JP1.0. I used a file comparer to weed out the superficial changes and a sloppy C# tool to copy the fully annotated JP1.0 disassembly's source and modify it as required to represent the US version. In doing so, I made sure to take note of all the interesting changes, then realized that once I had those, I could look at JP revision 1 and see what changes came from in between.</p>
 
-	<p>Unless otherwise noted, any change made in the JP revision 1 ROM (REV1) carries over to the US version.</p>
+<p>Unless otherwise noted, any change made in the JP revision 1 ROM (REV1) carries over to the US version.</p>
 
-	<h2>Huge changes</h2>
+<h2>Huge changes</h2>
 
-	<h3>Text</h3>
-	<p>English is not as informationally dense as Japanese, so the US version had to expand the allotted space for dialog. Not only that, the entire text system is different. Both languages are coded as a VWF (variable-width font), but only the US version actually makes use of the V. The Japanese text system has a single width for every character.</p>
-	<p>The Japanese versions need to encode a lot more characters, including 256 kanji (255 of which are unique (but all of which are graphically unique)). Making this fit required a clever compression algorithm optimized specifically for storing these characters. I believe this algorithm at least partially dictated some of the weird outlines on certain characters, as those extraneous pixels compressed better. The English font, on the other hand, is completely uncompressed. The biggest space saver was not needing kanji. Those savings made room for the raw graphics to fit comfortably in ROM.</p>
-	<p>The English text engine introduces two new commands: another choose option, and the bank swap command.</p>
-	<p>The extra choose option came with 2 new control messages to handle the arrow selection display, shifting every subsequent message ID up by 2. This affected virtually every dialog invocation, but beyond that, no message calls were changed.</p>
-	<p>The bank swap command was necessary to tell the text pointer initialization code to swap from the large bank 1C (where all text is stored for the Japanese versions) to bank 0E (where the extra English text is located). This multi-bank solution required that the pointers generated grow from 16-bit to 24-bit.</p>
-	<p>The Link face changed!</p>
-	<p>The lack of text compression represented a small change in any routine where the font had to be loaded. It no longer had to be decompressed then transferred to VRAM; it could be transferred directly from ROM. The new VWF required a larger space in VRAM though, with the size loaded at <addr>$008D02</addr> changing from <asmval>$0780</asmval> to <asmval>$07E0</asmval>, an increase of 96 bytes, or 6 graphics tiles.</p>
-	<p>At <addr>$008355</addr> the background 3 clear fill tile is changed from <asmval>$0188</asmval> to <asmval>$00A9</asmval> in the US version. This was merely a tile shift due to the much smaller font.</p>
+<h3>Text</h3>
+<p>English is not as informationally dense as Japanese, so the US version had to expand the allotted space for dialog. Not only that, the entire text system is different. Both languages are coded as a VWF (variable-width font), but only the US version actually makes use of the V. The Japanese text system has a single width for every character.</p>
+<p>The Japanese versions need to encode a lot more characters, including 256 kanji (255 of which are unique (but all of which are graphically unique)). Making this fit required a clever compression algorithm optimized specifically for storing these characters. I believe this algorithm at least partially dictated some of the weird outlines on certain characters, as those extraneous pixels compressed better. The English font, on the other hand, is completely uncompressed. The biggest space saver was not needing kanji. Those savings made room for the raw graphics to fit comfortably in ROM.</p>
+<p>The English text engine introduces two new commands: another choose option, and the bank swap command.</p>
+<p>The extra choose option came with 2 new control messages to handle the arrow selection display, shifting every subsequent message ID up by 2. This affected virtually every dialog invocation, but beyond that, no message calls were changed.</p>
+<p>The bank swap command was necessary to tell the text pointer initialization code to swap from the large bank 1C (where all text is stored for the Japanese versions) to bank 0E (where the extra English text is located). This multi-bank solution required that the pointers generated grow from 16-bit to 24-bit.</p>
+<p>The Link face changed!</p>
+<p>The lack of text compression represented a small change in any routine where the font had to be loaded. It no longer had to be decompressed then transferred to VRAM; it could be transferred directly from ROM. The new VWF required a larger space in VRAM though, with the size loaded at <addr>$008D02</addr> changing from <asmval>$0780</asmval> to <asmval>$07E0</asmval>, an increase of 96 bytes, or 6 graphics tiles.</p>
+<p>At <addr>$008355</addr> the background 3 clear fill tile is changed from <asmval>$0188</asmval> to <asmval>$00A9</asmval> in the US version. This was merely a tile shift due to the much smaller font.</p>
 
-	<h3>Menu</h3>
-	<p>Obviously all text needs to be translated, not just the stuff people say. As such, the entire item menu was retiled, but there's a tiny little secret that was deleted at the same time.</p>
-	<p>At <addr>$0DF429</addr> is the text <span class="nowrap">"てがみ"</span>, which translates to "letter". You may know that there is a map-looking item that shares a slot with the mirror. That's the letter. The letter behaves exactly the same as the mirror, and besides the menu tables and another table related to the upgrade fairies, there's no reference to it anywhere else in the game. In the English version, the text label for the item is entirely empty space; the icon remains.</p>
-	<p>A lesser-known item also shares this slot. At <addr>$0DF5C9</addr> is the text <span class="nowrap">"トライ フォース"</span> (the space should be a line break), which translates to "tri force". In the English version, the 32 bytes for this label are completely deleted, but the icon and the fairy upgrade table entry are still there.</p>
-	<p>Unfortunately, the triforce has no real icon. In every version it displays as arrows and bombs, but yellow. This seems to indicate that there were indeed menu graphics for the item at one point, but they were replaced with HUD graphics when it was scrapped.</p>
-	<p>Would you be upset if I told you about something that didn't change? Within the DO menu labels is the text <span class="nowrap">"いのる"</span>, which means "prayer". It can even be seen on the menu if bit 0 of <addr>$7EF379</addr> is set, though it will be hanging off the border and not inside the menu proper. In the US version, the data for this text is exactly the same. They didn't even bother translating it! Now it just writes 70% of the "UG" from "BUG-CATCHING NET"&mdash;which isn't even visible, since the border writes over it&mdash;and empty space.</p> 
+<h3>Menu</h3>
+<p>Obviously all text needs to be translated, not just the stuff people say. As such, the entire item menu was retiled, but there's a tiny little secret that was deleted at the same time.</p>
+<p>At <addr>$0DF429</addr> is the text <span class="nowrap">"てがみ"</span>, which translates to "letter". You may know that there is a map-looking item that shares a slot with the mirror. That's the letter. The letter behaves exactly the same as the mirror, and besides the menu tables and another table related to the upgrade fairies, there's no reference to it anywhere else in the game. In the English version, the text label for the item is entirely empty space; the icon remains.</p>
+<p>A lesser-known item also shares this slot. At <addr>$0DF5C9</addr> is the text <span class="nowrap">"トライ フォース"</span> (the space should be a line break), which translates to "tri force". In the English version, the 32 bytes for this label are completely deleted, but the icon and the fairy upgrade table entry are still there.</p>
+<p>Unfortunately, the triforce has no real icon. In every version it displays as arrows and bombs, but yellow. This seems to indicate that there were indeed menu graphics for the item at one point, but they were replaced with HUD graphics when it was scrapped.</p>
+<p>Would you be upset if I told you about something that didn't change? Within the DO menu labels is the text <span class="nowrap">"いのる"</span>, which means "prayer". It can even be seen on the menu if bit 0 of <addr>$7EF379</addr> is set, though it will be hanging off the border and not inside the menu proper. In the US version, the data for this text is exactly the same. They didn't even bother translating it! Now it just writes 70% of the "UG" from "BUG-CATCHING NET"&mdash;which isn't even visible, since the border writes over it&mdash;and empty space.</p> 
 
-	<h3>The overworld</h3>
-	<p>Small changes with a big impact were made with the overworld in REV1. Although, the big impact was pretty superficial. A few new map tile definitions were added, shifting over 70% of them to slightly higher IDs. These ID shifts meant nearly all the overworld screen data had to be recompressed, making it very difficult to compare them properly, although we can still check them visually. Most of this whole ordeal seems to be due to a slight rearrangement of cliff and mountain tiles in the graphics sheets to address clipping out of bounds. At the very least, new tiles were added to East Dark Death Mountain to prevent Link from clipping slightly into the wall with the mirror then jumping down to the ledge leading to the middle of Turtle Rock.</p>
-	<p>The only visible change is four ball-nub-block-things added to the second tier of the pyramid. If Link mirrors at these spots in JP1.0, he ends up half inside the castle wall. I think the change was entirely aesthetic, though. All the other places where Link can get half into a wall are visually unchanged.</p>
-	<p>A framework change was made in the way the US version handles audio. In the Japanese versions, whenever an overworld screen loads, hardcoded checks are run to determine which music track should be changed to, if any. The same is true for ambient sound effects. The US version makes this slightly less hardcoded by invoking a new ambiance control at <addr>$02C463</addr>, which creates a table located at <addr>$7F5B00</addr>, where the Japanese font decompression took place.</p>
-	<p>Various smaller changes were made outside of the new general handler as well. Checks for exiting the underworld from Kakariko rooms now include magic bat cave and the chest game south of town. The overworld map and whirlpools in the US version adjust the ambient sound effects when they didn't before. And ambient sound effects are cleared before loading the underworld.</p>
-	<p>In JP1.0, a check for the special overworld only checks for the screen ID of the master sword/hobo bridge specifically (they're the same ID of <asmval>$80</asmval>); REV1 fixes this to check all of the special overworld. It was looking for exact equality instead of greater-than-or-equality.</p>
+<h3>The overworld</h3>
+<p>Small changes with a big impact were made with the overworld in REV1. Although, the big impact was pretty superficial. A few new map tile definitions were added, shifting over 70% of them to slightly higher IDs. These ID shifts meant nearly all the overworld screen data had to be recompressed, making it very difficult to compare them properly, although we can still check them visually. Most of this whole ordeal seems to be due to a slight rearrangement of cliff and mountain tiles in the graphics sheets to address clipping out of bounds. At the very least, new tiles were added to East Dark Death Mountain to prevent Link from clipping slightly into the wall with the mirror then jumping down to the ledge leading to the middle of Turtle Rock.</p>
+<p>The only visible change is four ball-nub-block-things added to the second tier of the pyramid. If Link mirrors at these spots in JP1.0, he ends up half inside the castle wall. I think the change was entirely aesthetic, though. All the other places where Link can get half into a wall are visually unchanged.</p>
+<p>A framework change was made in the way the US version handles audio. In the Japanese versions, whenever an overworld screen loads, hardcoded checks are run to determine which music track should be changed to, if any. The same is true for ambient sound effects. The US version makes this slightly less hardcoded by invoking a new ambiance control at <addr>$02C463</addr>, which creates a table located at <addr>$7F5B00</addr>, where the Japanese font decompression took place.</p>
+<p>Various smaller changes were made outside of the new general handler as well. Checks for exiting the underworld from Kakariko rooms now include magic bat cave and the chest game south of town. The overworld map and whirlpools in the US version adjust the ambient sound effects when they didn't before. And ambient sound effects are cleared before loading the underworld.</p>
+<p>In JP1.0, a check for the special overworld only checks for the screen ID of the master sword/hobo bridge specifically (they're the same ID of <asmval>$80</asmval>); REV1 fixes this to check all of the special overworld. It was looking for exact equality instead of greater-than-or-equality.</p>
 
-	<h3>First impressions</h3>
-	<p>The opening title card and the entire file select interface are both completely redone. The somber black background of the title card is interrupted by a colorful flash and a falling sword before being replaced with a majestic river vista. The developers were so proud of this that they made it unskippable.</p>
-	<p>The equally somber black of the file interface is now adorned with a wooden border and emblazoned atop a Futaba green stone cladding.</p>
-	<p>Minor parameter changes and code refactoring is present at every step in these redesigns. Two new palette filter routines handle the flashy new title card. The Triforce vertical targets are 8 pixels lower. Fairy positions were shifted slightly. The <span class="nowrap">ERASE FILE</span> screen (previously KILL) no longer draws Link.</p>
+<h3>First impressions</h3>
+<p>The opening title card and the entire file select interface are both completely redone. The somber black background of the title card is interrupted by a colorful flash and a falling sword before being replaced with a majestic river vista. The developers were so proud of this that they made it unskippable.</p>
+<p>The equally somber black of the file interface is now adorned with a wooden border and emblazoned atop a Futaba green stone cladding.</p>
+<p>Minor parameter changes and code refactoring is present at every step in these redesigns. Two new palette filter routines handle the flashy new title card. The Triforce vertical targets are 8 pixels lower. Fairy positions were shifted slightly. The <span class="nowrap">ERASE FILE</span> screen (previously KILL) no longer draws Link.</p>
 
-	<p>File names in the US version are allowed to be longer&mdash;up to a whopping 6 characters! That's a 50% increase! This shifted the save variables that were after the name, but that's only the checksum and the games played counters.</p>
+<p>File names in the US version are allowed to be longer&mdash;up to a whopping 6 characters! That's a 50% increase! This shifted the save variables that were after the name, but that's only the checksum and the games played counters.</p>
 
-	<p>At <addr>$0CFDF9</addr>, some file name code from the Japanese versions is left in, but skipped over.</p>
+<p>At <addr>$0CFDF9</addr>, some file name code from the Japanese versions is left in, but skipped over.</p>
 
-	<p>New palettes were added over unused placeholders for the castle vista during the title card, and the title card's palette itself was changed as well. And, quite intriguingly, the file select interface modified and reused the Eastern Palace palette. Those new colors didn't affect anything in the game, as no graphics used them where the palette set was used.</p>
+<p>New palettes were added over unused placeholders for the castle vista during the title card, and the title card's palette itself was changed as well. And, quite intriguingly, the file select interface modified and reused the Eastern Palace palette. Those new colors didn't affect anything in the game, as no graphics used them where the palette set was used.</p>
 
-	<p>A music timing loop had a redundant instruction added: the submodule is incremented then immediately reset to zero.</p>
+<p>A music timing loop had a redundant instruction added: the submodule is incremented then immediately reset to zero.</p>
 
-	<h3>Graphics</h3>
-	<p>A bunch of graphics sheets changed in the US version. You can <a href="/assets/explication/gfxsheetchanges.png">see all the sheets side-by-side here</a>.</p>
+<h3>Graphics</h3>
+<p>A bunch of graphics sheets changed in the US version. You can <a href="/assets/explication/gfxsheetchanges.png">see all the sheets side-by-side here</a>.</p>
 
-	<ul>
-		<li><code>$16</code> - Intro graphics added to empty space</li>
-		<li><code>$17</code> - Intro graphics added to empty space</li>
-		<li><code>$19</code> - Hexagram changed to indescript icon</li>
-		<li><code>$1A</code> - Hexagram changed to indescript icon</li>
-		<li><code>$1D</code> - Intro graphics added to empty space</li>
-		<li><code>$1E</code> - Intro graphics added to empty space</li>
-		<li><code>$39</code> - Japanese text removed; file select graphics added to empty space; crosshatch erased</li>
-		<li><code>$3F</code> - New cliff tile</li>
-		<li><code>$40</code> - Intro title card logo completely redone</li>
-		<li><code>$41</code> - Intro title card logo completely redone</li>
-		<li><code>$4B</code> - 3 transparent pixels filled in (extremely subtle)</li>
-		<li><code>$4F</code> - New corner tile (from sheet $56 in JP)</li>
-		<li><code>$56</code> - New cliff tile</li>
-		<li><code>$7B</code> - Copyright date shifted to accomodate 1991 and 1992 with shared tiles; "2" tile added</li>
-		<li><code>$9C</code> - Celebratory credits man removed</li>
-		<li><code>$9E</code> - Sheet completely erased</li>
-		<li><code>$A0</code> - Crosshatch placeholder erased</li>
-		<li><code>$A5</code> - Empty sheet repurposed for intro title card sword graphics</li>
-		<li><code>$DC</code> - Japanese text and character set replaced with English</li>
-		<li><code>$DD</code> - Japanese characters removed and replaced with "BUG-CATCHINGNET"</li>
-	</ul>
+<ul>
+	<li><code>$16</code> - Intro graphics added to empty space</li>
+	<li><code>$17</code> - Intro graphics added to empty space</li>
+	<li><code>$19</code> - Hexagram changed to indescript icon</li>
+	<li><code>$1A</code> - Hexagram changed to indescript icon</li>
+	<li><code>$1D</code> - Intro graphics added to empty space</li>
+	<li><code>$1E</code> - Intro graphics added to empty space</li>
+	<li><code>$39</code> - Japanese text removed; file select graphics added to empty space; crosshatch erased</li>
+	<li><code>$3F</code> - New cliff tile</li>
+	<li><code>$40</code> - Intro title card logo completely redone</li>
+	<li><code>$41</code> - Intro title card logo completely redone</li>
+	<li><code>$4B</code> - 3 transparent pixels filled in (extremely subtle)</li>
+	<li><code>$4F</code> - New corner tile (from sheet $56 in JP)</li>
+	<li><code>$56</code> - New cliff tile</li>
+	<li><code>$7B</code> - Copyright date shifted to accomodate 1991 and 1992 with shared tiles; "2" tile added</li>
+	<li><code>$9C</code> - Celebratory credits man removed</li>
+	<li><code>$9E</code> - Sheet completely erased</li>
+	<li><code>$A0</code> - Crosshatch placeholder erased</li>
+	<li><code>$A5</code> - Empty sheet repurposed for intro title card sword graphics</li>
+	<li><code>$DC</code> - Japanese text and character set replaced with English</li>
+	<li><code>$DD</code> - Japanese characters removed and replaced with "BUG-CATCHINGNET"</li>
+</ul>
 
-	<h3>Damaging information</h3>
-	<p>A handful of enemies had their damage tables changed in the US version:</p>
-	<table class="noheaderstripes topheaders">
-		<tr>
-			<th class="header" colspan="2"></th>
-			<th class="header" colspan="3">Change</th>
-		</tr>
-		<tr>
-			<th class="header" colspan="2">Enemy</th>
-			<th class="header">Damage class</th>
-			<th class="header">JP</th>
-			<th class="header">US</th>
-		</tr>
-		<tr>
-			<th><code>00</code></th>
-			<th>Raven</th>
-			<td>Ice rod</td>
-			<td>8</td>
-			<td>Freeze</td>
-		</tr>
-		<tr>
-			<th><code>01</code></th>
-			<th>Vulture</th>
-			<td>Ice rod</td>
-			<td>8</td>
-			<td>Freeze</td>
-		</tr>
-		<tr>
-			<th><code>0E</code></th>
-			<th>Snapdragon</th>
-			<td>Ether</td>
-			<td>64</td>
-			<td>Freeze</td>
-		</tr>
-		<tr>
-			<th><code>13</code></th>
-			<th>Mini helmasaur</th>
-			<td>Ether</td>
-			<td>64</td>
-			<td>Freeze</td>
-		</tr>
-		<tr>
-			<th><code>19</code></th>
-			<th>Poe / Hyu</th>
-			<td>Fire rod</td>
-			<td>8</td>
-			<td>Burn</td>
-		</tr>
-		<tr>
-			<th><code>22</code></th>
-			<th>Ropa</th>
-			<td>Ether</td>
-			<td>64</td>
-			<td>Freeze</td>
-		</tr>
-		<tr>
-			<th rowspan="2"><code>4C</code></th>
-			<th rowspan="2">Geldman</th>
-			<td>Fire rod</td>
-			<td>8</td>
-			<td>64</td>
-		</tr>
-		<tr>
-			<td>Bombos</td>
-			<td>Burn</td>
-			<td>64</td>
-		</tr>
-		<tr>
-			<th rowspan="4"><code>64</code></th>
-			<th rowspan="4">Debirando</th>
-			<td>Hookshot</td>
-			<td>Stun</td>
-			<td>64</td>
-		</tr>
-		<tr>
-			<td>Fire rod</td>
-			<td>8</td>
-			<td>64</td>
-		</tr>
-		<tr>
-			<td>Bombos</td>
-			<td>Burn</td>
-			<td>64</td>
-		</tr>
-		<tr>
-			<td>Quake</td>
-			<td>Stun</td>
-			<td>64</td>
-		</tr>
-		<tr>
-			<th><code>71</code></th>
-			<th>Leever</th>
-			<td>Quake</td>
-			<td>Stun</td>
-			<td>64</td>
-		</tr>
-		<tr>
-			<th><code>81</code></th>
-			<th>Hover</th>
-			<td>Bombos</td>
-			<td>64</td>
-			<td>Burn</td>
-		</tr>
-		<tr>
-			<th rowspan="3"><code>85</code></th>
-			<th rowspan="3">Yellow stalfos</th>
-			<td>Powder</td>
-			<td>0</td>
-			<td>Blob</td>
-		</tr>
-		<tr>
-			<td>Fire rod</td>
-			<td>8</td>
-			<td>Burn</td>
-		</tr>
-		<tr>
-			<td>Quake</td>
-			<td>Stun</td>
-			<td>Blob</td>
-		</tr>
-		<tr>
-			<th><code>86</code></th>
-			<th>Kodongo</th>
-			<td>Fire rod</td>
-			<td>8</td>
-			<td>Burn</td>
-		</tr>
-		<tr>
-			<th><code>8B</code></th>
-			<th>Gibdo</th>
-			<td>Ether</td>
-			<td>64</td>
-			<td>Freeze</td>
-		</tr>
-		<tr>
-			<th><code>8E</code></th>
-			<th>Terrorpin</th>
-			<td>Ether</td>
-			<td>64</td>
-			<td>Freeze</td>
-		</tr>
-		<tr>
-			<th><code>90</code></th>
-			<th>Wallmaster</th>
-			<td>Fire rod</td>
-			<td>8</td>
-			<td>Burn</td>
-		</tr>
-		<tr>
-			<th rowspan="2"><code>A1</code></th>
-			<th rowspan="2">Freezor</th>
-			<td>Fire rod</td>
-			<td>64</td>
-			<td>Burn</td>
-		</tr>
-		<tr>
-			<td>Bombos</td>
-			<td>64</td>
-			<td>Burn</td>
-		</tr>
-		<tr>
-			<th><code>A7</code></th>
-			<th>Stalfos</th>
-			<td>Fire rod</td>
-			<td>8</td>
-			<td>Burn</td>
-		</tr>
-		<tr>
-			<th rowspan="3"><code>C9</code></th>
-			<th rowspan="3">Tektite</th>
-			<td>Bombos</td>
-			<td>16</td>
-			<td>Burn</td>
-		</tr>
-		<tr>
-			<td>Ether</td>
-			<td>16</td>
-			<td>Freeze</td>
-		</tr>
-		<tr>
-			<td>Quake</td>
-			<td>32</td>
-			<td>Blob</td>
-		</tr>
-	</table>
+<h3>Damaging information</h3>
+<p>A handful of enemies had their damage tables changed in the US version:</p>
+<table class="noheaderstripes topheaders">
+	<tr>
+		<th class="header" colspan="2"></th>
+		<th class="header" colspan="3">Change</th>
+	</tr>
+	<tr>
+		<th class="header" colspan="2">Enemy</th>
+		<th class="header">Damage class</th>
+		<th class="header">JP</th>
+		<th class="header">US</th>
+	</tr>
+	<tr>
+		<th><code>00</code></th>
+		<th>Raven</th>
+		<td>Ice rod</td>
+		<td>8</td>
+		<td>Freeze</td>
+	</tr>
+	<tr>
+		<th><code>01</code></th>
+		<th>Vulture</th>
+		<td>Ice rod</td>
+		<td>8</td>
+		<td>Freeze</td>
+	</tr>
+	<tr>
+		<th><code>0E</code></th>
+		<th>Snapdragon</th>
+		<td>Ether</td>
+		<td>64</td>
+		<td>Freeze</td>
+	</tr>
+	<tr>
+		<th><code>13</code></th>
+		<th>Mini helmasaur</th>
+		<td>Ether</td>
+		<td>64</td>
+		<td>Freeze</td>
+	</tr>
+	<tr>
+		<th><code>19</code></th>
+		<th>Poe / Hyu</th>
+		<td>Fire rod</td>
+		<td>8</td>
+		<td>Burn</td>
+	</tr>
+	<tr>
+		<th><code>22</code></th>
+		<th>Ropa</th>
+		<td>Ether</td>
+		<td>64</td>
+		<td>Freeze</td>
+	</tr>
+	<tr>
+		<th rowspan="2"><code>4C</code></th>
+		<th rowspan="2">Geldman</th>
+		<td>Fire rod</td>
+		<td>8</td>
+		<td>64</td>
+	</tr>
+	<tr>
+		<td>Bombos</td>
+		<td>Burn</td>
+		<td>64</td>
+	</tr>
+	<tr>
+		<th rowspan="4"><code>64</code></th>
+		<th rowspan="4">Debirando</th>
+		<td>Hookshot</td>
+		<td>Stun</td>
+		<td>64</td>
+	</tr>
+	<tr>
+		<td>Fire rod</td>
+		<td>8</td>
+		<td>64</td>
+	</tr>
+	<tr>
+		<td>Bombos</td>
+		<td>Burn</td>
+		<td>64</td>
+	</tr>
+	<tr>
+		<td>Quake</td>
+		<td>Stun</td>
+		<td>64</td>
+	</tr>
+	<tr>
+		<th><code>71</code></th>
+		<th>Leever</th>
+		<td>Quake</td>
+		<td>Stun</td>
+		<td>64</td>
+	</tr>
+	<tr>
+		<th><code>81</code></th>
+		<th>Hover</th>
+		<td>Bombos</td>
+		<td>64</td>
+		<td>Burn</td>
+	</tr>
+	<tr>
+		<th rowspan="3"><code>85</code></th>
+		<th rowspan="3">Yellow stalfos</th>
+		<td>Powder</td>
+		<td>0</td>
+		<td>Blob</td>
+	</tr>
+	<tr>
+		<td>Fire rod</td>
+		<td>8</td>
+		<td>Burn</td>
+	</tr>
+	<tr>
+		<td>Quake</td>
+		<td>Stun</td>
+		<td>Blob</td>
+	</tr>
+	<tr>
+		<th><code>86</code></th>
+		<th>Kodongo</th>
+		<td>Fire rod</td>
+		<td>8</td>
+		<td>Burn</td>
+	</tr>
+	<tr>
+		<th><code>8B</code></th>
+		<th>Gibdo</th>
+		<td>Ether</td>
+		<td>64</td>
+		<td>Freeze</td>
+	</tr>
+	<tr>
+		<th><code>8E</code></th>
+		<th>Terrorpin</th>
+		<td>Ether</td>
+		<td>64</td>
+		<td>Freeze</td>
+	</tr>
+	<tr>
+		<th><code>90</code></th>
+		<th>Wallmaster</th>
+		<td>Fire rod</td>
+		<td>8</td>
+		<td>Burn</td>
+	</tr>
+	<tr>
+		<th rowspan="2"><code>A1</code></th>
+		<th rowspan="2">Freezor</th>
+		<td>Fire rod</td>
+		<td>64</td>
+		<td>Burn</td>
+	</tr>
+	<tr>
+		<td>Bombos</td>
+		<td>64</td>
+		<td>Burn</td>
+	</tr>
+	<tr>
+		<th><code>A7</code></th>
+		<th>Stalfos</th>
+		<td>Fire rod</td>
+		<td>8</td>
+		<td>Burn</td>
+	</tr>
+	<tr>
+		<th rowspan="3"><code>C9</code></th>
+		<th rowspan="3">Tektite</th>
+		<td>Bombos</td>
+		<td>16</td>
+		<td>Burn</td>
+	</tr>
+	<tr>
+		<td>Ether</td>
+		<td>16</td>
+		<td>Freeze</td>
+	</tr>
+	<tr>
+		<td>Quake</td>
+		<td>32</td>
+		<td>Blob</td>
+	</tr>
+</table>
 
-	<p>The debirando change also fixes the issue with them being knocked out of their pit, both physically and temporally.</p>
+<p>The debirando change also fixes the issue with them being knocked out of their pit, both physically and temporally.</p>
 
-	<h2>Famous glitches</h2>
+<h2>Famous glitches</h2>
 
-	<h3>Spinspeed and Item-dashing</h3>
-	<p>These two are, from a technical perspective, different consequences of the same glitch. The fix, introduced in REV1, covers both.</p>
-	<p>Right before checking for a Y button press, this small snippet of code is added:</p>
+<h3>Spinspeed and Item-dashing</h3>
+<p>These two are, from a technical perspective, different consequences of the same glitch. The fix, introduced in REV1, covers both.</p>
+<p>Right before checking for a Y button press, this small snippet of code is added:</p>
 
-	<div class="snesasm nolabel noaddress">
-		<div></div><div>LDA.b $5D</div><div>Get link's state</div>
-		<div></div><div>CMP.b #$11</div><div>Check for dashing</div>
-		<div></div><div>BEQ check_cape</div><div>Skip Y and B buttons</div>
-	</div>
+<div class="snesasm nolabel noaddress">
+	<div></div><div>LDA.b $5D</div><div>Get link's state</div>
+	<div></div><div>CMP.b #$11</div><div>Check for dashing</div>
+	<div></div><div>BEQ check_cape</div><div>Skip Y and B buttons</div>
+</div>
 
-	<h3>Mirror Block Erase</h3>
-	<p>This is a silly glitch <a href="/mirrorblock">I've explained before</a>, and the REV1 fix for it is just as silly. Rather than adjusting the code responsible for validating a warp to clear the block indices, the developers added a check <em>after</em> it:</p>
-	<div class="snesasm nolabel noaddress">
-		<div></div><div>LDA.w $012E</div><div>Get SFX2</div>
-		<div></div><div>CMP.b #$3C</div><div>Check for beep</div>
-		<div></div><div>BEQ exit</div><div>Skip block reset</div>
-	</div>
-	<p>Theoretically, it introduces a new glitch where a successful mirror warp does not reset the block indices if a beep is played at any point during the frame before the item gets used. At the present moment, I can't think of a way to make that happen.</p>
+<h3>Mirror Block Erase</h3>
+<p>This is a silly glitch <a href="/mirrorblock">I've explained before</a>, and the REV1 fix for it is just as silly. Rather than adjusting the code responsible for validating a warp to clear the block indices, the developers added a check <em>after</em> it:</p>
+<div class="snesasm nolabel noaddress">
+	<div></div><div>LDA.w $012E</div><div>Get SFX2</div>
+	<div></div><div>CMP.b #$3C</div><div>Check for beep</div>
+	<div></div><div>BEQ exit</div><div>Skip block reset</div>
+</div>
+<p>Theoretically, it introduces a new glitch where a successful mirror warp does not reset the block indices if a beep is played at any point during the frame before the item gets used. At the present moment, I can't think of a way to make that happen.</p>
 
-	<h3>Fake Flippers</h3>
-	<p>Another glitch <a href="/fakeflippers">I've furiously Explicated&trade;</a>. Another silly "fix" too. Also another REV1 fix.</p>
-	<div class="snesasm nolabel noaddress">
-		<div></div><div>LDA.l $7EF356</div><div>Get flippers</div>
-		<div></div><div>BNE have_flippers</div><div>Allow swimming</div>
-		<div></div><div>RTS</div><div>Short circuit</div>
-	</div>
-	<p>This change short circuits the swim code if Link lacks flippers, which gives the splash ancilla all the time it needs to kick Link out of the water. It does not, however, remove Link itself. Instead, if he's somehow swimming without flippers, he just can't move.</p>
+<h3>Fake Flippers</h3>
+<p>Another glitch <a href="/fakeflippers">I've furiously Explicated&trade;</a>. Another silly "fix" too. Also another REV1 fix.</p>
+<div class="snesasm nolabel noaddress">
+	<div></div><div>LDA.l $7EF356</div><div>Get flippers</div>
+	<div></div><div>BNE have_flippers</div><div>Allow swimming</div>
+	<div></div><div>RTS</div><div>Short circuit</div>
+</div>
+<p>This change short circuits the swim code if Link lacks flippers, which gives the splash ancilla all the time it needs to kick Link out of the water. It does not, however, remove Link itself. Instead, if he's somehow swimming without flippers, he just can't move.</p>
 
-	<h3>Super Bunny</h3>
-	<p>This <a href="/lonk">fan favorite</a> has multiple ways of being activated, but only one of them was fixed. In the routine <asmvar>CheckIfBunny</asmvar> (which is located at <addr>$1CFCE2</addr> in the Japanese versions and <addr>$0FFD22</addr> in the US version), a misassembled load instruction reads the low byte of the horizontal camera. The fix is to correct this instruction to read the bunny flag.</p>
-	<p>Unlike the last three, that fix was made in the US version! The bug is still present in JP REV1.</p>
+<h3>Super Bunny</h3>
+<p>This <a href="/lonk">fan favorite</a> has multiple ways of being activated, but only one of them was fixed. In the routine <asmvar>CheckIfBunny</asmvar> (which is located at <addr>$1CFCE2</addr> in the Japanese versions and <addr>$0FFD22</addr> in the US version), a misassembled load instruction reads the low byte of the horizontal camera. The fix is to correct this instruction to read the bunny flag.</p>
+<p>Unlike the last three, that fix was made in the US version! The bug is still present in JP REV1.</p>
 
-	<h3>Bomb recoil</h3>
-	<p>A glitch in this game that people hate is rare, and this is one of them. Bombs temporarily commandeer the sprite 0 slot to determine the recoil trajectory applied to Link. Infamously, this hijack does not fix the altitude, meaning a floating or otherwise airborne sprite in slot 0 may cause unintuitive explosion knockback.</p>
-	<p>The bug is still present in REV1, not being fixed until the US version, but the fix there is still <em>technically</em> buggy. The change caches the slot 0 sprite's altitude then sets it to 0. Really, it should have copied the altitude of the bomb. Knockback is still wrong, but it works in our favor.</p>
+<h3>Bomb recoil</h3>
+<p>A glitch in this game that people hate is rare, and this is one of them. Bombs temporarily commandeer the sprite 0 slot to determine the recoil trajectory applied to Link. Infamously, this hijack does not fix the altitude, meaning a floating or otherwise airborne sprite in slot 0 may cause unintuitive explosion knockback.</p>
+<p>The bug is still present in REV1, not being fixed until the US version, but the fix there is still <em>technically</em> buggy. The change caches the slot 0 sprite's altitude then sets it to 0. Really, it should have copied the altitude of the bomb. Knockback is still wrong, but it works in our favor.</p>
 
-	<h3>Removing insult from injury</h3>
-	<p>Don't you hate it when you're falling to Mothula and some disembodied hand grabs you and escorts you to the exit? Or when you jump into a basement filled with skeletons and turtles and some stupid block hits you with fire?</p>
-	<p>Well, lucky for you, both of these are fixed in REV1 by making Link invulnerable with the flag at <addr>$037B</addr> when he falls in a pit.</p>
+<h3>Removing insult from injury</h3>
+<p>Don't you hate it when you're falling to Mothula and some disembodied hand grabs you and escorts you to the exit? Or when you jump into a basement filled with skeletons and turtles and some stupid block hits you with fire?</p>
+<p>Well, lucky for you, both of these are fixed in REV1 by making Link invulnerable with the flag at <addr>$037B</addr> when he falls in a pit.</p>
 
-	<h3>A handy fix</h3>
-	<p>Another one people hate! If a wallmaster grabs Link right as he begins a northwards dash, the camera will pan upwards with the hand and Link will get stuck. This kinda sucks, especially when trying to go fast, but it isn't a softlock. Link's sword will still be primed from his dash, and it will kill the next wallmaster, whose death will reset Link's state.</p>
-	<p>The bug happens because the wallmaster doesn't send Link back to the dungeon entrance until it's off the top of the screen, but it's not in any special mode as it drags Link away. It's still using its normal "move upwards" routine that runs when it misses its target. The problem is that this routine despawns the wallmaster after its altitude overflows past 255.</p>
-	<p>You can see this for yourself by waiting for a wallmaster in the room west of the big key statue puzzle and baiting the hand above the bumper. Once the hand is on screen, move Link into the bumper so that he recoils into the wallmaster. Link will be lifted very high then get stuck. The camera pan happens with a bonk too, but those don't give enough oomph to get you frozen in place. Only speeds which outpace the wallmaster cause an issue.</p>
-	<p>The bug wasn't fixed until the US version, which implements the rather aggressive solution of clearing 5 different variables on every frame that Link is held by the wallmaster:</p>
-	<div class="snesasm nolabel noaddress">
-		<div></div><div>STZ.b $46</div><div>Clear recoil state</div>
-		<div></div><div>STZ.b $28</div><div>Clear X-axis recoil velocity</div>
-		<div></div><div>STZ.b $27</div><div>Clear Y-axis recoil velocity</div>
-		<div></div><div>STZ.b $30</div><div>Clear Y-axis velocity</div>
-		<div></div><div>STZ.b $31</div><div>Clear X-axis velocity</div>
-	</div>
+<h3>A handy fix</h3>
+<p>Another one people hate! If a wallmaster grabs Link right as he begins a northwards dash, the camera will pan upwards with the hand and Link will get stuck. This kinda sucks, especially when trying to go fast, but it isn't a softlock. Link's sword will still be primed from his dash, and it will kill the next wallmaster, whose death will reset Link's state.</p>
+<p>The bug happens because the wallmaster doesn't send Link back to the dungeon entrance until it's off the top of the screen, but it's not in any special mode as it drags Link away. It's still using its normal "move upwards" routine that runs when it misses its target. The problem is that this routine despawns the wallmaster after its altitude overflows past 255.</p>
+<p>You can see this for yourself by waiting for a wallmaster in the room west of the big key statue puzzle and baiting the hand above the bumper. Once the hand is on screen, move Link into the bumper so that he recoils into the wallmaster. Link will be lifted very high then get stuck. The camera pan happens with a bonk too, but those don't give enough oomph to get you frozen in place. Only speeds which outpace the wallmaster cause an issue.</p>
+<p>The bug wasn't fixed until the US version, which implements the rather aggressive solution of clearing 5 different variables on every frame that Link is held by the wallmaster:</p>
+<div class="snesasm nolabel noaddress">
+	<div></div><div>STZ.b $46</div><div>Clear recoil state</div>
+	<div></div><div>STZ.b $28</div><div>Clear X-axis recoil velocity</div>
+	<div></div><div>STZ.b $27</div><div>Clear Y-axis recoil velocity</div>
+	<div></div><div>STZ.b $30</div><div>Clear Y-axis velocity</div>
+	<div></div><div>STZ.b $31</div><div>Clear X-axis velocity</div>
+</div>
 
-	<p>Only one of these was required: <code class="nowrap">STZ.b $30</code>.</p>
-	<p>Although it wasn't fixed until later, they had to have been aware of it already. Those last two variables are cleared in JP1.0 and REV1, but only once&mdash;on the frame the wallmaster grabs Link. It's a movement calculation on the next frame that sets his velocity again, allowing the camera to pan. The US version removed this single frame clear as part of the new fix.</p>
+<p>Only one of these was required: <code class="nowrap">STZ.b $30</code>.</p>
+<p>Although it wasn't fixed until later, they had to have been aware of it already. Those last two variables are cleared in JP1.0 and REV1, but only once&mdash;on the frame the wallmaster grabs Link. It's a movement calculation on the next frame that sets his velocity again, allowing the camera to pan. The US version removed this single frame clear as part of the new fix.</p>
 
-	<h3>Free EG</h3>
-	<p>A hole on the third floor of the Tower of Hera is slightly too far to the right, and falling through it will allow Link to jump out of bounds. This was fixed in REV1 by moving it leftwards.</p>
+<h3>Free EG</h3>
+<p>A hole on the third floor of the Tower of Hera is slightly too far to the right, and falling through it will allow Link to jump out of bounds. This was fixed in REV1 by moving it leftwards.</p>
 
-	<h2>Failed fixes ? question mark?</h2>
-	<p>The above bug fixes were pretty obviously intentional and successful, but not everything was. Some failed to work; some do nothing of discernible value; and some worked, fixing a problem that wasn't even present in the first place.</p>
+<h2>Failed fixes ? question mark?</h2>
+<p>The above bug fixes were pretty obviously intentional and successful, but not everything was. Some failed to work; some do nothing of discernible value; and some worked, fixing a problem that wasn't even present in the first place.</p>
 
-	<h3>Something with spinning stairs</h3>
-	<p>Apparently, there's a bug with stairs. I don't know what it is. The developers decided that when using spiral stairs, ancilla 0D, the fully-charged-spin-attack sparkle, needs to be deleted immediately. This change was introduced in REV1, but I can't make anything bad happen by using stairs shortly after charging a spin on JP1.0.</p>
-	<p>All ancillae are deleted as part of normal transition code anyway, so I'm not sure what this change was meant to accomplish.</p>
+<h3>Something with spinning stairs</h3>
+<p>Apparently, there's a bug with stairs. I don't know what it is. The developers decided that when using spiral stairs, ancilla 0D, the fully-charged-spin-attack sparkle, needs to be deleted immediately. This change was introduced in REV1, but I can't make anything bad happen by using stairs shortly after charging a spin on JP1.0.</p>
+<p>All ancillae are deleted as part of normal transition code anyway, so I'm not sure what this change was meant to accomplish.</p>
 
-	<h3>It's just a menu now.</h3>
-	<p>Overworld YBAs are fixed in REV1, possibly on accident. The transition submodule is explicitly set to <asmval>$01</asmval> instead of incrementing it from zero. I say it's an accident because this doesn't really fix the glitch, per se. It prevents cool stuff from happening, but there's still an unsolicited menu and a wasted potion. Then there are all the other transition-based glitches that could have been mostly prevented with the same idea. None of them were.</p>
+<h3>It's just a menu now.</h3>
+<p>Overworld YBAs are fixed in REV1, possibly on accident. The transition submodule is explicitly set to <asmval>$01</asmval> instead of incrementing it from zero. I say it's an accident because this doesn't really fix the glitch, per se. It prevents cool stuff from happening, but there's still an unsolicited menu and a wasted potion. Then there are all the other transition-based glitches that could have been mostly prevented with the same idea. None of them were.</p>
 
-	<h3>Bomb tossing</h3>
-	<p>A less widely-known glitch is that a thrown bomb briefly ignores collision at a specific time when another bomb is being lifted. The US version introduced code that seems to address this:</p>
-	<div class="snesasm nolabel noaddress">
-		<div></div><div>TXA</div><div>Get slot</div>
-		<div></div><div>INC A</div><div>Account for offset</div>
-		<div></div><div>CMP.w $02EC</div><div>Compare to lifted slot</div>
-		<div></div><div>BNE not_lifted_bomb</div><div></div>
-		<div></div><div>BIT.w $0308</div><div>Check lift flags</div>
-		<div></div><div>BMI ignore_tile_collision</div><div></div>
-	</div>
-	<p>Here's the punchline: it doesn't work. A tossed bomb can still be made to ignore collision.</p>
-	<p>Did they know it didn't work and leave the fix in?</p>
-	<p>Did they mess up the timing and assume the fix worked?</p>
-	<p>Perhaps they were fixing a completely different bug we don't know about?</p>
-	<p>Who knows? All we do know is that there's new code, and it appears to do nothing useful.</p>
+<h3>Bomb tossing</h3>
+<p>A less widely-known glitch is that a thrown bomb briefly ignores collision at a specific time when another bomb is being lifted. The US version introduced code that seems to address this:</p>
+<div class="snesasm nolabel noaddress">
+	<div></div><div>TXA</div><div>Get slot</div>
+	<div></div><div>INC A</div><div>Account for offset</div>
+	<div></div><div>CMP.w $02EC</div><div>Compare to lifted slot</div>
+	<div></div><div>BNE not_lifted_bomb</div><div></div>
+	<div></div><div>BIT.w $0308</div><div>Check lift flags</div>
+	<div></div><div>BMI ignore_tile_collision</div><div></div>
+</div>
+<p>Here's the punchline: it doesn't work. A tossed bomb can still be made to ignore collision.</p>
+<p>Did they know it didn't work and leave the fix in?</p>
+<p>Did they mess up the timing and assume the fix worked?</p>
+<p>Perhaps they were fixing a completely different bug we don't know about?</p>
+<p>Who knows? All we do know is that there's new code, and it appears to do nothing useful.</p>
 
-	<h3>Sorry. Wrong world.</h3>
-	<p>A curious change was made to the castle gate warp in REV1: a variable that caches your world during mirror transitions now gets cached here too. Theoretically, if the castle warp caused you to land on collision in JP1.0, it wouldn't always kick you back to the light world. In practice, that's not even possible. This was definitely a bug, but it's a bug that never happened.</p>
+<h3>Sorry. Wrong world.</h3>
+<p>A curious change was made to the castle gate warp in REV1: a variable that caches your world during mirror transitions now gets cached here too. Theoretically, if the castle warp caused you to land on collision in JP1.0, it wouldn't always kick you back to the light world. In practice, that's not even possible. This was definitely a bug, but it's a bug that never happened.</p>
 
-	<h3>Lifeguard</h3>
-	<p>When Link jumps in the water without flippers and drowns, a whole slew of variables are rewritten from a block of cached values. In the US version, four camera variables are preceded by an additional check to skip them from being written on the overworld. This change seems to be either pointless or a small optimization. As far as I can tell, the cached values will always match the live values when this code is run.</p>
+<h3>Lifeguard</h3>
+<p>When Link jumps in the water without flippers and drowns, a whole slew of variables are rewritten from a block of cached values. In the US version, four camera variables are preceded by an additional check to skip them from being written on the overworld. This change seems to be either pointless or a small optimization. As far as I can tell, the cached values will always match the live values when this code is run.</p>
 
-	<h3>A hearty mistake</h3>
-	<p>By sheer coincidence, the chest game is fixed so that it no longer prevents the heart piece from being obtained in the first chest. The reason this happens to begin with is memory shared between the chest game and the decompression routines.</p>
-	<p>The chest game in Village of Outcasts uses the address <addr>$C8</addr> to track the last prize pulled. If the prize chosen by the game is not rupees and is the same as the previous prize, it will nudge itself one prize forward.</p>
-	<p>Every time dialog is shown, the plaques used in the attract sequence are decompressed. There's no reason for this; it only serves to waste 4 frames. It also clobbers <addr>$C8</addr>. Ultimately, what you need to know is that the final value of <addr>$C8</addr> after decompression will be the low byte of the address after the final byte of the compressed data.</p>
-	<p>In JP1.0, that value happens to be <asmval>$07</asmval>, which is also the prize index of the heart piece. When the chest game proctor speaks, his dialog ends up clobbering that value, and the heart piece is impossible to obtain. This can be exacerbated by bringing up the select menu after opening the first chest, setting <addr>$C8</addr> back to <asmval>$07</asmval> and making the heart impossible to obtain on the second chest too.</p>
-	<p>In REV1, this is partially "fixed" on accident. Small graphics changes were made that shifted many sheets into lower addresses. As luck would have it, the location and size of the plaque sheets now sets <addr>$C8</addr> to <asmval>$04</asmval>. The bug is still there, but it prevents the single arrow from being the first prize instead of the heart piece.</p>
-	<p>In the US version, it is completely "fixed" on accident. Again, the bug itself is not even acknowledged, but the value <addr>$C8</addr> ends up being set to is <asmval>$0D</asmval>, which doesn't correspond to any valid prize index. The chest game now allows any item to be obtained on the first chest, but just by stupid luck. The problem fixed itself without ever being discovered by the developers.</p>
-	<p>When I say "fixed", I just mean obtaining the heart piece from the first chest. The nudge mechanic is still broken. The item graphics themselves need to be decompressed as they pop out of the chest, which again clobbers <addr>$C8</addr>. After that call, the value is always high enough to allow any prize next. The downside is we lose the intended 1/4 odds on the heart piece when the previous prize was a bomb.</p>
+<h3>A hearty mistake</h3>
+<p>By sheer coincidence, the chest game is fixed so that it no longer prevents the heart piece from being obtained in the first chest. The reason this happens to begin with is memory shared between the chest game and the decompression routines.</p>
+<p>The chest game in Village of Outcasts uses the address <addr>$C8</addr> to track the last prize pulled. If the prize chosen by the game is not rupees and is the same as the previous prize, it will nudge itself one prize forward.</p>
+<p>Every time dialog is shown, the plaques used in the attract sequence are decompressed. There's no reason for this; it only serves to waste 4 frames. It also clobbers <addr>$C8</addr>. Ultimately, what you need to know is that the final value of <addr>$C8</addr> after decompression will be the low byte of the address after the final byte of the compressed data.</p>
+<p>In JP1.0, that value happens to be <asmval>$07</asmval>, which is also the prize index of the heart piece. When the chest game proctor speaks, his dialog ends up clobbering that value, and the heart piece is impossible to obtain. This can be exacerbated by bringing up the select menu after opening the first chest, setting <addr>$C8</addr> back to <asmval>$07</asmval> and making the heart impossible to obtain on the second chest too.</p>
+<p>In REV1, this is partially "fixed" on accident. Small graphics changes were made that shifted many sheets into lower addresses. As luck would have it, the location and size of the plaque sheets now sets <addr>$C8</addr> to <asmval>$04</asmval>. The bug is still there, but it prevents the single arrow from being the first prize instead of the heart piece.</p>
+<p>In the US version, it is completely "fixed" on accident. Again, the bug itself is not even acknowledged, but the value <addr>$C8</addr> ends up being set to is <asmval>$0D</asmval>, which doesn't correspond to any valid prize index. The chest game now allows any item to be obtained on the first chest, but just by stupid luck. The problem fixed itself without ever being discovered by the developers.</p>
+<p>When I say "fixed", I just mean obtaining the heart piece from the first chest. The nudge mechanic is still broken. The item graphics themselves need to be decompressed as they pop out of the chest, which again clobbers <addr>$C8</addr>. After that call, the value is always high enough to allow any prize next. The downside is we lose the intended 1/4 odds on the heart piece when the previous prize was a bomb.</p>
 
-	<h2>Tiny fixes</h2>
+<h2>Tiny fixes</h2>
 
-	<h3>Fwsh</h3>
-	<p>Slashing a closed door will play the grass-cutting sound effect. If the door is a vine or curtain, the puzzle complete jingle will also play. The closed door slashy part is an oversight that even causes an invisible tile map update to occur&mdash;invisible due to the tiles being changed to what they already are. The US version fixes this by branching further ahead when the door is not a vine or curtain, skipping over half-initialized code that the Japanese versions didn't.</p>
+<h3>Fwsh</h3>
+<p>Slashing a closed door will play the grass-cutting sound effect. If the door is a vine or curtain, the puzzle complete jingle will also play. The closed door slashy part is an oversight that even causes an invisible tile map update to occur&mdash;invisible due to the tiles being changed to what they already are. The US version fixes this by branching further ahead when the door is not a vine or curtain, skipping over half-initialized code that the Japanese versions didn't.</p>
 
-	<h3>Owee!</h3>
-	<p>When Link touches a spike, his i-frame timer and the cape flag are checked to determine if he should take damage. Beginning with REV1, the invulnerability timer is also checked.</p>
+<h3>Owee!</h3>
+<p>When Link touches a spike, his i-frame timer and the cape flag are checked to determine if he should take damage. Beginning with REV1, the invulnerability timer is also checked.</p>
 
-	<h3>Smoke on the water</h3>
-	<p>An interesting cultural difference between the United States and Japan is that for the latter, explosives placed in shallow water don't seem to disturb the liquid. In America, bombs placed in the water will cause a visible disturbance in the form of animated ripples. In both nations, Somaria blocks sit on water without disturbing it.</p>
-	<p>Two arrays are introduced to control these ripples: <addr>$03D2</addr> and <addr>$03E1</addr>. The latter was previously unused memory, and the former is part of an existing array. The ripples don't draw with an explosion, so a new check is included for that as well.</p>
-	<p>Both of these arrays present new misslotting opportunities for the US version. The array at <addr>$03E1</addr> is followed by the array of tile type IDs from the last interaction, so this doesn't open any new windows; that variable is updated then used as needed.</p>
-	<p>The interesting one is <addr>$03D2</addr>. Sort of. It's followed by an ancilla array that flags layer changes for bombs and somaria blocks that are thrown over ledges. That's not too interesting. You can keep a bomb on the upper layer when it shouldn't be. <em>Who cares?</em> But it sits at the end of an existing array beginning at <addr>$03CF</addr>. This is only used to position the boomerang relative Link as he winds up his throw.</p>
-	<p>The overlap is visible without any misslotting. Just place a bomb on shallow water then throw the boomerang. It sometimes disappears way off screen. If you wait, it will come back. Conversely, you might also witness the bomb's ripple turn into a glitchy mess.</p>
-	<p>The reason the boomerang messes up the graphics is that bombs only expect values of <asmval>$00</asmval>, <asmval>$01</asmval>, or <asmval>$02</asmval>. The boomerang will set its value from the direction Link faces: <asmval>$00</asmval> for up, <asmval>$02</asmval> for down, <asmval>$04</asmval> for left, or <asmval>$06</asmval> for right. The bomb can make the boomerang fly off-screen by this same disparity.</p>
-	<p>Being in a lower slot, the bomb will execute its code after the boomerang. Every 3 frames, <addr>$03D2,X</addr> is incremented by 1 and reset to <asmval>$00</asmval> when it reaches <em>exactly</em> <asmval>$03</asmval>. Values greater than that are not reset. The graphics can never bug out if Link is facing up or down, since those correspond to lower values, but it should happen every time when facing left or right.</p>
-	<p>The details behind the boomerang's position are a bit more technical. It uses this value to index a table that tells it where to position itself relative Link during the windup animation. The table expects even indices as it's a collection of 16-bit values. An odd index will have it read misaligned data, and it happens to be that an index of <asmval>$01</asmval> results in a Y-offset of <asmval>$06FF</asmval>, or 1791 pixels down.</p>
-	<p>This can be further corrupted by pausing the game after priming the boomerang while facing left or right. The ripple animation continues to run even while everything else is paused, so that value will keep incrementing until it overflows back to its intended range. Doing this, you can throw the boomerang with any directional offset index. Except for <asmval>$03</asmval>.</p>
+<h3>Smoke on the water</h3>
+<p>An interesting cultural difference between the United States and Japan is that for the latter, explosives placed in shallow water don't seem to disturb the liquid. In America, bombs placed in the water will cause a visible disturbance in the form of animated ripples. In both nations, Somaria blocks sit on water without disturbing it.</p>
+<p>Two arrays are introduced to control these ripples: <addr>$03D2</addr> and <addr>$03E1</addr>. The latter was previously unused memory, and the former is part of an existing array. The ripples don't draw with an explosion, so a new check is included for that as well.</p>
+<p>Both of these arrays present new misslotting opportunities for the US version. The array at <addr>$03E1</addr> is followed by the array of tile type IDs from the last interaction, so this doesn't open any new windows; that variable is updated then used as needed.</p>
+<p>The interesting one is <addr>$03D2</addr>. Sort of. It's followed by an ancilla array that flags layer changes for bombs and somaria blocks that are thrown over ledges. That's not too interesting. You can keep a bomb on the upper layer when it shouldn't be. <em>Who cares?</em> But it sits at the end of an existing array beginning at <addr>$03CF</addr>. This is only used to position the boomerang relative Link as he winds up his throw.</p>
+<p>The overlap is visible without any misslotting. Just place a bomb on shallow water then throw the boomerang. It sometimes disappears way off screen. If you wait, it will come back. Conversely, you might also witness the bomb's ripple turn into a glitchy mess.</p>
+<p>The reason the boomerang messes up the graphics is that bombs only expect values of <asmval>$00</asmval>, <asmval>$01</asmval>, or <asmval>$02</asmval>. The boomerang will set its value from the direction Link faces: <asmval>$00</asmval> for up, <asmval>$02</asmval> for down, <asmval>$04</asmval> for left, or <asmval>$06</asmval> for right. The bomb can make the boomerang fly off-screen by this same disparity.</p>
+<p>Being in a lower slot, the bomb will execute its code after the boomerang. Every 3 frames, <addr>$03D2,X</addr> is incremented by 1 and reset to <asmval>$00</asmval> when it reaches <em>exactly</em> <asmval>$03</asmval>. Values greater than that are not reset. The graphics can never bug out if Link is facing up or down, since those correspond to lower values, but it should happen every time when facing left or right.</p>
+<p>The details behind the boomerang's position are a bit more technical. It uses this value to index a table that tells it where to position itself relative Link during the windup animation. The table expects even indices as it's a collection of 16-bit values. An odd index will have it read misaligned data, and it happens to be that an index of <asmval>$01</asmval> results in a Y-offset of <asmval>$06FF</asmval>, or 1791 pixels down.</p>
+<p>This can be further corrupted by pausing the game after priming the boomerang while facing left or right. The ripple animation continues to run even while everything else is paused, so that value will keep incrementing until it overflows back to its intended range. Doing this, you can throw the boomerang with any directional offset index. Except for <asmval>$03</asmval>.</p>
 
-	<h3>Bush toss</h3>
-	<p>Carried sprites need to stick with Link, and part of that is copying his layer. Link's "layer" is a little overloaded, with it controlling both the physical layer for interactions and the visual priority for display over backgrounds. In REV1, carried sprites now account for this by extracting the least significant bit of Link's "layer" to copy into theirs.</p>
-	<p>Gameplay-wise, this doesn't fix anything anyone would ever notice. Other values such as <asmval>$02</asmval> may be used for Link. The effect of that being copied to a sprite is it being unable to collide with other sprites if tossed while Link is landing from a cliff jump. Maybe someone somewhere sometime noticed that they didn't hit a tektite with the rock they threw, but they probably attributed that to hitboxes and not this very specific and subtle oversight.</p>
+<h3>Bush toss</h3>
+<p>Carried sprites need to stick with Link, and part of that is copying his layer. Link's "layer" is a little overloaded, with it controlling both the physical layer for interactions and the visual priority for display over backgrounds. In REV1, carried sprites now account for this by extracting the least significant bit of Link's "layer" to copy into theirs.</p>
+<p>Gameplay-wise, this doesn't fix anything anyone would ever notice. Other values such as <asmval>$02</asmval> may be used for Link. The effect of that being copied to a sprite is it being unable to collide with other sprites if tossed while Link is landing from a cliff jump. Maybe someone somewhere sometime noticed that they didn't hit a tektite with the rock they threw, but they probably attributed that to hitboxes and not this very specific and subtle oversight.</p>
 
-	<h3>Caw ca caw</h3>
-	<p>An <asmop>RTS</asmop> instruction is removed from the cucco bouncing code in REV1.</p>
+<h3>Caw ca caw</h3>
+<p>An <asmop>RTS</asmop> instruction is removed from the cucco bouncing code in REV1.</p>
 
-	<h3>Men in uniform are attractive.</h3>
-	<p>There's a small bug with the soldiers during the attract sequence regarding their weapons. In JP1.0 and REV1, the value <asmval>$10</asmval> is loaded then stored to a sprite variable to give the guards a shadow. This value is then compared to <asmval>$39</asmval>, which will always result in a failure. The comparison is used to pick between sprite IDs <asmval>$41</asmval> (sword guard) and <asmval>$43</asmval> (spear guard), but because of this oversight, the latter value will always be chosen.</p>
-	<p>In the US version, the code is slightly rearranged so that the correct value (the sprite's palette) is used during the comparison. The Japanese versions were technically using red guards, but blue; the fix makes them blue guards, but blue.</p>
-	<p>An instruction that resets the guard's altitude is also moved to an earlier part of the code that involves their coordinates. Theoretically, the guards would potentially be floating with stagnant altitudes after a save and quit, but their altitude is cleared every frame somewhere else, and the screen is black during the only possible frame of float.</p>
+<h3>Men in uniform are attractive.</h3>
+<p>There's a small bug with the soldiers during the attract sequence regarding their weapons. In JP1.0 and REV1, the value <asmval>$10</asmval> is loaded then stored to a sprite variable to give the guards a shadow. This value is then compared to <asmval>$39</asmval>, which will always result in a failure. The comparison is used to pick between sprite IDs <asmval>$41</asmval> (sword guard) and <asmval>$43</asmval> (spear guard), but because of this oversight, the latter value will always be chosen.</p>
+<p>In the US version, the code is slightly rearranged so that the correct value (the sprite's palette) is used during the comparison. The Japanese versions were technically using red guards, but blue; the fix makes them blue guards, but blue.</p>
+<p>An instruction that resets the guard's altitude is also moved to an earlier part of the code that involves their coordinates. Theoretically, the guards would potentially be floating with stagnant altitudes after a save and quit, but their altitude is cleared every frame somewhere else, and the screen is black during the only possible frame of float.</p>
 
-	<h3>Goodbye</h3>
-	<p>Fortune tellers have a saying that goes something like this:</p>
-	<blockquote>
-		ううむ,それはザンネン⋯。<br/>
-		また,おまちしておりますぞ。
-	</blockquote>
-	<p>Actually it goes exactly like that. And actually, they don't have any such saying.</p>
-	<p>That text very roughly translates to "Awww shucks. Thank you, come again!", but it's unused anywhere in the Japanese game.</p>
-	<p>The missing dialog was finally noticed for the English version, allowing this message to be spoken by the fortune tellers should you forgo their offer:</p>
-	<blockquote>
-		It is indeed a poor man who is<br/>
-		not interested in his future…<br/>
-		I'll be waiting for your return.
-	</blockquote>
+<h3>Goodbye</h3>
+<p>Fortune tellers have a saying that goes something like this:</p>
+<blockquote>
+	ううむ,それはザンネン⋯。<br/>
+	また,おまちしておりますぞ。
+</blockquote>
+<p>Actually it goes exactly like that. And actually, they don't have any such saying.</p>
+<p>That text very roughly translates to "Awww shucks. Thank you, come again!", but it's unused anywhere in the Japanese game.</p>
+<p>The missing dialog was finally noticed for the English version, allowing this message to be spoken by the fortune tellers should you forgo their offer:</p>
+<blockquote>
+	It is indeed a poor man who is<br/>
+	not interested in his future…<br/>
+	I'll be waiting for your return.
+</blockquote>
 
-	<h3>You lose.</h3>
-	<p>The <span class="nowrap">GAME OVER</span> sequence got some small tinkers. The new font prompted a 2 pixel shift to the fairy used as a cursor. Behind the scenes, an extra palette loading routine is called when the letter graphics are loaded in, but it's hard to tell what exactly this fixed. If Link dies in the underworld but not a dungeon, the song queue is cleared, fixing a bug where he would respawn to silence.</p>
+<h3>You lose.</h3>
+<p>The <span class="nowrap">GAME OVER</span> sequence got some small tinkers. The new font prompted a 2 pixel shift to the fairy used as a cursor. Behind the scenes, an extra palette loading routine is called when the letter graphics are loaded in, but it's hard to tell what exactly this fixed. If Link dies in the underworld but not a dungeon, the song queue is cleared, fixing a bug where he would respawn to silence.</p>
 
-	<h3>I didn't realize you were already dating someone.</h3>
-	<p>The fake maiden in the Thieves' Town prison will despawn herself if Link already has a follower, but only in JP1.0. Beginning with REV1, she will only despawn if Link's follower is the fake maiden. And when she does spawn, she'll reset the flag that indicates the big bomb or purple chest are parked instead of actually following.</p>
+<h3>I didn't realize you were already dating someone.</h3>
+<p>The fake maiden in the Thieves' Town prison will despawn herself if Link already has a follower, but only in JP1.0. Beginning with REV1, she will only despawn if Link's follower is the fake maiden. And when she does spawn, she'll reset the flag that indicates the big bomb or purple chest are parked instead of actually following.</p>
 
-	<h3>Hurried</h3>
-	<p>In the US version, the decay timer of the lodged arrow ancilla is reduced by 32 frames from 160 to 128.</p>
+<h3>Hurried</h3>
+<p>In the US version, the decay timer of the lodged arrow ancilla is reduced by 32 frames from 160 to 128.</p>
 
-	<h3>Just 5 more microseconds!</h3>
-	<p>At <addr>$008208</addr>, the US version changes a write to <asmvar>VTIMEL</asmvar> from <asmval>56</asmval> to <asmval>128</asmval>. This tells raster interrupts to occur 72 scanlines later, for whatever reason, possibly to compensate for timing changes that came with the new text engine.</p>
+<h3>Just 5 more microseconds!</h3>
+<p>At <addr>$008208</addr>, the US version changes a write to <asmvar>VTIMEL</asmvar> from <asmval>56</asmval> to <asmval>128</asmval>. This tells raster interrupts to occur 72 scanlines later, for whatever reason, possibly to compensate for timing changes that came with the new text engine.</p>
 
-	<h3>BAGE</h3>
-	<p>Have you ever heard of 1/1024th-magic? Probably not. You've surely heard of half-magic, and possibly quarter-magic (which is unused in vanilla), but 1/1024th has to be some sort of troll, right?</p>
-	<p>Yes and no.</p>
-	<p>There's unreachable debug code at <addr>$03EA1D</addr> in JP1.0 (<addr>$04FDDD</addr> in REV1 and <addr>$04EA9D</addr> in US) that checks controller input before handing out goodies.</p>
-	<p>While player 1 is holding the R button:</p>
-	<ul>
-		<li>Link is given a magic consumption upgrade.</li>
-		<li>If player 1 presses A, Link's sword, shield, and mail will be upgraded, wrapping around to fighter, green, fighter, respectively, if they go too high with the latter two capping if the gold sword is selected</li>
-		<li>If player 1 presses B, out of bounds mode will be toggled.</li>
-		<li>If player 1 pressed X, Link's health, magic, bombs, and arrows will be filled; he will be given 255 rupees; and his key count will be set to 9, regardless of where he is.</li>
-	</ul>
-	<p>That's a lot of neat stuff! But you can only have it if FILE1 has a specific name.	In the Japanese versions, that name is <span class="nowrap">"ンルルル"</span> (or NRURURU); in the US version, it's "BAGE" (or <span class="snark" title="I'm not sure what 'BAGE' means, but my best guess is 'Big Awesome Game (ENGLISH)'.">BAGE</span>).</p>
-	<p>There's another difference: the magic consumption upgrade. The US version explicitly sets it to half-magic by loading a value of <asmval>$01</asmval>, but in the Japanese versions&mdash;both 1.0 and REV1&mdash;no value is loaded. What gets stored to the address is <asmval>$0A</asmval>, the stagnant low byte of the last character in the FILE1 name. For this code to even be run, that character must be "ル", which is encoded as <asmval>$010A</asmval>.</p>
-	<p>From here, the existence of 1/1024th-magic only requires simple mathematical deduction. A value of <asmval>$00</asmval> gives no upgrade, or 1/1-magic; <asmval>$01</asmval> gives 1/2-magic, and <asmval>$02</asmval> gives 1/4-magic. The <a href="https://oeis.org/A000079">relationship</a> is clearly <span class="nowrap">1/2<sup>n</sup></span>-magic. Thus a value of <asmval>$0A</asmval> (<asmval>10</asmval> in decimal) would give 1/1024th-magic.</p>
-	<p>Q.E.D.</p>
-	<p>Of course, the caveat is that magic consumption upgrades are handled with a table that's only sized for quarter-magic; however, we can still perform the lookup to see how much items cost with 1/1024th magic:</p>
-	<table class="centertable">
-		<tr>
-			<th>Item</th>
-			<th>1/1</th>
-			<th>1/2</th>
-			<th>1/4</th>
-			<th>1/1024</th>
-		</tr>
-		<tr>
-			<th>Rods</th>
-			<td><code>$10</code></td>
-			<td><code>$08</code></td>
-			<td><code>$04</code></td>
-			<td><code>$04</code></td>
-		</tr>
-		<tr>
-			<th>Medallions</th>
-			<td><code>$20</code></td>
-			<td><code>$10</code></td>
-			<td><code>$08</code></td>
-			<td><code>$04</code></td>
-		</tr>
-		<tr>
-			<th>Powder</th>
-			<td><code>$08</code></td>
-			<td><code>$04</code></td>
-			<td><code>$02</code></td>
-			<td><code>$08</code></td>
-		</tr>
-		<tr>
-			<th>???</th>
-			<td><code>$08</code></td>
-			<td><code>$04</code></td>
-			<td><code>$02</code></td>
-			<td><code>$02</code></td>
-		</tr>
-		<tr>
-			<th>Somaria</th>
-			<td><code>$08</code></td>
-			<td><code>$04</code></td>
-			<td><code>$02</code></td>
-			<td><code>$04</code></td>
-		</tr>
-		<tr>
-			<th>???</th>
-			<td><code>$10</code></td>
-			<td><code>$08</code></td>
-			<td><code>$04</code></td>
-			<td><code>$08</code></td>
-		</tr>
-		<tr>
-			<th>Lamp</th>
-			<td><code>$04</code></td>
-			<td><code>$02</code></td>
-			<td><code>$02</code></td>
-			<td><code>$03</code></td>
-		</tr>
-		<tr>
-			<th>???</th>
-			<td><code>$08</code></td>
-			<td><code>$04</code></td>
-			<td><code>$02</code></td>
-			<td><code>$0C</code></td>
-		</tr>
-		<tr>
-			<th>Byrna</th>
-			<td><code>$10</code></td>
-			<td><code>$08</code></td>
-			<td><code>$04</code></td>
-			<td><code>$0C</code></td>
-		</tr>
-	</table>
-	<p>Okay&hellip; that's not very good. 1/1024th-magic sucks. I'm glad they fixed it.</p>
+<h3>BAGE</h3>
+<p>Have you ever heard of 1/1024th-magic? Probably not. You've surely heard of half-magic, and possibly quarter-magic (which is unused in vanilla), but 1/1024th has to be some sort of troll, right?</p>
+<p>Yes and no.</p>
+<p>There's unreachable debug code at <addr>$03EA1D</addr> in JP1.0 (<addr>$04FDDD</addr> in REV1 and <addr>$04EA9D</addr> in US) that checks controller input before handing out goodies.</p>
+<p>While player 1 is holding the R button:</p>
+<ul>
+	<li>Link is given a magic consumption upgrade.</li>
+	<li>If player 1 presses A, Link's sword, shield, and mail will be upgraded, wrapping around to fighter, green, fighter, respectively, if they go too high with the latter two capping if the gold sword is selected</li>
+	<li>If player 1 presses B, out of bounds mode will be toggled.</li>
+	<li>If player 1 pressed X, Link's health, magic, bombs, and arrows will be filled; he will be given 255 rupees; and his key count will be set to 9, regardless of where he is.</li>
+</ul>
+<p>That's a lot of neat stuff! But you can only have it if FILE1 has a specific name.	In the Japanese versions, that name is <span class="nowrap">"ンルルル"</span> (or NRURURU); in the US version, it's "BAGE" (or <span class="snark" title="I'm not sure what 'BAGE' means, but my best guess is 'Big Awesome Game (ENGLISH)'.">BAGE</span>).</p>
+<p>There's another difference: the magic consumption upgrade. The US version explicitly sets it to half-magic by loading a value of <asmval>$01</asmval>, but in the Japanese versions&mdash;both 1.0 and REV1&mdash;no value is loaded. What gets stored to the address is <asmval>$0A</asmval>, the stagnant low byte of the last character in the FILE1 name. For this code to even be run, that character must be "ル", which is encoded as <asmval>$010A</asmval>.</p>
+<p>From here, the existence of 1/1024th-magic only requires simple mathematical deduction. A value of <asmval>$00</asmval> gives no upgrade, or 1/1-magic; <asmval>$01</asmval> gives 1/2-magic, and <asmval>$02</asmval> gives 1/4-magic. The <a href="https://oeis.org/A000079">relationship</a> is clearly <span class="nowrap">1/2<sup>n</sup></span>-magic. Thus a value of <asmval>$0A</asmval> (<asmval>10</asmval> in decimal) would give 1/1024th-magic.</p>
+<p>Q.E.D.</p>
+<p>Of course, the caveat is that magic consumption upgrades are handled with a table that's only sized for quarter-magic; however, we can still perform the lookup to see how much items cost with 1/1024th magic:</p>
+<table class="centertable">
+	<tr>
+		<th>Item</th>
+		<th>1/1</th>
+		<th>1/2</th>
+		<th>1/4</th>
+		<th>1/1024</th>
+	</tr>
+	<tr>
+		<th>Rods</th>
+		<td><code>$10</code></td>
+		<td><code>$08</code></td>
+		<td><code>$04</code></td>
+		<td><code>$04</code></td>
+	</tr>
+	<tr>
+		<th>Medallions</th>
+		<td><code>$20</code></td>
+		<td><code>$10</code></td>
+		<td><code>$08</code></td>
+		<td><code>$04</code></td>
+	</tr>
+	<tr>
+		<th>Powder</th>
+		<td><code>$08</code></td>
+		<td><code>$04</code></td>
+		<td><code>$02</code></td>
+		<td><code>$08</code></td>
+	</tr>
+	<tr>
+		<th>???</th>
+		<td><code>$08</code></td>
+		<td><code>$04</code></td>
+		<td><code>$02</code></td>
+		<td><code>$02</code></td>
+	</tr>
+	<tr>
+		<th>Somaria</th>
+		<td><code>$08</code></td>
+		<td><code>$04</code></td>
+		<td><code>$02</code></td>
+		<td><code>$04</code></td>
+	</tr>
+	<tr>
+		<th>???</th>
+		<td><code>$10</code></td>
+		<td><code>$08</code></td>
+		<td><code>$04</code></td>
+		<td><code>$08</code></td>
+	</tr>
+	<tr>
+		<th>Lamp</th>
+		<td><code>$04</code></td>
+		<td><code>$02</code></td>
+		<td><code>$02</code></td>
+		<td><code>$03</code></td>
+	</tr>
+	<tr>
+		<th>???</th>
+		<td><code>$08</code></td>
+		<td><code>$04</code></td>
+		<td><code>$02</code></td>
+		<td><code>$0C</code></td>
+	</tr>
+	<tr>
+		<th>Byrna</th>
+		<td><code>$10</code></td>
+		<td><code>$08</code></td>
+		<td><code>$04</code></td>
+		<td><code>$0C</code></td>
+	</tr>
+</table>
+<p>Okay&hellip; that's not very good. 1/1024th-magic sucks. I'm glad they fixed it.</p>
 
 
-	<h2>Code refactors</h2>
-	<p>It wouldn't be an update without any very small driveby changes.</p>
+<h2>Code refactors</h2>
+<p>It wouldn't be an update without any very small driveby changes.</p>
 
-	<h3>My personal favorite</h3>
-	<p>In the routine <asmvar>NameFile_EraseSave</asmvar>, two instructions are swapped around.</p>
-	<p>The JP1.0 and REV1 code goes like this:</p>
-	<div class="snesasm nolabel noaddress">
-		<div></div><div>STZ.w $0B12</div><div></div>
-		<div></div><div>STZ.w $0B10</div><div></div>
-	</div>
+<h3>My personal favorite</h3>
+<p>In the routine <asmvar>NameFile_EraseSave</asmvar>, two instructions are swapped around.</p>
+<p>The JP1.0 and REV1 code goes like this:</p>
+<div class="snesasm nolabel noaddress">
+	<div></div><div>STZ.w $0B12</div><div></div>
+	<div></div><div>STZ.w $0B10</div><div></div>
+</div>
 
-	<p>But the US code is as such:</p>
-	<div class="snesasm nolabel noaddress">
-		<div></div><div>STZ.w $0B10</div><div></div>
-		<div></div><div>STZ.w $0B12</div><div></div>
-	</div>
+<p>But the US code is as such:</p>
+<div class="snesasm nolabel noaddress">
+	<div></div><div>STZ.w $0B10</div><div></div>
+	<div></div><div>STZ.w $0B12</div><div></div>
+</div>
 
-	<h3>Inventory check</h3>
-	<p>A lot of shops have bombs, and in the third slot. REV1 optimizes this slightly by having applicable shops converge onto the same code path instead of copy/pasting.</p>
+<h3>Inventory check</h3>
+<p>A lot of shops have bombs, and in the third slot. REV1 optimizes this slightly by having applicable shops converge onto the same code path instead of copy/pasting.</p>
 
-	<h3>Loud flutes</h3>
-	<p>At the end of the screen load routine used by the flute menu, a small but beautiful optimization is made in the US version:</p>
-	<p>It goes from this:</p>
-	<div class="snesasm noaddress">
-		<div></div><div>CPX.w $0130</div><div></div>
-		<div></div><div>BNE different</div><div></div>
-		<div></div><div>LDX.b #$F3</div><div></div>
-		<div></div><div>STX.w $012C</div><div></div>
-		<div></div><div>RTL</div><div></div>
-		<div>different</div><div>STX.w $012C</div><div></div>
-		<div></div><div>RTL</div><div></div>
-	</div>
+<h3>Loud flutes</h3>
+<p>At the end of the screen load routine used by the flute menu, a small but beautiful optimization is made in the US version:</p>
+<p>It goes from this:</p>
+<div class="snesasm noaddress">
+	<div></div><div>CPX.w $0130</div><div></div>
+	<div></div><div>BNE different</div><div></div>
+	<div></div><div>LDX.b #$F3</div><div></div>
+	<div></div><div>STX.w $012C</div><div></div>
+	<div></div><div>RTL</div><div></div>
+	<div>different</div><div>STX.w $012C</div><div></div>
+	<div></div><div>RTL</div><div></div>
+</div>
 
-	<p>To this:</p>
-	<div class="snesasm noaddress">
-		<div></div><div>CPX.w $0130</div><div></div>
-		<div></div><div>BNE different</div><div></div>
-		<div></div><div>LDX.b #$F3</div><div></div>
-		<div>different</div><div>STX.w $012C</div><div></div>
-		<div></div><div>RTL</div><div></div>
-	</div>
+<p>To this:</p>
+<div class="snesasm noaddress">
+	<div></div><div>CPX.w $0130</div><div></div>
+	<div></div><div>BNE different</div><div></div>
+	<div></div><div>LDX.b #$F3</div><div></div>
+	<div>different</div><div>STX.w $012C</div><div></div>
+	<div></div><div>RTL</div><div></div>
+</div>
 
-	<p>Wonderful!</p>
+<p>Wonderful!</p>
 
-	<h3>Location location location</h3>
-	<p>A lot of code and data had to be juggled to make room for changes, especially in the US version. Any small code shift propagated through the rest of the bank, but there were also larger blocks of code moved to make way for bigger additions.</p>
-	<p>Banks 03 and 04 did a bit of code trading in both updates. In the US version, some intro code was moved from bank 0C to 02, and various routines were relocated from banks 0F, 0A, and 1C. A significant chunk of bomb draw code is moved out of bank 08 into bank 0F, and the overworld overlays are moved from bank 07 to 0E.</p>
-	<p>Documenting every single one of these isn't too interesting&mdash;it's less than trivia; but it is interesting to know that, on the whole, quite a bit was moved around to squeeze everything in.</p>
+<h3>Location location location</h3>
+<p>A lot of code and data had to be juggled to make room for changes, especially in the US version. Any small code shift propagated through the rest of the bank, but there were also larger blocks of code moved to make way for bigger additions.</p>
+<p>Banks 03 and 04 did a bit of code trading in both updates. In the US version, some intro code was moved from bank 0C to 02, and various routines were relocated from banks 0F, 0A, and 1C. A significant chunk of bomb draw code is moved out of bank 08 into bank 0F, and the overworld overlays are moved from bank 07 to 0E.</p>
+<p>Documenting every single one of these isn't too interesting&mdash;it's less than trivia; but it is interesting to know that, on the whole, quite a bit was moved around to squeeze everything in.</p>
 
-	<h2>And finally&hellip;</h2>
+<h2>And finally&hellip;</h2>
 
-	<h3>Engrish</h3>
-	<p>The epilogue text was already English in the Japanese versions, but a few lines were retranslated:</p>
-	<ul>
-		<li>"THE LOYAL PRIEST" &rArr; "THE LOYAL SAGE"</li>
-		<li>"FINGER WEBS FOR SALE" &rArr; "FLIPPERS FOR SALE"</li>
-		<li>"OCARINA BOY PLAYS AGAIN" &rArr; "FLUTE BOY PLAYS AGAIN"</li>
-	</ul>
+<h3>Engrish</h3>
+<p>The epilogue text was already English in the Japanese versions, but a few lines were retranslated:</p>
+<ul>
+	<li>"THE LOYAL PRIEST" &rArr; "THE LOYAL SAGE"</li>
+	<li>"FINGER WEBS FOR SALE" &rArr; "FLIPPERS FOR SALE"</li>
+	<li>"OCARINA BOY PLAYS AGAIN" &rArr; "FLUTE BOY PLAYS AGAIN"</li>
+</ul>
 
-	<h3>Credit where credit is due</h3>
-	<p>It wouldn't be fair to ignore the work of those who helped make the English version a reality, which is why a new credits header is added for the "English script writers" with the names Daniel Owsen and Hiroyuki Yamada under it.</p>
-	<p>The misspelling of "Gannon's Tower" is fixed to "Ganon's Tower".</p>
+<h3>Credit where credit is due</h3>
+<p>It wouldn't be fair to ignore the work of those who helped make the English version a reality, which is why a new credits header is added for the "English script writers" with the names Daniel Owsen and Hiroyuki Yamada under it.</p>
+<p>The misspelling of "Gannon's Tower" is fixed to "Ganon's Tower".</p>
 
-	<h3>Minor technical details</h3>
-	<p>And to wrap things up, we'll look at the header that contains metadata about the ROM itself:</p>
-	<ul>
-		<li>The internal checksum and complement are recalculated for the new binary (for both REV1 and US).</li>
-		<li>The ROM region was changed from <asmval>00</asmval> (Japan) to <asmval>01</asmval> (North America) for the US version.</li>
-		<li>The ROM name is changed from <code>ZELDA NO DENSETSU</code> to <code>THE LEGEND OF ZELDA</code> for the US version.</li>
-	</ul>
+<h3>Minor technical details</h3>
+<p>And to wrap things up, we'll look at the header that contains metadata about the ROM itself:</p>
+<ul>
+	<li>The internal checksum and complement are recalculated for the new binary (for both REV1 and US).</li>
+	<li>The ROM region was changed from <asmval>00</asmval> (Japan) to <asmval>01</asmval> (North America) for the US version.</li>
+	<li>The ROM name is changed from <code>ZELDA NO DENSETSU</code> to <code>THE LEGEND OF ZELDA</code> for the US version.</li>
+</ul>

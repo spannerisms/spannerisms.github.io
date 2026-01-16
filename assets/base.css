@@ -587,31 +587,41 @@ div.metaLinks a {
 
 */
 
-[id^="footnote"]:target,
-[footid]:target {
-	background: #FFDD0030;
-}
-
-#footnoteslist > p:before:not([^footid]),
-#footnoteslist > div:before:not([^footid]) {
-	counter-increment: footnotesid;
-	content: counter(footnotesid) '.';
-}
-
-a[footnote] {
+button.footnote-tag {
 	vertical-align: super;
+	background: none;
+	border: none;
+	margin: 0;
+	padding: 0;
 	font-size: 75%;
-	counter-increment: footnotes;
+	color: #6161F2;
+	cursor: help;
+	&:hover {
+		color: #111182;
+		text-decoration: underline;
+		text-decoration-style: dotted;
+	}
+	
+	&:before {
+		counter-increment: footnotesid;
+		content: '[' counter(footnotesid) ']';
+	}
 }
 
-a[footnote]:not([footid]):after {
-	content: '[' counter(footnotes) ']';
-}
-
-
-#footnoteslist:before {
-	content: ' ';
-	display: block;
-	border-bottom: 1px outset black;
-	margin-top: 60px;
+.footnote-box {
+	background: #EEEEFF;
+	border: 1px solid;
+	box-shadow: 1px 1px 2px black;
+	max-width: 500px;
+	min-width: 17em;
+	padding: 3px 10px 7px 5px;
+	font-size: .9em;
+	word-wrap: break-word;
+	line-height: 1em;
+	overflow: auto;
+	margin: 0;
+	inset: auto;
+	top: calc(anchor(bottom) + 2px);
+	left: calc(anchor(left));
+	justify-self: anchor-center;
 }
