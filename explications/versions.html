@@ -270,28 +270,32 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 <p>These two are, from a technical perspective, different consequences of the same glitch. The fix, introduced in REV1, covers both.</p>
 <p>Right before checking for a Y button press, this small snippet of code is added:</p>
 
-<div class="snesasm nolabel noaddress">
-	<div></div><div>LDA.b $5D</div><div>Get link's state</div>
-	<div></div><div>CMP.b #$11</div><div>Check for dashing</div>
-	<div></div><div>BEQ check_cape</div><div>Skip Y and B buttons</div>
-</div>
+{% include asmheader.html %}
+{% include asmline.html code="LDA.b $5D" comment="Get link's state" %}
+{% include asmline.html code="CMP.b #$11" comment="Check for dashing" %}
+{% include asmline.html code="BEQ check_cape" comment="Skip Y and B buttons" %}
+{% include asmfooter.html %}
 
 <h3>Mirror Block Erase</h3>
 <p>This is a silly glitch <a href="/mirrorblock">I've explained before</a>, and the REV1 fix for it is just as silly. Rather than adjusting the code responsible for validating a warp to clear the block indices, the developers added a check <em>after</em> it:</p>
-<div class="snesasm nolabel noaddress">
-	<div></div><div>LDA.w $012E</div><div>Get SFX2</div>
-	<div></div><div>CMP.b #$3C</div><div>Check for beep</div>
-	<div></div><div>BEQ exit</div><div>Skip block reset</div>
-</div>
+
+{% include asmheader.html %}
+{% include asmline.html code="LDA.w $012E" comment="Get SFX2" %}
+{% include asmline.html code="CMP.b #$3C" comment="Check for beep" %}
+{% include asmline.html code="BEQ exit" comment="Skip block reset" %}
+{% include asmfooter.html %}
+
 <p>Theoretically, it introduces a new glitch where a successful mirror warp does not reset the block indices if a beep is played at any point during the frame before the item gets used. At the present moment, I can't think of a way to make that happen.</p>
 
 <h3>Fake Flippers</h3>
 <p>Another glitch <a href="/fakeflippers">I've furiously Explicated&trade;</a>. Another silly "fix" too. Also another REV1 fix.</p>
-<div class="snesasm nolabel noaddress">
-	<div></div><div>LDA.l $7EF356</div><div>Get flippers</div>
-	<div></div><div>BNE have_flippers</div><div>Allow swimming</div>
-	<div></div><div>RTS</div><div>Short circuit</div>
-</div>
+
+{% include asmheader.html %}
+{% include asmline.html code="LDA.l $7EF356" comment="Get flippers" %}
+{% include asmline.html code="BNE have_flippers" comment="Allow swimming" %}
+{% include asmline.html code="RTS" comment="Short circuit" %}
+{% include asmfooter.html %}
+
 <p>This change short circuits the swim code if Link lacks flippers, which gives the splash ancilla all the time it needs to kick Link out of the water. It does not, however, remove Link itself. Instead, if he's somehow swimming without flippers, he just can't move.</p>
 
 <h3>Super Bunny</h3>
@@ -311,13 +315,14 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 <p>The bug happens because the wallmaster doesn't send Link back to the dungeon entrance until it's off the top of the screen, but it's not in any special mode as it drags Link away. It's still using its normal "move upwards" routine that runs when it misses its target. The problem is that this routine despawns the wallmaster after its altitude overflows past 255.</p>
 <p>You can see this for yourself by waiting for a wallmaster in the room west of the big key statue puzzle and baiting the hand above the bumper. Once the hand is on screen, move Link into the bumper so that he recoils into the wallmaster. Link will be lifted very high then get stuck. The camera pan happens with a bonk too, but those don't give enough oomph to get you frozen in place. Only speeds which outpace the wallmaster cause an issue.</p>
 <p>The bug wasn't fixed until the US version, which implements the rather aggressive solution of clearing 5 different variables on every frame that Link is held by the wallmaster:</p>
-<div class="snesasm nolabel noaddress">
-	<div></div><div>STZ.b $46</div><div>Clear recoil state</div>
-	<div></div><div>STZ.b $28</div><div>Clear X-axis recoil velocity</div>
-	<div></div><div>STZ.b $27</div><div>Clear Y-axis recoil velocity</div>
-	<div></div><div>STZ.b $30</div><div>Clear Y-axis velocity</div>
-	<div></div><div>STZ.b $31</div><div>Clear X-axis velocity</div>
-</div>
+
+{% include asmheader.html %}
+{% include asmline.html code="STZ.b $46" comment="Clear recoil state" %}
+{% include asmline.html code="STZ.b $28" comment="Clear X-axis recoil velocity" %}
+{% include asmline.html code="STZ.b $27" comment="Clear Y-axis recoil velocity" %}
+{% include asmline.html code="STZ.b $30" comment="Clear Y-axis velocity" %}
+{% include asmline.html code="STZ.b $31" comment="Clear X-axis velocity" %}
+{% include asmfooter.html %}
 
 <p>Only one of these was required: <code class="nowrap">STZ.b $30</code>.</p>
 <p>Although it wasn't fixed until later, they had to have been aware of it already. Those last two variables are cleared in JP1.0 and REV1, but only once&mdash;on the frame the wallmaster grabs Link. It's a movement calculation on the next frame that sets his velocity again, allowing the camera to pan. The US version removed this single frame clear as part of the new fix.</p>
@@ -337,14 +342,16 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 
 <h3>Bomb tossing</h3>
 <p>A less widely-known glitch is that a thrown bomb briefly ignores collision at a specific time when another bomb is being lifted. The US version introduced code that seems to address this:</p>
-<div class="snesasm nolabel noaddress">
-	<div></div><div>TXA</div><div>Get slot</div>
-	<div></div><div>INC A</div><div>Account for offset</div>
-	<div></div><div>CMP.w $02EC</div><div>Compare to lifted slot</div>
-	<div></div><div>BNE not_lifted_bomb</div><div></div>
-	<div></div><div>BIT.w $0308</div><div>Check lift flags</div>
-	<div></div><div>BMI ignore_tile_collision</div><div></div>
-</div>
+
+{% include asmheader.html %}
+{% include asmline.html code="TXA" comment="Get slot" %}
+{% include asmline.html code="INC A" comment="Account for offset" %}
+{% include asmline.html code="CMP.w $02EC" comment="Compare to lifted slot" %}
+{% include asmline.html code="BNE not_lifted_bomb" %}
+{% include asmline.html code="BIT.w $0308" comment="Check lift flags" %}
+{% include asmline.html code="BMI ignore_tile_collision" %}
+{% include asmfooter.html %}
+
 <p>Here's the punchline: it doesn't work. A tossed bomb can still be made to ignore collision.</p>
 <p>Did they know it didn't work and leave the fix in?</p>
 <p>Did they mess up the timing and assume the fix worked?</p>
@@ -435,7 +442,7 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 	<li>If player 1 presses B, out of bounds mode will be toggled.</li>
 	<li>If player 1 pressed X, Link's health, magic, bombs, and arrows will be filled; he will be given 255 rupees; and his key count will be set to 9, regardless of where he is.</li>
 </ul>
-<p>That's a lot of neat stuff! But you can only have it if FILE1 has a specific name.	In the Japanese versions, that name is <span class="nowrap">"ンルルル"</span> (or NRURURU); in the US version, it's "BAGE" (or <span class="snark" title="I'm not sure what 'BAGE' means, but my best guess is 'Big Awesome Game (ENGLISH)'.">BAGE</span>).</p>
+<p>That's a lot of neat stuff! But you can only have it if FILE1 has a specific name.	In the Japanese versions, that name is <span class="nowrap">"ンルルル"</span> (or NRURURU); in the US version, it's "BAGE"{% include footnote.html content="I'm not sure what 'BAGE' means, but my best guess is<br/>\"Big Awesome Game (ENGLISH)\"." %}.</p>
 <p>There's another difference: the magic consumption upgrade. The US version explicitly sets it to half-magic by loading a value of <asmval>$01</asmval>, but in the Japanese versions&mdash;both 1.0 and REV1&mdash;no value is loaded. What gets stored to the address is <asmval>$0A</asmval>, the stagnant low byte of the last character in the FILE1 name. For this code to even be run, that character must be "ル", which is encoded as <asmval>$010A</asmval>.</p>
 <p>From here, the existence of 1/1024th-magic only requires simple mathematical deduction. A value of <asmval>$00</asmval> gives no upgrade, or 1/1-magic; <asmval>$01</asmval> gives 1/2-magic, and <asmval>$02</asmval> gives 1/4-magic. The <a href="https://oeis.org/A000079">relationship</a> is clearly <span class="nowrap">1/2<sup>n</sup></span>-magic. Thus a value of <asmval>$0A</asmval> (<asmval>10</asmval> in decimal) would give 1/1024th-magic.</p>
 <p>Q.E.D.</p>
@@ -512,7 +519,7 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 		<td><code>$0C</code></td>
 	</tr>
 </table>
-<p>Okay&hellip; that's not very good. 1/1024th-magic sucks. I'm glad they fixed it.</p>
+<p>Okay&hellip; that's not very good. 1/1024th-magic sucks. Thank goodness they fixed it.</p>
 
 
 <h2>Code refactors</h2>
@@ -520,42 +527,44 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 
 <h3>My personal favorite</h3>
 <p>In the routine <asmvar>NameFile_EraseSave</asmvar>, two instructions are swapped around.</p>
+
 <p>The JP1.0 and REV1 code goes like this:</p>
-<div class="snesasm nolabel noaddress">
-	<div></div><div>STZ.w $0B12</div><div></div>
-	<div></div><div>STZ.w $0B10</div><div></div>
-</div>
+{% include asmheader.html %}
+{% include asmline.html code="STZ.w $0B12" %}
+{% include asmline.html code="STZ.w $0B10" %}
+{% include asmfooter.html %}
 
 <p>But the US code is as such:</p>
-<div class="snesasm nolabel noaddress">
-	<div></div><div>STZ.w $0B10</div><div></div>
-	<div></div><div>STZ.w $0B12</div><div></div>
-</div>
+{% include asmheader.html %}
+{% include asmline.html code="STZ.w $0B10" %}
+{% include asmline.html code="STZ.w $0B12" %}
+{% include asmfooter.html %}
 
 <h3>Inventory check</h3>
 <p>A lot of shops have bombs, and in the third slot. REV1 optimizes this slightly by having applicable shops converge onto the same code path instead of copy/pasting.</p>
 
 <h3>Loud flutes</h3>
 <p>At the end of the screen load routine used by the flute menu, a small but beautiful optimization is made in the US version:</p>
+
 <p>It goes from this:</p>
-<div class="snesasm noaddress">
-	<div></div><div>CPX.w $0130</div><div></div>
-	<div></div><div>BNE different</div><div></div>
-	<div></div><div>LDX.b #$F3</div><div></div>
-	<div></div><div>STX.w $012C</div><div></div>
-	<div></div><div>RTL</div><div></div>
-	<div>different</div><div>STX.w $012C</div><div></div>
-	<div></div><div>RTL</div><div></div>
-</div>
+{% include asmheader.html %}
+{% include asmline.html code="CPX.w $0130" %}
+{% include asmline.html code="BNE different" %}
+{% include asmline.html code="LDX.b #$F3" %}
+{% include asmline.html code="STX.w $012C" %}
+{% include asmline.html code="RTL" %}
+{% include asmline.html label="different" addr="" code="STX.w $012C" %}
+{% include asmline.html code="RTL" %}
+{% include asmfooter.html %}
 
 <p>To this:</p>
-<div class="snesasm noaddress">
-	<div></div><div>CPX.w $0130</div><div></div>
-	<div></div><div>BNE different</div><div></div>
-	<div></div><div>LDX.b #$F3</div><div></div>
-	<div>different</div><div>STX.w $012C</div><div></div>
-	<div></div><div>RTL</div><div></div>
-</div>
+{% include asmheader.html %}
+{% include asmline.html code="CPX.w $0130" %}
+{% include asmline.html code="BNE different" %}
+{% include asmline.html code="LDX.b #$F3" %}
+{% include asmline.html label="different" addr="" code="STX.w $012C" %}
+{% include asmline.html code="RTL" %}
+{% include asmfooter.html %}
 
 <p>Wonderful!</p>
 

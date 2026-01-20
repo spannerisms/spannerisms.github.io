@@ -1,0 +1,3 @@
+<div class="asmrow {% if include.highlight -%}asmrow-highlighted{%- endif -%}">
+<div class="asmline-label">{{ include.label | default: "" }}</div><div class="asmline-address">{{ include.addr | default: "" }}</div><div class="asmline-mcode">{{ include.bytes | default: "" }}</div><div class="asmline-instr">{{ include.code | default: "" }}</div><div class="asmline-comment">{% if include.comment %}; {% endif %}{{ include.comment | default: "" }}</div>
+</div>

@@ -48,44 +48,48 @@ ogdesc: "If you collect 256 coins in a single room, you'll be awarded with extra
 <p>As previously discussed, a single routine handles the collection of all objects. Objects with IDs from <asmval>$00</asmval> through <asmval>$1D</asmval> immediately exit the routine. ID <asmval>$1E</asmval> is treated as a coin, and everything else is a honeycomb.</p>
 <p>The logic of this routine is in 3 segments: coins, honeycomb, and cleanup, in that order. Here's the routine, in full:</p>
 
-<div class="snesasm labelsep">
-	<span>HandleMoneyHoneyCollection:</span>
-	<div></div><div addr="$99FA">LDA.b $2B</div><div>Get tile ID</div>
-	<div></div><div addr="$99FC">CMP.b #$1E</div><div>Is it a coin?</div>
-	<div></div><div addr="$99FE">BCC .exit</div><div>Don't flag</div>
-	<div></div><div addr="$9A00">BNE .honeycomb</div><div>Not a coin</div>
-	<div>.coin</div><div addr="$9A02">LDA.b $29</div><div>Cache object coordinates</div>
-	<div></div><div addr="$9A04">STA.b $61</div><div></div>
-	<div></div><div addr="$9A06">LDA.b $2A</div><div></div>
-	<div></div><div addr="$9A08">STA.b $63</div><div></div>
-	<div></div><div addr="$9A0A">JSR TilemapXYtoFullCoordinates</div><div></div>
-	<div></div><div addr="$9A0D">JSR IsAbsoluteOnScreen</div><div>Is object visible on screen?</div>
-	<div></div><div addr="$9A10">BCS .no_smoke</div><div></div>
-	<div></div><div addr="$9A12">LDA.b #$02</div><div></div>
-	<div></div><div addr="$9A14">JSR SpawnSmokePuff</div><div></div>
-	<div>.no_smoke</div><div addr="$9A17">LDA.b #$10</div><div>Play SFX10</div>
-	<div></div><div addr="$9A19">STA.b $E6</div><div></div>
-	<div></div><div addr="$9A1B">LDA.b #$01</div><div>Add 1 coin</div>
-	<div></div><div addr="$9A1D">JSR AddCurrency</div><div></div>
-	<div class="highlight"></div><div addr="$9A20">INC.w $07BD</div><div>Number of coins collected</div>
-	<div class="highlight"></div><div addr="$9A23">BNE .continue</div><div>Jump over honeycomb code</div>
-	<div>.honeycomb</div><div addr="$9A25">JSR PerformCollectionJingle</div><div></div>
-	<div></div><div addr="$9A28">LDA.b $B3</div><div>Get Max HP</div>
-	<div></div><div addr="$9A2A">CLC</div><div></div>
-	<div></div><div addr="$9A2B">ADC.b #$08</div><div>Add 1 bar (8 health)</div>
-	<div></div><div addr="$9A2D">STA.b $B3</div><div>Save as new Max HP</div>
-	<div></div><div addr="$9A2F">STA.b $B2</div><div>Full heal</div>
-	<div>.continue</div><div addr="$9A31">JSR FlagObjectAsCollected</div><div></div>
-	<div></div><div addr="$9A34">LDA.b $2B</div><div>Get tile ID</div>
-	<div></div><div addr="$9A36">PHA</div><div>Remember it</div>
-	<div></div><div addr="$9A37">LDA.b #$00</div><div>ID for empty space</div>
-	<div></div><div addr="$9A39">STA.b $2B</div><div></div>
-	<div></div><div addr="$9A3B">JSR ChangeObjectType</div><div></div>
-	<div></div><div addr="$9A3E">JSR RedrawObject</div><div></div>
-	<div></div><div addr="$9A41">PLA</div><div>Recover tile ID</div>
-	<div></div><div addr="$9A42">STA.b $2B</div><div></div>
-	<div>.exit</div><div addr="$9A44">RTS</div><div></div>
-</div>
+
+{% include asmheader.html labels=true addresses="nes" %}
+{% include asmfunclabel.html label="HandleMoneyHoneyCollection" %}
+{% include asmline.html addr="99FA" code="LDA.b $2B" comment="Get tile ID" %}
+{% include asmline.html addr="99FC" code="CMP.b #$1E" comment="Is it a coin?" %}
+{% include asmline.html addr="99FE" code="BCC .exit" comment="Don't flag" %}
+{% include asmline.html addr="9A00" code="BNE .honeycomb" comment="Not a coin" %}
+{% include asmrowsep.html %}
+{% include asmline.html label=".coin" addr="9A02" code="LDA.b $29" comment="Cache object coordinates" %}
+{% include asmline.html addr="9A04" code="STA.b $61" %}
+{% include asmline.html addr="9A06" code="LDA.b $2A" %}
+{% include asmline.html addr="9A08" code="STA.b $63" %}
+{% include asmline.html addr="9A0A" code="JSR TilemapXYtoFullCoordinates" %}
+{% include asmline.html addr="9A0D" code="JSR IsAbsoluteOnScreen" comment="Is object visible on screen?" %}
+{% include asmline.html addr="9A10" code="BCS .no_smoke" %}
+{% include asmline.html addr="9A12" code="LDA.b #$02" %}
+{% include asmline.html addr="9A14" code="JSR SpawnSmokePuff" %}
+{% include asmline.html label=".no_smoke" addr="9A17" code="LDA.b #$10" comment="Play SFX10" %}
+{% include asmline.html addr="9A19" code="STA.b $E6" %}
+{% include asmline.html addr="9A1B" code="LDA.b #$01" comment="Add 1 coin" %}
+{% include asmline.html addr="9A1D" code="JSR AddCurrency" %}
+{% include asmline.html addr="9A20" code="INC.w $07BD" comment="Number of coins collected" highlight=true %}
+{% include asmline.html addr="9A23" code="BNE .continue" comment="Jump over honeycomb code" %}
+{% include asmrowsep.html %}
+{% include asmline.html label=".honeycomb" addr="9A25" code="JSR PerformCollectionJingle" %}
+{% include asmline.html addr="9A28" code="LDA.b $B3" comment="Get Max HP" %}
+{% include asmline.html addr="9A2A" code="CLC" %}
+{% include asmline.html addr="9A2B" code="ADC.b #$08" comment="Add 1 bar (8 health)" %}
+{% include asmline.html addr="9A2D" code="STA.b $B3" comment="Save as new Max HP" %}
+{% include asmline.html addr="9A2F" code="STA.b $B2" comment="Full heal" %}
+{% include asmrowsep.html %}
+{% include asmline.html label=".continue" addr="9A31" code="JSR FlagObjectAsCollected" %}
+{% include asmline.html addr="9A34" code="LDA.b $2B" comment="Get tile ID" %}
+{% include asmline.html addr="9A36" code="PHA" comment="Remember it" %}
+{% include asmline.html addr="9A37" code="LDA.b #$00" comment="ID for empty space" %}
+{% include asmline.html addr="9A39" code="STA.b $2B" %}
+{% include asmline.html addr="9A3B" code="JSR ChangeObjectType" %}
+{% include asmline.html addr="9A3E" code="JSR RedrawObject" %}
+{% include asmline.html addr="9A41" code="PLA" comment="Recover tile ID" %}
+{% include asmline.html addr="9A42" code="STA.b $2B" %}
+{% include asmline.html label=".exit" addr="9A44" code="RTS" %}
+{% include asmfooter.html %}
 
 <p>Our focus is the highlighted code at <addr>$9A20</addr>, which increments a counter that tracks how many coins have been collected in a room then uses the <asmop>BNE</asmop> instruction to jump to the cleanup portion of the code. This instruction looks at the last operation performed, and, if that resulted in any value other than <asmval>$00</asmval>, jumps ahead to the location specified in its operand.</p>
 

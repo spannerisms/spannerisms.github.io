@@ -55,137 +55,122 @@ code.snesasm {
 	line-height: 20px;
 }
 
-div.snesasm {
+div.asmlist {
 	counter-reset: asmline;
-	display: grid;
-	flex-direction: row;
-	flex-wrap: wrap;
-	columns: 5;
 	font-family: 'Roboto Mono', consolas, monospace;
-	font-size: .85em;
+	font-size: .75em;
 	line-height: 1.3em;
 	background: #F8F8FF;
 	position: relative;
-}
 
-div.snesasm:not(.nolabel) {
-	grid-template-columns: 22% 33% auto;
-}
+	&:not(.asmlist-haslabels) > div > .asmline-label {
+		opacity: 0;
+		width: 5em;
+	}
 
-div.snesasm.nolabel {
-	grid-template-columns: 10% 40% auto;
-}
+	&:not(.asmlist-hasaddresses) > div > .asmline-address {
+		display: none;
+	}
 
-div.snesasm > div {
-	display: inline-block;
-	overflow-x: visible;
-	white-space: nowrap;
-	background: inherit;
-}
+	&.asmlist-hasaddresses {
+		&.asmlist-sfccode > div > .asmline-address {
+			width: 3.6em;
+		}
 
-div.snesasm > span {
-	grid-column-start: span 3;
-	display: inline-block;
-	min-height: 1em;
-	text-indent: 10px;
-	background:#E8E8F8;
-}
+		&.asmlist-nescode > div > .asmline-address {
+			width: 2.5em;
+		}
+	
+		&:not(.asmlist-haslabels) > div > .asmline-label {
+			display: none;
+		}
+	}
 
-div.snesasm > div:nth-of-type(3n+1),
-div.snesasm > span {
-	padding-left: 5px;
-}
+	&:not(.asmlist-hasmcode) > div > .asmline-mcode {
+		display: none;
+	}
 
-div.snesasm > div:nth-of-type(3n+1) {
-	text-align: right;
-}
+	& >.asmrowsep {
+		border-bottom: 5px solid #E0E0FF;
+	}
 
-div.snesasm:not(.nolinenumbers) > div:nth-of-type(3n+1):before {
-	counter-increment: asmline;
-	content: counter(asmline);
-}
+	& > .asmrow {
+		display: block;
+		width: 100%;
+		position: relative;
 
-div.snesasm > div:nth-of-type(3n+1):before,
-div.snesasm > span:before {
-	text-align: right;
-	float: left;
-	display: block;
-	width: 3em;
-	padding-right: 5px;
-	border-right: 3px solid #5151A4;
-	background: #8181CC;
-	color: white;
-	margin: 0;
-}
+		&:nth-child(2n) {
+			background: #F0F0FF;
+		}
 
-div.snesasm > div.highlight:after {
-	content:'.';
-	display: inline-block;
-	position: absolute;
-	background: #FFFF00;
-	color: transparent;
-	z-index: 2000000;
-	opacity: .2;
-	left: 0;
-	right: 0;
-}
+		& > div {
+			display: inline-block;
+			overflow-x: visible;
+			white-space: nowrap;
+			background: inherit;
+		}
 
-div.snesasm > div.highlight:before {
-	background-color: #FFFF00;
-	border-right-color: #BBBB00;
-	color: #888800;
-}
+		&:hover:after,
+		&.asmrow-highlighted:before {
+			content:'\00A0';
+			display: inline-block;
+			position: absolute;
+			z-index: 2000000;
+			opacity: .2;
+			left: 0;
+			right: 0;
+			pointer-events: none;
+		}
 
-div.snesasm > span:before {
-	content: '.';
-	display: block;
-	color: transparent;
-}
+		&:hover:after {
+			background: #0000FF;
+		}
+	
+		&.asmrow-highlighted:before {
+			background: #FFFF00;
+		}
 
-div.snesasm:not(.noaddress) > div:nth-of-type(3n+2):before {
-	content: attr(addr);
-	margin-right: 7px;
-	display: inline-block;
-	padding: 0 3px;
-	background: #DDDDFF;
-}
+		.asmline-instr {
+			color: #0F0F0F;
+			width: 20em;
+			margin-left: 3px;
+		}
 
-div.snesasm > div:nth-of-type(3n+1):not(:empty) {
-	color: #EEEEFF;
-	background: #7777FF;
-}
+		&.asmrow-label {
+			font-weight: bold;
+			border-bottom: 1px solid;
+			padding-left: 5px;
+		}
 
-div.snesasm > div:nth-of-type(3n+1)[dasm]:after {
-	content: attr(dasm);
-	padding: 0 3px;
-	display: inline-block;
-	margin-left: 4px;
-	text-align: right;
-	background: #60608F;
-	color: #F9F9F9;
-}
+		&>.asmline-label {
+			text-align: right;
+			padding-right: 3px;
+			width: 10em;
 
-div.snesasm > div:nth-of-type(3n+1) {
-	padding-right: 5px;
-}
+			&:not(:empty) {
+				color: #EEEEFF;
+				background: #7777FF;
+			}
+		}
 
-div.snesasm > div:nth-of-type(3n+2) {
-	z-index: 20000;
-}
+		&>.asmline-address {
+			color: #5555BB;
+			background: #DDDDFF;
+			text-align: center;
+			padding: 0 3px;
+		}
 
-div.snesasm > div:nth-of-type(3n+3) {
-	color: #229922;
-}
+		&>.asmline-comment {
+			color: #229922;
+		}
 
-div.snesasm > div:nth-of-type(6n+1),
-div.snesasm > div:nth-of-type(6n+2),
-div.snesasm > div:nth-of-type(6n+3) {
-	background: #F0F0FF;
-}
-
-div.snesasm.labelsep > div:has(+div+div+div:nth-of-type(3n+1):not(:empty)):before {
-	margin-bottom: 5px;
-	height: 100%;
+		&>.asmline-mcode {
+			color: #555577;
+			background: #BEBEDD;
+			width: 7em;
+			padding-left: 4px;
+		}
+	}
 }
 
 /* tables */
@@ -281,57 +266,11 @@ span.evil {
 	text-shadow: 1px 1px 3px #FF9999;
 }
 
-[href="#bigmfloop"] {
-	display: inline-block;
-	text-transform: uppercase;
-	font-weight: 1000;
-}
-
-[href="#bigmfloop"]:hover {
-	transform: scale(1.4);
-	background: #FCFCFF;
-}
-
-#bigloop { 
-	display: none;
-}
-
-#bigloop:target { 
-	display: block;
-	font-weight: bold;
-}
-
-span.timeampm {
-	font-variant:small-caps;
-}
-
 span.poof {
 	color: #FF00FF;
 	font-weight: bold;
 	font-variant: small-caps;
 	text-transform: lowercase
-}
-
-p.damagepad {
-	padding: 0 80px 0 40px;
-}
-
-/* Linking to previous terms */
-a.term,
-a.term:visited,
-a.branch,
-a.branch:visited {
-	color: #5708c7;
-}
-
-a.term:hover,
-a.branch:hover {
-	color: #cca350;
-}
-
-li.branchpoint:target,
-span.dfnwrap:target > dfn {
-	background: linear-gradient(to bottom, transparent, 40px, #FFFF8B, 40px, #FFFF8B);
 }
 
 /* SMT stuff */

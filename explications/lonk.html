@@ -13,27 +13,29 @@ background: glitchybg
 <h2>Underworld</h2>
 <p>To understand how Lonk can trigger when entering the underworld, we need to look at a simple routine that gets run when loading the underworld:</p>
 
-<div class="snesasm">
-	<div></div><div addr="$1CFCE2">   LDA $5D</div><div>Check primary state handler</div>
-	<div></div><div addr="$1CFCE4">   CMP #$02</div><div>Is Link recoiling?</div>
-	<div></div><div addr="$1CFCE6">   BNE exit</div><div>If not, just leave</div>
-	<div></div><div addr="$1CFCE8">   LDY #$00</div><div>$00 indicates default state</div>
-	<div>butt</div><div addr="$1CFCEA">   LDA $02E0</div><div>Check graphics flag</div>
-	<div></div><div addr="$1CFCEC">   BEQ set</div><div>If human, set $5D to $00</div>
-	<div></div><div addr="$1CFCEE">   LDY #$17</div><div>$17 indicates bunny state</div>
-	<div></div><div addr="$1CFCF0">   LDA $7EF357</div><div>Check for pearl</div>
-	<div></div><div addr="$1CFCF4">   BEQ set</div><div>If no pearl, $5D to $17</div>
-	<div></div><div addr="$1CFCF6">   LDY #$1C</div><div>$1C indicates temporary bunny</div>
-	<div>set</div><div addr="$1CFCF8">   STY $5D</div><div>Set primary state handler</div>
-	<div>exit</div><div addr="$1CFCFA">   RTL</div><div></div>
-</div>
+{% include asmheader.html labels=true addresses="snes" %}
+{% include asmfunclabel.html label="CheckIfBunny" %}
+{% include asmline.html addr="1CFCE2" code="LDA $5D" comment="Check primary state handler" %}
+{% include asmline.html addr="1CFCE4" code="CMP #$02" comment="Is Link recoiling?" %}
+{% include asmline.html addr="1CFCE6" code="BNE .exit" comment="If not, just leave" %}
+{% include asmline.html addr="1CFCE8" code="LDY #$00" comment="$00 indicates default state" %}
+{% include asmline.html addr="1CFCEA" code="LDA $02E0" comment="Check graphics flag" highlight=true %}
+{% include asmline.html addr="1CFCEC" code="BEQ .set" comment="If human, set $5D to $00" %}
+{% include asmline.html addr="1CFCEE" code="LDY #$17" comment="$17 indicates bunny state" %}
+{% include asmline.html addr="1CFCF0" code="LDA $7EF357" comment="Check for pearl" %}
+{% include asmline.html addr="1CFCF4" code="BEQ .set" comment="If no pearl, $5D to $17" %}
+{% include asmline.html addr="1CFCF6" code="LDY #$1C" comment="$1C indicates temporary bunny" %}
+{% include asmline.html label=".set" addr="1CFCF8" code="STY $5D" comment="Set primary state handler" %}
+{% include asmline.html label=".exit" addr="1CFCFA" code="RTL" %}
+{% include asmfooter.html %}
 
 <p>EXCEPT I LIED!!!!</p>
-<p>You see that instruction labeled <asmfunc>butt</asmfunc>? That's what they <em>intended</em> to do, and that's what's executed in the US version, but in JP1.0, this is what actually happens:</p>
+<p>See that highlighted code? That's what they <em>intended</em> to do, and that's what's executed in the US version, but in JP1.0, this is what actually happens:</p>
 
-<div class="snesasm">
-	<div>butt</div><div addr="$1CFCEA">LDA $E0</div><div>Check the camera</div>
-</div>
+{% include asmheader.html labels=true addresses="snes" %}
+{% include asmline.html addr="1CFCEA" code="LDA $02E0" comment="Check the camera" %}
+{% include asmfooter.html %}
+
 <p>They assembled it wrong. Instead of reading the 16-bit address for Link's graphics, the addressing mode used was direct page, an 8-bit address. Their source code probably had the correct address, but a stray symbol must have caused it to discard the high byte. It just so happens that the low byte of the intended address is the address for the low byte of the BG1 horizontal scroll.</p>
 <p>By the time this check is performed, the entrance's properties have been loaded. Thus, the camera properties being looked at are for the landing point of the entrance. As long as the camera's low byte is <em>not</em> 0, then damage boosting into an entrance will put Link in Lonk state when he doesn't have the moon pearl. In practice, this means that Lonk can only be triggered if the entrance is in the middle of the room.</p>
 

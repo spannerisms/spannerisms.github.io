@@ -16,10 +16,10 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>Why does pushing a block in a door cause a double transition? When you first move, you are hitting the transition like normal. Pressing a parallel direction puts Link back in door state which then allows door transition detection code to run. This is a normal subtask that occurs as part of the camera update routine run every frame. But somaria blocks are special. Interaction with them is handled outside of all other Link code. Seriously! Look at this:</p>
 
-<div class="snesasm nolabel">
-	<div></div><div addr="$078019">JSR LinkControlHandler</div><div>All other Link code</div>
-	<div></div><div addr="$07801C">JSR HandleSomariaAndGraves</div><div><em>WOW!</em></div>
-</div>
+{% include asmheader.html addresses="snes" %}
+{% include asmline.html addr="078019" code="JSR LinkControlHandler" comment="All other Link code" %}
+{% include asmline.html addr="07801C" code="JSR HandleSomariaAndGraves" comment="WOW!" %}
+{% include asmfooter.html %}
 
 <p>That's not the cause of anything relevant to this article, though. It's just what makes the blocks special.</p>
 

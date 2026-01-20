@@ -14,21 +14,21 @@ ogdesc: "Nintendo's failed attempt at vector rotation."
 <h2>Projecting</h2>
 <p>This routine, which we'll call <asmfunc>ProjectSpeed</asmfunc>, takes 2 pairs of coordinates along with a base speed and calculates the X- and Y-speeds needed to move from one location to the other in a straight line. This can be thought of as rotating a ray, but the best way to visualize this is to imagine drawing a line segment from your starting point parallel to one axis and then inching towards your target on the other. That code looks somewhat like this:</p>
 
-<div class="snesasm noaddress">
-	<div></div><div>STZ.b $0B</div><div>Clear running total</div>
-	<div></div><div>STZ.b $00</div><div>Clear speedB</div>
-	<div></div><div>LDX.b $01</div><div>Load input speed</div>
-	<div>next</div><div>LDA.b $0B</div><div>Load running total</div>
-	<div></div><div>CLC</div><div></div>
-	<div></div><div>ADC.b $0C</div><div>Add smaller distance</div>
-	<div></div><div>CMP.b $0D</div><div>Compare to bigger distance</div>
-	<div></div><div>BCC no_overflow</div><div>Skip if less than</div>
-	<div></div><div>SBC.b $0D</div><div>total mod bigger distance</div>
-	<div></div><div>INC.b $00</div><div>Accumulate speedB</div>
-	<div>no_overflow</div><div>STA.b $0B</div><div></div>
-	<div></div><div>DEX</div><div>Iterate</div>
-	<div></div><div>BNE next</div><div></div>
-</div>
+{% include asmheader.html labels=true %}
+{% include asmline.html code="STZ.b $0B" comment="Clear running total" %}
+{% include asmline.html code="STZ.b $00" comment="Clear speedB" %}
+{% include asmline.html code="LDX.b $01" comment="Load input speed" %}
+{% include asmline.html label=".next" code="LDA.b $0B" comment="Load running total" %}
+{% include asmline.html code="CLC" %}
+{% include asmline.html code="ADC.b $0C" comment="Add smaller distance" %}
+{% include asmline.html code="CMP.b $0D" comment="Compare to bigger distance" %}
+{% include asmline.html code="BCC .no_overflow" comment="Skip if less than" %}
+{% include asmline.html code="SBC.b $0D" comment="total mod bigger distance" %}
+{% include asmline.html code="INC.b $00" comment="Accumulate speedB" %}
+{% include asmline.html label=".no_overflow" code="STA.b $0B" %}
+{% include asmline.html code="DEX" comment="Iterate" %}
+{% include asmline.html code="BNE .next" %}
+{% include asmfooter.html %}
 
 <p>This disassembly removes all the overhead of transforming coordinates into distances, sorting those distances, etc., and just focuses on the meat of the algorithm. One of the speeds (that of the axis with the larger displacement) will be given the input speed while the other axis will be given the accumulated speed calculated with this loop.</p>
 <p>There are several problems with this algorithm, the most glaring being how one axis is fixed to the input speed. Rather than rotating a line, this is more like pulling and stretching it. The fixed component results in a floor for the <span class="disgusting">gross</span> speed that is irrespective of angle. This means the calculation is only correct when one of the distances is 0, with the error increasing proportionally to the smaller displacement. In the worst case scenario&mdash;when the displacement on each axis is equal&mdash;the error is as bad as 41%{% include footnote.html content="When the displacements are equal, the speeds will be too. That gives a calculated:ideal ratio of &radic;2:1, or 141.4%." %}.</p>
@@ -66,21 +66,21 @@ ogdesc: "Nintendo's failed attempt at vector rotation."
 <p>On a less powerful system, such as the NES, this would actually be a pretty cute algorithm. It cleverly combines multiplication and division into a single loop, where normally each would need its own. But as soon as you have the ability to multiply and divide without a manual loop, this method is terrible.</p>
 <p>While the SNES doesn't have any instructions for these operations, it does have dedicated hardware registers. CPU multiplication works with an 8-bit multiplicand and an 8-bit multiplier; and division works with a 16-bit dividend and 8-bit divisor. Below is an example implementation of <asmfunc>ProjectSpeed</asmfunc> using the arithmetic registers:</p>
 
-<div class="snesasm noaddress">
-	<div></div><div>LDA.b $01</div><div>Get input speed</div>
-	<div></div><div>STA.w $4202</div><div>Multiplicand</div>
-	<div></div><div>LDA.b $0C</div><div>Smaller distance</div>
-	<div></div><div>STA.w $4203</div><div>Multiplier</div>
-	<div></div><div>REP #$20</div><div>16-bit mode</div>
-	<div></div><div>LDX.b $0D</div><div>Larger distance</div>
-	<div></div><div>LDA.w $4216</div><div>Get smaller * speed</div>
-	<div></div><div>STA.w $4204</div><div>Dividend</div>
-	<div></div><div>STX.w $4206</div><div>Divisor</div>
-	<div></div><div>ORA (1,S),Y</div><div>Waste time for division</div>
-	<div></div><div>NOP</div><div>Waste time for division</div>
-	<div></div><div>SEP #$20</div><div>8-bit mode</div>
-	<div></div><div>LDA.w $4214</div><div>Read quotient</div>
-</div>
+{% include asmheader.html labels=true %}
+{% include asmline.html code="LDA.b $01" comment="Get input speed" %}
+{% include asmline.html code="STA.w $4202" comment="Multiplicand" %}
+{% include asmline.html code="LDA.b $0C" comment="Smaller distance" %}
+{% include asmline.html code="STA.w $4203" comment="Multiplier" %}
+{% include asmline.html code="REP #$20" comment="16-bit mode" %}
+{% include asmline.html code="LDX.b $0D" comment="Larger distance" %}
+{% include asmline.html code="LDA.w $4216" comment="Get smaller * speed" %}
+{% include asmline.html code="STA.w $4204" comment="Dividend" %}
+{% include asmline.html code="STX.w $4206" comment="Divisor" %}
+{% include asmline.html code="ORA (1,S),Y" comment="Waste time for division" %}
+{% include asmline.html code="NOP" comment="Waste time for division" %}
+{% include asmline.html code="SEP #$20" comment="8-bit mode" %}
+{% include asmline.html code="LDA.w $4214" comment="Read quotient" %}
+{% include asmfooter.html %}
 
 <p>The only downside to these registers is that they take some time to perform a calculation&mdash;8 cycles for multiplication and 16 for division. In the code above, the wait time for multiplication isn't even a bottleneck, as we have a little bit of prep work before we read the result. The division does require waiting though.</p>
 <p>But even with the wait time, this is still loads faster than the original implementation. The vanilla code requires 23 cycles per loop iteration, or 29 if the <asmfunc>no_overflow</asmfunc> branch is not taken, plus 9 cycles overhead. At 51 cycles, the CPU registers implementation only requires an input speed of 2 before it outperforms the loop{% include footnote.html content="If we want an apples-to-apples comparison, we need to take CPU access speeds into account. Start with 6 master cycles per CPU cycle then add 2 cycles for each time that ROM or WRAM is accessed. For the vanilla code, that's 176/224 master cycles with 66 master cycles of overhead (72 master cycles for the init code minus 6 master cycles for the final BNE not taking the branch). The CPU registers are fast access, so we don't need to add 2 cycles for those. Doing the same calculation, we get 378 master cycles for the arithmetic implementation." %}. Generally, this routine is called with an input speed of at least 16.</p>
@@ -90,22 +90,22 @@ ogdesc: "Nintendo's failed attempt at vector rotation."
 <h3>Still bad</h3>
 <p>Let's say, for whatever reason, we can't use the CPU arithmetic registers, or we just don't have any. The vanilla code is <em>still</em> inefficient. Compare the snippet below to the original disassembly:</p>
 
-<div class="snesasm noaddress">
-	<div></div><div>LDA.b #$00</div><div>Running total</div>
-	<div></div><div>LDY.b #$00</div><div>SpeedB</div>
-	<div></div><div>LDX.b $01</div><div>Load input speed</div>
-	<div></div><div>CLC</div><div>Clear carry once</div>
-	<div>next</div><div>ADC.b $0C</div><div>Add smaller distance</div>
-	<div></div><div>CMP.b $0D</div><div>Compare to bigger distance</div>
-	<div></div><div>BCC no_overflow</div><div></div>
-	<div></div><div>SBC.b $0D</div><div>total mod biggerDistance</div>
-	<div></div><div>INY</div><div>Accumulate speedB</div>
-	<div></div><div>CLC</div><div></div>
-	<div>no_overflow</div><div>DEX</div><div></div>
-	<div></div><div>BNE next</div><div></div>
-</div>
+{% include asmheader.html labels=true %}
+{% include asmline.html code="LDA.b #$00" comment="Running total" %}
+{% include asmline.html code="LDY.b #$00" comment="SpeedB" %}
+{% include asmline.html code="LDX.b $01" comment="Load input speed" %}
+{% include asmline.html code="CLC" comment="Clear carry once" %}
+{% include asmline.html label=".next" code="ADC.b $0C" comment="Add smaller distance" %}
+{% include asmline.html code="CMP.b $0D" comment="Compare to bigger distance" %}
+{% include asmline.html code="BCC .no_overflow" %}
+{% include asmline.html code="SBC.b $0D" comment="total mod biggerDistance" %}
+{% include asmline.html code="INY" comment="Accumulate speedB" %}
+{% include asmline.html code="CLC" %}
+{% include asmline.html label=".no_overflow" code="DEX" %}
+{% include asmline.html code="BNE .next" %}
+{% include asmfooter.html %}
 
-<p>This rewrite makes several changes to vastly improve the speed from 23/29 to 14/20 cycles per loop, with the numbers in each pair being the number of cycles for whether the <code class="lable">no_overflow</code> branch was or wasn't taken, respectively.</p>
+<p>This rewrite makes several changes to vastly improve the speed from 23/29 to 14/20 cycles per loop, with the numbers in each pair being the number of cycles for whether the <asmfunc>no_overflow</asmfunc> branch was or wasn't taken, respectively.</p>
 <ul>
 	<li>The A register doesn't need to read and write its value into memory each time. Nothing is clobbering it at any point.</li>
 	<li>Incrementing memory directly is slower than incrementing Y. The original code uses this register to hold the state of something else, but that's easily worked around, and doing so is worth it for the speed gain within the loop.</li>

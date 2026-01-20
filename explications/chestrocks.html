@@ -3,7 +3,7 @@ permalink: /chestrocks/
 layout: default
 title: "Some Overworld Rocks Are Chests Explication"
 background: mechanicsbg
-ogdesc: "Seriously! There are chests on the overworld! It's just that they're ephemeral and cannot be opened."
+ogdesc: "Seriously! There are rocks that act like chests on the overworld! It's just that this behavior is ephemeral and they cannot be opened."
 ---
 
 <h1>Some Overworld Rocks Are Chests</h1>
@@ -32,28 +32,28 @@ ogdesc: "Seriously! There are chests on the overworld! It's just that they're ep
 
 <p>First, any interaction that manipulates the overworld, such as cutting bushes or grass, hammering a peg, or bonking a pile of rocks, has a map16 object ID hardcoded into the test logic. For example, the code below is how the shovel checks for diggability:</p>
 
-<div class="snesasm nolabel">
-	<div></div><div addr="$1BBDF4">CMP.w #$0034</div><div></div>
-	<div></div><div addr="$1BBDF7">BEQ diggable</div><div></div>
-	<div></div><div addr="$1BBDF9">CMP.w #$0071</div><div></div>
-	<div></div><div addr="$1BBDFC">BEQ diggable</div><div></div>
-	<div></div><div addr="$1BBDFE">CMP.w #$0035</div><div></div>
-	<div></div><div addr="$1BBE01">BEQ diggable</div><div></div>
-	<div></div><div addr="$1BBE03">CMP.w #$010D</div><div></div>
-	<div></div><div addr="$1BBE06">BEQ diggable</div><div></div>
-	<div></div><div addr="$1BBE08">CMP.w #$010F</div><div></div>
-	<div></div><div addr="$1BBE0B">BEQ diggable</div><div></div>
-	<div></div><div addr="$1BBE0D">CMP.w #$00E1</div><div></div>
-	<div></div><div addr="$1BBE10">BEQ diggable</div><div></div>
-	<div></div><div addr="$1BBE12">CMP.w #$00E2</div><div></div>
-	<div></div><div addr="$1BBE15">BEQ diggable</div><div></div>
-	<div></div><div addr="$1BBE17">CMP.w #$00DA</div><div></div>
-	<div></div><div addr="$1BBE1A">BEQ diggable</div><div></div>
-	<div></div><div addr="$1BBE1C">CMP.w #$00F8</div><div></div>
-	<div></div><div addr="$1BBE1F">BEQ diggable</div><div></div>
-	<div></div><div addr="$1BBE21">CMP.w #$010E</div><div></div>
-	<div></div><div addr="$1BBE24">BEQ diggable</div><div></div>
-</div>
+{% include asmheader.html addresses="snes" %}
+{% include asmline.html addr="1BBDF4" code="CMP.w #$0034" comment="Grass" %}
+{% include asmline.html addr="1BBDF7" code="BEQ .diggable" %}
+{% include asmline.html addr="1BBDF9" code="CMP.w #$0071" comment="Grass with tufts ▀" %}
+{% include asmline.html addr="1BBDFC" code="BEQ .diggable" %}
+{% include asmline.html addr="1BBDFE" code="CMP.w #$0035" comment="Grass with tufts ▄" %}
+{% include asmline.html addr="1BBE01" code="BEQ .diggable" %}
+{% include asmline.html addr="1BBE03" code="CMP.w #$010D" comment="Grass with tufts ▟" %}
+{% include asmline.html addr="1BBE06" code="BEQ .diggable" %}
+{% include asmline.html addr="1BBE08" code="CMP.w #$010F" comment="Grass with tufts ▙" %}
+{% include asmline.html addr="1BBE0B" code="BEQ .diggable" %}
+{% include asmline.html addr="1BBE0D" code="CMP.w #$00E1" comment="Grass with tufts ▞ and flowers ▚" %}
+{% include asmline.html addr="1BBE10" code="BEQ .diggable" %}
+{% include asmline.html addr="1BBE12" code="CMP.w #$00E2" comment="Grass with tufts ▄ and flower ▘" %}
+{% include asmline.html addr="1BBE15" code="BEQ .diggable" %}
+{% include asmline.html addr="1BBE17" code="CMP.w #$00DA" comment="Grass with tufts █" %}
+{% include asmline.html addr="1BBE1A" code="BEQ .diggable" %}
+{% include asmline.html addr="1BBE1C" code="CMP.w #$00F8" comment="Grass with tufts ▜" %}
+{% include asmline.html addr="1BBE1F" code="BEQ .diggable" %}
+{% include asmline.html addr="1BBE21" code="CMP.w #$010E" comment="Grass with tufts ▛" %}
+{% include asmline.html addr="1BBE24" code="BEQ .diggable" %}
+{% include asmfooter.html %}
 
 <p>The next exception is entrances, where tables at <addr>$1BB8BF</addr> list all the map16 objects that can be used as a valid entrance tile. Without them, entrances cannot even be used. Additionally, the closed door objects that can be opened by touching them are hardcoded as map16 object IDs in the entrance logic routine; although, maybe that falls under the previous category.</p>
 
