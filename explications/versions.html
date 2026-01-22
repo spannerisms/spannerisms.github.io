@@ -547,7 +547,7 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 <p>At the end of the screen load routine used by the flute menu, a small but beautiful optimization is made in the US version:</p>
 
 <p>It goes from this:</p>
-{% include asmheader.html %}
+{% include asmheader.html labels=true %}
 {% include asmline.html code="CPX.w $0130" %}
 {% include asmline.html code="BNE different" %}
 {% include asmline.html code="LDX.b #$F3" %}
@@ -558,7 +558,7 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 {% include asmfooter.html %}
 
 <p>To this:</p>
-{% include asmheader.html %}
+{% include asmheader.html labels=true %}
 {% include asmline.html code="CPX.w $0130" %}
 {% include asmline.html code="BNE different" %}
 {% include asmline.html code="LDX.b #$F3" %}
@@ -570,7 +570,7 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 
 <h3>Location location location</h3>
 <p>A lot of code and data had to be juggled to make room for changes, especially in the US version. Any small code shift propagated through the rest of the bank, but there were also larger blocks of code moved to make way for bigger additions.</p>
-<p>Banks 03 and 04 did a bit of code trading in both updates. In the US version, some intro code was moved from bank 0C to 02, and various routines were relocated from banks 0F, 0A, and 1C. A significant chunk of bomb draw code is moved out of bank 08 into bank 0F, and the overworld overlays are moved from bank 07 to 0E.</p>
+<p>Banks 03 and 04 did a bit of code trading in both updates. In the US version, some intro code was moved from bank 0C to 02, and various routines were relocated from banks 0F, 0A, and 1C. Some of the bomb draw code is moved out of bank 08 into bank 0F, and the overworld overlays are moved from bank 07 to 0E.</p>
 <p>Documenting every single one of these isn't too interesting&mdash;it's less than trivia; but it is interesting to know that, on the whole, quite a bit was moved around to squeeze everything in.</p>
 
 <h2>And finally&hellip;</h2>

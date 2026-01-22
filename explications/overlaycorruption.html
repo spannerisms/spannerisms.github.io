@@ -116,4 +116,3 @@ background: glitchybg
 <p>"VRAM corruption" is both real and wrong. Very nasty corruption can occur, but the persistent and unfixable garbling is caused by garbage writes to registers that tell the video chip where to find character data. These pointers are only written when the game boots up, so they stay broken until a hard reset. Most of the actual corruption in video memory is cleaned up during large graphics changes such as transitions.</p>
 <p>Hardlocks that aren't technically crashes occur when CPU control registers are written to with garbage. If corruption reaches that far, it's guaranteed to cause problems.</p>
 <p>Some older consoles have problems with crashing in general because of a hardware glitch that occurs when DMA and HDMA are running at the same time. These crashes can occur even in cases where a later console would remain stable.</p>
-

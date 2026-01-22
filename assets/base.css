@@ -28,7 +28,7 @@ div.content > div.widecontent {
 	box-shadow: 3px 3px 4px black;
 	border: 1px solid black;
 	border-radius: 20px;
-	margin: inherit auto;
+	margin: auto;
 }
 
 div.content > div.contentstuff {
@@ -403,6 +403,12 @@ div.content {
 	image-rendering: pixelated;
 }
 
+.milonsbg {
+	background-image: url('/assets/bg/milons.png');
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+}
+
 div.hackTitle {
 	width: 100%;
 	height: 300px;
@@ -533,59 +539,6 @@ div.metaLinks a {
 	font-size: 85%;
 	padding: 3px 5px;
 }
-
-.glitchclasslist > li.hassublist {
-	position: relative;
-}
-
-.glitchclasslist > li.hassublist ul {
-	height: auto;
-	max-height: 0px;
-	transition: max-height 1s linear;
-	overflow-y: hidden;
-	position: absolute;
-	background: #FFF;
-	box-shadow: 1px 1px 2px;
-	z-index: 1000;
-	padding: 0 20px 0 40px;
-}
-
-.glitchclasslist > li.hassublist:after {
-	content: ' ';
-	height: 0px;
-	border: 5px solid transparent;
-	border-top-color: black;
-	display: inline-block;
-	vertical-align: text-bottom;
-}
-
-.glitchclasslist > li.hassublist:hover::after {
-	border-top-color: transparent;
-	border-bottom-color: blue;
-}
-
-.glitchclasslist >li.hassublist:hover ul {
-	display: block;
-	overflow-y: hidden;
-	max-height: 200px;
-	height: auto;
-	transition: max-height 1s linear;
-}
-
-/*
-
-.dossier {
-	font-family: Courier Prime;
-	color: #303030;
-	filter: grayscale(30%);
-}
-
-.dossier .contentstuff {
-	border-radius: 0px;
-	background-image: repeating-linear-gradient(40deg, #F8F8F8 5%, #FFFFFF 40%, #F8F8F8 57%);
-}
-
-*/
 
 button.footnote-tag {
 	vertical-align: super;
