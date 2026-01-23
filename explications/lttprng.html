@@ -12,7 +12,7 @@ ogdesc: "No, it cannot be manipulated."
 <p>Obviously, computers have only gotten better over the years. As has our knowledge of and ability to create increasingly convincing PRNG. But that's not what we're here to discuss. Let's go back to the '90s and see what sort of stuff they had.</p>
 
 <h2>Algorithms</h2>
-<p>The Super Nintendo did not have any sort of built-in random number generator; such routines were left to the game developers. Nor was there any standard. This meant the method varied between developers, and even games. <a class="youtube" href="https://www.youtube.com/watch?v=q15yNrJHOak">Retro Game Mechanics Explained</a> goes into great detail about the function used in <i class="gameName">Super Mario World</i>. If you pay any bit of attention to the video, you'll learn that the output is, unsurprisingly, 100% predictable.</p>
+<p>The Super Nintendo did not have any sort of built-in random number generator{% include footnote.html content="Okay, actually, it has one for noise generation on the SPC, but its value is not exposed, so it can't be read directly, especially not by the main CPU." %}; such routines were left to the game developers. Nor was there any standard. This meant the method varied between developers, and even games. <a class="youtube" href="https://www.youtube.com/watch?v=q15yNrJHOak">Retro Game Mechanics Explained</a> goes into great detail about the function used in <i class="gameName">Super Mario World</i>. If you pay any bit of attention to the video, you'll learn that the output is, unsurprisingly, 100% predictable.</p>
 
 <h2>The short straw we got</h2>
 <p>Here's the PRNG routine used in <i class="gameName">A Link to the Past</i> in its full, uncensored glory:</p>

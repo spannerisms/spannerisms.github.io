@@ -111,7 +111,7 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 {% include asmline.html addr="000709" code="????" %}
 {% include asmfooter.html %}
 
-<p>This entry points to a location in WRAM. The addresses containing the opcode is unused, resulting in a <asmop>BRK</asmop>, but it is followed by overworld screen properters, resulting in unpredictable code.</p>
+<p>This entry points to a location in WRAM. The addresses containing the opcode is unused, resulting in a <asmop>BRK</asmop>, but it is followed by overworld screen properties, resulting in unpredictable code.</p>
 
 <h3 id="IAx50">IAx50</h3>
 {% include asmheader.html labels=true addresses="snes" %}
@@ -153,7 +153,7 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 {% include asmheader.html labels=true addresses="snes" mcode=true %}
 {% include asmline.html label="IAx54_entry" addr="088383" code="EOR ($88)" bytes="52 88" %}
 {% include asmline.html addr="088385" code="ORA $FC8D,Y" comment="Y=$A6 so [$08FD33]:$C4" bytes="19 8D FC" %}
-{% include asmline.html addr="088388" code="BCC &minus;24" comment="Carry will be cleared" bytes="90 E8" %}
+{% include asmline.html addr="088388" code="BCC $E8" comment="Carry will be cleared" bytes="90 E8" %}
 {% include asmline.html addr="088366" code="LDY $0C86,X" comment="We've been here before" bytes="BC 68 0C" %}
 {% include asmfooter.html %}
 
@@ -368,7 +368,7 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 {% include asmline.html label="IAx66_entry" addr="08A086" code="RTS" bytes="60" %}
 {% include asmfooter.html %}
 
-<p>This entry points to a location in ROM, specifically part of the door debris draw routine's data table. It just so happens to land on the value <asmval>$60</asmval>, which is the opcode <asmop>RTS</asmop>, causing the ancilla's routine to exit immediately.</p>
+<p>This entry points to a location in ROM, specifically part of the door debris draw routine's data table. It just so happens to land on the value <asmval>$60</asmval>, which is the opcode for <asmop>RTS</asmop>, causing the ancilla's routine to exit immediately.</p>
 
 <h3 id="IAx67">IAx67</h3>
 {% include asmheader.html labels=true addresses="snes" mcode=true %}
@@ -568,7 +568,7 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 {% include asmline.html addr="00BA9E" code="ORA ($8D,X)" bytes="01 8D" %}
 {% include asmline.html addr="00BAA0" code="ORA ($4D,X)" bytes="01 4D" %}
 {% include asmline.html addr="00BAA2" code="ORA ($CD,X)" bytes="01 CD" %}
-{% include asmline.html addr="00BAA4" code="BNE +25" bytes="D0 19" %}
+{% include asmline.html addr="00BAA4" code="BNE $19" bytes="D0 19" %}
 {% include asmfooter.html %}
 
 <p>This entry points to a location in ROM, specifically part of the magic powder draw routine's table. After doing a bunch of subtraction, a <asmop>BRK</asmop> is hit and execution resumes in the middle of a large data table. Given the onslaught of indirect addressing, results are fully unpredictable. A number of branch instructions can potentially occur, but overall almost all outcomes will be a crash.</p>
@@ -585,14 +585,14 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 {% include asmline.html label="IAx6E_entry" addr="0804F0" code="????" %}
 {% include asmfooter.html %}
 
-<p>This entry points to a location in WRAM, specifically the torch timer array. Unlike <a href="IAx52">IAx52</a>, this points to the beginning of the array, which is actually used in practice. Unfortunately, this still results in unpredictable code or a <asmop>BRK</asmop>.</p>
+<p>This entry points to a location in WRAM, specifically the torch timer array. Unlike <a href="#IAx52">IAx52</a>, this points to the beginning of the array, which is actually used in practice. Unfortunately, this still results in unpredictable code or a <asmop>BRK</asmop>.</p>
 
 <h3 id="IAx6F">IAx6F</h3>
 {% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx6F_entry" addr="0830A9" code="BMI $30DB" bytes="30 30" %}
-{% include asmline.html label="IAx6F_entry" addr="0830AB" code="BMI $30DF" bytes="30 30" %}
-{% include asmline.html label="IAx6F_entry" addr="0830AD" code="BMI $30E1" bytes="30 30" %}
-{% include asmline.html label="IAx6F_entry" addr="0830AF" code="BMI $30E3" bytes="30 30" %}
+{% include asmline.html label="IAx6F_entry" addr="0830A9" code="BMI $30" bytes="30 30" %}
+{% include asmline.html label="IAx6F_entry" addr="0830AB" code="BMI $30" bytes="30 30" %}
+{% include asmline.html label="IAx6F_entry" addr="0830AD" code="BMI $30" bytes="30 30" %}
+{% include asmline.html label="IAx6F_entry" addr="0830AF" code="BMI $30" bytes="30 30" %}
 {% include asmfooter.html %}
 
 <p>This entry points to a location in open bus. It will constantly not branch on negatives until it reaches CPU registers. Afterwards, the results are fully unpredictable.</p>
@@ -612,13 +612,13 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 <p>This entry points to a location in WRAM, specifically part of the arbitrary DMA buffer. The results are fully unpredictable.</p>
 
 <h3 id="IAx72">IAx72</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
+{% include asmheader.html labels=true addresses="snes" %}
 {% include asmline.html addr="08B3A4" code="PHX" comment="Code before entry for reference" %}
 {% include asmline.html addr="08B3A5" code="LDA $7F5810,X" %}
 {% include asmline.html addr="08B3A9" code="CMP #$0D" %}
-{% include asmline.html addr="08B3AB" code="BEQ +118" comment="Does not align with below" %}
+{% include asmline.html addr="08B3AB" code="BEQ $76" comment="Does not align with below" %}
 {% include asmrowsep.html %}
-{% include asmline.html label="IAx72_entry" addr="08B3AC" code="ROR $0A,X" bytes="76 0A" %}
+{% include asmline.html label="IAx72_entry" addr="08B3AC" code="ROR $0A,X" %}
 {% include asmline.html addr="08B3AE" code="CLC" %}
 {% include asmline.html addr="08B3AF" code="ADC $7F5810,X" %}
 {% include asmline.html addr="08B3B3" code="CLC" %}
@@ -720,7 +720,7 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 {% include asmline.html label="IAx7C_entry" addr="080480" code="????" %}
 {% include asmfooter.html %}
 
-<p>This entry points to a location in WRAM, specifically the an array that counts the number spiral staircases. The results are fully unpredictable.</p>
+<p>This entry points to a location in WRAM, specifically a variable that counts spiral staircases. The results are fully unpredictable.</p>
 
 <h3 id="IAx7D">IAx7D</h3>
 {% include asmheader.html labels=true addresses="snes" mcode=true %}
@@ -741,7 +741,7 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 {% include asmline.html label="IAx7F_entry" addr="0800A0" code="????" %}
 {% include asmfooter.html %}
 
-<p>This entry points to a location in WRAM, specifically the current underworld room ID. The top byte located in <addr>$A1</addr> an only ever contain <asmval>$00</asmval> or <asmval>$01</asmval>. These results are fully unpredictable, though being in room <asmval>$60</asmval> can return safely.</p>
+<p>This entry points to a location in WRAM, specifically the current underworld room ID. The high byte located in <addr>$A1</addr> can only ever contain <asmval>$00</asmval> or <asmval>$01</asmval>. These results are fully unpredictable, though being in room <asmval>$60</asmval> can return safely.</p>
 
 <h3 id="IAx80">IAx80</h3>
 {% include asmheader.html labels=true addresses="snes" %}

@@ -15,17 +15,17 @@ background: glitchybg
 
 {% include asmheader.html labels=true addresses="snes" %}
 {% include asmfunclabel.html label="CheckIfBunny" %}
-{% include asmline.html addr="1CFCE2" code="LDA $5D" comment="Check primary state handler" %}
-{% include asmline.html addr="1CFCE4" code="CMP #$02" comment="Is Link recoiling?" %}
+{% include asmline.html addr="1CFCE2" code="LDA.b $5D" comment="Check primary state handler" %}
+{% include asmline.html addr="1CFCE4" code="CMP.b #$02" comment="Is Link recoiling?" %}
 {% include asmline.html addr="1CFCE6" code="BNE .exit" comment="If not, just leave" %}
-{% include asmline.html addr="1CFCE8" code="LDY #$00" comment="$00 indicates default state" %}
-{% include asmline.html addr="1CFCEA" code="LDA $02E0" comment="Check graphics flag" highlight=true %}
+{% include asmline.html addr="1CFCE8" code="LDY.b #$00" comment="$00 indicates default state" %}
+{% include asmline.html addr="1CFCEA" code="LDA,w $02E0" comment="Check graphics flag" highlight=true %}
 {% include asmline.html addr="1CFCEC" code="BEQ .set" comment="If human, set $5D to $00" %}
-{% include asmline.html addr="1CFCEE" code="LDY #$17" comment="$17 indicates bunny state" %}
-{% include asmline.html addr="1CFCF0" code="LDA $7EF357" comment="Check for pearl" %}
+{% include asmline.html addr="1CFCEE" code="LDY.b #$17" comment="$17 indicates bunny state" %}
+{% include asmline.html addr="1CFCF0" code="LDA.l $7EF357" comment="Check for pearl" %}
 {% include asmline.html addr="1CFCF4" code="BEQ .set" comment="If no pearl, $5D to $17" %}
-{% include asmline.html addr="1CFCF6" code="LDY #$1C" comment="$1C indicates temporary bunny" %}
-{% include asmline.html label=".set" addr="1CFCF8" code="STY $5D" comment="Set primary state handler" %}
+{% include asmline.html addr="1CFCF6" code="LDY.b #$1C" comment="$1C indicates temporary bunny" %}
+{% include asmline.html label=".set" addr="1CFCF8" code="STY.b $5D" comment="Set primary state handler" %}
 {% include asmline.html label=".exit" addr="1CFCFA" code="RTL" %}
 {% include asmfooter.html %}
 
@@ -33,7 +33,7 @@ background: glitchybg
 <p>See that highlighted code? That's what they <em>intended</em> to do, and that's what's executed in the US version, but in JP1.0, this is what actually happens:</p>
 
 {% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html addr="1CFCEA" code="LDA $02E0" comment="Check the camera" %}
+{% include asmline.html addr="1CFCEA" code="LDA.b $02E0" comment="Check the camera" %}
 {% include asmfooter.html %}
 
 <p>They assembled it wrong. Instead of reading the 16-bit address for Link's graphics, the addressing mode used was direct page, an 8-bit address. Their source code probably had the correct address, but a stray symbol must have caused it to discard the high byte. It just so happens that the low byte of the intended address is the address for the low byte of the BG1 horizontal scroll.</p>
