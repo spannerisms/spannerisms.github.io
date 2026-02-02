@@ -16,10 +16,10 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>Why does pushing a block in a door cause a double transition? When you first move, you are hitting the transition like normal. Pressing a parallel direction puts Link back in door state which then allows door transition detection code to run. This is a normal subtask that occurs as part of the camera update routine run every frame. But somaria blocks are special. Interaction with them is handled outside of all other Link code. Seriously! Look at this:</p>
 
-{% include asmheader.html addresses="snes" %}
-{% include asmline.html addr="078019" code="JSR LinkControlHandler" comment="All other Link code" %}
-{% include asmline.html addr="07801C" code="JSR HandleSomariaAndGraves" comment="WOW!" %}
-{% include asmfooter.html %}
+{% include asmheader addresses="snes" %}
+{% include asmline addr="078019" code="JSR LinkControlHandler" comment="All other Link code" %}
+{% include asmline addr="07801C" code="JSR HandleSomariaAndGraves" comment="WOW!" %}
+{% include asmfooter %}
 
 <p>That's not the cause of anything relevant to this article, though. It's just what makes the blocks special.</p>
 
@@ -27,7 +27,7 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <h2>Doors 101</h2>
 
-<p>But why are west somarias special?{% include footnote.html content="Answer: Because I love them." %} Every other STC direction enters submodule <asmval>$03</asmval>, because they are double-hitting their transitions&mdash;an intraroom followed by an interroom, or vice versa. WEST SOMARIAS are unique in that they hit a west transition followed by an east transition. Both of these are considered an interroom transition; each double increments <asmvar>SUBMODE</asmvar>, putting it at <asmval>$04</asmval>. Less cool west somarias work the same way, but they're doing a double intraroom transition, resulting in submodule 2.</p>
+<p>But why are west somarias special?{% include footnote content="Answer: Because I love them." %} Every other STC direction enters submodule <asmval>$03</asmval>, because they are double-hitting their transitions&mdash;an intraroom followed by an interroom, or vice versa. WEST SOMARIAS are unique in that they hit a west transition followed by an east transition. Both of these are considered an interroom transition; each double increments <asmvar>SUBMODE</asmvar>, putting it at <asmval>$04</asmval>. Less cool west somarias work the same way, but they're doing a double intraroom transition, resulting in submodule 2.</p>
 
 <p>The reason for this difference in behavior boils down to the parameters used for detecting transitions. Each direction has its own range of coordinates where transitions can be triggered, but the logic for them is otherwise identical.</p>
 
@@ -47,7 +47,7 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>Basically, the first transition is calculated normally while the second transition is done with the positions more or less swapped. This flip-flopping explains a lot about west somarias. It's why they have a stable camera. It's why they don't change the room ID. And it's why Link pops backwards after pushing the block.</p>
 
-<p>This is a very precise glitch. When the somaria block is pushed, only 2 positions can effect a west somaria. Luckily, one of these positions happens to be exactly where Link lands during setup. If Link were on, say, an X-coordinate ending in <asmval>$06</asmval> after setup, then there would be no west somaria{% include footnote.html content="The mere thought of this has brought me to tears." %}. The normal transition would trigger correctly, but the abort movement transition would calculate 0 for <asmvar>DIFFXH</asmvar>. No second transition would occur.</p>
+<p>This is a very precise glitch. When the somaria block is pushed, only 2 positions can effect a west somaria. Luckily, one of these positions happens to be exactly where Link lands during setup. If Link were on, say, an X-coordinate ending in <asmval>$06</asmval> after setup, then there would be no west somaria{% include footnote content="The mere thought of this has brought me to tears." %}. The normal transition would trigger correctly, but the abort movement transition would calculate 0 for <asmvar>DIFFXH</asmvar>. No second transition would occur.</p>
 
 <p>So why are east somarias not experiencing the same thing? Well, that's because these transitions occur much sooner. Link's coordinates are defined as the top left of his existence, so anything checking to the right of him on screen needs to account for his width. East transitions are triggered from X-coordinates ending in <asmval>$EB</asmval> to <asmval>$EE</asmval>. Link will still be adjusted 8 pixels forwards, but, importantly, this adjustment does not push him into the next quadrant. Thus, the calculations by both the normal transition and the abort movement transition result in a positive <asmvar>DIFFXH</asmvar>.</p>
 
@@ -82,7 +82,7 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>The shutter door opening routine also uses <asmvar>DOORPOS</asmvar>, but as a loop counter. It ends up setting it to a value of <asmval>$0016</asmval>. Shutter doors are looked for on every intraroom transition, also resulting in this value.</p>
 
-<p>Almost invariably, <asmval>$0016</asmval> points to a tile that behaves as solid collision. In fact, only three rooms <em>don't</em> have solid collision there: Desert Palace lobby, Eastern Palace fairies, and the Hyrule Castle Dungeon catwalk. Solid collision is tile type <asmval>$01</asmval>, so basically every room will&mdash;if you have <asmval>$0016</asmval> in <asmvar>DOORPOS</asmvar>&mdash;look at door index 1. Desert Palace Lobby will use door 0, its entrance; the fairies will use door 4. The castle dungeon catwalk will also use door 4, but that door doesn't exist. This room has no doors; you can't even west somaria here{% include footnote.html content="Which makes this room stupid." %}.</p>
+<p>Almost invariably, <asmval>$0016</asmval> points to a tile that behaves as solid collision. In fact, only three rooms <em>don't</em> have solid collision there: Desert Palace lobby, Eastern Palace fairies, and the Hyrule Castle Dungeon catwalk. Solid collision is tile type <asmval>$01</asmval>, so basically every room will&mdash;if you have <asmval>$0016</asmval> in <asmvar>DOORPOS</asmvar>&mdash;look at door index 1. Desert Palace Lobby will use door 0, its entrance; the fairies will use door 4. The castle dungeon catwalk will also use door 4, but that door doesn't exist. This room has no doors; you can't even west somaria here{% include footnote content="Which makes this room stupid." %}.</p>
 
 <p>The locations array is cleared every time a room is loaded, so if <asmvar>DOORPOS</asmvar> somehow finds an index for an invalid door, the game will determine it's a northwards door at the top-left of the room. Funnily though, there is also a list of valid exit doors in an array at <addr>$19E2</addr>, with each entry holding a tilemap location. Doors compare their location to each of these entries to determine whether or not they are an exit. At least one of these four entries will be <asmval>$0000</asmval>, because no room has more than 2 exits. Thus, this misplaced door is determined to be an exit, and it will behave as one. In a room with a real exit, said exit will be found and used; but, if there isn't one, the game just hardlocks in an infinite loop.</p>
 
@@ -102,7 +102,7 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 	<li>Any shutter animation will end with a timer of 16.</li>
 	<li>Interroom transitions will not modify the timer. Unless there are any shutters on the side of the room Link transitions on.</li>
 	<li>Intraroom transitions will end with a timer of 4. Unless there are any shutters in the room.</li>
-	<li>A shutter operation that fails to find any shutter doors to animate{% include footnote.html content="This is literally what happens for intraroom transitions; but, because Mrs. Sahasrahlah's house has an <a href=\"/unusedeffects\">accidental room effect</a> that can trigger a blank-fire shutter check, I've included it separately to be thorough." %} will end with a timer of 4.</li>
+	<li>A shutter operation that fails to find any shutter doors to animate{% include footnote content="This is literally what happens for intraroom transitions; but, because Mrs. Sahasrahlah's house has an <a href=\"/unusedeffects\">accidental room effect</a> that can trigger a blank-fire shutter check, I've included it separately to be thorough." %} will end with a timer of 4.</li>
 	<li>Touching a big key door without the big key will set the timer to 0.</li>
 	<li>Mirroring on the same frame that a key door is touched with a key will set the timer to 0. The key will also not be used.</li>
 	<li>Setting off an exploding wall will set the timer to 0.</li>

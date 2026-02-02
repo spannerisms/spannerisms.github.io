@@ -14,20 +14,20 @@ background: glitchybg
 
 <p>We'll go through these lines one-by-one, and it will all make sense in the end.</p>
 
-{% include asmheader.html %}
-{% include asmline.html code="TYA" comment="Sprite index to A" %}
-{% include asmline.html code="EOR $1A" comment="Exclusive OR with frame counter" %}
-{% include asmline.html code="AND #$03" comment="Mask for bits 0 and 1" %}
-{% include asmline.html code="ORA $0F70,Y" comment="Add in flags" %}
-{% include asmline.html code="BNE .failure" comment="Fail if nonzero" %}
-{% include asmline.html code="LDA $0DD0,Y" comment="Get sprite state" %}
-{% include asmline.html code="CMP #$09" comment="9 is the active state" %}
-{% include asmline.html code="BCC .failure" comment="Above 9 are stunned/lifted" %}
-{% include asmline.html code="LDA $0E60,Y" comment="Invulnerability" %}
-{% include asmline.html code="ORA $0F60,Y" comment="Statis" %}
-{% include asmline.html code="AND #$40" comment="Check the bit" %}
-{% include asmline.html code="BNE .failure" %}
-{% include asmfooter.html %}
+{% include asmheader %}
+{% include asmline code="TYA" comment="Sprite index to A" %}
+{% include asmline code="EOR $1A" comment="Exclusive OR with frame counter" %}
+{% include asmline code="AND #$03" comment="Mask for bits 0 and 1" %}
+{% include asmline code="ORA $0F70,Y" comment="Add in flags" %}
+{% include asmline code="BNE .failure" comment="Fail if nonzero" %}
+{% include asmline code="LDA $0DD0,Y" comment="Get sprite state" %}
+{% include asmline code="CMP #$09" comment="9 is the active state" %}
+{% include asmline code="BCC .failure" comment="Above 9 are stunned/lifted" %}
+{% include asmline code="LDA $0E60,Y" comment="Invulnerability" %}
+{% include asmline code="ORA $0F60,Y" comment="Statis" %}
+{% include asmline code="AND #$40" comment="Check the bit" %}
+{% include asmline code="BNE .failure" %}
+{% include asmfooter %}
 
 <h3>Frame rules</h3>
 <p>Ahhh, frame rules. One of the most well-renowned concepts in the game. Bumper-to-sprite interactions are no exception, and they use the standard collision frame rule calculation. Take the sprite slot of the sprite in question and exclusive-OR it with the frame counter. Finally, look at the bottom 2 bits. If they're both 0, then the collision check proceeds. But this one has an efficient twist.</p>

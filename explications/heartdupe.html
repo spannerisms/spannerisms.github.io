@@ -18,23 +18,23 @@ background: glitchybg
 
 <p>Stack unwinding is doing exactly that, but on purpose. I can use sprites (which hearts and rupees are) as an example. Sprites themselves are subroutines, named in the disassembly as "Sprite_X". A common routine among most sprites is <asmfunc>CheckIfActive</asmfunc>. This routine will see if the sprite should actually perform its AI. If it should, it just returns. If it shouldn't then this routine unwinds the stack. Doing so removes the return address for <asmfunc>CheckIfActive</asmfunc>. When it jumps back, it returns to where the sprite was called from.</p>
 
-{% include asmheader.html labels=true %}
-{% include asmfunclabel.html label="CheckIfActive" %}
-{% include asmline.html code="LDA $0D00,X" comment="Get AI state" %}
-{% include asmline.html code="CMP #$09" comment="Are we active?" %}
-{% include asmline.html code="BNE .inactive" comment="Not 9? Not active." %}
-{% include asmline.html code="LDA $0FC1" comment="Global pause flag" %}
-{% include asmline.html code="BNE .inactive" comment="Set means inactive" %}
-{% include asmline.html code="LDA $11" comment="Check submodule" %}
-{% include asmline.html code="BNE .inactive" comment="Filter non default submodes" %}
-{% include asmline.html code="LDA $0CAA,X" comment="Off screen activeness flag" %}
-{% include asmline.html code="BMI .active" comment="It's in bit 7" %}
-{% include asmline.html code="LDA $0F00,X" comment="Sprite specific pause" %}
-{% include asmline.html code="BEQ .active" comment="Unset means active" %}
-{% include asmline.html label=".inactive" code="PLA" comment="Unwind the stack" %}
-{% include asmline.html code="PLA" %}
-{% include asmline.html label=".active" code="RTS" comment="Exit subroutine" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true %}
+{% include asmfunclabel label="CheckIfActive" %}
+{% include asmline code="LDA $0D00,X" comment="Get AI state" %}
+{% include asmline code="CMP #$09" comment="Are we active?" %}
+{% include asmline code="BNE .inactive" comment="Not 9? Not active." %}
+{% include asmline code="LDA $0FC1" comment="Global pause flag" %}
+{% include asmline code="BNE .inactive" comment="Set means inactive" %}
+{% include asmline code="LDA $11" comment="Check submodule" %}
+{% include asmline code="BNE .inactive" comment="Filter non default submodes" %}
+{% include asmline code="LDA $0CAA,X" comment="Off screen activeness flag" %}
+{% include asmline code="BMI .active" comment="It's in bit 7" %}
+{% include asmline code="LDA $0F00,X" comment="Sprite specific pause" %}
+{% include asmline code="BEQ .active" comment="Unset means active" %}
+{% include asmline label=".inactive" code="PLA" comment="Unwind the stack" %}
+{% include asmline code="PLA" %}
+{% include asmline label=".active" code="RTS" comment="Exit subroutine" %}
+{% include asmfooter %}
 
 <h2>Om nom</h2>
 <p>There are 2 ways for absorbables to be consumed: touching them directly, and via ancilla. These are handled by  <asmfunc>TestAbsorption</asmfunc> and <asmfunc>HandleDraggingByAncilla</asmfunc>, respectively.</p>
@@ -49,18 +49,18 @@ background: glitchybg
 <h2>Order of operations</h2>
 <p>The majority of sprites, which all share the same code, perform the routines in this order:</p>
 
-{% include asmheader.html %}
-{% include asmline.html code="JSR HandleDraggingByAncilla" %}
-{% include asmline.html code="JSR TestAbsorption" %}
-{% include asmfooter.html %}
+{% include asmheader %}
+{% include asmline code="JSR HandleDraggingByAncilla" %}
+{% include asmline code="JSR TestAbsorption" %}
+{% include asmfooter %}
 
 <p>Since <asmfunc>HandleDraggingByAncilla</asmfunc> unwinds the stack, it will prevent <asmfunc>GetAbsorbedAsItem</asmfunc> from being run.</p>
 
 <p>Hearts, on the other hand, be like this:</p>
-{% include asmheader.html %}
-{% include asmline.html code="JSR TestAbsorption" %}
-{% include asmline.html code="JSR HandleDraggingByAncilla" %}
-{% include asmfooter.html %}
+{% include asmheader %}
+{% include asmline code="JSR TestAbsorption" %}
+{% include asmline code="JSR HandleDraggingByAncilla" %}
+{% include asmfooter %}
 
 <p>These look strikingly similar, but in my explanation of <asmfunc>GetAbsorbedAsItem</asmfunc>, nowhere did I mention stack unwinding. And that's because it doesn't. For hearts, the first absorption check can be successful, but it will not prevent the second check from happening. So if you happen to have your hitbox overlap with a heart on the correct frame rule and on the same frame that the ancilla carrying it disappears, the consumption logic is run twice. The healing is additive, allowing it to stack with other healing effects that occured on the same frame. Including itself, apparently.</p>
 <p>So why are hearts different in the first place? The big bunch of absorbables all fall to the ground the same way, with a jump and a bounce. Hearts take a more gentle approach and drift down like a feather. This required custom movement logic, and, at that point, it made more sense to handle everything separately. Somewhere along the line, someone switched the two routines.</p>

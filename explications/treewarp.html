@@ -50,13 +50,13 @@ background: glitchybg
 <p>This crash is purely bad luck with ROM data. If 2 slots are free, that means the mouth takes one and eyeball 0 takes the other. So eyeball 0 spawns successfully, in the correct slot, and due to the prep that happens in <asmfunc>SpawnSpriteDynamically</asmfunc>, we now have a new value in <addr>$01</addr>: <span class="evil">3</span>. Eyeball 1 ends up overflowing, writing <span class="evil">3</span> to the last sprite slot.</p>
 <p>When it comes to sprite IDs, <span class="evil">3</span> is particularly evil. There isn't actually a sprite with that ID. That slot in the sprite routines table just contains a pointer to <addr>$0000</addr>. That's the same <addr>$00</addr> we were storing scratch data in, but now we are executing it as code. And because it's consistent from the previous routines, I can tell you exactly what the CPU is doing:</p>
 
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html addr="060000" code="PLA" bytes="68" %}
-{% include asmline.html addr="060001" code="ORA $50,S" bytes="03 50" %}
-{% include asmline.html addr="060003" code="ORA #$00" bytes="09 00" %}
-{% include asmline.html addr="060005" code="BRK #$00" bytes="00 00" %}
-{% include asmline.html addr="00FFFF" code="BRL $0368" label="BREAK" bytes="82 68 03" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline addr="060000" code="PLA" bytes="68" %}
+{% include asmline addr="060001" code="ORA $50,S" bytes="03 50" %}
+{% include asmline addr="060003" code="ORA #$00" bytes="09 00" %}
+{% include asmline addr="060005" code="BRK #$00" bytes="00 00" %}
+{% include asmline addr="00FFFF" code="BRL $0368" label="BREAK" bytes="82 68 03" %}
+{% include asmfooter %}
 
 <p>And that's where it all hits the fan. <asmop>BRK</asmop> is an instruction inherited from the WDC 65c816, which the SNES's Ricoh 5A22 is based on. The instruction is meant to be used in a debugging environment on a computer's operating system to track down bugs and errors. That obviously is of no use for a cartridge game running on a console, so the developers replaced the break vector with <asmval>$FFFF</asmval>, just a filler value. The CPU doesn't know that though, so it follows it blindly. The byte at <addr>$00:FFFF</addr> is <asmval>$82</asmval>, which is the byte for a branch long instruction (<asmop>BRL</asmop>). But this is the end of the bank, so the operand of this instruction is read by wrapping around back to <addr>$0000</addr>. Data we executed as code is now being used as a relative pointer for the CPU to follow. It's telling us to branch forward <asmval>$0368</asmval> bytes and resume execution at <addr>$036A</addr>. This address is related to lifting tiles, and it will hold a value based on the last liftable tile you touched. Long story short, there's no predicting what happens next.</p>
 

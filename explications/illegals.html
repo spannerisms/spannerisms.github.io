@@ -12,192 +12,192 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 <p>The results are fully unpredictable.</p>
 
 <h3 id="IAx44">IAx44</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx44_entry" addr="080702" code="BRK #$00" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0702" %}
-{% include asmline.html addr="000704" code="BRK #$00" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0702" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx44_entry" addr="080702" code="BRK #$00" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0702" %}
+{% include asmline addr="000704" code="BRK #$00" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0702" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The address is seemingly unused, so it will most likely have <asmval>$0000</asmval>, which will execute the break vector. This vector jumps to <addr>$00FFFF</addr>, which has a <asmop>BRL</asmop> that wraps around and reads <addr>$0000</addr> as the argument to the opcode, which is a relative distance to branch from the byte after the argument. <addr>$0000</addr> is expected to have the original illegal pointer, so execution resumes at <addr>$000704</addr>, more unused space. This begins a long loop of repeated break vectors. Eventually, the stack will overwrite <addr>$0000</addr>, resulting in unpredictable effects.</p>
 
 <h3 id="IAx45">IAx45</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx45_entry" addr="080106" code="BRK ??" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0106" %}
-{% include asmline.html addr="000108" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx45_entry" addr="080106" code="BRK ??" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0106" %}
+{% include asmline addr="000108" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The low byte of the address is unused, so it will contain the value <asmval>$00</asmval>. The next byte is not predictable, but the argument to <asmop>BRK</asmop> is generally ignorable. The break vector leads to a jump to <addr>$000108</addr>. From here, the results are not predictable.</p>
 
 <h3 id="IAx46">IAx46</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx46_entry" addr="080701" code="BRK #$00" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0701" %}
-{% include asmline.html addr="000703" code="BRK #$00" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0701" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx46_entry" addr="080701" code="BRK #$00" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0701" %}
+{% include asmline addr="000703" code="BRK #$00" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0701" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The high byte of the address is technically used, but always has a value of <asmval>$00</asmval>. This leads to a similar <asmop>BRK</asmop> loop as <a href="#IAx44">IAx44</a>.</p>
 
 <h3 id="IAx47">IAx47</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx47_entry" addr="080107" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx47_entry" addr="080107" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
 
 <h3 id="IAx48">IAx48</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx48_entry" addr="080700" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx48_entry" addr="080700" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The low byte (which will determine the first opcode used) is technically predictable, as it is determined by Link's coordinates; however, with 7 consecutive <asmval>$00</asmval> bytes following, there is not much useful that can be done besides returning from the routine safely with an <asmop>RTS</asmop> (<asmval>$60</asmval>).</p>
 
 <h3 id="IAx49">IAx49</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx49_entry" addr="080108" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx49_entry" addr="080108" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
 
 <h3 id="IAx4A">IAx4A</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx4A_entry" addr="080904" code="????" %}
-{% include asmrowsep.html %}
-{% include asmline.html label="IAx4A_entry" addr="080904" code="BRK #$F0" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0904" %}
-{% include asmline.html addr="000906" code="BRK #$F0" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0904" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx4A_entry" addr="080904" code="????" %}
+{% include asmrowsep %}
+{% include asmline label="IAx4A_entry" addr="080904" code="BRK #$F0" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0904" %}
+{% include asmline addr="000906" code="BRK #$F0" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0904" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically the OAM buffer. The results are fully unpredictable.</p>
 
 <h3 id="IAx4B">IAx4B</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx4B_entry" addr="08FF04" code="PHD" comment="Doctor to stack" bytes="0B" %}
-{% include asmline.html addr="08FF05" code="JSR ($FC0E,X)" comment="X&lt;10" bytes="FC 0E FC" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx4B_entry" addr="08FF04" code="PHD" comment="Doctor to stack" bytes="0B" %}
+{% include asmline addr="08FF05" code="JSR ($FC0E,X)" comment="X&lt;10" bytes="FC 0E FC" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM. Specifically, it is executing data that is part of the quake draw routine's tables. Depending on the slot, different code from another table will be executed. Regardless, the game will crash.</p>
 
 <h3 id="IAx4C">IAx4C</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx4C_entry" addr="080302" code="BRK ??" %}
-{% include asmrowsep.html %}
-{% include asmline.html label="IAx4C_entry" addr="080302" code="ORA (??,X)" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx4C_entry" addr="080302" code="BRK ??" %}
+{% include asmrowsep %}
+{% include asmline label="IAx4C_entry" addr="080302" code="ORA (??,X)" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The address <addr>$0302</addr> only takes on values of <asmval>$00</asmval> or <asmval>$01</asmval>. In the case of <asmval>$00</asmval>, the <asmop>BRK</asmop> vector will lead to unpredictable results. When <asmop>ORA (dp,X)</asmop> is executed, the inevitable crash is merely delayed.</p>
 
 <h3 id="IAx4D">IAx4D</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx4D_entry" addr="080708" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx4D_entry" addr="080708" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
 
 <h3 id="IAx4E">IAx4E</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx4E_entry" addr="080101" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx4E_entry" addr="080101" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The results are fully unpredictable.</p>
 
 <h3 id="IAx4F">IAx4F</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx4F_entry" addr="080707" code="BRK ??" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0707" %}
-{% include asmline.html addr="000709" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx4F_entry" addr="080707" code="BRK ??" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0707" %}
+{% include asmline addr="000709" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The addresses containing the opcode is unused, resulting in a <asmop>BRK</asmop>, but it is followed by overworld screen properties, resulting in unpredictable code.</p>
 
 <h3 id="IAx50">IAx50</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx50_entry" addr="080001" code="BRK ??" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0001" %}
-{% include asmline.html addr="000003" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx50_entry" addr="080001" code="BRK ??" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0001" %}
+{% include asmline addr="000003" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM. The high byte of the address will be the opcode (<asmop>BRK</asmop>); after the break vector, the results are unpredictable.</p>
 
 <h3 id="IAx51">IAx51</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx51_entry" addr="080807" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx51_entry" addr="080807" code="????" %}
+{% include asmfooter %}
 
 	<p>This entry points to a location in WRAM, specifically the OAM buffer. The results are fully unpredictable.</p>
 
 <h3 id="IAx52">IAx52</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx52_entry" addr="0804FF" code="BRK ??" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $04FF" %}
-{% include asmline.html addr="000501" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx52_entry" addr="0804FF" code="BRK ??" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $04FF" %}
+{% include asmline addr="000501" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically the last slot in the torch timer array. This array has 16 slots, but in practice, this slot is never used. A <asmop>BRK</asmop> will occur, but it will then jump to <addr>$0501</addr> for execution. The results are fully unpredictable.</p>
 
 <h3 id="IAx53">IAx53</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx53_entry" addr="080409" code="BRK ??" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0409" %}
-{% include asmline.html addr="00040B" code="BRK ??" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $0409" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx53_entry" addr="080409" code="BRK ??" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0409" %}
+{% include asmline addr="00040B" code="BRK ??" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $0409" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically the high byte of the quadrant visits flag for the current underworld tile. This byte is unused, so it will result in a <asmop>BRK</asmop>. The address branched to after the <asmop>BRK</asmop> is also unused, resulting in a <asmop>BRK</asmop> loop.</p>
 
 <h3 id="IAx54">IAx54</h3>
 <h3 id="IAx55">IAx55</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx54_entry" addr="088383" code="EOR ($88)" bytes="52 88" %}
-{% include asmline.html addr="088385" code="ORA $FC8D,Y" comment="Y=$A6 so [$08FD33]:$C4" bytes="19 8D FC" %}
-{% include asmline.html addr="088388" code="BCC $E8" comment="Carry will be cleared" bytes="90 E8" %}
-{% include asmline.html addr="088366" code="LDY $0C86,X" comment="We've been here before" bytes="BC 68 0C" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx54_entry" addr="088383" code="EOR ($88)" bytes="52 88" %}
+{% include asmline addr="088385" code="ORA $FC8D,Y" comment="Y=$A6 so [$08FD33]:$C4" bytes="19 8D FC" %}
+{% include asmline addr="088388" code="BCC $E8" comment="Carry will be cleared" bytes="90 E8" %}
+{% include asmline addr="088366" code="LDY $0C86,X" comment="We've been here before" bytes="BC 68 0C" %}
+{% include asmfooter %}
 
 <p>IAx54 and IAx55 share the same entry point.</p>
 <p>This entry points to a location in ROM. Funnily enough, it is pointing straight to another pointer from the jump table we just used, specifically the pointer for the unused ancilla with an ID of <asmval>$03</asmval>. Quite quickly, this routine converges into actual code; in fact, it's the code just run to find out which ancilla subroutine to execute. Unfortunately, this returns to a point in the code after a stack push was meant to occur. When a value assumed to be the ancilla ID is recovered from the stack, it will rip off the low byte of our return address (<asmval>$37</asmval>). This results in it executing the routine for the ancilla with ID <asmval>$02</asmval>, the fire rod shot. When it's finished, the unbalanced stack will eventually cause the game to crash. Forever.</p>
 
 <h3 id="IAx56">IAx56</h3>
 <h3 id="IAx57">IAx57</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx56_entry" addr="0880B6" code="BRK #$22" bytes="00 22" %}
-{% include asmline.html addr="00FFFF" code="BRL $80B6" bytes="82 B6 80" %}
-{% include asmline.html addr="0080B8" code="ADC ($80,X)" bytes="61 80" %}
-{% include asmline.html addr="0080BA" code="STA $03" bytes="85 03" %}
-{% include asmline.html addr="0080BC" code="LDA $807D,Y" comment="Y=$AA; so [$8127]:$8D" bytes="B9 7D 80" %}
-{% include asmline.html addr="0080BF" code="STA $04" bytes="85 04" %}
-{% include asmline.html addr="0080C1" code="LDA $8099,Y" comment="Y=$AA; so [$8143]:$83" bytes="B9 99 80" %}
-{% include asmline.html addr="0080C4" code="STA $05" bytes="85 05" %}
-{% include asmline.html addr="0080C6" code="JMP [$0003]" bytes="DC 03 00" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx56_entry" addr="0880B6" code="BRK #$22" bytes="00 22" %}
+{% include asmline addr="00FFFF" code="BRL $80B6" bytes="82 B6 80" %}
+{% include asmline addr="0080B8" code="ADC ($80,X)" bytes="61 80" %}
+{% include asmline addr="0080BA" code="STA $03" bytes="85 03" %}
+{% include asmline addr="0080BC" code="LDA $807D,Y" comment="Y=$AA; so [$8127]:$8D" bytes="B9 7D 80" %}
+{% include asmline addr="0080BF" code="STA $04" bytes="85 04" %}
+{% include asmline addr="0080C1" code="LDA $8099,Y" comment="Y=$AA; so [$8143]:$83" bytes="B9 99 80" %}
+{% include asmline addr="0080C4" code="STA $05" bytes="85 05" %}
+{% include asmline addr="0080C6" code="JMP [$0003]" bytes="DC 03 00" %}
+{% include asmfooter %}
 
 <p>IAx56 and IAx57 share the same entry point.</p>
 <p>This entry points to a location in ROM, specifically the routine <asmfunc>AncillaAdd_FireRodShot</asmfunc>; however, its entry point does not align with the code, and it treats the parameter of an <asmop>STA dp</asmop> as the opcode, resulting in a <asmop>BRK</asmop> being executed. The break vector leads to the middle of the topmost subroutine, <asmfunc>RunModule</asmfunc>. The entry point does not align with the code, but it recovers after one instruction. From here, the result is mostly unpredictable.</p>
 <p>However, <addr>$80</addr> is in the middle of some unused RAM. If this illegal ancilla is in slots 0, 1, or 2, then the <asmop>ADC</asmop> will look at the word in addresses <addr>$80</addr>, <addr>$81</addr>, or <addr>$82</addr>, respectively, all of which contain the value <asmval>$0000</asmval>. In these cases, the accumulator, which currently contains the high byte of our pointer, will have the value of <addr>$0000</addr> added to it, which contains the low byte of our pointer. The carry is always clear, so we know that we will get <asmval>$36</asmval> as our result, with the carry flag set. This results in a jump to a known address in bank83, of which bank03 is a mirror. This bank is filled entirely with overworld tile32 data, so, needless to say, the results are garbage. But we can follow along for a bit:</p>
 
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html addr="838D36" code="ORA ($00,X)" bytes="01 00" %}
-{% include asmline.html addr="838D38" code="CMP ($2D,X)" bytes="D5 2D" %}
-{% include asmline.html addr="838D3A" code="LDY #$0C" bytes="0A 0C" %}
-{% include asmline.html addr="838D3C" code="AND ($00,X)" bytes="21 00" %}
-{% include asmline.html addr="838D3E" code="ROR $122D,X" bytes="7E 2D 1D" %}
-{% include asmline.html addr="838D41" code="CPY $0201" bytes="CC 01 02" %}
-{% include asmline.html addr="838D44" code="CPY $4CCC" comment="Open bus" bytes="CC CC 4C" %}
-{% include asmline.html addr="838D47" code="LSR $4422" comment="More open bus" bytes="4E 22 44" %}
-{% include asmline.html addr="838D4A" code="EOR $514D4E" bytes="4F 4E 4D 51" %}
-{% include asmline.html addr="838D4E" code="MVP $FF, $44" comment="Nice" bytes="44 44 FF" %}
-{% include asmline.html addr="838D51" code="LDX #$57" bytes="A2 57" %}
-{% include asmline.html addr="838D53" code="EOR $4423,Y" comment="Speed 5: Open Bus" bytes="59 23 44" %}
-{% include asmline.html addr="838D56" code="EOR $5D5B,Y" bytes="59 5B 5D" %}
-{% include asmline.html addr="838D59" code="EOR $4444" bytes="59 44 44" %}
-{% include asmline.html addr="838D5C" code="EOR $376058,X" bytes="5F 58 60 37" %}
-{% include asmline.html addr="838D60" code="MVP $37, $42" bytes="44 42 37" %}
-{% include asmline.html addr="838D63" code="TAY" bytes="A8" %}
-{% include asmline.html addr="838D64" code="RTL" bytes="6B" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline addr="838D36" code="ORA ($00,X)" bytes="01 00" %}
+{% include asmline addr="838D38" code="CMP ($2D,X)" bytes="D5 2D" %}
+{% include asmline addr="838D3A" code="LDY #$0C" bytes="0A 0C" %}
+{% include asmline addr="838D3C" code="AND ($00,X)" bytes="21 00" %}
+{% include asmline addr="838D3E" code="ROR $122D,X" bytes="7E 2D 1D" %}
+{% include asmline addr="838D41" code="CPY $0201" bytes="CC 01 02" %}
+{% include asmline addr="838D44" code="CPY $4CCC" comment="Open bus" bytes="CC CC 4C" %}
+{% include asmline addr="838D47" code="LSR $4422" comment="More open bus" bytes="4E 22 44" %}
+{% include asmline addr="838D4A" code="EOR $514D4E" bytes="4F 4E 4D 51" %}
+{% include asmline addr="838D4E" code="MVP $FF, $44" comment="Nice" bytes="44 44 FF" %}
+{% include asmline addr="838D51" code="LDX #$57" bytes="A2 57" %}
+{% include asmline addr="838D53" code="EOR $4423,Y" comment="Speed 5: Open Bus" bytes="59 23 44" %}
+{% include asmline addr="838D56" code="EOR $5D5B,Y" bytes="59 5B 5D" %}
+{% include asmline addr="838D59" code="EOR $4444" bytes="59 44 44" %}
+{% include asmline addr="838D5C" code="EOR $376058,X" bytes="5F 58 60 37" %}
+{% include asmline addr="838D60" code="MVP $37, $42" bytes="44 42 37" %}
+{% include asmline addr="838D63" code="TAY" bytes="A8" %}
+{% include asmline addr="838D64" code="RTL" bytes="6B" %}
+{% include asmfooter %}
 
 <p>The game crashes because the stack is unbalanced after this <asmop>RTL</asmop>.</p>
 <p>For all other indices, the results are fully unpredictable.</p>
@@ -206,175 +206,175 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 <h3 id="IAx59">IAx59</h3>
 <h3 id="IAx5A">IAx5A</h3>
 <h3 id="IAx5B">IAx5B</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx58_entry" addr="08B6B7" code="RTS" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx58_entry" addr="08B6B7" code="RTS" %}
+{% include asmfooter %}
 
 <p>IAx58, IAx59, IAx5A, and IAx5B all share the same entry point.</p>
 <p>This entry points to a location in ROM, specifically one of the exit points of <asmfunc>Ancilla_QuakeSpell</asmfunc>. The entry point aligns perfectly with the code, an <asmop>RTS</asmop> that allows the ancilla to exit safely, without doing anything.</p>
 
 <h3 id="IAx5C">IAx5C</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx5C_entry" addr="0868BD" code="PLA" bytes="68" %}
-{% include asmline.html addr="0868BE" code="AND [$37],Y" bytes="37 37" %}
-{% include asmline.html addr="0868BF" code="BRK #$00" bytes="00 00" %}
-{% include asmline.html addr="00FFFF" code="BRL $68BD" bytes="82 BD 68" %}
-{% include asmline.html addr="0068BF" code="PLA" bytes="68" %}
-{% include asmline.html addr="0068C0" code="AND ($32)" bytes="32 32" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx5C_entry" addr="0868BD" code="PLA" bytes="68" %}
+{% include asmline addr="0868BE" code="AND [$37],Y" bytes="37 37" %}
+{% include asmline addr="0868BF" code="BRK #$00" bytes="00 00" %}
+{% include asmline addr="00FFFF" code="BRL $68BD" bytes="82 BD 68" %}
+{% include asmline addr="0068BF" code="PLA" bytes="68" %}
+{% include asmline addr="0068C0" code="AND ($32)" bytes="32 32" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in open bus. The results are fully unpredictable.</p>
 
 <h3 id="IAx5D">IAx5D</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx5D_entry" addr="08D00C" code="BNE $13" comment="Z=0 because we last loaded $D0" %}
-{% include asmline.html addr="08D021" code="JSR $F6B6" comment="Ancilla_PrepAdjustedOamCoord" %}
-{% include asmrowsep.html %}
-{% include asmline.html label=".Adjust_OAM" addr="08F6B6" code="LDY $0C7C,X" %}
-{% include asmline.html addr="08F6B9" code="LDA $F67F,Y" comment="Y=$B8; [$08F737]:$05" %}
-{% include asmline.html addr="08F6BC" code="STA $65" comment="Expected legal values: $10, $20, $30" %}
-{% include asmline.html addr="08F6BE" code="STZ $64" %}
-{% include asmline.html addr="08F6C0" code="LDA $0BFA,X" comment="All values of X when this code runs" %}
-{% include asmline.html addr="08F6C3" code="STA $00" comment="should be &lt;10" %}
-{% include asmline.html addr="08F6C5" code="LDA $0C0E,X" comment="So I wouldn't expect any corruption" %}
-{% include asmline.html addr="08F6C8" code="STA $01" %}
-{% include asmline.html addr="08F6CA" code="LDA $0C04,X" %}
-{% include asmline.html addr="08F6CD" code="STA $02" %}
-{% include asmline.html addr="08F6CF" code="LDA $0C18,X" %}
-{% include asmline.html addr="08F6D2" code="STA $03" %}
-{% include asmline.html addr="08F6D4" code="REP #$20" %}
-{% include asmline.html addr="08F6D6" code="LDA $00" %}
-{% include asmline.html addr="08F6D8" code="SEC" %}
-{% include asmline.html addr="08F6D9" code="SBC $0122" %}
-{% include asmline.html addr="08F6DC" code="STA $00" %}
-{% include asmline.html addr="08F6DE" code="LDA $02" %}
-{% include asmline.html addr="08F6E0" code="SEC" %}
-{% include asmline.html addr="08F6E1" code="SBC $011E" %}
-{% include asmline.html addr="08F6E4" code="STA $02" %}
-{% include asmline.html addr="08F6E6" code="STA $04" %}
-{% include asmline.html addr="08F6E8" code="SEP #$20" %}
-{% include asmline.html addr="08F6EA" code="RTS" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx5D_entry" addr="08D00C" code="BNE $13" comment="Z=0 because we last loaded $D0" %}
+{% include asmline addr="08D021" code="JSR $F6B6" comment="Ancilla_PrepAdjustedOamCoord" %}
+{% include asmrowsep %}
+{% include asmline label=".Adjust_OAM" addr="08F6B6" code="LDY $0C7C,X" %}
+{% include asmline addr="08F6B9" code="LDA $F67F,Y" comment="Y=$B8; [$08F737]:$05" %}
+{% include asmline addr="08F6BC" code="STA $65" comment="Expected legal values: $10, $20, $30" %}
+{% include asmline addr="08F6BE" code="STZ $64" %}
+{% include asmline addr="08F6C0" code="LDA $0BFA,X" comment="All values of X when this code runs" %}
+{% include asmline addr="08F6C3" code="STA $00" comment="should be &lt;10" %}
+{% include asmline addr="08F6C5" code="LDA $0C0E,X" comment="So I wouldn't expect any corruption" %}
+{% include asmline addr="08F6C8" code="STA $01" %}
+{% include asmline addr="08F6CA" code="LDA $0C04,X" %}
+{% include asmline addr="08F6CD" code="STA $02" %}
+{% include asmline addr="08F6CF" code="LDA $0C18,X" %}
+{% include asmline addr="08F6D2" code="STA $03" %}
+{% include asmline addr="08F6D4" code="REP #$20" %}
+{% include asmline addr="08F6D6" code="LDA $00" %}
+{% include asmline addr="08F6D8" code="SEC" %}
+{% include asmline addr="08F6D9" code="SBC $0122" %}
+{% include asmline addr="08F6DC" code="STA $00" %}
+{% include asmline addr="08F6DE" code="LDA $02" %}
+{% include asmline addr="08F6E0" code="SEC" %}
+{% include asmline addr="08F6E1" code="SBC $011E" %}
+{% include asmline addr="08F6E4" code="STA $02" %}
+{% include asmline addr="08F6E6" code="STA $04" %}
+{% include asmline addr="08F6E8" code="SEP #$20" %}
+{% include asmline addr="08F6EA" code="RTS" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically part of the flute ancilla's consumption code. The entry point aligns perfectly with the code. The branch is always taken, as the <asmreg>Z</asmreg> flag will always be unset from reading the high byte of the pointer.</p>
 <p>This creates a glitchy object (often the item get sprite) on screen, but beyond that, it does not appear to have any interesting consequences in and of itself. If the object ends up being off screen, it will just delete itself from the array.</p>
 
 <h3 id="IAx5E">IAx5E</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html addr="009E05" code="ORA $78,X" bytes="15 78" %}
-{% include asmline.html addr="009E07" code="ORA $79,X" bytes="15 79" %}
-{% include asmline.html addr="009E09" code="ORA $76,X" bytes="15 76" %}
-{% include asmline.html addr="009E0B" code="ORA $77,X" bytes="15 77" %}
-{% include asmline.html addr="009E0D" code="ORA $76,X" bytes="15 76" %}
-{% include asmline.html addr="009E0F" code="ORA $77,X" bytes="15 77" %}
-{% include asmline.html addr="009E11" code="ORA $78,X" bytes="15 78" %}
-{% include asmline.html addr="009E13" code="ORA $79,X" bytes="15 79" %}
-{% include asmline.html addr="009E15" code="ORA $78,X" bytes="15 78" %}
-{% include asmline.html addr="009E17" code="ORA $79,X" bytes="15 79" %}
-{% include asmline.html addr="009E19" code="ORA $92,X" bytes="15 92" %}
-{% include asmline.html addr="009E1B" code="PHP" bytes="08" %}
-{% include asmline.html addr="009E1C" code="TYA" bytes="98" %}
-{% include asmline.html addr="009E1D" code="PHP" bytes="08" %}
-{% include asmline.html addr="009E1E" code="LDY $08" bytes="A4 08" %}
-{% include asmline.html addr="009E20" code="LDA $930C" comment="DB is still $08" bytes="AD 0C 93" %}
-{% include asmline.html addr="009E23" code="PHP" bytes="08" %}
-{% include asmline.html addr="009E24" code="STA $A508,Y" comment="This does nothing" bytes="99 08 A5" %}
-{% include asmline.html addr="009E27" code="PHP" bytes="08" %}
-{% include asmline.html addr="009E28" code="LDA $AD8C" bytes="AD 8C AD" %}
-{% include asmline.html addr="009E2B" code="JMP $48A4" comment="Open bus" bytes="4C A4 48" %}
-{% include asmline.html addr="0048A4" code="PHA" bytes="48" %}
-{% include asmline.html addr="0048A5" code="STZ $64" bytes="64 64" %}
-{% include asmline.html addr="0048A7" code="BRK #$00" bytes="00 00" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $9E03" bytes="82 0E 9E" %}
-{% include asmrowsep.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline addr="009E05" code="ORA $78,X" bytes="15 78" %}
+{% include asmline addr="009E07" code="ORA $79,X" bytes="15 79" %}
+{% include asmline addr="009E09" code="ORA $76,X" bytes="15 76" %}
+{% include asmline addr="009E0B" code="ORA $77,X" bytes="15 77" %}
+{% include asmline addr="009E0D" code="ORA $76,X" bytes="15 76" %}
+{% include asmline addr="009E0F" code="ORA $77,X" bytes="15 77" %}
+{% include asmline addr="009E11" code="ORA $78,X" bytes="15 78" %}
+{% include asmline addr="009E13" code="ORA $79,X" bytes="15 79" %}
+{% include asmline addr="009E15" code="ORA $78,X" bytes="15 78" %}
+{% include asmline addr="009E17" code="ORA $79,X" bytes="15 79" %}
+{% include asmline addr="009E19" code="ORA $92,X" bytes="15 92" %}
+{% include asmline addr="009E1B" code="PHP" bytes="08" %}
+{% include asmline addr="009E1C" code="TYA" bytes="98" %}
+{% include asmline addr="009E1D" code="PHP" bytes="08" %}
+{% include asmline addr="009E1E" code="LDY $08" bytes="A4 08" %}
+{% include asmline addr="009E20" code="LDA $930C" comment="DB is still $08" bytes="AD 0C 93" %}
+{% include asmline addr="009E23" code="PHP" bytes="08" %}
+{% include asmline addr="009E24" code="STA $A508,Y" comment="This does nothing" bytes="99 08 A5" %}
+{% include asmline addr="009E27" code="PHP" bytes="08" %}
+{% include asmline addr="009E28" code="LDA $AD8C" bytes="AD 8C AD" %}
+{% include asmline addr="009E2B" code="JMP $48A4" comment="Open bus" bytes="4C A4 48" %}
+{% include asmline addr="0048A4" code="PHA" bytes="48" %}
+{% include asmline addr="0048A5" code="STZ $64" bytes="64 64" %}
+{% include asmline addr="0048A7" code="BRK #$00" bytes="00 00" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $9E03" bytes="82 0E 9E" %}
+{% include asmrowsep %}
 </div>
 <p>This entry points to a location in ROM, specifically part of the bomb draw routine's data table. The first instruction is a <asmop>BRK</asmop>. Eventually, this leads to open bus, making the results crashdictable.</p>
 
 <h3 id="IAx5F">IAx5F</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx5F_entry" addr="080C4A" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx5F_entry" addr="080C4A" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically the start of the ancilla ID array. This array is easily manipulable; it can, and has, been used for arbitrary code execution.</p>
 
 <h3 id="IAx60">IAx60</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx60_entry" addr="0811A5" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx60_entry" addr="0811A5" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically a general purpose DMA buffer. The results are fully unpredictable.</p>
 
 <h3 id="IAx61">IAx61</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx61_entry" addr="0806D0" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx61_entry" addr="0806D0" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically an array of shutter door location values. Results will vary based on the position and order of doors, but most of the results are fully unpredictable..</p>
 
 <h3 id="IAx62">IAx62</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx62_entry" addr="088020" code="JSR $8035" comment="Ancilla_SetSfxPan" %}
-{% include asmrowsep.html %}
-{% include asmline.html addr="088023" code="STA $012D" %}
-{% include asmline.html addr="088026" code="RTS" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx62_entry" addr="088020" code="JSR $8035" comment="Ancilla_SetSfxPan" %}
+{% include asmrowsep %}
+{% include asmline addr="088023" code="STA $012D" %}
+{% include asmline addr="088026" code="RTS" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically the <asmfunc>Ancilla_SFX1_Pan</asmfunc> routine. The entry point aligns with the code perfectly and results in a stable return. Because the sound effect attempted is <asmval>$80</asmval>, this will only cause the ambient sound effect (if any) to fade away, as negative values flag this behavior for those sound effects specifically.</p>
 
 <h3 id="IAx63">IAx63</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx63_entry" addr="082090" code="JSR $2020" comment="Open bus" bytes="20 20 20" %}
-{% include asmline.html addr="082020" code="STA.b ($92)" bytes="92 92" %}
-{% include asmline.html addr="082022" code="JSR $2020" bytes="20 20 20" %}
-{% include asmline.html addr="082020" code="BIT.b $24" bytes="24 24" %}
-{% include asmline.html addr="082022" code="???" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx63_entry" addr="082090" code="JSR $2020" comment="Open bus" bytes="20 20 20" %}
+{% include asmline addr="082020" code="STA.b ($92)" bytes="92 92" %}
+{% include asmline addr="082022" code="JSR $2020" bytes="20 20 20" %}
+{% include asmline addr="082020" code="BIT.b $24" bytes="24 24" %}
+{% include asmline addr="082022" code="???" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in open bus. The results are fully unpredictable. And then some.</p>
 
 <h3 id="IAx64">IAx64</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx64_entry" addr="08908B" code="LDA $0C22,X" comment="Ancilla_Move_Y" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx64_entry" addr="08908B" code="LDA $0C22,X" comment="Ancilla_Move_Y" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically the <asmfunc>Ancilla_Move_Y</asmfunc> routine. The entry point is exactly the beginning of the routine, so the code runs perfectly and without fault. Thus, this ancilla will be in a constant state of vertical movement. Every array used by this routine is 10 entries long, so there is no potential for corruption.</p>
 
 <h3 id="IAx65">IAx65</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx65_entry" addr="082A20" code="ROL A" %}
-{% include asmline.html addr="082A21" code="ROL A" %}
-{% include asmline.html addr="082A22" code="ROL A" %}
-{% include asmline.html addr="082A23" code="ROL A" comment="Let's skip ahead" %}
-{% include asmrowsep.html %}
-{% include asmline.html addr="082A59" code="SED" %}
-{% include asmline.html addr="082A5A" code="SED" %}
-{% include asmline.html addr="082A5B" code="SED" %}
-{% include asmline.html addr="082A5C" code="SED" comment="Let's skip ahead again&hellip;" %}
-{% include asmrowsep.html %}
-{% include asmline.html addr="0833B6" code="SED" %}
-{% include asmline.html addr="0833B7" code="SED" %}
-{% include asmline.html addr="0833B8" code="SED" comment="Just a little more&hellip;" %}
-{% include asmrowsep.html %}
-{% include asmline.html addr="084014" code="SED" %}
-{% include asmline.html addr="084015" code="SED" %}
-{% include asmline.html addr="084016" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx65_entry" addr="082A20" code="ROL A" %}
+{% include asmline addr="082A21" code="ROL A" %}
+{% include asmline addr="082A22" code="ROL A" %}
+{% include asmline addr="082A23" code="ROL A" comment="Let's skip ahead" %}
+{% include asmrowsep %}
+{% include asmline addr="082A59" code="SED" %}
+{% include asmline addr="082A5A" code="SED" %}
+{% include asmline addr="082A5B" code="SED" %}
+{% include asmline addr="082A5C" code="SED" comment="Let's skip ahead again&hellip;" %}
+{% include asmrowsep %}
+{% include asmline addr="0833B6" code="SED" %}
+{% include asmline addr="0833B7" code="SED" %}
+{% include asmline addr="0833B8" code="SED" comment="Just a little more&hellip;" %}
+{% include asmrowsep %}
+{% include asmline addr="084014" code="SED" %}
+{% include asmline addr="084015" code="SED" %}
+{% include asmline addr="084016" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in open bus. In general, the results are fully unpredictable.</p>
 <p>In many cases, the same instructions are used <i>ad nauseum</i>, but eventually, execution lands on the controller ports, allowing for full control arbitrary code execution in a TAS. This can make this illegal ancilla predictable and usable; however, other CPU operations will clobber the value in open bus.</p>
 
 <h3 id="IAx66">IAx66</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx66_entry" addr="08A086" code="RTS" bytes="60" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx66_entry" addr="08A086" code="RTS" bytes="60" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically part of the door debris draw routine's data table. It just so happens to land on the value <asmval>$60</asmval>, which is the opcode for <asmop>RTS</asmop>, causing the ancilla's routine to exit immediately.</p>
 
 <h3 id="IAx67">IAx67</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx67_entry" addr="08A904" code="STA ($FA)" comment="A=$A9" bytes="92 FA" %}
-{% include asmline.html addr="08A906" code="RTS" bytes="60" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx67_entry" addr="08A904" code="STA ($FA)" comment="A=$A9" bytes="92 FA" %}
+{% include asmline addr="08A906" code="RTS" bytes="60" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically the end of the jump splash draw routine. The entry point does not align perfectly with the code, but it recovers quickly. This code takes the value of the accumulator, which currently holds the high byte of the pointer (<asmval>$A9</asmval>), and stores it with an indirect write to the 16-bit address present in <addr>$FA</addr>. This address holds the player 1 joypad input from the previous frame: <asmval>AXLR....</asmval>. <addr>$FB</addr> is the same for player 2, but the code for writing it is unreachable; thus, the high byte of the indirect address is always <asmval>$00</asmval>.</p>
 <p>Effectively, this means we can write <asmval>$A9</asmval> to 16 different addresses using a standard SNES controller; within the address range <addr>$00</addr>&ndash;<addr>$F0</addr>, for low nibbles of <addr>$0</addr>. The bottom nibble is the controller's signature, which is <asmval>%0000</asmval> for a regular controller.</p>
@@ -502,14 +502,14 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 <p>With a non-standard controller, we can write to any address on page zero. That's a bit too much to document here, but I will note that Yuzuhara was able to write to Link's speed variable.</p>
 
 <h3 id="IAx68">IAx68</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx68_entry" addr="08D90B" code="STA $0C0E,X" comment="A=$D9" %}
-{% include asmline.html addr="08D90E" code="LDA $02" comment="Could be anything" %}
-{% include asmline.html addr="08D910" code="STA $0C04,X" %}
-{% include asmline.html addr="08D913" code="LDA $03" %}
-{% include asmline.html addr="08D915" code="STA $0C18,X" %}
-{% include asmline.html addr="08D918" code="BRA +7" comment="Ancilla_SpinSpark" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx68_entry" addr="08D90B" code="STA $0C0E,X" comment="A=$D9" %}
+{% include asmline addr="08D90E" code="LDA $02" comment="Could be anything" %}
+{% include asmline addr="08D910" code="STA $0C04,X" %}
+{% include asmline addr="08D913" code="LDA $03" %}
+{% include asmline addr="08D915" code="STA $0C18,X" %}
+{% include asmline addr="08D918" code="BRA +7" comment="Ancilla_SpinSpark" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically the end of a routine that transmutes ancilla <asmval>$2A</asmval> into ancilla <asmval>$2B</asmval>. The low byte of the Y-coordinate will remain at its current value, and the high byte will take the value <asmval>$D9</asmval>. The low and high bytes of the X-coordinate will be garbage data.</p>
 <p>After the coordinates are set each frame, this illegal ancilla will behave like a <a href="#Ax2B">normal spin spark</a>. The ID rewrite of the routine is not performed, so this ancilla will remain with the illegal ID.</p>
@@ -518,148 +518,148 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 <p>This illegal ancilla shares the same pointer and effect as <a href="#IAx5F">IAx5F</a>.</p>
 
 <h3 id="IAx6A">IAx6A</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx6A_entry" addr="0803F0" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx6A_entry" addr="0803F0" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in location in WRAM, specifically the flute cooldown timer. This results in fully unpredictable results or a <asmop>BRK</asmop> (followed by fully unpredictable results).</p>
 
 <h3 id="IAx6B">IAx6B</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx6B_entry" addr="081088" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx6B_entry" addr="081088" code="????" %}
+{% include asmfooter %}
 
 
 <p>This entry points to a location in WRAM, specifically the arbitrary DMA buffer. The results are fully unpredictable.</p>
 
 <h3 id="IAx6C">IAx6C</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx6C_entry" addr="08B9F8" code="ORA ($00,X)" bytes="01 00" %}
-{% include asmline.html addr="08B9FA" code="PLX" bytes="FA" %}
-{% include asmline.html addr="08B9FB" code="SBC $F4FFFA,X" bytes="FF FA FF F4" %}
-{% include asmline.html addr="08B9FF" code="SBC $FA0001,X" bytes="FF 01 00 FA" %}
-{% include asmline.html addr="08B903" code="SBC $F4FFFA,X" bytes="FF FA FF F4" %}
-{% include asmline.html addr="08B907" code="SBC $FA0001,X" bytes="FF 01 00 FA" %}
-{% include asmline.html addr="08B90B" code="SBC $F4FFFA,X" bytes="FF FA FF F4" %}
-{% include asmline.html addr="08B90F" code="SBC $FA0001,X" bytes="FF 01 00 FA" %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx6C_entry" addr="08B9F8" code="ORA ($00,X)" bytes="01 00" %}
+{% include asmline addr="08B9FA" code="PLX" bytes="FA" %}
+{% include asmline addr="08B9FB" code="SBC $F4FFFA,X" bytes="FF FA FF F4" %}
+{% include asmline addr="08B9FF" code="SBC $FA0001,X" bytes="FF 01 00 FA" %}
+{% include asmline addr="08B903" code="SBC $F4FFFA,X" bytes="FF FA FF F4" %}
+{% include asmline addr="08B907" code="SBC $FA0001,X" bytes="FF 01 00 FA" %}
+{% include asmline addr="08B90B" code="SBC $F4FFFA,X" bytes="FF FA FF F4" %}
+{% include asmline addr="08B90F" code="SBC $FA0001,X" bytes="FF 01 00 FA" %}
 	<span>boring&hellip;</span>
-{% include asmline.html addr="08BA53" code="SBC $F3FFFD,X" bytes="FF FD FF F3" %}
-{% include asmline.html addr="08BA57" code="SBC $F8FFFF,X" bytes="FF FF FF F8" %}
-{% include asmline.html addr="08BA5B" code="SBC $0F0009,X" bytes="FF 09 00 0F" %}
-{% include asmline.html addr="08BA5F" code="BRK #$06" bytes="00 06" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $B9F8" bytes="82 F8 B9" %}
-{% include asmline.html addr="00B9FA" code="ADC ($71,X)" bytes="61 71" %}
-{% include asmline.html addr="00B9FC" code="TAX" bytes="AA" %}
-{% include asmline.html addr="00B9FD" code="ADC ($EC),Y" bytes="71 EC" %}
-{% include asmline.html addr="00B9FF" code="ORA ($EC,X)" bytes="01 EC" %}
-{% include asmline.html addr="00BA01" code="ORA ($70,X)" bytes="01 70" %}
-{% include asmline.html addr="00BA03" code="AND ($71),Y" bytes="31 71" %}
-{% include asmline.html addr="00BA05" code="AND ($72),Y" bytes="31 72" %}
-{% include asmline.html addr="00BA07" code="AND ($7E),Y" bytes="31 7E" %}
+{% include asmline addr="08BA53" code="SBC $F3FFFD,X" bytes="FF FD FF F3" %}
+{% include asmline addr="08BA57" code="SBC $F8FFFF,X" bytes="FF FF FF F8" %}
+{% include asmline addr="08BA5B" code="SBC $0F0009,X" bytes="FF 09 00 0F" %}
+{% include asmline addr="08BA5F" code="BRK #$06" bytes="00 06" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $B9F8" bytes="82 F8 B9" %}
+{% include asmline addr="00B9FA" code="ADC ($71,X)" bytes="61 71" %}
+{% include asmline addr="00B9FC" code="TAX" bytes="AA" %}
+{% include asmline addr="00B9FD" code="ADC ($EC),Y" bytes="71 EC" %}
+{% include asmline addr="00B9FF" code="ORA ($EC,X)" bytes="01 EC" %}
+{% include asmline addr="00BA01" code="ORA ($70,X)" bytes="01 70" %}
+{% include asmline addr="00BA03" code="AND ($71),Y" bytes="31 71" %}
+{% include asmline addr="00BA05" code="AND ($72),Y" bytes="31 72" %}
+{% include asmline addr="00BA07" code="AND ($7E),Y" bytes="31 7E" %}
 	<span>Not worth looking at&hellip;</span>
-{% include asmline.html addr="00BA87" code="ADC ($AB),Y" bytes="71 AB" %}
-{% include asmline.html addr="00BA89" code="ADC ($AA),Y" bytes="71 AA" %}
-{% include asmline.html addr="00BA8B" code="ADC ($CF),Y" bytes="71 CF" %}
-{% include asmline.html addr="00BA8D" code="ORA $8DCF" bytes="0D CF 8D" %}
-{% include asmline.html addr="00BA90" code="CMP $CDCF4D" bytes="CF 4D CF CD" %}
-{% include asmline.html addr="00BA94" code="ORA $8D1F0D,X" bytes="1F 0D 1F 8D" %}
-{% include asmline.html addr="00BA98" code="ORA $CD1F4D,X" bytes="1F 4D 1F CD" %}
-{% include asmline.html addr="00BA9C" code="ORA ($0D,X)" bytes="01 0D" %}
-{% include asmline.html addr="00BA9E" code="ORA ($8D,X)" bytes="01 8D" %}
-{% include asmline.html addr="00BAA0" code="ORA ($4D,X)" bytes="01 4D" %}
-{% include asmline.html addr="00BAA2" code="ORA ($CD,X)" bytes="01 CD" %}
-{% include asmline.html addr="00BAA4" code="BNE $19" bytes="D0 19" %}
-{% include asmfooter.html %}
+{% include asmline addr="00BA87" code="ADC ($AB),Y" bytes="71 AB" %}
+{% include asmline addr="00BA89" code="ADC ($AA),Y" bytes="71 AA" %}
+{% include asmline addr="00BA8B" code="ADC ($CF),Y" bytes="71 CF" %}
+{% include asmline addr="00BA8D" code="ORA $8DCF" bytes="0D CF 8D" %}
+{% include asmline addr="00BA90" code="CMP $CDCF4D" bytes="CF 4D CF CD" %}
+{% include asmline addr="00BA94" code="ORA $8D1F0D,X" bytes="1F 0D 1F 8D" %}
+{% include asmline addr="00BA98" code="ORA $CD1F4D,X" bytes="1F 4D 1F CD" %}
+{% include asmline addr="00BA9C" code="ORA ($0D,X)" bytes="01 0D" %}
+{% include asmline addr="00BA9E" code="ORA ($8D,X)" bytes="01 8D" %}
+{% include asmline addr="00BAA0" code="ORA ($4D,X)" bytes="01 4D" %}
+{% include asmline addr="00BAA2" code="ORA ($CD,X)" bytes="01 CD" %}
+{% include asmline addr="00BAA4" code="BNE $19" bytes="D0 19" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically part of the magic powder draw routine's table. After doing a bunch of subtraction, a <asmop>BRK</asmop> is hit and execution resumes in the middle of a large data table. Given the onslaught of indirect addressing, results are fully unpredictable. A number of branch instructions can potentially occur, but overall almost all outcomes will be a crash.</p>
 
 <h3 id="IAx6D">IAx6D</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx6D_entry" addr="080280" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx6D_entry" addr="080280" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically an array of ancillae OAM priority values. Results are, you guessed it, fully unpredictable.</p>
 
 <h3 id="IAx6E">IAx6E</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx6E_entry" addr="0804F0" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx6E_entry" addr="0804F0" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically the torch timer array. Unlike <a href="#IAx52">IAx52</a>, this points to the beginning of the array, which is actually used in practice. Unfortunately, this still results in unpredictable code or a <asmop>BRK</asmop>.</p>
 
 <h3 id="IAx6F">IAx6F</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx6F_entry" addr="0830A9" code="BMI $30" bytes="30 30" %}
-{% include asmline.html label="IAx6F_entry" addr="0830AB" code="BMI $30" bytes="30 30" %}
-{% include asmline.html label="IAx6F_entry" addr="0830AD" code="BMI $30" bytes="30 30" %}
-{% include asmline.html label="IAx6F_entry" addr="0830AF" code="BMI $30" bytes="30 30" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx6F_entry" addr="0830A9" code="BMI $30" bytes="30 30" %}
+{% include asmline label="IAx6F_entry" addr="0830AB" code="BMI $30" bytes="30 30" %}
+{% include asmline label="IAx6F_entry" addr="0830AD" code="BMI $30" bytes="30 30" %}
+{% include asmline label="IAx6F_entry" addr="0830AF" code="BMI $30" bytes="30 30" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in open bus. It will constantly not branch on negatives until it reaches CPU registers. Afterwards, the results are fully unpredictable.</p>
 
 <h3 id="IAx70">IAx70</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx70_entry" addr="080485" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx70_entry" addr="080485" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically the last byte in an array that counts the number spiral staircases. The results are fully unpredictable.</p>
 
 <h3 id="IAx71">IAx71</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx71_entry" addr="0810A9" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx71_entry" addr="0810A9" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically part of the arbitrary DMA buffer. The results are fully unpredictable.</p>
 
 <h3 id="IAx72">IAx72</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html addr="08B3A4" code="PHX" comment="Code before entry for reference" %}
-{% include asmline.html addr="08B3A5" code="LDA $7F5810,X" %}
-{% include asmline.html addr="08B3A9" code="CMP #$0D" %}
-{% include asmline.html addr="08B3AB" code="BEQ $76" comment="Does not align with below" %}
-{% include asmrowsep.html %}
-{% include asmline.html label="IAx72_entry" addr="08B3AC" code="ROR $0A,X" %}
-{% include asmline.html addr="08B3AE" code="CLC" %}
-{% include asmline.html addr="08B3AF" code="ADC $7F5810,X" %}
-{% include asmline.html addr="08B3B3" code="CLC" %}
-{% include asmline.html addr="08B3B4" code="ADC #$02" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline addr="08B3A4" code="PHX" comment="Code before entry for reference" %}
+{% include asmline addr="08B3A5" code="LDA $7F5810,X" %}
+{% include asmline addr="08B3A9" code="CMP #$0D" %}
+{% include asmline addr="08B3AB" code="BEQ $76" comment="Does not align with below" %}
+{% include asmrowsep %}
+{% include asmline label="IAx72_entry" addr="08B3AC" code="ROR $0A,X" %}
+{% include asmline addr="08B3AE" code="CLC" %}
+{% include asmline addr="08B3AF" code="ADC $7F5810,X" %}
+{% include asmline addr="08B3B3" code="CLC" %}
+{% include asmline addr="08B3B4" code="ADC #$02" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically part of the bombos spell draw routine. The entry point does not align perfectly with the code, but it recovers after one instruction. Unfortunately, the entry is after where a stack push was meant to occur, so at the end of this routine, the stack will become unbalanced, resulting in a crash. I mean... The results are fully unpredictable.</p>
 
 <h3 id="IAx73">IAx73</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx73_entry" addr="08F00F" code="SEP #$85" bytes="E2 85" %}
-{% include asmline.html addr="08F011" code="BRK #$E2" bytes="00 E2" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $F00F" bytes="82 0F F0" %}
-{% include asmline.html addr="00F011" code="CMP $7E" bytes="C5 7E" %}
-{% include asmline.html addr="00F013" code="TAY" bytes="A8" %}
-{% include asmline.html addr="00F014" code="AND #$E0" bytes="29 E0" %}
-{% include asmline.html addr="00F016" code="ORA $F0,S" bytes="03 F0" %}
-{% include asmline.html addr="00F018" code="ASL $98" bytes="06 98" %}
-{% include asmline.html addr="00F01A" code="SEC" bytes="38" %}
-{% include asmline.html addr="00F01B" code="SBC #$20" bytes="E9 20" %}
-{% include asmline.html addr="00F01D" code="BRK #$A8" bytes="00 A8" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $F00F" bytes="82 0F F0" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx73_entry" addr="08F00F" code="SEP #$85" bytes="E2 85" %}
+{% include asmline addr="08F011" code="BRK #$E2" bytes="00 E2" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $F00F" bytes="82 0F F0" %}
+{% include asmline addr="00F011" code="CMP $7E" bytes="C5 7E" %}
+{% include asmline addr="00F013" code="TAY" bytes="A8" %}
+{% include asmline addr="00F014" code="AND #$E0" bytes="29 E0" %}
+{% include asmline addr="00F016" code="ORA $F0,S" bytes="03 F0" %}
+{% include asmline addr="00F018" code="ASL $98" bytes="06 98" %}
+{% include asmline addr="00F01A" code="SEC" bytes="38" %}
+{% include asmline addr="00F01B" code="SBC #$20" bytes="E9 20" %}
+{% include asmline addr="00F01D" code="BRK #$A8" bytes="00 A8" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $F00F" bytes="82 0F F0" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically part of the Skull Woods flame routine. The entry point does not align with the code and ends up executing a <asmop>BRK</asmop>. Interestingly, the <asmop>SEP</asmop> instruction sets the interrupt-disable flag; however, this flag has no effect on a software interrupt.</p>
 <p>The location branched to does not align perfectly with the code. It recovers after 1 instruction; however, the routine entered expects both the accumulator and index registers to be in 16-bit mode. Having entered with both in 8-bit mode, the CPU fails to stay aligned with the intended code. This is irrelevant, as the code eventually enters a <asmop>BRK</asmop> loop.</p>
 
 <h3 id="IAx74">IAx74</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx74_entry" addr="08BC11" code="BRK #$99" bytes="00 99" %}
-{% include asmline.html label="BREAK" addr="00FFFF" code="BRL $BC11" bytes="82 11 BC" %}
-{% include asmline.html addr="00BC13" code="EOR ($85),Y" bytes="51 85" %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx74_entry" addr="08BC11" code="BRK #$99" bytes="00 99" %}
+{% include asmline label="BREAK" addr="00FFFF" code="BRL $BC11" bytes="82 11 BC" %}
+{% include asmline addr="00BC13" code="EOR ($85),Y" bytes="51 85" %}
 	<span><i>etc.</i></span>
-{% include asmfooter.html %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically the end of the dash tremor code. The break vector hit leads to a data table, where endless direct page instructions are executed. They're not worth documenting, and I hope the game eventually crashes.</p>
 
 <h3 id="IAx75">IAx75</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx75_entry" addr="080C7C" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx75_entry" addr="080C7C" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically the ancilla layer array. Without using other misslots to write different values here, only <asmval>$00</asmval> or <asmval>$01</asmval> will be present. The results are fully unpredictable.</p>
 
@@ -667,45 +667,45 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 <p>This illegal ancilla shares the same pointer and effect as <a href="#IAx61">IAx61</a>.</p>
 
 <h3 id="IAx77">IAx77</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx77_entry" addr="088C22" code="STA $0C0E,X" %}
-{% include asmline.html addr="088C25" code="PLA" %}
-{% include asmline.html addr="088C26" code="STA $0BFA,X" %}
-{% include asmline.html addr="088C29" code="PLA" %}
-{% include asmline.html addr="088C2A" code="STA $0C18,X" %}
-{% include asmline.html addr="088C2D" code="PLA" %}
-{% include asmline.html addr="088C2E" code="STA $0C04,X" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx77_entry" addr="088C22" code="STA $0C0E,X" %}
+{% include asmline addr="088C25" code="PLA" %}
+{% include asmline addr="088C26" code="STA $0BFA,X" %}
+{% include asmline addr="088C29" code="PLA" %}
+{% include asmline addr="088C2A" code="STA $0C18,X" %}
+{% include asmline addr="088C2D" code="PLA" %}
+{% include asmline addr="088C2E" code="STA $0C04,X" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically part of an ancilla hitbox routine. The entry point aligns perfectly with the code; however, it skips over several stack pushes that were meant to occur. This leaves the stack unbalanced, causing the game to eventually crash.</p>
 
 <h3 id="IAx78">IAx78</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx78_entry" addr="080DBA" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx78_entry" addr="080DBA" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically a general purpose property of sprites. Predictably, the results are fully unpredictable.</p>
 
 <h3 id="IAx79">IAx79</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx79_entry" addr="080A80" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx79_entry" addr="080A80" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically part of the OAM buffer. The results are fully unpredictable.</p>
 
 <h3 id="IAx7A">IAx7A</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx7A_entry" addr="089022" code="TSB $9091" comment="Write to ROM ignored" bytes="0C 91 90" %}
-{% include asmline.html addr="089025" code="LDA $01" %}
-{% include asmline.html addr="089027" code="SEC" %}
-{% include asmline.html addr="089028" code="SBC #$04" %}
-{% include asmrowsep.html %}
-{% include asmline.html addr="08905A" code="LDX $0FAC" %}
-{% include asmline.html addr="08905D" code="LDA $8F82,X" %}
-{% include asmline.html addr="089060" code="LDY #$02" %}
-{% include asmrowsep.html %}
-{% include asmline.html addr="08907F" code="RTS" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx7A_entry" addr="089022" code="TSB $9091" comment="Write to ROM ignored" bytes="0C 91 90" %}
+{% include asmline addr="089025" code="LDA $01" %}
+{% include asmline addr="089027" code="SEC" %}
+{% include asmline addr="089028" code="SBC #$04" %}
+{% include asmrowsep %}
+{% include asmline addr="08905A" code="LDX $0FAC" %}
+{% include asmline addr="08905D" code="LDA $8F82,X" %}
+{% include asmline addr="089060" code="LDY #$02" %}
+{% include asmrowsep %}
+{% include asmline addr="08907F" code="RTS" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically the tink spark draw routine. The entry point does not align perfectly with the code, but it recovers after 1 instruction. Eventually the routine returns cleanly.</p>
 <p>Of particular interest is the instruction at <addr>$08:905A</addr>, which loads the <asmreg>X</asmreg> register with the value of <addr>$0FAC</addr>. The tink spark is not a slotted ancilla, so it does not have any recovery of slot after this. Thus, this instruction will determine the next slot executed &minus;1. Normally, this address only takes on values from <asmval>0</asmval>&ndash;</code class="value">5</code>; however, if we found a way to modify this address, we could execute ancillae in the illegal slots from <asmval>$0A</asmval>&ndash;<asmval>$7F</asmval>.</p>
@@ -716,19 +716,19 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 <p>This illegal ancilla shares the same pointer and effect as <a href="#IAx78">IAx78</a>.</p>
 
 <h3 id="IAx7C">IAx7C</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx7C_entry" addr="080480" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx7C_entry" addr="080480" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically a variable that counts spiral staircases. The results are fully unpredictable.</p>
 
 <h3 id="IAx7D">IAx7D</h3>
-{% include asmheader.html labels=true addresses="snes" mcode=true %}
-{% include asmline.html label="IAx7D_entry" addr="088022" code="BRA $7FB1" bytes="80 8D" %}
-{% include asmline.html addr="087FB1" code="STA $8D8D" bytes="8D 8D 8D" %}
-{% include asmline.html addr="087FB3" code="BRA $7F36" bytes="80 80" %}
-{% include asmline.html addr="087F36" code="BRA $7EB8" bytes="80 80" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" mcode=true %}
+{% include asmline label="IAx7D_entry" addr="088022" code="BRA $7FB1" bytes="80 8D" %}
+{% include asmline addr="087FB1" code="STA $8D8D" bytes="8D 8D 8D" %}
+{% include asmline addr="087FB3" code="BRA $7F36" bytes="80 80" %}
+{% include asmline addr="087F36" code="BRA $7EB8" bytes="80 80" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically an ancilla sound effects routine. The entry point does not align with code, causing it to branch to open bus. It will keep branching backwards until it reaches CPU registers or the A bus is clobbered. These results are fully unpredictable.</p>
 <p>Under most circumstances, HDMA will indeed clobber the A register, and the CPU should eventually reach <addr>$08:8000</addr>, where it will put a broken sound effect into SFX set 1 and allow this ancilla to recover cleanly.</p>
@@ -737,16 +737,16 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 <p>This illegal ancilla shares the same pointer and effect as <a href="#IAx78">IAx78</a>.</p>
 
 <h3 id="IAx7F">IAx7F</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx7F_entry" addr="0800A0" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx7F_entry" addr="0800A0" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically the current underworld room ID. The high byte located in <addr>$A1</addr> can only ever contain <asmval>$00</asmval> or <asmval>$01</asmval>. These results are fully unpredictable, though being in room <asmval>$60</asmval> can return safely.</p>
 
 <h3 id="IAx80">IAx80</h3>
-{% include asmheader.html labels=true addresses="snes" %}
-{% include asmline.html label="IAx80_entry" addr="0803A9" code="????" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true addresses="snes" %}
+{% include asmline label="IAx80_entry" addr="0803A9" code="????" %}
+{% include asmfooter %}
 
 <p>This entry points to a location in WRAM, specifically a general purpose property of F-slot ancillae. The results are fully unpredictable.</p>
 

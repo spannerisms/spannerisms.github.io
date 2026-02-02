@@ -9,34 +9,34 @@ ogdesc: "Nintendo's failed attempt at vector rotation."
 <h1>ALTTP's Tragic Trajectory Calculation</h1>
 <p>A lot of people like to call Agahnim 2 a "geometry test", but I don't. It's not because I'm being all pedantic and thinking <q>Oh, well, actually, it's trigonometry, not geometry.</q> No, no&mdash;my qualm is that the quote-unquote "geometry" of Agahnim 2 is <em>really</em> bad.</p>
 <p>I'm not going to campaign against this joke, but I do want to make it known just how bad this math is. If you look at all 360 degrees of a circle, Agahnim gets the correct answer 4 times, only twice as accurate as the proverbial broken clock.</p>
-<p>The specific calculation I'm talking about is the one that helps entities move from one location to another in a straight line. It isn't just used by Agahnim 2, but by pretty much everything that needs to move towards or away from an arbitrary point. This calculation is called from 114 unique places, including pretty much any action that causes Link or a sprite to recoil{% include footnote.html content="Certain sprites&mdash;such as fire bats&mdash;don't use this calculation for knockback. Instead, they just invert your speed on each axis and call it day." %}.</p>
+<p>The specific calculation I'm talking about is the one that helps entities move from one location to another in a straight line. It isn't just used by Agahnim 2, but by pretty much everything that needs to move towards or away from an arbitrary point. This calculation is called from 114 unique places, including pretty much any action that causes Link or a sprite to recoil{% include footnote content="Certain sprites&mdash;such as fire bats&mdash;don't use this calculation for knockback. Instead, they just invert your speed on each axis and call it day." %}.</p>
 
 <h2>Projecting</h2>
 <p>This routine, which we'll call <asmfunc>ProjectSpeed</asmfunc>, takes 2 pairs of coordinates along with a base speed and calculates the X- and Y-speeds needed to move from one location to the other in a straight line. This can be thought of as rotating a ray, but the best way to visualize this is to imagine drawing a line segment from your starting point parallel to one axis and then inching towards your target on the other. That code looks somewhat like this:</p>
 
-{% include asmheader.html labels=true %}
-{% include asmline.html code="STZ.b $0B" comment="Clear running total" %}
-{% include asmline.html code="STZ.b $00" comment="Clear speedB" %}
-{% include asmline.html code="LDX.b $01" comment="Load input speed" %}
-{% include asmline.html label=".next" code="LDA.b $0B" comment="Load running total" %}
-{% include asmline.html code="CLC" %}
-{% include asmline.html code="ADC.b $0C" comment="Add smaller distance" %}
-{% include asmline.html code="CMP.b $0D" comment="Compare to bigger distance" %}
-{% include asmline.html code="BCC .no_overflow" comment="Skip if less than" %}
-{% include asmline.html code="SBC.b $0D" comment="total mod bigger distance" %}
-{% include asmline.html code="INC.b $00" comment="Accumulate speedB" %}
-{% include asmline.html label=".no_overflow" code="STA.b $0B" %}
-{% include asmline.html code="DEX" comment="Iterate" %}
-{% include asmline.html code="BNE .next" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true %}
+{% include asmline code="STZ.b $0B" comment="Clear running total" %}
+{% include asmline code="STZ.b $00" comment="Clear speedB" %}
+{% include asmline code="LDX.b $01" comment="Load input speed" %}
+{% include asmline label=".next" code="LDA.b $0B" comment="Load running total" %}
+{% include asmline code="CLC" %}
+{% include asmline code="ADC.b $0C" comment="Add smaller distance" %}
+{% include asmline code="CMP.b $0D" comment="Compare to bigger distance" %}
+{% include asmline code="BCC .no_overflow" comment="Skip if less than" %}
+{% include asmline code="SBC.b $0D" comment="total mod bigger distance" %}
+{% include asmline code="INC.b $00" comment="Accumulate speedB" %}
+{% include asmline label=".no_overflow" code="STA.b $0B" %}
+{% include asmline code="DEX" comment="Iterate" %}
+{% include asmline code="BNE .next" %}
+{% include asmfooter %}
 
 <p>This disassembly removes all the overhead of transforming coordinates into distances, sorting those distances, etc., and just focuses on the meat of the algorithm. One of the speeds (that of the axis with the larger displacement) will be given the input speed while the other axis will be given the accumulated speed calculated with this loop.</p>
-<p>There are several problems with this algorithm, the most glaring being how one axis is fixed to the input speed. Rather than rotating a line, this is more like pulling and stretching it. The fixed component results in a floor for the <span class="disgusting">gross</span> speed that is irrespective of angle. This means the calculation is only correct when one of the distances is 0, with the error increasing proportionally to the smaller displacement. In the worst case scenario&mdash;when the displacement on each axis is equal&mdash;the error is as bad as 41%{% include footnote.html content="When the displacements are equal, the speeds will be too. That gives a calculated:ideal ratio of &radic;2:1, or 141.4%." %}.</p>
+<p>There are several problems with this algorithm, the most glaring being how one axis is fixed to the input speed. Rather than rotating a line, this is more like pulling and stretching it. The fixed component results in a floor for the <span class="disgusting">gross</span> speed that is irrespective of angle. This means the calculation is only correct when one of the distances is 0, with the error increasing proportionally to the smaller displacement. In the worst case scenario&mdash;when the displacement on each axis is equal&mdash;the error is as bad as 41%{% include footnote content="When the displacements are equal, the speeds will be too. That gives a calculated:ideal ratio of &radic;2:1, or 141.4%." %}.</p>
 
 <p>This algorithm is also subject to overflow errors. Everything is limited to 8-bit operations, and the algorithm remains well-behaved for all values below 128, but there's a danger zone above that. As an example, imagine our points are separated by 250 pixels on the X-axis and 230 pixels on the Y-axis. Our first iteration will end with a total of 230&mdash;that's correct&mdash;but when we perform the next iteration, our total is 204. Even though the value overflowed and should have accumulated some speed, it didn't.</p>
 
 <h2>Art exhibit</h2>
-<p>To get a better idea of how bad this algorithm gets in practice, we should look at actual results{% include footnote.html content="These graphs all used a ported version of the vanilla code with a fixed speed of 256. Using such a high value is moreso displaying the limiting behavior of the algorithm. Any sufficiently high speed (at least 16 or so) will show the same basic pattern, but probably won't produce an identical graph to what's shown here. I'm not analyzing 250-whatever graphs." %}. Below is a graph that takes every possible pair of displacements and plots the error in gross magnitude at that point. The bluer it is, the wronger.</p>
+<p>To get a better idea of how bad this algorithm gets in practice, we should look at actual results{% include footnote content="These graphs all used a ported version of the vanilla code with a fixed speed of 256. Using such a high value is moreso displaying the limiting behavior of the algorithm. Any sufficiently high speed (at least 16 or so) will show the same basic pattern, but probably won't produce an identical graph to what's shown here. I'm not analyzing 250-whatever graphs." %}. Below is a graph that takes every possible pair of displacements and plots the error in gross magnitude at that point. The bluer it is, the wronger.</p>
 <div class="center">
 	<img src="/assets/explication/tragicspeeds.png">
 </div>
@@ -60,50 +60,50 @@ ogdesc: "Nintendo's failed attempt at vector rotation."
 </div>
 
 <h2>The Big O</h2>
-<p>In addition to being completely wrong, this calculation is also incredibly slow. The complexity{% include footnote.html content="I'm using \"complexity\" to mean value of the input, not size. And, actually, big theta would probably be more appropriate, but I think more people are familiar with big O." %} of this routine is <i>O(n)</i> for a given speed <i>n</i>&mdash;it runs in linear time. Which, okay, that's not the worst. But it can and should be <i>O(1)</i>.</p>
+<p>In addition to being completely wrong, this calculation is also incredibly slow. The complexity{% include footnote content="I'm using \"complexity\" to mean value of the input, not size. And, actually, big theta would probably be more appropriate, but I think more people are familiar with big O." %} of this routine is <i>O(n)</i> for a given speed <i>n</i>&mdash;it runs in linear time. Which, okay, that's not the worst. But it can and should be <i>O(1)</i>.</p>
 
 <p>Another way to think of this routine is as the function <code class="mathFunc">speed&times;(smaller/bigger)</code>, where <code class="mathFunc">smaller</code> and <code class="mathFunc">bigger</code> are the distances between the current and target coordinates on the X- and Y-axes, respectively by size. This might leave you scratching your head for a moment, but that can also be interpreted as <code class="mathFunc">speed&times;tan(&theta;)</code>, which means we're using a trigonometric function. That's good. Those things are for angles!</p>
 <p>On a less powerful system, such as the NES, this would actually be a pretty cute algorithm. It cleverly combines multiplication and division into a single loop, where normally each would need its own. But as soon as you have the ability to multiply and divide without a manual loop, this method is terrible.</p>
 <p>While the SNES doesn't have any instructions for these operations, it does have dedicated hardware registers. CPU multiplication works with an 8-bit multiplicand and an 8-bit multiplier; and division works with a 16-bit dividend and 8-bit divisor. Below is an example implementation of <asmfunc>ProjectSpeed</asmfunc> using the arithmetic registers:</p>
 
-{% include asmheader.html labels=true %}
-{% include asmline.html code="LDA.b $01" comment="Get input speed" %}
-{% include asmline.html code="STA.w $4202" comment="Multiplicand" %}
-{% include asmline.html code="LDA.b $0C" comment="Smaller distance" %}
-{% include asmline.html code="STA.w $4203" comment="Multiplier" %}
-{% include asmline.html code="REP #$20" comment="16-bit mode" %}
-{% include asmline.html code="LDX.b $0D" comment="Larger distance" %}
-{% include asmline.html code="LDA.w $4216" comment="Get smaller * speed" %}
-{% include asmline.html code="STA.w $4204" comment="Dividend" %}
-{% include asmline.html code="STX.w $4206" comment="Divisor" %}
-{% include asmline.html code="ORA (1,S),Y" comment="Waste time for division" %}
-{% include asmline.html code="NOP" comment="Waste time for division" %}
-{% include asmline.html code="SEP #$20" comment="8-bit mode" %}
-{% include asmline.html code="LDA.w $4214" comment="Read quotient" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true %}
+{% include asmline code="LDA.b $01" comment="Get input speed" %}
+{% include asmline code="STA.w $4202" comment="Multiplicand" %}
+{% include asmline code="LDA.b $0C" comment="Smaller distance" %}
+{% include asmline code="STA.w $4203" comment="Multiplier" %}
+{% include asmline code="REP #$20" comment="16-bit mode" %}
+{% include asmline code="LDX.b $0D" comment="Larger distance" %}
+{% include asmline code="LDA.w $4216" comment="Get smaller * speed" %}
+{% include asmline code="STA.w $4204" comment="Dividend" %}
+{% include asmline code="STX.w $4206" comment="Divisor" %}
+{% include asmline code="ORA (1,S),Y" comment="Waste time for division" %}
+{% include asmline code="NOP" comment="Waste time for division" %}
+{% include asmline code="SEP #$20" comment="8-bit mode" %}
+{% include asmline code="LDA.w $4214" comment="Read quotient" %}
+{% include asmfooter %}
 
 <p>The only downside to these registers is that they take some time to perform a calculation&mdash;8 cycles for multiplication and 16 for division. In the code above, the wait time for multiplication isn't even a bottleneck, as we have a little bit of prep work before we read the result. The division does require waiting though.</p>
-<p>But even with the wait time, this is still loads faster than the original implementation. The vanilla code requires 23 cycles per loop iteration, or 29 if the <asmfunc>no_overflow</asmfunc> branch is not taken, plus 9 cycles overhead. At 51 cycles, the CPU registers implementation only requires an input speed of 2 before it outperforms the loop{% include footnote.html content="If we want an apples-to-apples comparison, we need to take CPU access speeds into account. Start with 6 master cycles per CPU cycle then add 2 cycles for each time that ROM or WRAM is accessed. For the vanilla code, that's 176/224 master cycles with 66 master cycles of overhead (72 master cycles for the init code minus 6 master cycles for the final BNE not taking the branch). The CPU registers are fast access, so we don't need to add 2 cycles for those. Doing the same calculation, we get 378 master cycles for the arithmetic implementation." %}. Generally, this routine is called with an input speed of at least 16.</p>
-<p>And remember: this is a one-and-done; this implementation <em>always</em> takes the same amount of time. What I have above isn't even the most efficient it can get. By rewriting (and optimizing) the preparatory calculations, this code can be improved even further{% include footnote.html content="Specifically, some clean up work can be done during the division wait cycles. Otherwise, there's nothing else to optimize with the actual calculation." %}.</p>
+<p>But even with the wait time, this is still loads faster than the original implementation. The vanilla code requires 23 cycles per loop iteration, or 29 if the <asmfunc>no_overflow</asmfunc> branch is not taken, plus 9 cycles overhead. At 51 cycles, the CPU registers implementation only requires an input speed of 2 before it outperforms the loop{% include footnote content="If we want an apples-to-apples comparison, we need to take CPU access speeds into account. Start with 6 master cycles per CPU cycle then add 2 cycles for each time that ROM or WRAM is accessed. For the vanilla code, that's 176/224 master cycles with 66 master cycles of overhead (72 master cycles for the init code minus 6 master cycles for the final BNE not taking the branch). The CPU registers are fast access, so we don't need to add 2 cycles for those. Doing the same calculation, we get 378 master cycles for the arithmetic implementation." %}. Generally, this routine is called with an input speed of at least 16.</p>
+<p>And remember: this is a one-and-done; this implementation <em>always</em> takes the same amount of time. What I have above isn't even the most efficient it can get. By rewriting (and optimizing) the preparatory calculations, this code can be improved even further{% include footnote content="Specifically, some clean up work can be done during the division wait cycles. Otherwise, there's nothing else to optimize with the actual calculation." %}.</p>
 <p>As an added bonus, this implementation is also not subject to the rounding errors that threw off the angles for larger distances.</p>
 
 <h3>Still bad</h3>
 <p>Let's say, for whatever reason, we can't use the CPU arithmetic registers, or we just don't have any. The vanilla code is <em>still</em> inefficient. Compare the snippet below to the original disassembly:</p>
 
-{% include asmheader.html labels=true %}
-{% include asmline.html code="LDA.b #$00" comment="Running total" %}
-{% include asmline.html code="LDY.b #$00" comment="SpeedB" %}
-{% include asmline.html code="LDX.b $01" comment="Load input speed" %}
-{% include asmline.html code="CLC" comment="Clear carry once" %}
-{% include asmline.html label=".next" code="ADC.b $0C" comment="Add smaller distance" %}
-{% include asmline.html code="CMP.b $0D" comment="Compare to bigger distance" %}
-{% include asmline.html code="BCC .no_overflow" %}
-{% include asmline.html code="SBC.b $0D" comment="total mod biggerDistance" %}
-{% include asmline.html code="INY" comment="Accumulate speedB" %}
-{% include asmline.html code="CLC" %}
-{% include asmline.html label=".no_overflow" code="DEX" %}
-{% include asmline.html code="BNE .next" %}
-{% include asmfooter.html %}
+{% include asmheader labels=true %}
+{% include asmline code="LDA.b #$00" comment="Running total" %}
+{% include asmline code="LDY.b #$00" comment="SpeedB" %}
+{% include asmline code="LDX.b $01" comment="Load input speed" %}
+{% include asmline code="CLC" comment="Clear carry once" %}
+{% include asmline label=".next" code="ADC.b $0C" comment="Add smaller distance" %}
+{% include asmline code="CMP.b $0D" comment="Compare to bigger distance" %}
+{% include asmline code="BCC .no_overflow" %}
+{% include asmline code="SBC.b $0D" comment="total mod biggerDistance" %}
+{% include asmline code="INY" comment="Accumulate speedB" %}
+{% include asmline code="CLC" %}
+{% include asmline label=".no_overflow" code="DEX" %}
+{% include asmline code="BNE .next" %}
+{% include asmfooter %}
 
 <p>This rewrite makes several changes to vastly improve the speed from 23/29 to 14/20 cycles per loop, with the numbers in each pair being the number of cycles for whether the <asmfunc>no_overflow</asmfunc> branch was or wasn't taken, respectively.</p>
 <ul>

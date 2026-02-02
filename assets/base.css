@@ -63,11 +63,10 @@ a:hover {
 	color: #FFC300;
 }
 
-a.headerLink {
-	opacity: .5;
-	font-size: 80%;
-	padding-left: 5px;
+a.headerlink {
+	font-size: 70%;
 	font-weight: normal;
+	vertical-align: top;
 }
 
 dfn {
