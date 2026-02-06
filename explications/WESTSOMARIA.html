@@ -63,7 +63,7 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>Submodule 4 is the door unlock submodule. Literally all it does is call <asmfunc>UnlockKeyDoor</asmfunc>. This routine, true to the name I gave it, animates the opening of a door and flags it as being permanently open. While the entry point is specifically for key doors, it functions just as well on any other type of door. In fact, it shares most of its code with the <asmfunc>OpenCrackedDoor</asmfunc> routine.</p>
 
-<p><asmfunc>UnlockKeyDoor</asmfunc> requires two variables to be set upon entering: <asmvar>DOORPOS</asmvar> at <addr>$068E</addr> and <asmvar>DOORTIME</asmvar> at <addr>$069E</addr>. It goes without saying that the intended triggers for this submodule set those values ahead of time.</p>
+<p><asmfunc>UnlockKeyDoor</asmfunc> requires two variables to be set upon entering: <asmvar>DOORPOS</asmvar> at <addr>$068E</addr> and <asmvar>DOORTIME</asmvar> at <addr>$0690</addr>. It goes without saying that the intended triggers for this submodule set those values ahead of time.</p>
 
 <h2>I sword of understand</h2>
 

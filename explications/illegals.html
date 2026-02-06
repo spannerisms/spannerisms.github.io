@@ -512,7 +512,7 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 {% include asmfooter %}
 
 <p>This entry points to a location in ROM, specifically the end of a routine that transmutes ancilla <asmval>$2A</asmval> into ancilla <asmval>$2B</asmval>. The low byte of the Y-coordinate will remain at its current value, and the high byte will take the value <asmval>$D9</asmval>. The low and high bytes of the X-coordinate will be garbage data.</p>
-<p>After the coordinates are set each frame, this illegal ancilla will behave like a <a href="#Ax2B">normal spin spark</a>. The ID rewrite of the routine is not performed, so this ancilla will remain with the illegal ID.</p>
+<p>After the coordinates are set each frame, this illegal ancilla will behave like a normal spin spark. The ID rewrite of the routine is not performed, so this ancilla will remain with the illegal ID.</p>
 
 <h3 id="IAx69">IAx69</h3>
 <p>This illegal ancilla shares the same pointer and effect as <a href="#IAx5F">IAx5F</a>.</p>
