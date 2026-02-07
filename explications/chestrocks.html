@@ -55,7 +55,7 @@ ogdesc: "Seriously! There are rocks that act like chests on the overworld! It's 
 {% include asmline addr="1BBE24" code="BEQ .diggable" %}
 {% include asmfooter %}
 
-<p>The next exception is entrances, where tables at <addr>$1BB8BF</addr> list all the map16 objects that can be used as a valid entrance tile. Without them, entrances cannot even be used. Additionally, the closed door objects that can be opened by touching them are hardcoded as map16 object IDs in the entrance logic routine; although, maybe that falls under the previous category.</p>
+<p>The next exception is entrances, where tables at <addr>$1BB8BF</addr> list all the map16 objects that can be used as a valid entrance tile. Without them, entrances cannot even be used.</p>
 
 <p>The final exception&mdash;and this is the oddball&mdash;is the routine <asmfunc>ReadOverworldTileType</asmfunc>, which uses the gigantic <asmfunc>OverworldTileTypeTable</asmfunc> at <addr>$1BF110</addr>. This table contains a single byte for every map16 object that dictates a behavior for the entire metatile.<p>
 
