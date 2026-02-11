@@ -52,43 +52,43 @@ ogdesc: "If you collect 256 coins in a single room, you'll be awarded with extra
 
 {% include asmheader labels=true addresses="nes" %}
 {% include asmfunclabel label="HandleMoneyHoneyCollection" %}
-{% include asmline addr="99FA" code="LDA.b $2B" comment="Get tile ID" %}
-{% include asmline addr="99FC" code="CMP.b #$1E" comment="Is it a coin?" %}
+{% include asmline addr="99FA" code="LDA $2B" comment="Get tile ID" %}
+{% include asmline addr="99FC" code="CMP #$1E" comment="Is it a coin?" %}
 {% include asmline addr="99FE" code="BCC .exit" comment="Don't flag" %}
 {% include asmline addr="9A00" code="BNE .honeycomb" comment="Not a coin" %}
 {% include asmrowsep %}
-{% include asmline label=".coin" addr="9A02" code="LDA.b $29" comment="Cache object coordinates" %}
-{% include asmline addr="9A04" code="STA.b $61" %}
-{% include asmline addr="9A06" code="LDA.b $2A" %}
-{% include asmline addr="9A08" code="STA.b $63" %}
+{% include asmline label=".coin" addr="9A02" code="LDA $29" comment="Cache object coordinates" %}
+{% include asmline addr="9A04" code="STA $61" %}
+{% include asmline addr="9A06" code="LDA $2A" %}
+{% include asmline addr="9A08" code="STA $63" %}
 {% include asmline addr="9A0A" code="JSR TilemapXYtoFullCoordinates" %}
 {% include asmline addr="9A0D" code="JSR IsAbsoluteOnScreen" comment="Is object visible on screen?" %}
 {% include asmline addr="9A10" code="BCS .no_smoke" %}
-{% include asmline addr="9A12" code="LDA.b #$02" %}
+{% include asmline addr="9A12" code="LDA #$02" %}
 {% include asmline addr="9A14" code="JSR SpawnSmokePuff" %}
-{% include asmline label=".no_smoke" addr="9A17" code="LDA.b #$10" comment="Play SFX10" %}
-{% include asmline addr="9A19" code="STA.b $E6" %}
-{% include asmline addr="9A1B" code="LDA.b #$01" comment="Add 1 coin" %}
+{% include asmline label=".no_smoke" addr="9A17" code="LDA #$10" comment="Play SFX10" %}
+{% include asmline addr="9A19" code="STA $E6" %}
+{% include asmline addr="9A1B" code="LDA #$01" comment="Add 1 coin" %}
 {% include asmline addr="9A1D" code="JSR AddCurrency" %}
-{% include asmline addr="9A20" code="INC.w $07BD" comment="Number of coins collected" highlight=true %}
+{% include asmline addr="9A20" code="INC $07BD" comment="Number of coins collected" highlight=true %}
 {% include asmline addr="9A23" code="BNE .continue" comment="Jump over honeycomb code" highlight=true %}
 {% include asmrowsep %}
 {% include asmline label=".honeycomb" addr="9A25" code="JSR PerformCollectionJingle" %}
-{% include asmline addr="9A28" code="LDA.b $B3" comment="Get Max HP" %}
+{% include asmline addr="9A28" code="LDA $B3" comment="Get Max HP" %}
 {% include asmline addr="9A2A" code="CLC" %}
-{% include asmline addr="9A2B" code="ADC.b #$08" comment="Add 1 bar (8 health)" %}
-{% include asmline addr="9A2D" code="STA.b $B3" comment="Save as new Max HP" %}
-{% include asmline addr="9A2F" code="STA.b $B2" comment="Full heal" %}
+{% include asmline addr="9A2B" code="ADC #$08" comment="Add 1 bar (8 health)" %}
+{% include asmline addr="9A2D" code="STA $B3" comment="Save as new Max HP" %}
+{% include asmline addr="9A2F" code="STA $B2" comment="Full heal" %}
 {% include asmrowsep %}
 {% include asmline label=".continue" addr="9A31" code="JSR FlagObjectAsCollected" %}
-{% include asmline addr="9A34" code="LDA.b $2B" comment="Get tile ID" %}
+{% include asmline addr="9A34" code="LDA $2B" comment="Get tile ID" %}
 {% include asmline addr="9A36" code="PHA" comment="Remember it" %}
-{% include asmline addr="9A37" code="LDA.b #$00" comment="ID for empty space" %}
-{% include asmline addr="9A39" code="STA.b $2B" %}
+{% include asmline addr="9A37" code="LDA #$00" comment="ID for empty space" %}
+{% include asmline addr="9A39" code="STA $2B" %}
 {% include asmline addr="9A3B" code="JSR ChangeObjectType" %}
 {% include asmline addr="9A3E" code="JSR RedrawObject" %}
 {% include asmline addr="9A41" code="PLA" comment="Recover tile ID" %}
-{% include asmline addr="9A42" code="STA.b $2B" %}
+{% include asmline addr="9A42" code="STA $2B" %}
 {% include asmline label=".exit" addr="9A44" code="RTS" %}
 {% include asmfooter %}
 

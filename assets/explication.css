@@ -94,6 +94,17 @@ div.asmlist {
 		border-bottom: 5px solid #E0E0FF;
 	}
 
+
+	&>.asmrow-label {
+		display: block;
+		width: 100%;
+		font-weight: bold;
+		border-bottom: 1px solid black;
+		text-indent: 5px;
+		background: #5656EE;
+		color: white;
+	}
+
 	& > .asmrow {
 		display: block;
 		width: 100%;
@@ -116,30 +127,26 @@ div.asmlist {
 			display: inline-block;
 			position: absolute;
 			z-index: 2000000;
-			opacity: .2;
 			left: 0;
 			right: 0;
 			pointer-events: none;
 		}
 
 		&:hover:after {
-			background: #3333FF;
+			background: #3333FF22;
 		}
 	
 		&.asmrow-highlighted:before {
-			background: #0055EE;
+			background: #0055EE33;
+			opacity: 1;
+			border-left: 1em solid #9955EE;
+			left: -1em;
 		}
 
 		.asmline-instr {
 			color: #0F0F0F;
 			width: 20em;
 			margin-left: 3px;
-		}
-
-		&.asmrow-label {
-			font-weight: bold;
-			border-bottom: 1px solid;
-			text-indent: 5px;
 		}
 
 		&>.asmline-label {
@@ -162,6 +169,7 @@ div.asmlist {
 
 		&>.asmline-comment {
 			color: #229922;
+			font-style: italic;
 		}
 
 		&>.asmline-mcode {
@@ -171,6 +179,43 @@ div.asmlist {
 			padding-left: 4px;
 		}
 	}
+}
+
+.asmline-interjection {
+	padding-left: 3em;
+	font-style: italic;
+	background: #DDFFDD;
+	color: #229922;
+}
+
+.asmline-op {
+	color: #0000CC;
+}
+
+.asmline-operand-immediate {
+	color: #FF580E;
+}
+
+.asmline-operand-a {
+	color: #7733FF;
+	font-style: italic;
+}
+
+.asmline-operand-address {
+	color: #D91280;
+}
+
+.asmline-indexer {
+	color: #000000;
+}
+
+.asmline-label,
+.asmline-sublabel {
+	color: #2F0056;
+}
+
+.asmline-sublabel {
+	font-style: italic;
 }
 
 /* tables */

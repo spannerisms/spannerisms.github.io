@@ -1,2 +1,2 @@
-<div class="asmrow asmrow-label {% if include.highlight -%}asmrow-highlighted{%- endif -%}">
+<div class="asmrow-label {% if include.highlight -%}asmrow-highlighted{%- endif -%}">
 {{- include.label | default: "" -}}:</div>

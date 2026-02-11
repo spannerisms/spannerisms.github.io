@@ -1,3 +1,45 @@
 <div class="asmrow {% if include.highlight -%}asmrow-highlighted{%- endif -%}">
-<div class="asmline-label">{{ include.label | default: "" }}</div><div class="asmline-address">{{ include.addr | default: "" }}</div><div class="asmline-mcode">{{ include.bytes | default: "" }}</div><div class="asmline-instr">{{ include.code | default: "" }}</div><div class="asmline-comment">{% if include.comment %}; {% endif %}{{ include.comment | default: "" }}</div>
+<div class="asmline-label">{{ include.label | default: "" }}</div><div class="asmline-address">{{ include.addr | default: "" }}</div><div class="asmline-mcode">{{ include.bytes | default: "" }}</div><div class="asmline-instr">
+{%- assign temp=include.code | split:" " -%}
+<span class="asmline-op">{{- temp[0] -}}</span> {% assign fl=temp[1] | slice:0,1 -%}
+{%- if fl != "" -%}
+	<span class="asmline-operand">
+	{%- assign flt=temp | slice:1,4 -%}
+	{%- assign fout=flt
+		| join:" "
+		| replace: ",X", "<span class=asmline-indexer>,X</span>"
+		| replace: ",Y", "<span class=asmline-indexer>,Y</span>"
+		| replace: "(", "(<span class=asmline-operand-address>"
+		| replace: "[", "[<span class=asmline-operand-address>"
+		| replace: ")", "</span>)"
+		| replace: "]", "</span>]"
+	-%}
+	{%- case fl %}
+		{%- when "#" -%}
+			<span class="asmline-operand-immediate">{{ fout }}</span>
+		{%- when "$" -%}
+			<span class="asmline-operand-address">{{ fout }}</span>
+		{%- when "(" -%}
+			{{ fout }}
+		{%- when "." -%}
+			<span class="asmline-sublabel">{{ fout }}</span>
+		{%- else -%}
+			{%- if fout=="A" -%}
+				<span class="asmline-operand-a">A</span>
+			{%- else %}
+				{%- case temp[0] -%}
+					{%- when
+						"JSR", "JRL",
+						"BCC", "BCS", "BVC", "BVS", "BNE", "BEQ", "BPL", "BMI", "BRL",
+						"JMP", "JML"
+					-%}
+						<span class="asmline-label">{{ fout }}</span>
+					{%- else -%}
+						{{ fout }}
+				{%- endcase -%}
+			{%- endif -%}
+	{%- endcase -%}
+	</span>
+{%- endif -%}
+</div><div class="asmline-comment">{% if include.comment %}; {% endif %}{{ include.comment | default: "" }}</div>
 </div>
