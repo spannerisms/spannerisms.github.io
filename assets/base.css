@@ -272,8 +272,6 @@ code.mathAns {
 	font-weight: bold;
 }
 
-
-
 /* tables */
 table.shrunktable {
 	min-width: 10%;
@@ -363,6 +361,11 @@ span.disgusting {
 code.nowrap,
 span.nowrap {
 	white-space: nowrap;
+}
+
+img.screenshot {
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
 }
 
 /* Backgrounds */
@@ -548,12 +551,13 @@ button.footnote-tag {
 	font-size: 75%;
 	color: #6161F2;
 	cursor: help;
+
 	&:hover {
 		color: #111182;
 		text-decoration: underline;
 		text-decoration-style: dotted;
 	}
-	
+
 	&:before {
 		counter-increment: footnotesid;
 		content: '[' counter(footnotesid) ']';

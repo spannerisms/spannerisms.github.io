@@ -10,20 +10,13 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>If you've ever seen me talk, you've probably seen me say "west somaria" (possibly in ALL CAPS). That's because I'm always excited about them. They open doors! Sweet! West somarias are nowhere near as damaging as the other directions, but they are way cooler.</p>
 
-<h2>The culprit you least expect</h2>
+<h2>When push comes to shove</h2>
 
 <p>West somarias don't just magically open doors (actually, I guess they kinda do). What they're really doing is corrupting the game submodule (<asmvar>SUBMODE</asmvar>) held in address <addr>$11</addr>. This is caused by double triggering the door transition, which is changed with an increment instead of directly setting it to some value.</p>
 
-<p>Why does pushing a block in a door cause a double transition? When you first move, you are hitting the transition like normal. Pressing a parallel direction puts Link back in door state which then allows door transition detection code to run. This is a normal subtask that occurs as part of the camera update routine run every frame. But somaria blocks are special. Interaction with them is handled outside of all other Link code. Seriously! Look at this:</p>
+<p>When Link first moves, he is hitting the transition like normal. Pressing direction along the axis of the door puts him back in door state and that allows door transition detection code to run. This is a normal subtask that occurs as part of the camera update routine run every frame.</p>
 
-{% include asmheader addresses="snes" %}
-{% include asmline addr="078019" code="JSR LinkControlHandler" comment="All other Link code" %}
-{% include asmline addr="07801C" code="JSR HandleSomariaAndGraves" comment="WOW!" %}
-{% include asmfooter %}
-
-<p>That's not the cause of anything relevant to this article, though. It's just what makes the blocks special.</p>
-
-<p>What is relevant here is that this routine calls a function for completely aborting Link's movement when he is pushed back by a somaria block. This routine cancels an active hookshot, undoes any movements Link may have made, and recalculates the camera. The camera recalculation is done with the same routine run every frame&mdash;the one that can trigger transitions in a door. During a somaria transition corruption, Link is still in a door! That means the camera runs another transition check. In other words, two transitions are being triggered: one by our everyframe duties and one by the movement abortion.</p>
+<p>Somaria blocks (and graves) are handled after all other Link movement code. Within this code is a function call for completely aborting Link's movement when he is pushed back by a somaria block. That routine cancels an active hookshot, undoes any movement performed by Link, and recalculates the camera. The camera recalculation is done with the same routine mentioned earlier that gets run every frame&mdash;the one that can trigger transitions in a door. During a somaria transition corruption, Link is still in a door! That enables the camera check to run another transition check. In other words, two transitions are being triggered: one by the everyframe duties and one by the movement abortion.</p>
 
 <h2>Doors 101</h2>
 
@@ -45,15 +38,15 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>When pushing Link back, the somaria block doesn't just undo the adjustment done by the normal transition; it also undoes the movement effected by the player. Now Link's coordinates are back to ending in <asmval>$08</asmval>. When the abort movement transition tries to determine which direction to go, it will calculate a prospective coordinate 8 pixels to the west. That's just barely still in the same quadrant. Nothing between now and the somaria block's pushback has modified <asmvar>CALCX</asmvar>; it holds a set of coordinates that are in the quadrant to the west. <asmvar>DIFFXH</asmvar> is found to be 1&mdash;a positive number. It has been determined that Link should transition <em>east</em>.</p>
 
-<p>Basically, the first transition is calculated normally while the second transition is done with the positions more or less swapped. This flip-flopping explains a lot about west somarias. It's why they have a stable camera. It's why they don't change the room ID. And it's why Link pops backwards after pushing the block.</p>
+<p>Basically, the first transition is calculated normally while the second transition is done with the positions more-or-less swapped. This flip-flopping explains a lot about west somarias. It's why they have a stable camera. It's why they don't change the room ID. And it's why Link pops backwards after pushing the block.</p>
 
 <p>This is a very precise glitch. When the somaria block is pushed, only 2 positions can effect a west somaria. Luckily, one of these positions happens to be exactly where Link lands during setup. If Link were on, say, an X-coordinate ending in <asmval>$06</asmval> after setup, then there would be no west somaria{% include footnote content="The mere thought of this has brought me to tears." %}. The normal transition would trigger correctly, but the abort movement transition would calculate 0 for <asmvar>DIFFXH</asmvar>. No second transition would occur.</p>
 
-<p>So why are east somarias not experiencing the same thing? Well, that's because these transitions occur much sooner. Link's coordinates are defined as the top left of his existence, so anything checking to the right of him on screen needs to account for his width. East transitions are triggered from X-coordinates ending in <asmval>$EB</asmval> to <asmval>$EE</asmval>. Link will still be adjusted 8 pixels forwards, but, importantly, this adjustment does not push him into the next quadrant. Thus, the calculations by both the normal transition and the abort movement transition result in a positive <asmvar>DIFFXH</asmvar>.</p>
+<p>East somarias don't experience the same back-and-forth, because these transitions occur much sooner. Link's coordinates are defined as the top left of his existence, so anything checking to the right of him on screen needs to account for his width. East transitions are triggered from X-coordinates ending in <asmval>$EB</asmval> to <asmval>$EE</asmval>. Link will still be adjusted 8 pixels forwards, but, importantly, this adjustment does not push him into the next quadrant. Thus, the calculations by both the normal transition and the abort movement transition result in a positive <asmvar>DIFFXH</asmvar>.</p>
 
-<p>East doors can also experience the null second transition. If Link attempts to push a somaria block when his X-coordinate ends in <asmval>$EA</asmval>, the block does actually run a second transition detection. But the pushback will have sent him to an X-coordinate far enough west that the prospective coordinate of that transition will remain in the same quadrant. Thus it yields 0 for <asmvar>DIFFXH</asmvar>. No extra transition.</p>
+<p>East doors can also experience the null second transition. If Link attempts to push a somaria block when his X-coordinate ends in <asmval>$EA</asmval>, the block does actually run a second transition detection. But the block's pushback will have sent him to an X-coordinate far enough west that the prospective coordinate of that transition will remain in the same quadrant. Thus it yields 0 for <asmvar>DIFFXH</asmvar>. No extra transition.</p>
 
-<p>And what about vertical transitions? North doors just don't adjust Link's coordinates at all. If they did, they might have experienced the same flip-floppy behavior as west doors. South transitions, like easts, occur earlier to account for Link's height and thus don't place him in the next quadrant when triggered.</p>
+<p>As for the vertical axis: north doors just don't adjust Link's coordinates at all. If they did, they might have experienced the same flip-floppy behavior as west doors. South transitions, like easts, occur earlier to account for Link's height and thus don't place him in the next quadrant when triggered.</p>
 
 <h2>When is a door not a door? When it's ajar!</h2>
 
@@ -78,7 +71,7 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 	<li>Intraroom transitions.</li>
 </ul>
 
-<p>Doors that can be opened have a tile collision type of <asmval>$Fx</asmval>, where <asmval>x</asmval> uses bits 0&ndash;2 for the door's index and bit 3 to identify whether it's the top or bottom. All other doors use a generic tile type. To find their tilemap position, <asmvar>DOORPOS</asmvar> is used to locate an entry on the collision map. The lower 3 bits of this entry can be used to index the <asmvar>DOORXTMAP</asmvar> array at <asmval>$19A0</asmval> which contains the door's base position. This allows any part of the door to correctly locate the door as a whole.</p>
+<p>Doors that can be opened have a tile collision type of <asmval>$Fx</asmval>, where <asmval>x</asmval> uses bits 0&ndash;2 for the door's index and bit 3 to identify whether it's the top or bottom. All other doors use a generic tile type. To find their tilemap position, <asmvar>DOORPOS</asmvar> is used to locate an entry on the collision map. The lower 3 bits of this entry encode an index for the <asmvar>DOORXTMAP</asmvar> array at <asmval>$19A0</asmval> which contains the door's base position. This allows any part of the door to correctly locate the door as a whole.</p>
 
 <p>The shutter door opening routine also uses <asmvar>DOORPOS</asmvar>, but as a loop counter. It ends up setting it to a value of <asmval>$0016</asmval>. Shutter doors are looked for on every intraroom transition, also resulting in this value.</p>
 
@@ -139,11 +132,9 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>The answer is no.</p>
 
-<p>Technically, if it were in a better room, the vitreous goo could help convince the game you've lifted some non-existant pots in Ganon's room. And these pit corners could corrupt the location of lightable torches until you reload the underworld! But who cares?</p>
+<p>Technically, if it were in a better room, the vitreous goo could help convince the game you've lifted some non-existant pots in Ganon's room. And these pit corners could corrupt the location of lightable torches until you reload the underworld. But who cares!?</p>
 
-<p>What about the collision map? That's also updated by door opening routines.</p>
-
-<p>The collision map sits at <addr>$7F2000</addr> and occupies <asmval>$2000</asmval> bytes. Changes to it are limited in how far they can write. The collision map is half the size of the tilemap buffer, so tilemap positions are divided by 2 to index it. They may also be masked, which limits them further. Most of what follows the collision map is boring or nothing, but two interesting, procedurally-built tables are within range: enemy damage classes at <addr>$7F6000</addr> and message pointers at <addr>$7F71C0</addr>.</p>
+<p>There are also the updates to the collision map, which sits at <addr>$7F2000</addr> and occupies <asmval>$2000</asmval> bytes. Changes to it are limited in how far they can write. The collision map is half the size of the tilemap buffer, so tilemap positions are divided by 2 to index it. They may also be masked, which limits them further. Most of what follows the collision map is boring or nothing, but two interesting, procedurally-built tables are within range: enemy damage classes at <addr>$7F6000</addr> and message pointers at <addr>$7F71C0</addr>.</p>
 
 <p>Wow! This could be huge! Imagine what possibilites there are with the ability to modify the damage enemies take!</p>
 

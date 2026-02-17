@@ -3,5 +3,4 @@
 {% case include.addresses %}{% when "nes" %}asmlist-hasaddresses asmlist-nescode{% when "snes" %}asmlist-hasaddresses asmlist-sfccode{% else %}{% endcase %}
 {% if include.mcode %}asmlist-hasmcode{% endif %}
 {% if include.comments %}asmlist-hascomments{% endif %}
-"
->
+">

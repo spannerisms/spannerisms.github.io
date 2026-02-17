@@ -345,7 +345,7 @@ ogdesc: "We finally figured out bootsless spinspeed!"
 {% include asmline label="IAx66_entry" addr="08A086" code="RTS" bytes="60" %}
 {% include asmfooter %}
 
-<p>This entry points to a location in ROM, specifically part of the door debris draw routine's data table. It just so happens to land on the value <asmval>$60</asmval>, which is the opcode for <asmop>RTS</asmop>, causing the ancilla's routine to exit immediately.</p>
+<p>This entry points to a location in ROM, specifically part of the door debris draw routine's data table. It just so happens to land on the value <asmval>$60</asmval>&mdash;the opcode for <asmop>RTS</asmop>&mdash;causing the ancilla's routine to exit immediately.</p>
 
 <h3 id="IAx67">IAx67</h3>
 {% include asmheader labels=true addresses="snes" mcode=true %}

@@ -19,7 +19,7 @@ background: glitchybg
 {% include asmline addr="1CFCE4" code="CMP.b #$02" comment="Is Link recoiling?" %}
 {% include asmline addr="1CFCE6" code="BNE .exit" comment="If not, just leave" %}
 {% include asmline addr="1CFCE8" code="LDY.b #$00" comment="$00 indicates default state" %}
-{% include asmline addr="1CFCEA" code="LDA,w $02E0" comment="Check graphics flag" highlight=true %}
+{% include asmline addr="1CFCEA" code="LDA.w $02E0" comment="Check graphics flag" highlight=true %}
 {% include asmline addr="1CFCEC" code="BEQ .set" comment="If human, set $5D to $00" %}
 {% include asmline addr="1CFCEE" code="LDY.b #$17" comment="$17 indicates bunny state" %}
 {% include asmline addr="1CFCF0" code="LDA.l $7EF357" comment="Check for pearl" %}

@@ -80,7 +80,7 @@ div.asmlist {
 		&.asmlist-nescode > div > .asmline-address {
 			width: 2.5em;
 		}
-	
+
 		&:not(.asmlist-haslabels) > div > .asmline-label {
 			display: none;
 		}
@@ -135,7 +135,7 @@ div.asmlist {
 		&:hover:after {
 			background: #3333FF22;
 		}
-	
+
 		&.asmrow-highlighted:before {
 			background: #0055EE33;
 			opacity: 1;
@@ -428,4 +428,65 @@ div.chestrock {
 	image-rendering: crisp-edges;
 	image-rendering: pixelated;
 	zoom: 200%;
+}
+
+
+table.skulldoorstable {
+	margin: 0 auto;
+	width: 90%;
+
+	& .doorheader {
+		text-align: center;
+		background: #7777EE !important;
+		font-size: 170%;
+		padding: .5em 0;
+	}
+
+	& .tablewritesrow > th,
+	& .tilemapsep {
+		text-align: center;
+		background: #9999EE !important;
+	}
+
+	& .damageheader {
+		text-align: right;
+	}
+
+	& .subclassrow {
+		& > .subclassheader {
+			text-align: right;
+		}
+
+		& > th.zerodamage {
+			background: #BCBCBC;
+			color: #989898;
+		}
+		
+		& > th:not(:first-child):not(.subclassheader) {
+			text-align: center;
+			width: 6em;
+		} 
+	}
+
+	& .damagerow {
+		& > td {
+			background: white;
+
+			&.zerodamage {
+				background: #D8D8D8;
+				color: #989898;
+			}
+		}
+
+		& th:first-of-type {
+			text-align: right;
+		}
+		& td:nth-child(2n){
+			text-align: right;
+		}
+
+		& td:nth-child(2n+1){
+			text-align: left;
+		}
+	}
 }
