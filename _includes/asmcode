@@ -1,0 +1,43 @@
+<div class="asmline-instr">
+{%- assign temp=include.code | strip | split:" " -%}
+<span class="asmline-op">{{- temp[0] -}}</span> {% assign fl=temp[1] | slice:0,1 -%}
+{%- if fl != "" -%}
+	<span class="asmline-operand">
+	{%- assign flt=temp | slice:1,4 -%}
+	{%- assign fout=flt
+		| join:" "
+		| replace: ",X", "<span class=asmline-indexer>,X</span>"
+		| replace: ",Y", "<span class=asmline-indexer>,Y</span>"
+		| replace: "(", "(<span class=asmline-operand-address>"
+		| replace: "[", "[<span class=asmline-operand-address>"
+		| replace: ")", "</span>)"
+		| replace: "]", "</span>]"
+	-%}
+	{%- case fl %}
+		{%- when "#" -%}
+			<span class="asmline-operand-immediate">{{ fout }}</span>
+		{%- when "$" -%}
+			<span class="asmline-operand-address">{{ fout }}</span>
+		{%- when "(" -%}
+			{{ fout }}
+		{%- when "." -%}
+			<span class="asmline-operand-sublabel">{{ fout }}</span>
+		{%- else -%}
+			{%- if fout == "A" -%}
+				<span class="asmline-operand-a">A</span>
+			{%- else -%}
+				{%- case temp[0] -%}
+					{%- when
+						"JSR", "JSL",
+						"BCC", "BCS", "BVC", "BVS", "BNE", "BEQ", "BPL", "BMI", "BRL",
+						"JMP", "JML"
+					-%}
+						<span class="asmline-operand-label">{{ fout }}</span>
+					{%- else -%}
+						{{ fout }}
+				{%- endcase -%}
+			{%- endif -%}
+	{%- endcase -%}
+	</span>
+{%- endif -%}
+</div>

@@ -1,0 +1,8 @@
+{%- assign dig3 = include.val | divided_by: 4096 | floor | modulo: 16 -%}
+{%- assign dig2 = include.val | divided_by: 256 | floor| modulo: 16 -%}
+{%- assign dig1 = include.val | divided_by: 16 | floor| modulo: 16 -%}
+{%- assign dig0 = include.val | floor | modulo: 16 -%}
+{{- "0123456789ABCDEF" | slice: dig3 -}}
+{{- "0123456789ABCDEF" | slice: dig2 -}}
+{{- "0123456789ABCDEF" | slice: dig1 -}}
+{{- "0123456789ABCDEF" | slice: dig0 -}}

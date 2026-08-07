@@ -12,7 +12,7 @@ ogdesc: "Seriously! There are rocks that act like chests on the overworld! It's 
 
 <h2>Overworld collision</h2>
 
-<p>First, we need to understand how underworld collision works. In the underworld, one room is loaded at a time and its tilemap exists in its entirety in memory at <addr>$7E2000</addr> through to <addr>$7E5FFF</addr>. Each tile is a 16-bit word with a 10-bit tile name that dictates its graphics. That 10-bit tile name is used to look up a tile type in a dynamic table stored in WRAM at <addr>$7EFE00</addr> and then stored in a collision map held in memory at <addr>$7F2000</addr> through to <addr>$7F3FFF</addr>.</p>
+<p>First, we need to understand how underworld collision works. In the underworld, one room is loaded at a time, and its tilemap exists in its entirety in memory at <addr>$7E2000</addr> through to <addr>$7E5FFF</addr>. Each tile is a 16-bit word with a 10-bit tile name that dictates its graphics. That 10-bit tile name is used to look up a tile type in a dynamic table stored in WRAM at <addr>$7EFE00</addr> and then stored in a collision map held in memory at <addr>$7F2000</addr> through to <addr>$7F3FFF</addr>.</p>
 
 <p>The underworld's tilemap and collision loading is simple, because only two 64-by-64 maps are loaded at a time&mdash;the upper and lower layers. That works out to 4096 tiles&mdash;<asmval>$1000</asmval> in hexadecimal&mdash;the exact size of each collision map buffer.</p>
 
@@ -57,13 +57,13 @@ ogdesc: "Seriously! There are rocks that act like chests on the overworld! It's 
 
 <h2>Shooting sparrows with a cannon</h2>
 
-<p>First off, why do the manipulability checks not use this table? Bushes, rocks, and diggable ground, and actually every interaction that has a hardcoded check already has an existing tile interaction type. Except doors, but those could easily be given one! This could have been much cleaner and more expandable.</p>
+<p>First off, why do the manipulability checks not use this table? Bushes, rocks, and diggable ground, and actually every interaction that has a hardcoded check already has an existing tile interaction type. This could have been much cleaner and more expandable.</p>
 
-<p>Next, why does this table exist? It is only used by two things: the hammer for spawning a splash, and search probes for detecting collision. This table embodies an extremely odd and heavy hitting solution to these problems. Search probes could use the existing overworld tile checks that every other sprite uses. They already use the same routines as everything else for underworld tiles. Why are they different here? As for the hammer, it'd be slightly less efficient, but there's no reason it can't just check 4 tiles at once for being water. Why does it need to check map16 objects specifically?</p>
+<p>Next, why does this table exist? It is only used by two things: the hammer for spawning a splash, and search probes for detecting collision. This table embodies an extremely odd and heavy-hitting solution to these problems. Search probes could use the existing overworld tile checks that every other sprite uses. They already use the same routines as everything else for underworld tiles. Why are they different here? As for the hammer, it'd be slightly less efficient, but there's no reason it can't just check 4 tiles at once for being water. Why does it need to check map16 objects specifically?</p>
 
 <h2>It wasn't a rock...</h2>
 
-<table class="float-right aligncenter shrunktable">
+<table class="float-right align-center shrunk">
 	<tr class="header">
 		<th>Map16 ID</th>
 		<th>Image</th>
@@ -114,7 +114,7 @@ ogdesc: "Seriously! There are rocks that act like chests on the overworld! It's 
 	</tr>
 </table>
 
-<p>For some reason, inside <asmfunc>OverworldTileTypeTable</asmfunc>, there are 11 map16 objects that are given the value of <asmval>$5C</asmval>, which corresponds to chest #4. Hammers then test this value for equality to <asmval>$08</asmval> (deep water) and <asmval>$09</asmval> (shallow water), and search probes use it to index a table at <addr>$0DB971</addr>, which in turn gives the value <asmval>$00</asmval>. Really, that value should be <asmval>$01</asmval> for collision, or <asmval>$02</asmval> for short collision, if we're being generous.</p>
+<p>For some reason, inside <asmfunc>OverworldTileTypeTable</asmfunc>, there are 11 map16 objects assigned a value of <asmval>$5C</asmval>, which corresponds to chest #4. Hammers then test this value for equality to <asmval>$08</asmval> (deep water) and <asmval>$09</asmval> (shallow water), and search probes use it to index a table at <addr>$0DB971</addr>, which in turn gives the value <asmval>$00</asmval>. Really, these objects should use <asmval>$02</asmval> for short collision; other rocks use this value.</p>
 
 <p>So, unfortunately, we can't actually open any chest rocks in the overworld, because they're never considered a chest in that context. But they really are considered chests by the hammer. It just means nothing; they might as well be a wall.</p>
 

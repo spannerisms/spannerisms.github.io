@@ -23,7 +23,7 @@ ogdesc: "Nintendo's failed attempt at vector rotation."
 {% include asmline code="ADC.b $0C" comment="Add smaller distance" %}
 {% include asmline code="CMP.b $0D" comment="Compare to bigger distance" %}
 {% include asmline code="BCC .no_overflow" comment="Skip if less than" %}
-{% include asmline code="SBC.b $0D" comment="total mod bigger distance" %}
+{% include asmline code="SBC.b $0D" comment="Total modulo bigger distance" %}
 {% include asmline code="INC.b $00" comment="Accumulate speedB" %}
 {% include asmline label=".no_overflow" code="STA.b $0B" %}
 {% include asmline code="DEX" comment="Iterate" %}
@@ -98,7 +98,7 @@ ogdesc: "Nintendo's failed attempt at vector rotation."
 {% include asmline label=".next" code="ADC.b $0C" comment="Add smaller distance" %}
 {% include asmline code="CMP.b $0D" comment="Compare to bigger distance" %}
 {% include asmline code="BCC .no_overflow" %}
-{% include asmline code="SBC.b $0D" comment="total mod biggerDistance" %}
+{% include asmline code="SBC.b $0D" comment="Total modulo bigger distance" %}
 {% include asmline code="INY" comment="Accumulate speedB" %}
 {% include asmline code="CLC" %}
 {% include asmline label=".no_overflow" code="DEX" %}

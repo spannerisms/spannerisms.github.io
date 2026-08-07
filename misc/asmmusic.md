@@ -192,7 +192,7 @@ The next level below song is a segment. Segments allow for more complex structur
     %segment(<SegmentTitle>)
 ```
 
-- **`SegmentTitle`** should be a unique name for this segment within the song that only uses alphanumeric characters and underscores; no spaces. Segments names do not need to be unique to segments in other songs; e.g., multiple song can have a segment named "Intro".
+- **`SegmentTitle`** should be a unique name for this segment within the song that only uses alphanumeric characters and underscores; no spaces. Segments names do not need to be unique to segments in other songs; e.g., multiple songs can have a segment named "Intro".
 
 Segments can be repeated by using the macro `repeatsegment`, for example:
 
@@ -277,7 +277,7 @@ Notes are played by simply typing them. The example below plays a C-major scale:
 
 Take note of the `db` at the beginning of the line. This directive is required on every data statement. It stands for "define byte" and tells the assembler to put a value directly into the ROM.
 
-"Black key" notes are available with the `s` or `f`&mdash;for "sharp" and "flat", respectively&mdash;accidentals after the note's letter name. For example, `Cs3` will play the note one half-step above `C3`, and `Af5` will play the note one half-step below `A5`.
+"Black key" notes are available with the `s` or `f` accidentals&mdash;for "sharp" and "flat", respectively&mdash;after the note's letter name. For example, `Cs3` will play the note one half-step above `C3`, and `Af5` will play the note one half-step below `A5`.
 
 All available note names are defined; e.g., either `Cs3` or `Df3` can be used despite both compiling to the value 0x99.
 

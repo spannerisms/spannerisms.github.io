@@ -14,7 +14,7 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>West somarias don't just magically open doors (actually, I guess they kinda do). What they're really doing is corrupting the game submodule (<asmvar>SUBMODE</asmvar>) held in address <addr>$11</addr>. This is caused by double triggering the door transition, which is changed with an increment instead of directly setting it to some value.</p>
 
-<p>When Link first moves, he is hitting the transition like normal. Pressing direction along the axis of the door puts him back in door state and that allows door transition detection code to run. This is a normal subtask that occurs as part of the camera update routine run every frame.</p>
+<p>When Link first moves, he is hitting the transition like normal. Pressing a direction along the axis of the door puts him back in door state and that allows door transition detection code to run. This is a normal subtask that occurs as part of the camera update routine run every frame.</p>
 
 <p>Somaria blocks (and graves) are handled after all other Link movement code. Within this code is a function call for completely aborting Link's movement when he is pushed back by a somaria block. That routine cancels an active hookshot, undoes any movement performed by Link, and recalculates the camera. The camera recalculation is done with the same routine mentioned earlier that gets run every frame&mdash;the one that can trigger transitions in a door. During a somaria transition corruption, Link is still in a door! That enables the camera check to run another transition check. In other words, two transitions are being triggered: one by the everyframe duties and one by the movement abortion.</p>
 
@@ -83,7 +83,7 @@ ogdesc: "Learn how exactly pushing a block in a door breaks the game and why doi
 
 <p>Speaking of infinite loops!!! Let's talk about dollar six ninety.</p>
 
-<p><asmvar>DOORTIME</asmvar> is a 16-bit timer that gets incremented every frame with each invocation of the submodule. Its value is checked for being <asmval>4</asmval>, <asmval>12</asmval>, and <asmval>16</asmval>, each marking an update to the tilemap to animate the door. In the first step, on frame 4, the collision map is updated. On the second step, the door gets flagged as opened. On the last step the new door is finalized and <asmvar>SUBMODE</asmvar> is reset to 0 for player control.</p>
+<p><asmvar>DOORTIME</asmvar> is a 16-bit timer that gets incremented every frame with each invocation of the submodule. Its value is checked for being <asmval>4</asmval>, <asmval>12</asmval>, and <asmval>16</asmval>, each marking an update to the tilemap to animate the door. In the first step, on frame 4, the collision map is updated. On the second step, the door gets flagged as opened. On the last step the new door is finalized, and <asmvar>SUBMODE</asmvar> is reset to 0 for player control.</p>
 
 <p>The increment occurs at the beginning of the routine and only ever checks for exact equality. This means that performing a west somaria with a value of <asmval>$0010</asmval> will not immediately terminate; rather, the game will wait for this timer to overflow and wrap around back to 0 before continuing as normal. That's a long time. 65520 frames, to be exact&mdash;a little over 18 minutes.</p>
 

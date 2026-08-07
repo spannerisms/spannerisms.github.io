@@ -373,14 +373,6 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 <p>In the US version, it is completely "fixed" on accident. Again, the bug itself is not even acknowledged, but the value <addr>$C8</addr> ends up being set to is <asmval>$0D</asmval>, which doesn't correspond to any valid prize index. The chest game now allows any item to be obtained on the first chest, but just by stupid luck. The problem fixed itself without ever being discovered by the developers.</p>
 <p>When I say "fixed", I just mean obtaining the heart piece from the first chest. The nudge mechanic is still broken. The item graphics themselves need to be decompressed as they pop out of the chest, which again clobbers <addr>$C8</addr>. After that call, the value is always high enough to allow any prize next. The downside is we lose the intended 1/4 odds on the heart piece when the previous prize was a bomb.</p>
 
-<h2>Tiny fixes</h2>
-
-<h3>Fwsh</h3>
-<p>Slashing a closed door will play the grass-cutting sound effect. If the door is a vine or curtain, the puzzle complete jingle will also play. The closed door slashy part is an oversight that even causes an invisible tile map update to occur&mdash;invisible due to the tiles being changed to what they already are. The US version fixes this by branching further ahead when the door is not a vine or curtain, skipping over half-initialized code that the Japanese versions didn't.</p>
-
-<h3>Owee!</h3>
-<p>When Link touches a spike, his i-frame timer and the cape flag are checked to determine if he should take damage. Beginning with REV1, the invulnerability timer is also checked.</p>
-
 <h3>Smoke on the water</h3>
 <p>An interesting cultural difference between the United States and Japan is that for the latter, explosives placed in shallow water don't seem to disturb the liquid. In America, bombs placed in the water will cause a visible disturbance in the form of animated ripples. In both nations, Somaria blocks sit on water without disturbing it.</p>
 <p>Two arrays are introduced to control these ripples: <addr>$03D2</addr> and <addr>$03E1</addr>. The latter was previously unused memory, and the former is part of an existing array. The ripples don't draw with an explosion, so a new check is included for that as well.</p>
@@ -391,6 +383,14 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 <p>Being in a lower slot, the bomb will execute its code after the boomerang. Every 3 frames, <addr>$03D2,X</addr> is incremented by 1 and reset to <asmval>$00</asmval> when it reaches <em>exactly</em> <asmval>$03</asmval>. Values greater than that are not reset. The graphics can never bug out if Link is facing up or down, since those correspond to lower values, but it should happen every time when facing left or right.</p>
 <p>The details behind the boomerang's position are a bit more technical. It uses this value to index a table that tells it where to position itself relative Link during the windup animation. The table expects even indices as it's a collection of 16-bit values. An odd index will have it read misaligned data, and it happens to be that an index of <asmval>$01</asmval> results in a Y-offset of <asmval>$06FF</asmval>, or 1791 pixels down.</p>
 <p>This can be further corrupted by pausing the game after priming the boomerang while facing left or right. The ripple animation continues to run even while everything else is paused, so that value will keep incrementing until it overflows back to its intended range. Doing this, you can throw the boomerang with any directional offset index. Except for <asmval>$03</asmval>.</p>
+
+<h2>Tiny fixes</h2>
+
+<h3>Fwsh</h3>
+<p>Slashing a closed door will play the grass-cutting sound effect. If the door is a vine or curtain, the puzzle complete jingle will also play. The closed door slashy part is an oversight that even causes an invisible tile map update to occur&mdash;invisible due to the tiles being changed to what they already are. The US version fixes this by branching further ahead when the door is not a vine or curtain, skipping over half-initialized code that the Japanese versions didn't.</p>
+
+<h3>Owee!</h3>
+<p>When Link touches a spike, his i-frame timer and the cape flag are checked to determine if he should take damage. Beginning with REV1, the invulnerability timer is also checked.</p>
 
 <h3>Bush toss</h3>
 <p>Carried sprites need to stick with Link, and part of that is copying his layer. Link's "layer" is a little overloaded, with it controlling both the physical layer for interactions and the visual priority for display over backgrounds. In REV1, carried sprites now account for this by extracting the least significant bit of Link's "layer" to copy into theirs.</p>
@@ -447,7 +447,7 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 <p>From here, the existence of 1/1024th-magic only requires simple mathematical deduction. A value of <asmval>$00</asmval> gives no upgrade, or 1/1-magic; <asmval>$01</asmval> gives 1/2-magic, and <asmval>$02</asmval> gives 1/4-magic. The <a href="https://oeis.org/A000079">relationship</a> is clearly <span class="nowrap">1/2<sup>n</sup></span>-magic. Thus a value of <asmval>$0A</asmval> (<asmval>10</asmval> in decimal) would give 1/1024th-magic.</p>
 <p>Q.E.D.</p>
 <p>Of course, the caveat is that magic consumption upgrades are handled with a table that's only sized for quarter-magic; however, we can still perform the lookup to see how much items cost with 1/1024th magic:</p>
-<table class="centertable">
+<table class="center">
 	<tr>
 		<th>Item</th>
 		<th>1/1</th>
