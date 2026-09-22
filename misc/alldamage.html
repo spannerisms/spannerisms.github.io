@@ -7,14 +7,15 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 ---
 <p>This page is a data dump to complement the <a href="/damage">Damage to Enemies explication</a>. The table is created from raw ROM data. Other factors may prevent damage from being inflicted to a given sprite, in which case the cell will be faded. Invalid subclass values are marked in red.</p>
 
-<table class="align-right">
+<table class="align-right damage-table">
 	<caption>Sprite damage table</caption>
 	<thead>
 		<tr>
 			<th rowspan="3" colspan="2">Sprite</th>
-			<th colspan="16">Damage subclass<br />(resulting value)</th>
+			<th colspan="17">Damage subclass<br />(resulting value)</th>
 		</tr>
 		<tr class="stickyrow">
+			<th class="vert-text hp">HP</th>
 			<th class="vert-text">Boomerang</th>
 			<th class="vert-text">Sword 1</th>
 			<th class="vert-text">Sword 2</th>
@@ -33,6 +34,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<th class="vert-text">Quake</th>
 		</tr>
 		<tr>
+			<th></th>
 			<th class="value">$00</th>
 			<th class="value">$01</th>
 			<th class="value">$02</th>
@@ -53,28 +55,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 	</thead>
 	<tbody>
 		<tr>
-			<th class="number value">$00</th>
+			<th rowspan="2" class="number value">$00</th>
 			<th>Raven</th>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(32)</span></td>
+			<td class="hp">4</td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(32)</span></td>
+		</tr>
+		<tr>
+			<th>Pmurderdactyl</th>
+			<td class="hp">8</td>
 		</tr>
 		<tr>
 			<th class="number value">$01</th>
 			<th>Vulture</th>
+			<td class="hp">6</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -95,6 +103,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$02</th>
 			<th>Stalfos head</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -115,6 +124,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$03</th>
 			<th>Undefined</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -135,6 +145,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$04</th>
 			<th>Pull switch</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -155,6 +166,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$05</th>
 			<th>Switch<br />(unused)</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -175,6 +187,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$06</th>
 			<th>Pull switch<br />(wrong)</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -195,6 +208,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$07</th>
 			<th>Switch<br />(unused)</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -213,28 +227,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$08</th>
+			<th rowspan="2" class="number value">$08</th>
 			<th>Octorok</th>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(Blob)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+			<td class="hp">2</td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(Blob)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+		</tr>
+		<tr>
+			<th>Slarok</th>
+			<td class="hp">4</td>
 		</tr>
 		<tr>
 			<th class="number value">$09</th>
 			<th>Moldorm</th>
+			<td class="hp">12</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(2)</span></td>
@@ -253,28 +273,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$0A</th>
+			<th rowspan="2" class="number value">$0A</th>
 			<th>Octorok (4-way)</th>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(Blob)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+			<td class="hp">2</td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(Blob)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+		</tr>
+		<tr>
+			<th>Slarok (4-way)</th>
+			<td class="hp">4</td>
 		</tr>
 		<tr>
 			<th class="number value">$0B</th>
 			<th>Cucco</th>
+			<td class="hp dead">255</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -295,6 +321,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$0C</th>
 			<th>Octorok stone</th>
+			<td class="hp">0</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -315,6 +342,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$0D</th>
 			<th>Buzzblob</th>
+			<td class="hp">3</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -335,6 +363,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$0E</th>
 			<th>Snapdragon</th>
+			<td class="hp">12</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -355,6 +384,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$0F</th>
 			<th>Octoballoon</th>
+			<td class="hp">2</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -375,6 +405,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$10</th>
 			<th>Octoballoon baby</th>
+			<td class="hp">0</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -395,6 +426,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$11</th>
 			<th>Hinox</th>
+			<td class="hp">20</td>
 			<td><span class="damage-subclass">4</span><span class="damage-value">(128fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -415,6 +447,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$12</th>
 			<th>Moblin</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -435,6 +468,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$13</th>
 			<th>Mini helmasaur</th>
+			<td class="hp">4</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -455,6 +489,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$14</th>
 			<th>Thieves' Town grate</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -475,6 +510,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$15</th>
 			<th>Antifairy</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -495,6 +531,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$16</th>
 			<th>Sahasrahla<br />Aginah</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -515,6 +552,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$17</th>
 			<th>Hoarder</th>
+			<td class="hp">2</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -535,6 +573,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$18</th>
 			<th>Mini moldorm</th>
+			<td class="hp">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -555,6 +594,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$19</th>
 			<th>Poe</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -575,6 +615,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$1A</th>
 			<th>Smithy</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -595,6 +636,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$1B</th>
 			<th>Arrow</th>
+			<td class="hp">0</td>
 			<td><span class="damage-subclass">2</span><span class="damage-value">(32)</span></td>
 			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
 			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
@@ -615,6 +657,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$1C</th>
 			<th>Statue</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -635,6 +678,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$1D</th>
 			<th>Weathervane</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -655,6 +699,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$1E</th>
 			<th>Crystal switch</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -675,6 +720,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$1F</th>
 			<th>Sick kid</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -695,6 +741,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$20</th>
 			<th>Sluggula</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -715,6 +762,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$21</th>
 			<th>Water drain switch</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -735,6 +783,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$22</th>
 			<th>Ropa</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -755,6 +804,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$23</th>
 			<th>Red bari<br />Red biri</th>
+			<td class="hp">2</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -775,6 +825,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$24</th>
 			<th>Blue bari</th>
+			<td class="hp">2</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -795,6 +846,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$25</th>
 			<th>Talking tree</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -813,28 +865,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$26</th>
-			<th>Hard hat beetle</th>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<th rowspan="2" class="number value">$26</th>
+			<th>Hard hat beetle (blue)</th>
+			<td class="hp">6</td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+		</tr>
+		<tr>
+			<th>Hard hat beetle (red)</th>
+			<td class="hp">32</td>
 		</tr>
 		<tr>
 			<th class="number value">$27</th>
 			<th>Deadrock</th>
+			<td class="hp">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -855,6 +913,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$28</th>
 			<th>Dark World hint NPC</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -875,6 +934,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$29</th>
 			<th>Miscellaneous adults</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -895,6 +955,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$2A</th>
 			<th>Sweeping lady</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -915,6 +976,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$2B</th>
 			<th>Hobo</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -935,6 +997,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$2C</th>
 			<th>Lumberjacks</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -955,6 +1018,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$2D</th>
 			<th>Neckless man<br />(unused)</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -975,6 +1039,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$2E</th>
 			<th>Stumpy<br />Flute ghost</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -995,6 +1060,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$2F</th>
 			<th>Race game lady</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1015,6 +1081,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$30</th>
 			<th>Race game guy</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1035,6 +1102,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$31</th>
 			<th>Fortune teller</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1055,6 +1123,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$32</th>
 			<th>Argue Bros</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1075,6 +1144,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$33</th>
 			<th>Rupee pull</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1095,6 +1165,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$34</th>
 			<th>Young snitch</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1115,6 +1186,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$35</th>
 			<th>Innkeeper</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1135,6 +1207,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$36</th>
 			<th>Witch</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1155,6 +1228,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$37</th>
 			<th>Waterfall</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1175,6 +1249,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$38</th>
 			<th>Palace of Darkness<br />eye statue</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1195,6 +1270,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$39</th>
 			<th>Middle-aged thief</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1215,6 +1291,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$3A</th>
 			<th>Magic bat</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1235,6 +1312,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$3B</th>
 			<th>Bonk item</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1255,6 +1333,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$3C</th>
 			<th>Kid in Kak</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1275,6 +1354,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$3D</th>
 			<th>Old snitch</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1295,6 +1375,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$3E</th>
 			<th>Hoarder</th>
+			<td class="hp">2</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1315,6 +1396,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$3F</th>
 			<th>Tutorial guard</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
@@ -1335,6 +1417,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$40</th>
 			<th>Lightning barrier</th>
+			<td class="hp">2</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1355,6 +1438,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$41</th>
 			<th>Blue guard</th>
+			<td class="hp">6</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1375,6 +1459,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$42</th>
 			<th>Green guard</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1395,6 +1480,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$43</th>
 			<th>Red spear guard</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">4</span><span class="damage-value">(3)</span></td>
@@ -1415,6 +1501,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$44</th>
 			<th>Bluesain Bolt</th>
+			<td class="hp">6</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1433,28 +1520,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$45</th>
+			<th rowspan="2" class="number value">$45</th>
 			<th>Usain Bolt</th>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">4</span><span class="damage-value">(3)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+			<td class="hp">8</td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">4</span><span class="damage-value">(3)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+		</tr>
+		<tr>
+			<th>Snitch guard</th>
+			<td class="hp">4</td>
 		</tr>
 		<tr>
 			<th class="number value">$46</th>
 			<th>Blue archer</th>
+			<td class="hp">6</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1475,6 +1568,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$47</th>
 			<th>Green bush guard</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1495,6 +1589,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$48</th>
 			<th>Red javelin guard</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">4</span><span class="damage-value">(3)</span></td>
@@ -1515,6 +1610,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$49</th>
 			<th>Red bush guard</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">4</span><span class="damage-value">(3)</span></td>
@@ -1533,28 +1629,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$4A</th>
+			<th rowspan="2" class="number value">$4A</th>
 			<th>Bomb guard</th>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">4</span><span class="damage-value">(3)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+			<td class="hp">8</td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">4</span><span class="damage-value">(3)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+		</tr>
+		<tr>
+			<th>Bomb</th>
+			<td class="hp">0</td>
 		</tr>
 		<tr>
 			<th class="number value">$4B</th>
 			<th>Green knife guard</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1575,6 +1677,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$4C</th>
 			<th>Geldman</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1595,6 +1698,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$4D</th>
 			<th>Toppo</th>
+			<td class="hp">2</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1615,6 +1719,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$4E</th>
 			<th>Popo</th>
+			<td class="hp">2</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1635,6 +1740,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$4F</th>
 			<th>Popo</th>
+			<td class="hp">2</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1655,6 +1761,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$50</th>
 			<th>Cannonball</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1675,6 +1782,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$51</th>
 			<th>Armos statue</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1695,6 +1803,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$52</th>
 			<th>King Zora</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1715,6 +1824,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$53</th>
 			<th>Armos Knight</th>
+			<td class="hp">48</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(4)</span></td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(2)</span></td>
@@ -1735,6 +1845,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$54</th>
 			<th>Lanmola</th>
+			<td class="hp">16</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(2)</span></td>
@@ -1755,6 +1866,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$55</th>
 			<th>Zora</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1775,6 +1887,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$55</th>
 			<th>Fireball</th>
+			<td class="hp dead">8</td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1795,6 +1908,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$56</th>
 			<th>Zora</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1815,6 +1929,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$57</th>
 			<th>Desert Palace statues</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1835,6 +1950,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$58</th>
 			<th>Crab</th>
+			<td class="hp">2</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -1855,6 +1971,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$59</th>
 			<th>Bird<br />(Lost Woods)</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1875,6 +1992,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$5A</th>
 			<th>Squirrel<br />(Lost Woods)</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1895,6 +2013,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$5B</th>
 			<th>Spark</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1915,6 +2034,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$5C</th>
 			<th>Spark</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1935,6 +2055,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$5D</th>
 			<th>Roller<br />(vertical, down)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1955,6 +2076,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$5E</th>
 			<th>Roller<br />(vertical, up)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1975,6 +2097,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$5F</th>
 			<th>Roller<br />(horizontal, right)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -1995,6 +2118,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$60</th>
 			<th>Roller<br />(horizontal, left)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2015,6 +2139,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$61</th>
 			<th>Beamos</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2035,6 +2160,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$62</th>
 			<th>Mastersword</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2055,6 +2181,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$63</th>
 			<th>Sandpit</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2075,6 +2202,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$64</th>
 			<th>Debirando</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2095,6 +2223,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$65</th>
 			<th>Archery guy</th>
+			<td class="hp dead">4</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2115,6 +2244,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$66</th>
 			<th>Wall cannon<br />(vertical, left)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2135,6 +2265,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$67</th>
 			<th>Wall cannon<br />(vertical, right)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2155,6 +2286,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$68</th>
 			<th>Wall cannon<br />(horizonal, top)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2175,6 +2307,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$69</th>
 			<th>Wall cannon<br />(horizonal, bottom)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2195,6 +2328,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$6A</th>
 			<th>Ball 'n' Chain</th>
+			<td class="hp">16</td>
 			<td><span class="damage-subclass">5</span><span class="damage-value">(32fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(2)</span></td>
@@ -2215,6 +2349,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$6B</th>
 			<th>Cannonball</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2235,6 +2370,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$6B</th>
 			<th>Cannon trooper<br />(unused)</th>
+			<td class="hp dead">3</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2255,6 +2391,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$6C</th>
 			<th>Mirror portal</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2273,68 +2410,84 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$6D</th>
-			<th>Rat<br />Cricket</th>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(Blob)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+			<th class="number value" rowspan="2">$6D</th>
+			<th>Rat</th>
+			<td class="hp">2</td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(Blob)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$6E</th>
+			<th>Cricket</th>
+			<td class="hp">8</td>
+		</tr>
+		<tr>
+			<th rowspan="2" class="number value">$6E</th>
 			<th>Snake</th>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(Blob)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
+			<td class="hp">4</td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(Blob)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">7</span><span class="damage-value">(Blob)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$6F</th>
+			<th>Stalrope</th>
+			<td class="hp">8</td>
+		</tr>
+		<tr>
+			<th rowspan="2" class="number value">$6F</th>
 			<th>Keese</th>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td class="hp">1</td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+		</tr>
+		<tr>
+			<th>Chasupa</td>
+			<td class="hp">4</td>
 		</tr>
 		<tr>
 			<th class="number value">$70</th>
 			<th>King Helmasaur<br />fireball</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2355,6 +2508,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$71</th>
 			<th>Leever</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2375,6 +2529,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$72</th>
 			<th>Faerie pond trigger</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2395,6 +2550,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$73</th>
 			<th>Uncle<br />Priest/Mantle</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2415,6 +2571,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$74</th>
 			<th>Running man</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2435,6 +2592,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$75</th>
 			<th>Bottle vendor</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2455,6 +2613,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$76</th>
 			<th>Zelda</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2475,6 +2634,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$77</th>
 			<th>Antifairy</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2495,6 +2655,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$78</th>
 			<th>Sahsrahla's wife</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2515,6 +2676,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$79</th>
 			<th>Bee</th>
+			<td class="hp">0</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2535,6 +2697,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$7A</th>
 			<th>Agahnim</th>
+			<td class="hp">96</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2555,6 +2718,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$7B</th>
 			<th>Agahnim's balls</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2575,6 +2739,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$7C</th>
 			<th>Green stalfos</th>
+			<td class="hp">24</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2595,6 +2760,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$7D</th>
 			<th>Big spike</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2615,6 +2781,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$7E</th>
 			<th>Firebar<br />(clockwise)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2635,6 +2802,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$7F</th>
 			<th>Firebar<br />(counterclockwise)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2655,6 +2823,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$80</th>
 			<th>Firesnake</th>
+			<td class="hp dead">3</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2675,6 +2844,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$81</th>
 			<th>Hover</th>
+			<td class="hp">4</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2695,6 +2865,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$82</th>
 			<th>Antifairy (circle)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2715,6 +2886,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$83</th>
 			<th>Green eyegore<br />Green mimic</th>
+			<td class="hp">16</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2735,6 +2907,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$84</th>
 			<th>Red eyegore<br />Red mimic</th>
+			<td class="hp">8</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2755,6 +2928,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$85</th>
 			<th>Yellow stalfos</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2775,6 +2949,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$86</th>
 			<th>Kodongo</th>
+			<td class="hp">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2795,6 +2970,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$87</th>
 			<th>Kondongo fire</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2815,6 +2991,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$88</th>
 			<th>Mothula</th>
+			<td class="hp">32</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2835,6 +3012,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$89</th>
 			<th>Mothula beam</th>
+			<td class="hp dead">32</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2855,6 +3033,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$8A</th>
 			<th>Spike block</th>
+			<td class="hp dead">32</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -2875,6 +3054,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$8B</th>
 			<th>Gibdo</th>
+			<td class="hp">32</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2895,6 +3075,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$8C</th>
 			<th>Arrghus</th>
+			<td class="hp">32</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2915,6 +3096,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$8D</th>
 			<th>Arrghus puff</th>
+			<td class="hp">8</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2935,6 +3117,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$8E</th>
 			<th>Terrorpin</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2953,28 +3136,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$8F</th>
+			<th rowspan="2" class="number value">$8F</th>
 			<th>Blob</th>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td class="hp">4</td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+		</tr>
+		<tr>
+			<th>Slime</th>
+			<td class="hp">0</td>
 		</tr>
 		<tr>
 			<th class="number value">$90</th>
 			<th>Wallmaster</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -2995,6 +3184,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$91</th>
 			<th>Stalfos knight</th>
+			<td class="hp">64</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3015,6 +3205,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$92</th>
 			<th>King Helmasaur</th>
+			<td class="hp">48</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3035,6 +3226,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$93</th>
 			<th>Bumper</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3053,28 +3245,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$94</th>
+			<th rowspan="2" class="number value">$94</th>
 			<th>Pirogusu</th>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<td class="hp">2</td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+		</tr>
+		<tr>
+			<th>Flying tile</th>
+			<td class="hp">0</td>
 		</tr>
 		<tr>
 			<th class="number value">$95</th>
 			<th>Eye laser<br />(left)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3095,6 +3293,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$96</th>
 			<th>Eye laser<br />(right)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3115,6 +3314,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$97</th>
 			<th>Eye laser<br />(top)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3135,6 +3335,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$98</th>
 			<th>Eye laser<br />(bottom)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3155,6 +3356,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$99</th>
 			<th>Pengator</th>
+			<td class="hp">16</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3175,6 +3377,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$9A</th>
 			<th>Kyameron</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3195,6 +3398,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$9B</th>
 			<th>Wizzrobe</th>
+			<td class="hp">2</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3215,6 +3419,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$9C</th>
 			<th>Zoro</th>
+			<td class="hp">4</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3235,6 +3440,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$9D</th>
 			<th>Babasu</th>
+			<td class="hp">4</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3255,6 +3461,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$9E</th>
 			<th>Ostritch<br />(Haunted Grove)</th>
+			<td class="hp dead">8</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3275,6 +3482,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$9F</th>
 			<th>Rabbit<br />(Haunted Grove)</th>
+			<td class="hp dead">8</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3295,6 +3503,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A0</th>
 			<th>Bird<br />(Haunted Grove)</th>
+			<td class="hp dead">8</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3315,6 +3524,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A1</th>
 			<th>Freezor</th>
+			<td class="hp">16</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3335,6 +3545,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A2</th>
 			<th>Kholdstare</th>
+			<td class="hp">64</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3355,6 +3566,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A3</th>
 			<th>Kholdstare shell</th>
+			<td class="hp">64</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3375,6 +3587,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A4</th>
 			<th>Falling ice</th>
+			<td class="hp dead">8</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3395,6 +3608,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A5</th>
 			<th>Blue zazak</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3415,6 +3629,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A6</th>
 			<th>Red zazak</th>
+			<td class="hp">8</td>
 			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3435,6 +3650,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A7</th>
 			<th>Stalfos</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3455,6 +3671,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A8</th>
 			<th>Green zirro</th>
+			<td class="hp">4</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3475,6 +3692,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$A9</th>
 			<th>Blue zirro</th>
+			<td class="hp">8</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3495,6 +3713,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$AA</th>
 			<th>Pikit</th>
+			<td class="hp">12</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3515,6 +3734,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$AB</th>
 			<th>Crystal Maiden</th>
+			<td class="hp dead">16</td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3535,6 +3755,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$AC</th>
 			<th>Apple</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3555,6 +3776,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$AD</th>
 			<th>Old man</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3575,6 +3797,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$AE</th>
 			<th>Pipe (down)</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3595,6 +3818,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$AF</th>
 			<th>Pipe (up)</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3615,6 +3839,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B0</th>
 			<th>Pipe (right)</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3635,6 +3860,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B1</th>
 			<th>Pipe (left)</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3655,6 +3881,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B2</th>
 			<th>Golden bee</th>
+			<td class="hp">0</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3675,6 +3902,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B2</th>
 			<th>Bee (friendly)<br />Golden bee (friendly)</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3695,6 +3923,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B3</th>
 			<th>Pedestal plaque</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3715,6 +3944,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B4</th>
 			<th>Purple chest</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3735,6 +3965,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B5</th>
 			<th>Bombshop guy</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3755,6 +3986,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B6</th>
 			<th>Kiki</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3774,7 +4006,8 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		</tr>
 		<tr>
 			<th class="number value">$B7</th>
-			<th>Blind<br />(maiden)</th>
+			<th>Phony maiden</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3795,6 +4028,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B8</th>
 			<th>Dialogue tester</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3815,6 +4049,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$B9</th>
 			<th>Bully<br />Pink ball</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3835,6 +4070,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$BA</th>
 			<th>Whirlpool</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3855,6 +4091,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$BB</th>
 			<th>Shopkeeper<br />Chest game guy</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3875,6 +4112,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$BC</th>
 			<th>Drunkard</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3895,6 +4133,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$BD</th>
 			<th>Vitreous</th>
+			<td class="hp">128</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3915,6 +4154,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$BE</th>
 			<th>Vitreous small eye</th>
+			<td class="hp">48</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -3935,6 +4175,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$BF</th>
 			<th>Lightning</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3955,6 +4196,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$C0</th>
 			<th>Catfish</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3974,7 +4216,8 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		</tr>
 		<tr>
 			<th class="number value">$C1</th>
-			<th>Agahnim<br />(cutscene)</th>
+			<th>Agahnim (cutscene)</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -3995,6 +4238,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$C2</th>
 			<th>Boulder</th>
+			<td class="hp dead">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4015,6 +4259,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$C3</th>
 			<th>Gibo</th>
+			<td class="hp">8</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="dead"pan class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4035,6 +4280,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$C4</th>
 			<th>Thief</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4055,6 +4301,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$C5</th>
 			<th>Medusa</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4075,6 +4322,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$C6</th>
 			<th>4-way shooter</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4093,28 +4341,36 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(32)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$C7</th>
-			<th>Pokey</th>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(24)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+			<th rowspan="3" class="number value">$C7</th>
+			<th rowspan="3">Pokey</th>
+			<td class="hp">32</td>
+			<td rowspan="3" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="3"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="3"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="3"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="3"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="3"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="3"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="3" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="3"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="3"><span class="damage-subclass">2</span><span class="damage-value">(24)</span></td>
+			<td rowspan="3" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="3"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="3"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="3"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="3"><span class="damage-subclass">1</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="3"><span class="damage-subclass">3</span><span class="damage-value">(255fS)</span></td>
+		</tr>
+		<tr>
+			<td class="hp">17{% include footnote content="When restoring its own HP" %}</td>
+		</tr>
+		<tr>
+			<td class="hp">1{% include footnote content="The HP of a single sigment when flung" %}</td>
 		</tr>
 		<tr>
 			<th class="number value">$C8</th>
 			<th>Big faerie</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4133,28 +4389,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$C9</th>
+			<th rowspan="2" class="number value">$C9</th>
 			<th>Tektite</th>
-			<td><span class="damage-subclass">5</span><span class="damage-value">(32fS)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(16)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">3</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(32)</span></td>
+			<td class="hp">8</td>
+			<td rowspan="2"><span class="damage-subclass">5</span><span class="damage-value">(32fS)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(100)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Burn)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(Freeze)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">3</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(32)</span></td>
+		</tr>
+		<tr>
+			<th>Tektite</th>
+			<td class="hp">12</td>
 		</tr>
 		<tr>
 			<th class="number value">$C9</th>
 			<th>Firebat</th>
+			<td class="hp dead">8</td>
 			<td class="dead"><span class="damage-subclass">5</span><span class="damage-value">(32fS)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4175,6 +4437,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$CA</th>
 			<th>Chain chomp</th>
+			<td class="hp dead">5</td>
 			<td class="dead"><span class="damage-subclass">5</span><span class="damage-value">(32fS)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4195,6 +4458,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$CB</th>
 			<th>Trinexx<br />(rock head)</th>
+			<td class="hp">40</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4215,6 +4479,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$CC</th>
 			<th>Trinexx<br />(fire head)</th>
+			<td class="hp">40</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4235,6 +4500,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$CD</th>
 			<th>Trinexx<br />(ice head)</th>
+			<td class="hp">40</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4253,28 +4519,34 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$CE</th>
+			<th rowspan="2" class="number value">$CE</th>
 			<th>Blind</th>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
-			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td class="hp dead">128</td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(8)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2"><span class="damage-subclass">1</span><span class="damage-value">(16)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+			<td rowspan="2" class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
+		</tr>
+		<tr>
+			<th>Blind parts</th>
+			<td class="hp dead">90</td>
 		</tr>
 		<tr>
 			<th class="number value">$CF</th>
 			<th>Swamola</th>
+			<td class="hp">16</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4295,6 +4567,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$D0</th>
 			<th>Lynel</th>
+			<td class="hp">24</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4313,8 +4586,9 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$D1</th>
+			<th rowspan="2" class="number value">$D1</th>
 			<th>Bunnybeam</th>
+			<td class="hp">64</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4333,8 +4607,8 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 			<td><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
 		</tr>
 		<tr>
-			<th class="number value">$D1</th>
 			<th>Chimney smoke</th>
+			<td class="hp dead">64</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4355,6 +4629,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$D2</th>
 			<th>Flopping fish</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4375,6 +4650,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$D3</th>
 			<th>Stal</th>
+			<td class="hp">4</td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(1)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(2)</span></td>
 			<td><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4395,6 +4671,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$D4</th>
 			<th>Landmine</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4415,6 +4692,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$D5</th>
 			<th>Dig game guy</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4435,6 +4713,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$D6</th>
 			<th>Ganon</th>
+			<td class="hp">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4455,6 +4734,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$D7</th>
 			<th>Ganon</th>
+			<td class="hp">255</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4475,6 +4755,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$D8</th>
 			<th>Heart</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -4495,6 +4776,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$D9</th>
 			<th>Green rupee</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$C</span><span class="damage-value">(0)</span></td>
@@ -4515,6 +4797,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$DA</th>
 			<th>Blue rupee</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$B</span><span class="damage-value">(4)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">7</span><span class="damage-value">(0)</span></td>
@@ -4535,6 +4818,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$DB</th>
 			<th>Red rupee</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -4555,6 +4839,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$DC</th>
 			<th>Bomb refill (1)</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">9</span><span class="damage-value">(4)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$C</span><span class="damage-value">(0)</span></td>
@@ -4575,6 +4860,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$DD</th>
 			<th>Bomb refill (4)</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$D</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$B</span><span class="damage-value">(4)</span></td>
@@ -4595,6 +4881,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$DE</th>
 			<th>Bomb refill (8)</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$E</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">7</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">9</span><span class="damage-value">(8)</span></td>
@@ -4615,6 +4902,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$DF</th>
 			<th>Small magic decanter</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">8</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">7</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">7</span><span class="damage-value">(0)</span></td>
@@ -4635,6 +4923,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E0</th>
 			<th>Large magic decanter</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4655,6 +4944,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E1</th>
 			<th>Arrow refill (5)</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4675,6 +4965,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E2</th>
 			<th>Arrow refill (10)</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$E</span><span class="damage-value">(0)</span></td>
@@ -4695,6 +4986,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E3</th>
 			<th>Faerie</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$E</span><span class="damage-value">(0)</span></td>
@@ -4715,6 +5007,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E4</th>
 			<th>Small key</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4735,6 +5028,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E5</th>
 			<th>Big key</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">1</span><span class="damage-value">(4)</span></td>
@@ -4755,6 +5049,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E6</th>
 			<th>Stolen shield</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4775,6 +5070,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E7</th>
 			<th>Mushroom</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">7</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">2</span><span class="damage-value">(64)</span></td>
 			<td class="dead"><span class="damage-subclass">4</span><span class="damage-value">(3)</span></td>
@@ -4795,6 +5091,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E8</th>
 			<th>Fake Master Sword</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4815,6 +5112,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$E9</th>
 			<th>Magic shop assistant</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -4835,6 +5133,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$EA</th>
 			<th>Heart container</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -4855,6 +5154,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$EB</th>
 			<th>Heart piece</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -4875,6 +5175,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$EC</th>
 			<th>Thrown item</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -4895,6 +5196,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$ED</th>
 			<th>Somaria platform</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$D</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -4915,6 +5217,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$EE</th>
 			<th>Castle mantle</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4935,6 +5238,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$EF</th>
 			<th>Somaria platform<br />(unused)</th>
+			<td class="hp dead">0</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">3</span><span class="damage-value">(4)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -4955,6 +5259,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F0</th>
 			<th>Somaria platform<br />(unused)</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -4975,6 +5280,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F1</th>
 			<th>Somaria platform<br />(unused)</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -4995,6 +5301,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F2</th>
 			<th>Medallion tablet</th>
+			<td class="hp dead">0</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -5015,6 +5322,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F3</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">131</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -5035,6 +5343,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F4</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">131</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -5055,6 +5364,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F5</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">129</td>
 			<td class="dead"><span class="damage-subclass">2</span><span class="damage-value">(32)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$E</span><span class="damage-value">(0)</span></td>
@@ -5075,6 +5385,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F6</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">2</td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
@@ -5095,6 +5406,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F7</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">2</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$D</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">7</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$A</span><span class="damage-value">(64)</span></td>
@@ -5115,6 +5427,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F8</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">2</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$E</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">9</span><span class="damage-value">(8)</span></td>
@@ -5135,6 +5448,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$F9</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">2</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$E</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">9</span><span class="damage-value">(8)</span></td>
@@ -5155,6 +5469,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$FA</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">2</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -5175,6 +5490,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$FB</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">1</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">0</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -5195,6 +5511,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$FC</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">19</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="dead"><span class="damage-subclass">6</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -5215,6 +5532,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$FD</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">1</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$E</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -5235,6 +5553,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$FE</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">1</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
@@ -5255,6 +5574,7 @@ ogdesc: "Parsed data dump of how much damage each enemy takes as both a subclass
 		<tr>
 			<th class="number value">$FF</th>
 			<th>Undefined</th>
+			<td class="badsubclass dead">1</td>
 			<td class="badsubclass dead"><span class="damage-subclass">$E</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>
 			<td class="badsubclass dead"><span class="damage-subclass">$F</span><span class="damage-value">(0)</span></td>

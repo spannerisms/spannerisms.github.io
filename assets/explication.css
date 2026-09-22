@@ -255,10 +255,6 @@ td.badsubclass {
 	background: #FF0000AA;
 }
 
-span.damage-subclass {
-	display: block;
-}
-
 th.vert-text {
 	vertical-align: middle;
 	font-size: 80%;
@@ -353,6 +349,42 @@ div.smtasm {
 			min-height: 1em;
 		}
 	}
+}
+
+
+table.damage-table {	
+	td.hp {
+		white-space: nowrap;
+		background: #E0FFE0;
+		color: #309930;
+		text-align: right;
+	}
+
+	td.hp:not(.dead) {
+		font-weight: bold;
+
+		&>*{
+			font-weight:normal;
+		}
+	}
+
+	th.hp {
+		background: #90F09F;
+		color: #106610;
+	}
+
+	span.damage-subclass {
+		:not(.dead) > & {
+			color: #4444FF;
+		}
+		
+		display: block;
+	}
+
+	.damage-value {
+		color: #F70000;
+	}
+
 }
 
 
