@@ -389,7 +389,7 @@ table.damage-table {
 
 
 /* Hitboxes page */
-table.hitboxvisual
+table.hitboxvisual {
 	.hboxcell {
 		zoom: 200%;
 		width: 200px;
