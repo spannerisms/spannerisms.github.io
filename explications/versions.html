@@ -15,12 +15,21 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 
 <h3>Text</h3>
 <p>English is not as informationally dense as Japanese, so the US version had to expand the allotted space for dialog. Not only that, the entire text system is different. Both languages are coded as a VWF (variable-width font), but only the US version actually makes use of the V. The Japanese text system has a single width for every character.</p>
+
 <p>The Japanese versions need to encode a lot more characters, including 256 kanji (255 of which are unique (but all of which are graphically unique)). Making this fit required a clever compression algorithm optimized specifically for storing these characters. I believe this algorithm at least partially dictated some of the weird outlines on certain characters, as those extraneous pixels compressed better. The English font, on the other hand, is completely uncompressed. The biggest space saver was not needing kanji. Those savings made room for the raw graphics to fit comfortably in ROM.</p>
+
 <p>The English text engine introduces two new commands: another choose option, and the bank swap command.</p>
+
 <p>The extra choose option came with 2 new control messages to handle the arrow selection display, shifting every subsequent message ID up by 2. This affected virtually every dialog invocation, but beyond that, no message calls were changed.</p>
+
 <p>The bank swap command was necessary to tell the text pointer initialization code to swap from the large bank 1C (where all text is stored for the Japanese versions) to bank 0E (where the extra English text is located). This multi-bank solution required that the pointers generated grow from 16-bit to 24-bit.</p>
+
+<p>In addition to the two text commands, there are also 97 dictionary bytes that get transformed into a word lookup to help reduce the raw size of the text. For example, whenever you see a "have", that's actually encoded as <asmval>$AD</asmval> and replaced with individual characters during the parsing pass.</p>
+
 <p>The Link face changed!</p>
+
 <p>The lack of text compression represented a small change in any routine where the font had to be loaded. It no longer had to be decompressed then transferred to VRAM; it could be transferred directly from ROM. The new VWF required a larger space in VRAM though, with the size loaded at <addr>$008D02</addr> changing from <asmval>$0780</asmval> to <asmval>$07E0</asmval>, an increase of 96 bytes, or 6 graphics tiles.</p>
+
 <p>At <addr>$008355</addr> the background 3 clear fill tile is changed from <asmval>$0188</asmval> to <asmval>$00A9</asmval> in the US version. This was merely a tile shift due to the much smaller font.</p>
 
 <h3>Menu</h3>
@@ -428,7 +437,7 @@ ogdesc: "An exhaustive account of every non-trivial change between the JP1.0, JP
 <h3>Hurried</h3>
 <p>In the US version, the decay timer of the lodged arrow ancilla is reduced by 32 frames from 160 to 128.</p>
 
-<h3>Just 5 more microseconds!</h3>
+<h3>Just give me 5 more milliseconds!</h3>
 <p>At <addr>$008208</addr>, the US version changes a write to <asmvar>VTIMEL</asmvar> from <asmval>56</asmval> to <asmval>128</asmval>. This tells raster interrupts to occur 72 scanlines later, for whatever reason, possibly to compensate for timing changes that came with the new text engine.</p>
 
 <h3>BAGE</h3>
