@@ -23,9 +23,9 @@ ogdesc: "What causes that random misplaced shadow?"
 
 <h2>Don't treat me like an object</h2>
 
-<p>To reveal the mystery of the popo shadow, we need to look at one of the game scariest parts of the engine: the object allocation system.</p>
+<p>To reveal the mystery of the popo shadow, we need to look at one of the game's scariest parts of the engine: the object allocation system.</p>
 
-<p>"Object" is the technical nomenclature for what you might call a "sprite", and that's the nomenclature used throughout the article to distinguish them from the enemy kind of sprite.</p>
+<p>"Object" is the technical nomenclature for what you might call a "sprite", and that's the nomenclature used throughout this article to distinguish them from the enemy kind of sprite.</p>
 
 <p>The hardware is limited to 128 objects, and each object has 4 bytes{% include footnote content="4.25 bytes, actually. Each object has an additional 2 bits in a table at the end of OAM where 4 objects are packed together in a single byte. We only need to talk about the main table here though." %}. To effectively manage an arbitrary number of objects, ALTTP allocates space in its buffer by placing objects into one of six regions.</p>
 
@@ -99,7 +99,9 @@ ogdesc: "What causes that random misplaced shadow?"
 
 <p>It looks like regions D, E, and F overlap with region A, but these actually represent two different allocation modes. In the overworld and most underworld rooms, the flag <asmvar>LAYERING</asmvar> at <addr>$0FB3</addr> is set to 0&mdash;off. This flag tells the shared allocation system to exclusively use region A. In rooms where sprites can potentially pass over each other on different layers, this flag will be set to 1&mdash;on&mdash;telling the shared system to allocate upper layer sprites' objects to region D and lower layer sprites' objects to region F. Higher slots, and thus sprites on the lower layer, are drawn first, giving them a lower priority{% include footnote content="The hardware can be configured to cycle which slot is considered first every frame, but ALTTP does not use that." %}.</p>
 
-<p>Regions B and E are a special. These are both used as a sort of VIP space for sprites and ancillae you really don't want to get mangled, such as bombs or debirando pits. Region B sees much more usage than region E, which is used exclusively by ancilla in a shared routine that allocates based on <asmvar>LAYERING</asmvar>, using B when it's off and E when it's on. But also the ice rod, which, for some reason, allocates to A when <asmvar>LAYERING</asmvar> is off or using its layer to pick between D and E when it's on.</p>
+<p>Region C is special. It's used for small, high priority objects like fairy dust and beamos eyeballs.</p>
+
+<p>Regions B and E are special. These are both used as a sort of VIP space for sprites and ancillae you really don't want to get mangled, such as bombs or debirando pits. Region B sees much more usage than region E, which is used exclusively by ancilla in a shared routine that allocates based on <asmvar>LAYERING</asmvar>, using B when it's off and E when it's on. But also the ice rod, which, for some reason, allocates to A when <asmvar>LAYERING</asmvar> is off or uses its layer to pick between D and E when it's on.</p>
 
 <p>Man, the next section is going to write itself...</p>
 
@@ -117,7 +119,7 @@ ogdesc: "What causes that random misplaced shadow?"
 
 <p>The next most evil thing is the sheer number of hardcoded slots. It's mostly bosses that do this. Mothula is guilty of it, Lanmolas is guilty of it, and pots are guilty of it.</p>
 
-<p>Bosses are questionable. There's not much going on their rooms, and they choose slots that are relatively save. Mothula, for example, draws herself near the end of region A. It would take a lot of objects{% include footnote content="61" %} to overwrite hers, but, if they did, they would win. Using hardcoded slots means the allocation system is unaware that this memory is being used{%- include footnote content="The .NET garbage collector is probably giving me the stink eye right now." %}.</p>
+<p>Bosses are questionable. There's not much going on their rooms, and they choose slots that are relatively safe. Mothula, for example, draws herself near the end of region A. It would take a lot of objects{% include footnote content="61" %} to overwrite hers, but, if they did, they would win. Using hardcoded slots means the allocation system is unaware that this memory is being used{%- include footnote content="The .NET garbage collector is probably giving me the stink eye right now." %}.</p>
 
 <p>Pots cannot be forgiven. Nor can bushes. Or rocks, for that matter. These items only use hardcoded slots when <asmvar>LAYERING</asmvar> is active <em>and</em> they're not on the upper layer, but they'll choose one of the of four slots at the end of region D. This might even be an oversight, as there are exactly 4 safe slots immediately after region D that they could have used instead.</p>
 
@@ -127,11 +129,11 @@ ogdesc: "What causes that random misplaced shadow?"
 
 <p>Neither of the previous foibles is responsible for the popo shadow; rather, it was an earnest attempt to use the system as intended, just slightly misplaced.</p>
 
-<p>When most sprites die, they will explode with a tiny cloud drawn over them by a shared routine. To prepare for this cloud, with its last gasp of breath, sprites increase their requested object allocation by 4. This is a good thing, but it's done too soon. Allocation has already occurred. Our dying popo was given eight bytes in the buffer and that is what it can rightfully claim as its own.</p>
+<p>When most sprites die, they will explode with a tiny cloud drawn over them by a shared routine. To prepare for this cloud, with its last gasp of breath, sprites increase their requested object allocation by 4. This is a good thing, but it's done too soon. And too late. The puff isn't being drawn yet, and allocation for this frame has already occurred. Our dying popo was given eight bytes in the buffer and that is what it can rightfully claim as its own.</p>
 
 <p>The poof isn't being drawn yet, so this would be fine, if not for the shadow.</p>
 
-<p>A <span style="text-shadow: 0 0 2px black; color: transparent;">shadow</span> is a shadow and should thus appear below what it shadows. To guarantee this, shadows take a shortcut: they always pick the last slot that has been allocated, and they do this by rereading the object allocation count. Our popo, who was given 2 object, has a shadow requesting object #6.</p>
+<p>A <span style="text-shadow: 0 0 2px black; color: transparent;">shadow</span> is a shadow and should thus appear below what it shadows. To guarantee this, shadows take a shortcut: they always pick the last slot that has been allocated, and they do this by rereading the object allocation count. Our popo, who was given 2 objects, has a shadow requesting object #6.</p>
 
 <p>This results in a memory collision. As it is not tracked, later sprites may reuse this slot, but that doesn't fully explain the shadow. To reveal why it was shifted left and not simply overwritten, we need to understand exactly how objects are drawn.</p>
 
