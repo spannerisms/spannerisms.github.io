@@ -406,6 +406,7 @@ span.disgusting {
 img.screenshot {
 	image-rendering: crisp-edges;
 	image-rendering: pixelated;
+	box-shadow: 2px 2px 3px #202056;
 }
 
 /* Backgrounds */
