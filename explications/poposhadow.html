@@ -3,31 +3,31 @@ permalink: /poposhadow/
 layout: default
 title: "Popo Shadow"
 background: glitchybg
-ogdesc: "What causes that random misplaced shadow?"
+ogdesc: "What causes that random, misplaced shadow?"
 ---
 
 <h1>Popo Shadow</h1>
 
-<p>This is something that has bugged me for a long time. The answer turns out to be simple, but this is so important that it needs to be documented for future generations.</p>
+<p>This is something that has bugged me for a long time. The answer is simpler than I expected, but I consider this so important that I must document it for future generations.</p>
 
 <h2>Gamering</h2>
 
 <div class="center float-right">
-	<img src="/assets/explication/poposhadow.png" class="screenshot">
+	<img src="/assets/explication/poposhadow.png" class="screenshot" alt="Link charges into a tentacle monster; to his left is an unexplained shadow.">
 	<div class="imagecaption">You will never unsee this.</div>
 </div>
 
-<p>Pay close attention the next time you watch someone running NMG. Focus your view a little left of the torch in the room after the elegantly named Popo Genocide. For a split second&mdash;literally 1 frame&mdash;a shadow pops up in the middle of the screen. The first time I noticed this, I was confused, intrigued, and potentially hungry (I can't say for certain).</p>
+<p>Pay close attention the next time you watch someone run NMG. In the room after the elegantly named <i>Popo Genocide</i>, focus your gaze a little to the left of the torch. For a split second&mdash;literally 1 frame&mdash;a shadow pops up in the middle of the screen. The first time I noticed this, I was confused, intrigued, and probably hungry (I can't say for certain).</p>
 
-<p>Look closely at the right popo{% include footnote content="Popo is a funny word." %}. The popo is missing its shadow. Why is the popo's shadow way over there?</p>
+<p>Look closely at the right popo{% include footnote content="Popo is a funny word." %}. The popo is missing its shadow. It seems the popo may be the owner of the mysterious shadow. Why is the popo's shadow way over there?</p>
 
 <h2>Don't treat me like an object</h2>
 
-<p>To reveal the mystery of the popo shadow, we need to look at one of the game's scariest parts of the engine: the object allocation system.</p>
+<p>To unravel the mystery of the popo shadow, we need to venture into one of the scariest parts of the game engine: its object allocation system.</p>
 
-<p>"Object" is the technical nomenclature for what you might call a "sprite", and that's the nomenclature used throughout this article to distinguish them from the enemy kind of sprite.</p>
+<p>For clarity: "object" is the official technical nomenclature for what you might call a "hardware sprite", and that will be the nomenclature used throughout this explication. We also need to talk a lot about the enemy kind of sprite, but it abets confusion to use the same word for both.</p>
 
-<p>The hardware is limited to 128 objects, and each object has 4 bytes{% include footnote content="4.25 bytes, actually. Each object has an additional 2 bits in a table at the end of OAM where 4 objects are packed together in a single byte. We only need to talk about the main table here though." %}. To effectively manage an arbitrary number of objects, ALTTP allocates space in its buffer by placing objects into one of six regions.</p>
+<p>The SNES is limited to 128 objects, and each object is defined by 4 bytes{% include footnote content="4.25 bytes, actually. Object have an additional 2 bits in a table at the end of OAM where 4 objects are packed together in a single byte. We only need to talk about the main table here though. Furthermore, ALTTP's buffer gives each object its own byte for those 2 bits and packs them together at the end of the frame." %}. To effectively manage an arbitrary number of objects, ALTTP allocates space in its buffer by placing objects into one of six regions.</p>
 
 <table class="center aligncenter">
 	<thead>
@@ -97,11 +97,11 @@ ogdesc: "What causes that random misplaced shadow?"
 	</div>
 </div>
 
-<p>It looks like regions D, E, and F overlap with region A, but these actually represent two different allocation modes. In the overworld and most underworld rooms, the flag <asmvar>LAYERING</asmvar> at <addr>$0FB3</addr> is set to 0&mdash;off. This flag tells the shared allocation system to exclusively use region A. In rooms where sprites can potentially pass over each other on different layers, this flag will be set to 1&mdash;on&mdash;telling the shared system to allocate upper layer sprites' objects to region D and lower layer sprites' objects to region F. Higher slots, and thus sprites on the lower layer, are drawn first, giving them a lower priority{% include footnote content="The hardware can be configured to cycle which slot is considered first every frame, but ALTTP does not use that." %}.</p>
+<p>It looks like regions D, E, and F overlap with region A, but these actually represent two different allocation modes. In the overworld and most underworld rooms, the flag <asmvar>LAYERING</asmvar> at <addr>$0FB3</addr> is set to 0&mdash;off&mdash;telling the shared allocation system to exclusively use region A. In rooms where sprites can potentially pass over each other on different layers, such as the eastern wing of Hyrule Castle, this flag will be set to 1&mdash;on&mdash;telling the system to split allocation by layer. Upper layer sprites' objects are sent to region D and lower layer sprites' objects to region F. Higher slots, and thus sprites on the lower layer, are drawn first, giving them a lower priority{% include footnote content="The hardware can be configured to cycle which slot is considered first every frame, but ALTTP does not use that." %}.</p>
 
 <p>Region C is special. It's used for small, high priority objects like fairy dust and beamos eyeballs.</p>
 
-<p>Regions B and E are special. These are both used as a sort of VIP space for sprites and ancillae you really don't want to get mangled, such as bombs or debirando pits. Region B sees much more usage than region E, which is used exclusively by ancilla in a shared routine that allocates based on <asmvar>LAYERING</asmvar>, using B when it's off and E when it's on. But also the ice rod, which, for some reason, allocates to A when <asmvar>LAYERING</asmvar> is off or uses its layer to pick between D and E when it's on.</p>
+<p>Regions B and E are also special. These are both used as a sort of VIP space for sprites and ancillae you really don't want to get mangled, such as bombs or debirando pits. Region B sees much more usage than region E, which is used exclusively by ancilla in a shared routine that allocates based on <asmvar>LAYERING</asmvar>, using B when it's off and E when it's on. But also the ice rod, which, for some reason, allocates to A when <asmvar>LAYERING</asmvar> is off or uses its layer to pick between D and E when it's on.</p>
 
 <p>Man, the next section is going to write itself...</p>
 
@@ -119,27 +119,27 @@ ogdesc: "What causes that random misplaced shadow?"
 
 <p>The next most evil thing is the sheer number of hardcoded slots. It's mostly bosses that do this. Mothula is guilty of it, Lanmolas is guilty of it, and pots are guilty of it.</p>
 
-<p>Bosses are questionable. There's not much going on their rooms, and they choose slots that are relatively safe. Mothula, for example, draws herself near the end of region A. It would take a lot of objects{% include footnote content="61" %} to overwrite hers, but, if they did, they would win. Using hardcoded slots means the allocation system is unaware that this memory is being used{%- include footnote content="The .NET garbage collector is probably giving me the stink eye right now." %}.</p>
+<p>Bosses are questionable. There's not much going on in their rooms, and they choose slots that are relatively safe. Mothula, for example, draws herself near the end of region A. It would take a lot of objects{% include footnote content="61" %} to overwrite hers, but, if they did, they would win. Using hardcoded slots means the allocation system is unaware that this memory is being used{%- include footnote content="The .NET garbage collector is probably giving me the stink eye right now." %}.</p>
 
 <p>Pots cannot be forgiven. Nor can bushes. Or rocks, for that matter. These items only use hardcoded slots when <asmvar>LAYERING</asmvar> is active <em>and</em> they're not on the upper layer, but they'll choose one of the of four slots at the end of region D. This might even be an oversight, as there are exactly 4 safe slots immediately after region D that they could have used instead.</p>
 
-<p>Link also uses hardcoded slots, but he's allowed to, because he's the star of the show. Link also chooses slots based on <asmvar>LAYERING</asmvar>, and he makes safe choices: either just after region A when it's off or just after region D (with a gap for pots!) when it's on. Although, if he's falling (<addr>$5B</addr>=<asmval>3</asmval>), he'll always use the very first slot of the entire buffer.</p>
+<p>Link also uses hardcoded slots, but he's allowed to, because he's the star of the show. Link chooses slots based on <asmvar>LAYERING</asmvar>, and he makes safe choices: either just after region A when it's off or just after region D (with a gap for pots!) when it's on. Although, if he's falling (<addr>$5B</addr>=<asmval>$03</asmval>), he'll always use the very first slot of the entire buffer.</p>
 
 <h2>Too soon</h2>
 
 <p>Neither of the previous foibles is responsible for the popo shadow; rather, it was an earnest attempt to use the system as intended, just slightly misplaced.</p>
 
-<p>When most sprites die, they will explode with a tiny cloud drawn over them by a shared routine. To prepare for this cloud, with its last gasp of breath, sprites increase their requested object allocation by 4. This is a good thing, but it's done too soon. And too late. The puff isn't being drawn yet, and allocation for this frame has already occurred. Our dying popo was given eight bytes in the buffer and that is what it can rightfully claim as its own.</p>
+<p>When most sprites die, they will explode with a tiny cloud drawn over them by a shared routine. To prepare for this cloud, with its last gasp of breath, a dying sprite will increase their requested object allocation by 4. This is a good thing, but it's done too soon. And too late. The puff isn't being drawn yet, and allocation for this frame has already occurred. Our dying popo was given eight bytes in the buffer, and that is what it can rightfully claim as its own.
 
-<p>The poof isn't being drawn yet, so this would be fine, if not for the shadow.</p>
+<p>This would be fine, if not for the shadow.</p>
 
 <p>A <span style="text-shadow: 0 0 2px black; color: transparent;">shadow</span> is a shadow and should thus appear below what it shadows. To guarantee this, shadows take a shortcut: they always pick the last slot that has been allocated, and they do this by rereading the object allocation count. Our popo, who was given 2 objects, has a shadow requesting object #6.</p>
 
-<p>This results in a memory collision. As it is not tracked, later sprites may reuse this slot, but that doesn't fully explain the shadow. To reveal why it was shifted left and not simply overwritten, we need to understand exactly how objects are drawn.</p>
+<p>This results in a memory collision. As it is not tracked, later sprites may reuse this slot, but that still doesn't fully explain the shadow. To reveal why it was shifted left and not simply overwritten, we must look at exactly how objects are drawn.</p>
 
 <h3>Finally, the truth</h3>
 
-<p>Objects in memory have their 4 bytes in this exact order: X screen coordinate, Y screen coordinate, Tile ID, Properties. All of ALTTP's routines handle the data in this order too. It's also important to note that there is no way to disable an object; to get rid of something, you must hide it off screen. At the beginning of every frame, all objects are hidden by setting their Y coordinates to 240, well below the bottom of the viewport. Other draw routines preserve this behavior, by testing their Y screen coordinates and writing 240 if it's determined the object is off screen on that axis.</p>
+<p>Objects in memory have their 4 bytes in this exact order: X screen coordinate, Y screen coordinate, Tile ID, Properties. All of ALTTP's routines handle the data in this order too. It's important to note here that objects have no means of being disabled; to get rid of something, you hide it off screen. At the beginning of every frame, all 128 objects are hidden by setting their Y coordinates to 240, well below the bottom of the viewport. Other draw routines preserve this behavior by testing their Y screen coordinates and defaulting to 240 if it's determined the object is off screen on that axis.</p>
 
 <p>But not all of them. In particular, <asmfunc>SpriteDraw_SingleSmall</asmfunc>, <asmfunc>SpriteDraw_SingleLarge</asmfunc>, and <asmfunc>SpriteDraw_Shadow</asmfunc> all take a shortcut by immediately exiting when they are off-screen on the Y axis without forcing their Y screen coordinate to 240.</p>
 
@@ -153,8 +153,10 @@ ogdesc: "What causes that random misplaced shadow?"
 	<li>The aforementioned draw routines should set off-screen Y coordinates to 240 before exiting.</li>
 </ul>
 
+<p>Knowing this, we can look at the last piece of the puzzle: there are two more popos in this section. They're far enough above the screen that we can't see them but not far enough to become inactive, which would short circuit their draw routine entirely.</p>
+
 <h2>Summary</h2>
 
 <p>Here's what happened:</p>
 
-<p>At the beginning of its code, the popo in slot 7 allocated 2 objects for itself. It processed its pending damage, dying in the process. To prepare for its poof, it increased its allocation request by 4 objects. When it drew its shadow, it picked an object slot based on that larger allocation and not the one that was already processed. Later, the popo in slot 2 requested 2 objects and was allocated untracked memory that included where popo 7 drew its shadow. Popo 2 was too far above the screen; after its X coordinate was written, its draw routine stopped, leaving the rest of memory in tact. Thus, popo 7's shadow X coordinate took on the value for popo 2 but nothing else, teleporting it to the left.</p>
+<p>At the beginning of its code, the popo in slot 7 allocated 2 objects for itself. It processed its pending damage, dying in the process. To prepare for its death puff, it increased its allocation request by 4 objects. When it drew its shadow, it picked an object slot based on that larger allocation and not the one that was already processed. That shadow was drawn to a slot that has not been accounted for. Later, the popo in slot 2 requested 2 objects and was allocated the untracked memory where popo 7 drew its shadow. Popo 2 was too far above the screen to be visible; after its X coordinate was written, its draw routine stopped short, leaving the rest of memory in tact. Thus, popo 7's shadow X coordinate took on the value for popo 2 but nothing else, teleporting it to the left.</p>
